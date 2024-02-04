@@ -2,7 +2,7 @@
 #include <base/native_log.h>
 #include <iterator>
 #include "android/native_window_jni.h"
-#include "SkiaUIApp.h"
+#include "app/SkiaUIApp.h"
 
 const char *HYSkiaEngine = "com/temple/skiaui/HYSkiaEngine";
 jobject globalAssets = nullptr;

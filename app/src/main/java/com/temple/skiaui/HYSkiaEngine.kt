@@ -85,7 +85,7 @@ class HYSkiaEngine : Choreographer.FrameCallback {
 
     companion object {
         init {
-            System.loadLibrary("native-lib")
+            System.loadLibrary("skiaui")
         }
 
         private const val TAG = "SkiaUI"

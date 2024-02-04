@@ -20,6 +20,7 @@ include_directories(
         src/main/cpp/test
         src/main/cpp/touch
         src/main/cpp/anim
+        src/main/cpp/app
         src/main/cpp/plugin
 )
 
@@ -60,15 +61,16 @@ aux_source_directory(src/main/cpp/widget srcs)
 aux_source_directory(src/main/cpp/test srcs)
 aux_source_directory(src/main/cpp/touch srcs)
 aux_source_directory(src/main/cpp/anim srcs)
+aux_source_directory(src/main/cpp/app srcs)
 aux_source_directory(src/main/cpp/plugin srcs)
 
-add_library(native-lib SHARED ${srcs})
+add_library(skiaui SHARED ${srcs})
 
 find_library(log-lib log)
 find_library(z-lib z)
 find_library(android-lib android)
 
-target_link_libraries(native-lib
+target_link_libraries(skiaui
 
         skia
         svg
