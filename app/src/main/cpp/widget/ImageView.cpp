@@ -1,11 +1,13 @@
 //
 // Created by cw on 1/26/22.
 //
-
 #include <base/native_log.h>
 #include "core/SkColorFilter.h"
 #include "ImageView.h"
 #include "core/SkData.h"
+#include "SkiaUIContext.h"
+#include "codec/SkCodec.h"
+#include "core/SkBitmap.h"
 
 ImageView::ImageView() : View(), radius(0), scaleType(ScaleType::FitXY) {
     imagePaint = std::make_unique<SkPaint>();
@@ -27,16 +29,30 @@ void ImageView::setAlpha(float alpha) {
 }
 
 void ImageView::setSource(const char *path) {
-    SkImageInfo imageInfo;
-    //todo
-    auto data = SkData::MakeFromFileName(path);
-    skImage = SkImages::RasterFromData(imageInfo, data, 100);
+    //todo 异步处理
+    auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
+    auto imageData = assetManager->readImage(path);
+    auto length = imageData->length;
+    auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
+    std::unique_ptr<SkCodec> codec(SkCodec::MakeFromData(skData));
+    if (!codec) {
+        ALOGE("can not find image codec, pls check %s", path)
+        return;
+    }
+    auto info = codec->getInfo();
+    SkBitmap bm;
+    if (bm.tryAllocPixels(info)) {
+        skImage = SkImages::RasterFromBitmap(bm);
+    }
     if (skImage == nullptr) {
         ALOGE("skImage is null, pls check %s", path)
         return;
     }
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
+    ALOGD("decode image success %s %d %d", path, skImage->width(), skImage->height())
     isDirty = true;
+
+
 }
 
 void ImageView::measure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -51,10 +67,10 @@ void ImageView::measure(int widthMeasureSpec, int heightMeasureSpec) {
             auto width = MeasureSpec::getSize(widthMeasureSpec);
             auto height = MeasureSpec::getSize(heightMeasureSpec);
             setMeasuredDimension(width, height);
-            ALOGD("imageView size: %d %d", width, height)
+//            ALOGD("imageView size: %d %d", width, height)
             return;
         }
-        ALOGD("imageView size: %d %d", skImage->width(), skImage->height())
+//        ALOGD("imageView size: %d %d", skImage->width(), skImage->height())
         setMeasuredDimension(skImage->width(), skImage->height());
     }
 }
@@ -97,13 +113,15 @@ void ImageView::draw(SkCanvas *canvas) {
         ALOGE("ignore ImageView draw, pls check width and height %d %d", width, height)
         return;
     }
-    canvas->save();
-    clipRect.setRectXY(dstRect, radius, radius);
-    canvas->clipRRect(clipRect);
-    canvas->setMatrix(imageMatrix);
-    canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
-                          SkCanvas::kFast_SrcRectConstraint);
-    canvas->restore();
+//    canvas->drawImage(skImage, dstRect.left(), dstRect.top());
+
+//    canvas->save();
+//    clipRect.setRectXY(dstRect, radius, radius);
+//    canvas->clipRRect(clipRect);
+//    canvas->setMatrix(imageMatrix);
+//    canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
+//                          SkCanvas::kFast_SrcRectConstraint);
+//    canvas->restore();
     View::draw(canvas);
 }
 

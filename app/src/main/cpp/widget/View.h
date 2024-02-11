@@ -141,7 +141,7 @@ public:
 
     float widthPercent, hwRatio;
 
-    bool hasPercent();
+    virtual bool hasPercent();
 
 #pragma mark TouchEvent
 
@@ -169,8 +169,8 @@ protected:
 
 public:
 
-    float translateX;
-    float translateY;
+    float translateX = 0.0f;
+    float translateY = 0.0f;
 
 #pragma mark Animator
 

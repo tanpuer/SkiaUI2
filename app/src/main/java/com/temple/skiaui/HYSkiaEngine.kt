@@ -20,6 +20,12 @@ class HYSkiaEngine : Choreographer.FrameCallback {
         }
     private val skiaUIHandler = Handler(skiaUIHandlerThread.looper)
 
+    private val skiaGLHandlerThread: HandlerThread =
+        HandlerThread("skia-gl", Thread.MAX_PRIORITY).apply {
+            start()
+        }
+    private val skiaGLHandler = Handler(skiaGLHandlerThread.looper)
+
     private var finishDraw = AtomicBoolean(true)
 
     init {

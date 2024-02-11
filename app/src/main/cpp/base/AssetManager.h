@@ -19,6 +19,7 @@ public:
 
     AssetManager(JNIEnv *env, jobject javaAssetManager);
 
+
     char *readFile(const char *path);
 
     ImageData *readImage(const char *path);

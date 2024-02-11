@@ -4,9 +4,10 @@
 
 #include "SkiaUIApp.h"
 #include "SkiaFilter.h"
+#include "SkiaUIContext.h"
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager) {
-    mAssetManager = std::make_shared<AssetManager>(env, javaAssetManager);
+    SkiaUIContext::getInstance()->setJavaAssetManager(env, javaAssetManager);
 }
 
 SkiaUIApp::~SkiaUIApp() {

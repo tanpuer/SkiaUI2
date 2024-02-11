@@ -35,7 +35,6 @@ public:
 private:
 
     std::unique_ptr<EGLCore> mEGLCore;
-    std::shared_ptr<AssetManager> mAssetManager;
     std::unique_ptr<IFilter> mFilter;
     int mWidth = 0, mHeight = 0;
 

@@ -97,7 +97,7 @@ public:
 
     float maxChildWidth, maxChildHeight;
 
-    bool hasPercent();
+    bool hasPercent() override;
 
 #pragma mark TouchEvent
 
