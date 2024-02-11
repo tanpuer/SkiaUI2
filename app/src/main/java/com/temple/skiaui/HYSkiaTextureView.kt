@@ -5,15 +5,12 @@ import android.graphics.SurfaceTexture
 import android.util.AttributeSet
 import android.view.*
 
-/**
- * 使用SurfaceView，渲染延迟感觉比TextureView要明显，同样都是监听vync信号，在doFrame回调里进行渲染，
- * 比如跟手这个直观的感觉，TextureView要比SurfaceView好。
- */
 class HYSkiaTextureView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : TextureView(context, attrs), TextureView.SurfaceTextureListener {
+) : TextureView(context, attrs), TextureView.SurfaceTextureListener, Choreographer.FrameCallback{
 
     private val engine = HYSkiaEngine()
+    private var created  = false
 
     init {
         surfaceTextureListener = this
@@ -22,9 +19,13 @@ class HYSkiaTextureView @JvmOverloads constructor(
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
         engine.createSurface(Surface(surface))
         engine.changeSurfaceSize(width, height)
+        created = true
+        Choreographer.getInstance().postFrameCallback(this)
     }
 
     override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean {
+        Choreographer.getInstance().removeFrameCallback(this)
+        created = false
         engine.destroySurface()
         return true
     }
@@ -39,6 +40,13 @@ class HYSkiaTextureView @JvmOverloads constructor(
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean {
         return engine.dispatchHYTouchEvent(event)
+    }
+
+    override fun doFrame(frameTimeNanos: Long) {
+        if (created) {
+            engine.doFrame(frameTimeNanos / 1000000)
+            Choreographer.getInstance().postFrameCallback(this)
+        }
     }
 
 }

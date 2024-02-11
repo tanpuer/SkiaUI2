@@ -4,13 +4,12 @@ import android.content.res.AssetManager
 import android.os.Handler
 import android.os.HandlerThread
 import android.util.Log
-import android.view.Choreographer
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
 import java.util.concurrent.atomic.AtomicBoolean
 
-class HYSkiaEngine : Choreographer.FrameCallback {
+class HYSkiaEngine {
 
     private var velocityTracker: VelocityTracker? = null
 
@@ -38,7 +37,6 @@ class HYSkiaEngine : Choreographer.FrameCallback {
         skiaUIHandler.post {
             nativeSurfaceCreated(surface)
         }
-        Choreographer.getInstance().postFrameCallback(this)
         velocityTracker = VelocityTracker.obtain()
     }
 
@@ -49,7 +47,6 @@ class HYSkiaEngine : Choreographer.FrameCallback {
     }
 
     fun destroySurface() {
-        Choreographer.getInstance().removeFrameCallback(this)
         skiaUIHandler.post {
             nativeSurfaceDestroyed()
         }
@@ -57,15 +54,16 @@ class HYSkiaEngine : Choreographer.FrameCallback {
         velocityTracker = null
     }
 
-    override fun doFrame(time: Long) {
+    fun doFrame(time: Long) {
         if (!finishDraw.get()) {
             Log.d(TAG, "doFrame ignore current vysnc draw")
             return
         }
         skiaUIHandler.post {
-            nativeSurfaceDoFrame(time / 1000000)
+            finishDraw.set(false)
+            nativeSurfaceDoFrame(time)
+            finishDraw.set(true)
         }
-        Choreographer.getInstance().postFrameCallback(this)
     }
 
     fun dispatchHYTouchEvent(event: MotionEvent): Boolean {
