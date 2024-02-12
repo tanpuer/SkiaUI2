@@ -22,6 +22,7 @@ void SkiaUIApp::create(ANativeWindow *window) {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_BLEND);
     mFilter = std::make_unique<SkiaFilter>();
+    recorder = std::make_unique<SkPictureRecorder>();
 }
 
 void SkiaUIApp::change(int width, int height, long time) {

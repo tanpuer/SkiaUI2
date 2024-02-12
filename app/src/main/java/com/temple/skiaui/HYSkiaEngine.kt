@@ -79,6 +79,11 @@ class HYSkiaEngine {
         return true
     }
 
+    fun release() {
+        skiaUIHandlerThread.quitSafely()
+        skiaGLHandlerThread.quitSafely()
+    }
+
     private external fun nativeInit(assets: AssetManager)
     private external fun nativeSurfaceCreated(surface: Surface)
     private external fun nativeSurfaceChanged(width: Int, height: Int, time: Long)

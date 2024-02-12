@@ -11,6 +11,7 @@
 #include "memory"
 #include "AssetManager.h"
 #include "IFilter.h"
+#include "core/SkPictureRecorder.h"
 
 class SkiaUIApp {
 
@@ -37,6 +38,8 @@ private:
     std::unique_ptr<EGLCore> mEGLCore;
     std::unique_ptr<IFilter> mFilter;
     int mWidth = 0, mHeight = 0;
+
+    std::unique_ptr<SkPictureRecorder> recorder;
 
 };
 
