@@ -113,15 +113,13 @@ void ImageView::draw(SkCanvas *canvas) {
         ALOGE("ignore ImageView draw, pls check width and height %d %d", width, height)
         return;
     }
-//    canvas->drawImage(skImage, dstRect.left(), dstRect.top());
-
-//    canvas->save();
-//    clipRect.setRectXY(dstRect, radius, radius);
-//    canvas->clipRRect(clipRect);
-//    canvas->setMatrix(imageMatrix);
-//    canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
-//                          SkCanvas::kFast_SrcRectConstraint);
-//    canvas->restore();
+    canvas->save();
+    clipRect.setRectXY(dstRect, radius, radius);
+    canvas->clipRRect(clipRect);
+    canvas->setMatrix(imageMatrix);
+    canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
+                          SkCanvas::kFast_SrcRectConstraint);
+    canvas->restore();
     View::draw(canvas);
 }
 
