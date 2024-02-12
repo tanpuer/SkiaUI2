@@ -1,9 +1,4 @@
-//
-// Created by cw on 2024/2/4.
-//
-
-#ifndef SKIAUI_SKIAUICONTEXT_H
-#define SKIAUI_SKIAUICONTEXT_H
+#pragma once
 
 #include "jni.h"
 #include "AssetManager.h"
@@ -31,6 +26,3 @@ private:
     std::shared_ptr<AssetManager> assetManager;
 
 };
-
-
-#endif //SKIAUI_SKIAUICONTEXT_H

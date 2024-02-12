@@ -1,47 +1,37 @@
-//
-// Created by cw on 2024/2/4.
-//
+#pragma once
 
-#ifndef SKIAUI_SKIAUIAPP_H
-#define SKIAUI_SKIAUIAPP_H
-
-#include "jni.h"
-#include "jni.h"
-#include "EGLCore.h"
+#include "TouchEvent.h"
 #include "memory"
-#include "AssetManager.h"
-#include "IFilter.h"
-#include "core/SkPictureRecorder.h"
+#include "ITestDraw.h"
+#include "Velocity.h"
 
+/**
+ * UI线程执行的逻辑入口
+ */
 class SkiaUIApp {
 
 public:
 
-    SkiaUIApp(JNIEnv *env, jobject javaAssetManager);
+    SkiaUIApp();
 
     ~SkiaUIApp();
 
-    void create(ANativeWindow *window);
-
-    void change(int width, int height, long time);
-
-    void destroy();
-
-    void doFrame(long time);
+    void setWindowSize(int width, int height);
 
     void dispatchTouchEvent(TouchEvent *touchEvent);
 
-    void setVelocity(float x, float y);
+    void setVelocity(Velocity *velocity);
+
+    long doFrame(long time);
 
 private:
 
-    std::unique_ptr<EGLCore> mEGLCore;
-    std::unique_ptr<IFilter> mFilter;
+    std::unique_ptr<TouchEvent> mTouchEvent;
+
+    ITestDraw *testDraw = nullptr;
+
     int mWidth = 0, mHeight = 0;
 
-    std::unique_ptr<SkPictureRecorder> recorder;
+    int drawCount = 0;
 
 };
-
-
-#endif //SKIAUI_SKIAUIAPP_H

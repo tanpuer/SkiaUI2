@@ -1,58 +1,59 @@
 //
-// Created by cw on 2024/2/4.
+// Created by banma-3412 on 2024/2/12.
 //
 
 #include "SkiaUIApp.h"
-#include "SkiaFilter.h"
-#include "SkiaUIContext.h"
+#include "core/SkPictureRecorder.h"
+#include "core/SkPicture.h"
+#include "ViewGroup.h"
+#include "ScrollView.h"
+#include "BaseListView.h"
+#include "ScrollViewTest.h"
+#include "core/SkGraphics.h"
 
-SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager) {
-    SkiaUIContext::getInstance()->setJavaAssetManager(env, javaAssetManager);
+SkiaUIApp::SkiaUIApp() {
+    SkGraphics::Init();
+    testDraw = new ScrollViewTest();
 }
 
 SkiaUIApp::~SkiaUIApp() {
 
 }
 
-void SkiaUIApp::create(ANativeWindow *window) {
-    mEGLCore = std::make_unique<EGLCore>();
-    mEGLCore->createGLEnv(nullptr, window, 0, 0, false);
-    mEGLCore->makeCurrent();
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    glEnable(GL_BLEND);
-    mFilter = std::make_unique<SkiaFilter>();
-    recorder = std::make_unique<SkPictureRecorder>();
-}
-
-void SkiaUIApp::change(int width, int height, long time) {
-    mWidth = width;
-    mHeight = height;
-    glViewport(0, 0, width, height);
-    mFilter->setWindowSize(width, height);
-    mFilter->doFrame(time);
-    mEGLCore->swapBuffer();
-}
-
-void SkiaUIApp::destroy() {
-    mFilter.reset(nullptr);
-    mEGLCore.reset(nullptr);
-}
-
-void SkiaUIApp::doFrame(long time) {
-    if (mEGLCore == nullptr || mFilter == nullptr) {
-        return;
-    }
-    glClear(GL_COLOR_BUFFER_BIT);
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    mFilter->doFrame(time);
-    mEGLCore->swapBuffer();
+long SkiaUIApp::doFrame(long time) {
+    drawCount++;
+    IAnimator::currTime = time;
+    SkPictureRecorder recorder;
+    auto recordingCanvas = recorder.beginRecording(mWidth, mHeight);
+    testDraw->doDrawTest(drawCount, recordingCanvas, mWidth, mHeight);
+    auto picture = recorder.finishRecordingAsPicture();
+    picture->ref();
+    return reinterpret_cast<long >(picture.get());
 }
 
 void SkiaUIApp::dispatchTouchEvent(TouchEvent *touchEvent) {
-    mFilter->dispatchTouchEvent(touchEvent);
+    mTouchEvent = std::unique_ptr<TouchEvent>(touchEvent);
+    auto root = testDraw->getRootView();
+    if (root == nullptr) {
+        return;
+    }
+    dynamic_cast<ViewGroup *>(root)->dispatchTouchEvent(mTouchEvent.get());
 }
 
-void SkiaUIApp::setVelocity(float x, float y) {
-    mFilter->setVelocity(new Velocity(x, y));
+void SkiaUIApp::setVelocity(Velocity *velocity) {
+    auto root = testDraw->getRootView();
+    auto scrollView = dynamic_cast<ScrollView *>(root);
+    if (scrollView != nullptr) {
+        scrollView->setVelocity(velocity->xVelocity, velocity->yVelocity);
+        return;
+    }
+    auto listView = dynamic_cast<BaseListView<void *> *>(root);
+    if (listView != nullptr) {
+        listView->setVelocity(velocity->xVelocity, velocity->yVelocity);
+    }
+}
+
+void SkiaUIApp::setWindowSize(int width, int height) {
+    mWidth = width;
+    mHeight = height;
 }

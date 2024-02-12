@@ -4,36 +4,18 @@
 
 #include <GLES3/gl3.h>
 #include <base/native_log.h>
-#include <yoga/Yoga.h>
-#include <ScrollViewTest.h>
-#include <ScrollView.h>
-#include <ProgressBarDrawTest.h>
-#include <ListViewTest.h>
-#include <BaseListView.h>
 #include "SkiaFilter.h"
 #include "core/SkGraphics.h"
-#include "HorizontalDrawTest.h"
-#include "VerticalDrawTest.h"
-#include "MovingDrawTest.h"
-#include "IAnimator.h"
-#include "ImageViewTest.h"
-#include "TextViewTest.h"
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "gpu/ganesh/gl/GrGLDirectContext.h"
 #include "gpu/GrBackendSurface.h"
 #include "gpu/ganesh/SkSurfaceGanesh.h"
 #include "core/SkColorSpace.h"
-
+#include "core/SkPictureRecorder.h"
+#include "core/SkPicture.h"
 
 SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
     SkGraphics::Init();
-//    testDraw = new HorizontalDrawTest();
-//    testDraw = new ImageViewTest();
-//    testDraw = new TextViewTest();
-//    testDraw = new MovingDrawTest();
-    testDraw = new ScrollViewTest();
-//    testDraw = new ProgressBarDrawTest();
-//    testDraw = new ListViewTest();
 }
 
 SkiaFilter::~SkiaFilter() {
@@ -43,7 +25,6 @@ SkiaFilter::~SkiaFilter() {
     if (skiaContext != nullptr) {
         skiaContext->unref();
     }
-    delete testDraw;
 }
 
 void SkiaFilter::setWindowSize(int width, int height) {
@@ -65,7 +46,7 @@ void SkiaFilter::setWindowSize(int width, int height) {
     fbInfo.fFBOID = buffer;
     fbInfo.fFormat = GL_RGBA8;
     auto _skRenderTarget = GrBackendRenderTargets::MakeGL(width, height, samples,
-                                                       stencil, fbInfo);
+                                                          stencil, fbInfo);
     skiaSurface = SkSurfaces::WrapBackendRenderTarget(
             skiaContext.get(),
             _skRenderTarget,
@@ -78,33 +59,10 @@ void SkiaFilter::setWindowSize(int width, int height) {
     skCanvas = skiaSurface->getCanvas();
 }
 
-void SkiaFilter::doFrame(long time) {
-    IFilter::doFrame(time);
-    IAnimator::currTime = time;
+void SkiaFilter::render(SkPicture *picture) {
     SkASSERT(skCanvas);
     skCanvas->clear(SK_ColorWHITE);
-    testDraw->doDrawTest(drawCount, skCanvas, width, height);
+    picture->playback(skCanvas);
+    picture->unref();
     skiaContext->flush();
-}
-
-void SkiaFilter::dispatchTouchEvent(TouchEvent *touchEvent) {
-    mTouchEvent = std::unique_ptr<TouchEvent>(touchEvent);
-    auto root = testDraw->getRootView();
-    if (root == nullptr) {
-        return;
-    }
-    dynamic_cast<ViewGroup *>(root)->dispatchTouchEvent(mTouchEvent.get());
-}
-
-void SkiaFilter::setVelocity(Velocity *velocity) {
-    auto root = testDraw->getRootView();
-    auto scrollView = dynamic_cast<ScrollView *>(root);
-    if (scrollView != nullptr) {
-        scrollView->setVelocity(velocity->xVelocity, velocity->yVelocity);
-        return;
-    }
-    auto listView = dynamic_cast<BaseListView<void *> *>(root);
-    if (listView != nullptr) {
-        listView->setVelocity(velocity->xVelocity, velocity->yVelocity);
-    }
 }

@@ -8,17 +8,24 @@ import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
 
 class HYSkiaEngine {
 
     private var velocityTracker: VelocityTracker? = null
 
+    /**
+     * 执行UI逻辑
+     */
     private val skiaUIHandlerThread: HandlerThread =
         HandlerThread("skia-ui", Thread.MAX_PRIORITY).apply {
             start()
         }
     private val skiaUIHandler = Handler(skiaUIHandlerThread.looper)
 
+    /**
+     * 执行渲染逻辑
+     */
     private val skiaGLHandlerThread: HandlerThread =
         HandlerThread("skia-gl", Thread.MAX_PRIORITY).apply {
             start()
@@ -27,27 +34,35 @@ class HYSkiaEngine {
 
     private var finishDraw = AtomicBoolean(true)
 
+    private var pic = AtomicLong(0)
+
     init {
-        skiaUIHandler.post {
+        skiaGLHandler.post {
             nativeInit(HYSkiaUIApp.getInstance().assets)
+        }
+        skiaUIHandler.post {
+            nativeUIInit()
         }
     }
 
     fun createSurface(surface: Surface) {
-        skiaUIHandler.post {
+        skiaGLHandler.post {
             nativeSurfaceCreated(surface)
         }
         velocityTracker = VelocityTracker.obtain()
     }
 
     fun changeSurfaceSize(width: Int, height: Int) {
-        skiaUIHandler.post {
+        skiaGLHandler.post {
             nativeSurfaceChanged(width, height, System.currentTimeMillis() / 1000)
+        }
+        skiaUIHandler.post {
+            nativeUIChanged(width, height, System.currentTimeMillis() / 1000)
         }
     }
 
     fun destroySurface() {
-        skiaUIHandler.post {
+        skiaGLHandler.post {
             nativeSurfaceDestroyed()
         }
         velocityTracker?.recycle()
@@ -61,20 +76,30 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             finishDraw.set(false)
-            nativeSurfaceDoFrame(time)
+            pic.set(nativeUIDoFrame(time))
             finishDraw.set(true)
+        }
+        skiaGLHandler.post {
+            if (pic.get() != 0L) {
+                nativeSurfaceDoFrame(pic.get(), time)
+                pic.set(0L)
+            }
         }
     }
 
     fun dispatchHYTouchEvent(event: MotionEvent): Boolean {
-        nativeTouchEvent(event.action, event.x, event.y)
+        skiaUIHandler.post {
+            nativeTouchEvent(event.action, event.x, event.y)
+        }
         velocityTracker?.addMovement(event)
         if (event.action == MotionEvent.ACTION_UP) {
             velocityTracker?.computeCurrentVelocity(1000)
-            nativeSetVelocity(
-                velocityTracker?.xVelocity ?: 0f,
-                velocityTracker?.yVelocity ?: 0f
-            )
+            skiaUIHandler.post {
+                nativeSetVelocity(
+                    velocityTracker?.xVelocity ?: 0f,
+                    velocityTracker?.yVelocity ?: 0f
+                )
+            }
         }
         return true
     }
@@ -88,9 +113,13 @@ class HYSkiaEngine {
     private external fun nativeSurfaceCreated(surface: Surface)
     private external fun nativeSurfaceChanged(width: Int, height: Int, time: Long)
     private external fun nativeSurfaceDestroyed()
-    private external fun nativeSurfaceDoFrame(time: Long)
+    private external fun nativeSurfaceDoFrame(pic: Long, time: Long)
+
     private external fun nativeTouchEvent(action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(xVelocity: Float, yVelocity: Float)
+    private external fun nativeUIInit()
+    private external fun nativeUIChanged(width: Int, height: Int, time: Long)
+    private external fun nativeUIDoFrame(time: Long): Long
 
     companion object {
         init {

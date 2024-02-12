@@ -2,75 +2,104 @@
 #include <base/native_log.h>
 #include <iterator>
 #include "android/native_window_jni.h"
+#include "app/SkiaGLApp.h"
 #include "app/SkiaUIApp.h"
 
 const char *HYSkiaEngine = "com/temple/skiaui/HYSkiaEngine";
 jobject globalAssets = nullptr;
-static SkiaUIApp *app = nullptr;
+static SkiaGLApp *glApp = nullptr;
+static SkiaUIApp *uiApp = nullptr;
 
 extern "C" JNIEXPORT void JNICALL
 native_Init(JNIEnv *env, jobject instance, jobject javaAssetManager) {
     ALOGD("native_init")
     globalAssets = env->NewGlobalRef(javaAssetManager);
-    app = new SkiaUIApp(env, globalAssets);
+    glApp = new SkiaGLApp(env, globalAssets);
 }
 
 extern "C" JNIEXPORT void JNICALL
 native_SurfaceCreated(JNIEnv *env, jobject instance, jobject javaSurface) {
     ALOGD("native_SurfaceCreated")
-    if (app != nullptr) {
-        app->create(ANativeWindow_fromSurface(env, javaSurface));
+    if (glApp != nullptr) {
+        glApp->create(ANativeWindow_fromSurface(env, javaSurface));
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SurfaceChanged(JNIEnv *env, jobject instance, jint width, jint height,
-                      jlong time) {
+native_SurfaceChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong time) {
     ALOGD("native_SurfaceChanged")
-    if (app != nullptr) {
-        app->change(width, height, time);
+    if (glApp != nullptr) {
+        glApp->change(width, height, time);
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
 native_SurfaceDestroyed(JNIEnv *env, jobject instance) {
     ALOGD("native_SurfaceDestroyed")
-    delete app;
-    app = nullptr;
+    if (glApp != nullptr) {
+        glApp->destroy();
+    }
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SurfaceDoFrame(JNIEnv *env, jobject instance, jlong time) {
-    if (app != nullptr) {
-        app->doFrame(time);
+native_SurfaceDoFrame(JNIEnv *env, jobject instance, jlong pic, jlong time) {
+    if (glApp != nullptr) {
+        glApp->doFrame(pic, time);
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
 native_TouchEvent(JNIEnv *env, jobject instance, jint action, jfloat x, jfloat y) {
-    if (app != nullptr) {
+    if (uiApp != nullptr) {
         auto touchEvent = new TouchEvent(static_cast<TouchEvent::MotionEvent>(action), x, y);
-        app->dispatchTouchEvent(touchEvent);
+        uiApp->dispatchTouchEvent(touchEvent);
     }
     ALOGD("native_TouchEvent %d %f %f", action, x, y)
 }
 
 extern "C" JNIEXPORT void JNICALL
 native_SetVelocity(JNIEnv *env, jobject instance, jfloat x, jfloat y) {
-    if (app != nullptr) {
-        app->setVelocity(x, y);
+    if (uiApp != nullptr) {
+        auto velocity = std::make_unique<Velocity>(x, y);
+        uiApp->setVelocity(velocity.get());
     }
     ALOGD("native_SetVelocity %f %f", x, y)
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_UIInit(JNIEnv *env, jobject instance) {
+    uiApp = new SkiaUIApp();
+    ALOGD("native_UIInit")
+}
+
+extern "C" JNIEXPORT jlong JNICALL
+native_UIDoFrame(JNIEnv *env, jobject instance, jlong time) {
+    if (uiApp != nullptr) {
+        return uiApp->doFrame(time);
+    }
+    return 0L;
+    ALOGD("native_UIDoFrame")
+}
+
+extern "C" JNIEXPORT void JNICALL
+native_UIChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong time) {
+    if (uiApp != nullptr) {
+        uiApp->setWindowSize(width, height);
+    }
+    ALOGD("native_UIChanged")
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeInit",             "(Landroid/content/res/AssetManager;)V", (void *) native_Init},
-        {"nativeSurfaceCreated",   "(Landroid/view/Surface;)V",            (void *) native_SurfaceCreated},
-        {"nativeSurfaceChanged",   "(IIJ)V",                               (void *) native_SurfaceChanged},
-        {"nativeSurfaceDestroyed", "()V",                                  (void *) native_SurfaceDestroyed},
-        {"nativeSurfaceDoFrame",   "(J)V",                                 (void *) native_SurfaceDoFrame},
-        {"nativeTouchEvent",       "(IFF)Z",                               (void *) native_TouchEvent},
-        {"nativeSetVelocity",      "(FF)V",                                (void *) native_SetVelocity}
+        {"nativeSurfaceCreated",   "(Landroid/view/Surface;)V",             (void *) native_SurfaceCreated},
+        {"nativeSurfaceChanged",   "(IIJ)V",                                (void *) native_SurfaceChanged},
+        {"nativeSurfaceDestroyed", "()V",                                   (void *) native_SurfaceDestroyed},
+        {"nativeSurfaceDoFrame",   "(JJ)V",                                 (void *) native_SurfaceDoFrame},
+        {"nativeTouchEvent",       "(IFF)Z",                                (void *) native_TouchEvent},
+        {"nativeSetVelocity",      "(FF)V",                                 (void *) native_SetVelocity},
+        {"nativeUIInit",           "()V",                                   (void *) native_UIInit},
+        {"nativeUIDoFrame",        "(J)J",                                  (void *) native_UIDoFrame},
+        {"nativeUIChanged",        "(IIJ)V",                                (void *) native_UIChanged},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

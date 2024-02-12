@@ -1,10 +1,4 @@
-//
-// Created by cw on 1/21/22.
-//
-
-#ifndef SKIAUI_SKIAFILTER_H
-#define SKIAUI_SKIAFILTER_H
-
+#pragma once
 
 #include <ITestDraw.h>
 #include <Velocity.h>
@@ -24,11 +18,7 @@ public:
 
     virtual void setWindowSize(int width, int height) override;
 
-    virtual void doFrame(long time) override;
-
-    void dispatchTouchEvent(TouchEvent *touchEvent) override;
-
-    void setVelocity(Velocity *velocity) override;
+    virtual void render(SkPicture *picture) override;
 
 private:
 
@@ -38,10 +28,4 @@ private:
 
     SkCanvas *skCanvas;
 
-    std::unique_ptr<TouchEvent> mTouchEvent;
-
-    ITestDraw *testDraw;
 };
-
-
-#endif //SKIAUI_SKIAFILTER_H
