@@ -85,6 +85,11 @@ void View::layout(int l, int t, int r, int b) {
 }
 
 void View::draw(SkCanvas *canvas) {
+    if (runtimeEffect != nullptr) {
+        SkRuntimeShaderBuilder builder(runtimeEffect);
+        auto shader = builder.makeShader(nullptr);
+        paint->setShader(std::move(shader));
+    }
     if (YGFloatsEqual(paint->getStrokeWidth(), 0.0f)) {
         canvas->drawIRect(skRect, *paint);
     } else {
@@ -161,6 +166,16 @@ void View::setStrokeWidth(SkScalar _width) {
 void View::setAlpha(float alpha) {
     SkASSERT(paint);
     paint->setAlphaf(alpha);
+}
+
+void View::setShaderSource(const char *data) {
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(data));
+    if (!effect) {
+        ALOGD("set shader source failed %s", error.data())
+        return;
+    }
+    this->runtimeEffect = effect;
+    isDirty = true;
 }
 
 #pragma LayoutParams相关

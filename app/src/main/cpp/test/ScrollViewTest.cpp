@@ -28,6 +28,13 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         root->setStyle(SkPaint::kStroke_Style);
         root->setBackgroundColor(SK_ColorBLUE);
 
+        auto shaderView = new View();
+        shaderView->setConfig(root->config);
+        shaderView->setShaderSource("vec4 main(vec2 pos) {\n"
+                              "  return vec4(1.0, 1.0, 0.0, 1.0);\n"
+                              "}");
+        root->addView(shaderView, LayoutParams::makeExactlyLayoutParams(300, 300));
+
         for (int i = 0; i < 10; ++i) {
             {
                 auto progressBar = new ProgressBar();

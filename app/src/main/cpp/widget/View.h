@@ -16,6 +16,7 @@
 #include "LayoutParams.h"
 #include "TouchEventDispatcher.h"
 #include "IAnimator.h"
+#include "effects/SkRuntimeEffect.h"
 
 static int64_t VIEW_ID = 0;
 
@@ -121,6 +122,10 @@ public:
     int cornerRadius;
 
     SkRect skRectWithBorder;
+
+    virtual void setShaderSource(const char* data);
+
+    sk_sp<SkRuntimeEffect> runtimeEffect;
 
 public:
     //todo 后续才支持的
