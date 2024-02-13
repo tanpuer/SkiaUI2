@@ -8,6 +8,7 @@
 #include "SkiaUIContext.h"
 #include "codec/SkCodec.h"
 #include "core/SkBitmap.h"
+#include "effects/SkImageFilters.h"
 
 ImageView::ImageView() : View(), radius(0), scaleType(ScaleType::FitXY) {
     imagePaint = std::make_unique<SkPaint>();
@@ -138,6 +139,12 @@ void ImageView::setCornerRadius(int radius) {
 
 void ImageView::setScaleType(ImageView::ScaleType scaleType) {
     this->scaleType = scaleType;
+    isDirty = true;
+}
+
+void ImageView::blur(float sigmaX, float sigmaY) {
+    auto filter = SkImageFilters::Blur(sigmaX, sigmaY, SkTileMode::kClamp, nullptr);
+    imagePaint->setImageFilter(filter);
     isDirty = true;
 }
 

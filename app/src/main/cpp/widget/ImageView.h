@@ -43,6 +43,8 @@ public:
 
     virtual void setScaleType(ScaleType scaleType);
 
+    virtual void blur(float sigmaX, float sigmaY);
+
 private:
 
     sk_sp<SkImage> skImage;
@@ -56,7 +58,7 @@ private:
     std::unique_ptr<SkPaint> imagePaint;
 
     SkMatrix imageMatrix;
-    
+
     float radius;
 
     ScaleType scaleType;
