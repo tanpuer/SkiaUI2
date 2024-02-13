@@ -5,7 +5,7 @@ Using Skia, Yoga, SurfaceView/TextureView to build a simple Flexbox-UI framework
 步骤：
 
 1. 编译skia。
-   skia: https://skia.org/docs/user/build/ ，实在不知道怎么编译的同学可以去react-native-skia项目里搬运。
+   skia: https://skia.org/docs/user/build/ ，或者直接把jniLibs下的arm64-v8a和x86-64解压下使用。
    Yoga: 直接使用源码。
 2. 配置好gl环境，使用Skia硬件加速。
 3. 线程模型和Android类似，UI线程和渲染线程。
