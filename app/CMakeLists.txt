@@ -15,7 +15,6 @@ include_directories(
         src/main/cpp/fliter
         src/main/cpp/yoga
         src/main/cpp/yoga/event
-        src/main/cpp/yoga/internal
         src/main/cpp/widget
         src/main/cpp/test
         src/main/cpp/touch
@@ -56,7 +55,6 @@ aux_source_directory(src/main/cpp/base srcs)
 aux_source_directory(src/main/cpp/fliter srcs)
 aux_source_directory(src/main/cpp/yoga srcs)
 aux_source_directory(src/main/cpp/yoga/event srcs)
-aux_source_directory(src/main/cpp/yoga/internal srcs)
 aux_source_directory(src/main/cpp/widget srcs)
 aux_source_directory(src/main/cpp/test srcs)
 aux_source_directory(src/main/cpp/touch srcs)

@@ -6,10 +6,12 @@
  */
 
 #ifdef DEBUG
+
 #pragma once
+
 #include <string>
 
-#include "Yoga.h"
+#include <yoga/Yoga.h>
 
 namespace facebook {
 namespace yoga {
@@ -22,4 +24,5 @@ void YGNodeToString(
 
 } // namespace yoga
 } // namespace facebook
+
 #endif
