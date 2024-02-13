@@ -156,7 +156,7 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
                 imageView->setStyle(SkPaint::kStroke_Style);
                 imageView->setBackgroundColor(SK_ColorRED);
                 imageView->setStrokeWidth(2);
-                imageView->blur(2.0f * i, 2.0f * i);
+                imageView->blur(2.0f * i);
                 auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
                 lp->setMargin({0, 100, 0, 0});
                 root->addView(imageView, lp);

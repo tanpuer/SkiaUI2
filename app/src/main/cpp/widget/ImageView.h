@@ -43,7 +43,7 @@ public:
 
     virtual void setScaleType(ScaleType scaleType);
 
-    virtual void blur(float sigmaX, float sigmaY);
+    virtual void blur(float blur);
 
 private:
 
