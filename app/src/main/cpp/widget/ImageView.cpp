@@ -42,7 +42,12 @@ void ImageView::setSource(const char *path) {
     auto info = codec->getInfo();
     SkBitmap bm;
     if (bm.tryAllocPixels(info)) {
-        skImage = SkImages::RasterFromBitmap(bm);
+        SkCodec::Options options;
+        auto outSkBitmap = SkBitmap();
+        outSkBitmap.allocPixels(info);
+        if (SkCodec::kSuccess == codec->getPixels(outSkBitmap.pixmap(), &options)) {
+            skImage = SkImages::RasterFromBitmap(outSkBitmap);
+        }
     }
     if (skImage == nullptr) {
         ALOGE("skImage is null, pls check %s", path)
@@ -51,8 +56,6 @@ void ImageView::setSource(const char *path) {
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
     ALOGD("decode image success %s %d %d", path, skImage->width(), skImage->height())
     isDirty = true;
-
-
 }
 
 void ImageView::measure(int widthMeasureSpec, int heightMeasureSpec) {

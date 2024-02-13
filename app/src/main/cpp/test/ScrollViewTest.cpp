@@ -150,9 +150,9 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             {
                 auto imageView = new ImageView();
                 imageView->setConfig(root->config);
-                imageView->setSource("ic_launcher.png");
+                imageView->setSource("raining.png");
                 imageView->setCornerRadius(100);
-                imageView->setScaleType(ImageView::ScaleType::FitCenter);
+                imageView->setScaleType(ImageView::ScaleType::CenterCrop);
                 imageView->setStyle(SkPaint::kStroke_Style);
                 imageView->setBackgroundColor(SK_ColorRED);
                 imageView->setStrokeWidth(2);
