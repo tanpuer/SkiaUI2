@@ -49,4 +49,8 @@ class HYSkiaTextureView @JvmOverloads constructor(
         }
     }
 
+    fun setRenderCallback(renderCallback: RenderCallback) {
+        engine.renderCallback = renderCallback
+    }
+
 }

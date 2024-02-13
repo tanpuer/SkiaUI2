@@ -42,4 +42,8 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
         }
     }
 
+    fun setRenderCallback(renderCallback: RenderCallback) {
+        engine.renderCallback = renderCallback
+    }
+
 }

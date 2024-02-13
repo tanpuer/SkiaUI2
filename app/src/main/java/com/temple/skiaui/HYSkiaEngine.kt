@@ -1,13 +1,17 @@
 package com.temple.skiaui
 
 import android.content.res.AssetManager
+import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
+import androidx.annotation.RequiresApi
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 class HYSkiaEngine {
@@ -35,6 +39,11 @@ class HYSkiaEngine {
     private var finishDraw = AtomicBoolean(true)
 
     private var pic = AtomicLong(0)
+
+    private val refreshRate = 60
+    private var frameCount = 0
+    private var drawCount = AtomicInteger(0)
+    var renderCallback: RenderCallback? = null
 
     init {
         skiaGLHandler.post {
@@ -70,18 +79,29 @@ class HYSkiaEngine {
     }
 
     fun doFrame(time: Long) {
+        frameCount++
+        if (frameCount == refreshRate) {
+            renderCallback?.updateFps(drawCount.get())
+            drawCount.set(0)
+            frameCount = 0
+        }
         if (!finishDraw.get()) {
             Log.d(TAG, "doFrame ignore current vysnc draw")
             return
         }
         skiaUIHandler.post {
             finishDraw.set(false)
+            val start = System.currentTimeMillis()
             pic.set(nativeUIDoFrame(time))
+//            Log.d(TAG, "ui-thread: ${System.currentTimeMillis() - start}")
             finishDraw.set(true)
+            drawCount.set(drawCount.get() + 1)
         }
         skiaGLHandler.post {
             if (pic.get() != 0L) {
+                val start = System.currentTimeMillis()
                 nativeSurfaceDoFrame(pic.get(), time)
+//                Log.d(TAG, "gl-thread: ${System.currentTimeMillis() - start}")
                 pic.set(0L)
             }
         }
