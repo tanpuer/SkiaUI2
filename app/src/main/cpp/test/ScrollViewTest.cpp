@@ -43,6 +43,21 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             root->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
         }
 
+        {
+            auto view = new View();
+            view->setConfig(root->config);
+            auto colors = std::vector<SkColor>();
+            colors.push_back(SK_ColorCYAN);
+            colors.push_back(SK_ColorMAGENTA);
+            colors.push_back(SK_ColorYELLOW);
+            colors.push_back(SK_ColorCYAN);
+            view->setSwiperGradient(colors);
+            view->setCornerRadius(20);
+            auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
+            lp->setMargin({0, 50, 0, 0});
+            root->addView(view, lp);
+        }
+
         for (int i = 0; i < 10; ++i) {
             {
                 auto progressBar = new ProgressBar();

@@ -95,6 +95,14 @@ void View::layout(int l, int t, int r, int b) {
         );
         paint->setShader(gradientShader);
     }
+    if (!swiperGradientColors.empty()) {
+        auto gradientShader = SkGradientShader::MakeSweep(
+                (l + r) / 2, (t + b) / 2,
+                swiperGradientColors.data(),
+                nullptr,
+                swiperGradientColors.size());
+        paint->setShader(gradientShader);
+    }
 }
 
 void View::draw(SkCanvas *canvas) {
@@ -205,6 +213,10 @@ void View::setShaderPath(const char *path) {
 
 void View::setLinearGradient(std::vector<SkColor> colors) {
     linearGradientColors = std::move(colors);
+}
+
+void View::setSwiperGradient(std::vector<SkColor> colors) {
+    swiperGradientColors = std::move(colors);
 }
 
 #pragma LayoutParams相关

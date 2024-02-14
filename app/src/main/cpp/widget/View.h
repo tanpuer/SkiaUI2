@@ -138,6 +138,10 @@ public:
 
     std::vector<SkColor> linearGradientColors;
 
+    virtual void setSwiperGradient(std::vector<SkColor> colors);
+
+    std::vector<SkColor> swiperGradientColors;
+
 public:
     //todo 后续才支持的
     virtual void setPadding(std::array<int, 4> paddings);
