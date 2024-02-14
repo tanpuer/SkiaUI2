@@ -19,12 +19,7 @@ SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
 }
 
 SkiaFilter::~SkiaFilter() {
-    if (skiaSurface != nullptr) {
-        skiaSurface->unref();
-    }
-    if (skiaContext != nullptr) {
-        skiaContext->unref();
-    }
+    skCanvas = nullptr;
 }
 
 void SkiaFilter::setWindowSize(int width, int height) {
