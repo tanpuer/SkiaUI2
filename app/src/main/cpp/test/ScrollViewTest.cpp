@@ -37,9 +37,9 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             auto view = new View();
             view->setConfig(root->config);
             auto colors = std::vector<SkColor>();
-            colors.push_back(SK_ColorRED);
+            colors.push_back(SK_ColorYELLOW);
             colors.push_back(SK_ColorBLUE);
-            view->setGradient(colors);
+            view->setLinearGradient(colors);
             root->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
         }
 

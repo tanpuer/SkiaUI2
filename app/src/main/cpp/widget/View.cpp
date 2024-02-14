@@ -84,13 +84,13 @@ void View::layout(int l, int t, int r, int b) {
     if (viewLayoutCallback != nullptr) {
         viewLayoutCallback(l, t, r, b);
     }
-    if (!gradientColors.empty()) {
+    if (!linearGradientColors.empty()) {
         SkPoint points[2]{SkPoint::Make(l, t), SkPoint::Make(r, b)};
         auto gradientShader = SkGradientShader::MakeLinear(
                 points,
-                gradientColors.data(),
+                linearGradientColors.data(),
                 nullptr,
-                gradientColors.size(),
+                linearGradientColors.size(),
                 SkTileMode::kClamp
         );
         paint->setShader(gradientShader);
@@ -203,8 +203,8 @@ void View::setShaderPath(const char *path) {
     setShaderSource(data);
 }
 
-void View::setGradient(std::vector<SkColor> colors) {
-    gradientColors = std::move(colors);
+void View::setLinearGradient(std::vector<SkColor> colors) {
+    linearGradientColors = std::move(colors);
 }
 
 #pragma LayoutParams相关

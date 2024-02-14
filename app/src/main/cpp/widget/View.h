@@ -134,9 +134,9 @@ public:
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
 
-    virtual void setGradient(std::vector<SkColor> colors);
+    virtual void setLinearGradient(std::vector<SkColor> colors);
 
-    std::vector<SkColor> gradientColors;
+    std::vector<SkColor> linearGradientColors;
 
 public:
     //todo 后续才支持的
