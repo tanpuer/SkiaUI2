@@ -9,6 +9,8 @@
 #include "core/SkPathEffect.h"
 #include "SkiaUIContext.h"
 #include "effects/SkGradientShader.h"
+#include "core/SkMaskFilter.h"
+#include "core/SkBlurTypes.h"
 
 View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadius(0),
                skRectWithBorder(SkRect::MakeEmpty()),
@@ -217,6 +219,11 @@ void View::setLinearGradient(std::vector<SkColor> colors) {
 
 void View::setSwiperGradient(std::vector<SkColor> colors) {
     swiperGradientColors = std::move(colors);
+}
+
+void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
+    auto filter =SkMaskFilter::MakeBlur(style, sigma);
+    paint->setMaskFilter(filter);
 }
 
 #pragma LayoutParams相关

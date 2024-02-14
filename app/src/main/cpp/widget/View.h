@@ -17,6 +17,7 @@
 #include "TouchEventDispatcher.h"
 #include "IAnimator.h"
 #include "effects/SkRuntimeEffect.h"
+#include "core/SkBlurTypes.h"
 
 static int64_t VIEW_ID = 0;
 
@@ -141,6 +142,8 @@ public:
     virtual void setSwiperGradient(std::vector<SkColor> colors);
 
     std::vector<SkColor> swiperGradientColors;
+
+    virtual void setBlurMask(SkBlurStyle style, SkScalar sigma);
 
 public:
     //todo 后续才支持的

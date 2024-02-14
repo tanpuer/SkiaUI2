@@ -53,6 +53,7 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             colors.push_back(SK_ColorCYAN);
             view->setSwiperGradient(colors);
             view->setCornerRadius(20);
+            view->setBlurMask(kNormal_SkBlurStyle, 10);
             auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
             lp->setMargin({0, 50, 0, 0});
             root->addView(view, lp);
