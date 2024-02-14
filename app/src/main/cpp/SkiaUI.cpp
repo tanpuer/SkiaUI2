@@ -89,6 +89,15 @@ native_UIChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong t
     ALOGD("native_UIChanged")
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_Release(JNIEnv *env, jobject instance) {
+    delete uiApp;
+    delete glApp;
+    uiApp = nullptr;
+    glApp = nullptr;
+    ALOGD("native_Release")
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeInit",             "(Landroid/content/res/AssetManager;)V", (void *) native_Init},
         {"nativeSurfaceCreated",   "(Landroid/view/Surface;)V",             (void *) native_SurfaceCreated},
@@ -100,6 +109,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUIInit",           "()V",                                   (void *) native_UIInit},
         {"nativeUIDoFrame",        "(J)J",                                  (void *) native_UIDoFrame},
         {"nativeUIChanged",        "(IIJ)V",                                (void *) native_UIChanged},
+        {"nativeRelease",          "()V",                                   (void *) native_Release},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

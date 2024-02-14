@@ -125,6 +125,7 @@ class HYSkiaEngine {
     }
 
     fun release() {
+        nativeRelease()
         skiaUIHandlerThread.quitSafely()
         skiaGLHandlerThread.quitSafely()
     }
@@ -140,6 +141,8 @@ class HYSkiaEngine {
     private external fun nativeUIInit()
     private external fun nativeUIChanged(width: Int, height: Int, time: Long)
     private external fun nativeUIDoFrame(time: Long): Long
+
+    private external fun nativeRelease()
 
     companion object {
         init {
