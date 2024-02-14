@@ -64,6 +64,7 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             nativeUIChanged(width, height, System.currentTimeMillis() / 1000)
+            pic.set(nativeUIDoFrame(System.currentTimeMillis()))
         }
     }
 
