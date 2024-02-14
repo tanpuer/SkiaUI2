@@ -59,139 +59,137 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             root->addView(view, lp);
         }
 
-        for (int i = 0; i < 10; ++i) {
-            {
-                auto progressBar = new ProgressBar();
-                progressBar->setConfig(root->config);
-                progressBar->setBarColor(SK_ColorRED);
-                progressBar->setBackgroundColor(SK_ColorGRAY);
-                progressBar->setStrokeWidth(10.0);
-                progressBar->setStyle(SkPaint::kStroke_Style);
-                root->addView(progressBar, LayoutParams::makeExactlyLayoutParams(200, 200));
-            }
+        {
+            auto progressBar = new ProgressBar();
+            progressBar->setConfig(root->config);
+            progressBar->setBarColor(SK_ColorRED);
+            progressBar->setBackgroundColor(SK_ColorGRAY);
+            progressBar->setStrokeWidth(10.0);
+            progressBar->setStyle(SkPaint::kStroke_Style);
+            root->addView(progressBar, LayoutParams::makeExactlyLayoutParams(200, 200));
+        }
 
-            {
-                auto progressBar = new ProgressBar();
-                progressBar->setConfig(root->config);
-                progressBar->setBarColor(SK_ColorRED);
-                progressBar->setBackgroundColor(SK_ColorGRAY);
-                progressBar->setStrokeWidth(10.0);
-                progressBar->setAutoMode(false);
-                progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
-                progressBar->setProgress(30);
-                progressBar->setStyle(SkPaint::kStroke_Style);
-                auto lp = LayoutParams::makeExactlyLayoutParams(width, 60);
-                lp->setMargin({50, 50, 50, 50});
-                root->addView(progressBar, lp);
-                progressBar->setProgressCallback([](int progress) {
-                    ALOGD("ProgressBar progress: %d", progress)
-                });
-            }
+        {
+            auto progressBar = new ProgressBar();
+            progressBar->setConfig(root->config);
+            progressBar->setBarColor(SK_ColorRED);
+            progressBar->setBackgroundColor(SK_ColorGRAY);
+            progressBar->setStrokeWidth(10.0);
+            progressBar->setAutoMode(false);
+            progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
+            progressBar->setProgress(30);
+            progressBar->setStyle(SkPaint::kStroke_Style);
+            auto lp = LayoutParams::makeExactlyLayoutParams(width, 60);
+            lp->setMargin({50, 50, 50, 50});
+            root->addView(progressBar, lp);
+            progressBar->setProgressCallback([](int progress) {
+                ALOGD("ProgressBar progress: %d", progress)
+            });
+        }
 
-            {
-                auto view = new MovingView();
-                view->setConfig(root->config);
-                view->setBackgroundColor(SK_ColorBLUE);
-                view->setStyle(SkPaint::kFill_Style);
-                view->setCornerRadius(30);
-                auto viewLayoutParams = LayoutParams::makeExactlyLayoutParams(200, 200);
-                viewLayoutParams->setMargin({0, 30, 0, 0});
-                root->addView(view, viewLayoutParams);
-            }
+        {
+            auto view = new MovingView();
+            view->setConfig(root->config);
+            view->setBackgroundColor(SK_ColorBLUE);
+            view->setStyle(SkPaint::kFill_Style);
+            view->setCornerRadius(30);
+            auto viewLayoutParams = LayoutParams::makeExactlyLayoutParams(200, 200);
+            viewLayoutParams->setMargin({0, 30, 0, 0});
+            root->addView(view, viewLayoutParams);
+        }
 
-            {
-                auto button = new Button();
-                button->setConfig(root->config);
-                button->setText(SkString("Button"));
-                button->setTextSize(60);
-                button->setCornerRadius(20);
-                button->setBackgroundColor(SK_ColorRED);
-                button->setTextColor(SK_ColorBLACK);
-                button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
-                auto btnLayoutParams = LayoutParams::makeWrapContent();
-                btnLayoutParams->setMargin(50);
-                root->addView(button, btnLayoutParams);
-                button->setOnClickListener([](View *view) {
-                    ALOGD("setOnClickListener perform %s", view->name())
-                });
-            }
+        {
+            auto button = new Button();
+            button->setConfig(root->config);
+            button->setText(SkString("Button"));
+            button->setTextSize(60);
+            button->setCornerRadius(20);
+            button->setBackgroundColor(SK_ColorRED);
+            button->setTextColor(SK_ColorBLACK);
+            button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+            auto btnLayoutParams = LayoutParams::makeWrapContent();
+            btnLayoutParams->setMargin(50);
+            root->addView(button, btnLayoutParams);
+            button->setOnClickListener([](View *view) {
+                ALOGD("setOnClickListener perform %s", view->name())
+            });
+        }
 
-            {
-                auto textView = new TextView();
-                textView->setConfig(root->config);
-                textView->setText(SkString("horizontal test"));
-                textView->setTextColor(SK_ColorBLACK);
-                textView->setTextSize(60);
-                textView->setBackgroundColor(SK_ColorRED);
-                textView->setStyle(SkPaint::kStroke_Style);
-                auto tvLayoutParams = LayoutParams::makeWrapContent();
-                tvLayoutParams->setMargin(50);
-                root->addView(textView, tvLayoutParams);
-            }
+        {
+            auto textView = new TextView();
+            textView->setConfig(root->config);
+            textView->setText(SkString("horizontal test"));
+            textView->setTextColor(SK_ColorBLACK);
+            textView->setTextSize(60);
+            textView->setBackgroundColor(SK_ColorRED);
+            textView->setStyle(SkPaint::kStroke_Style);
+            auto tvLayoutParams = LayoutParams::makeWrapContent();
+            tvLayoutParams->setMargin(50);
+            root->addView(textView, tvLayoutParams);
+        }
 
-            {
-                auto textView = new TextView();
-                textView->setConfig(root->config);
-                textView->setText(SkString("abcdefghijklmnopqrstuvw"));
-                textView->setTextColor(SK_ColorGREEN);
-                textView->setTextSize(100);
-                textView->setBackgroundColor(SK_ColorRED);
-                textView->setStyle(SkPaint::kStroke_Style);
-                auto tvLayoutParams = LayoutParams::makeWrapContent();
-                tvLayoutParams->setMargin(50);
-                root->addView(textView, tvLayoutParams);
-            }
+        {
+            auto textView = new TextView();
+            textView->setConfig(root->config);
+            textView->setText(SkString("abcdefghijklmnopqrstuvw"));
+            textView->setTextColor(SK_ColorGREEN);
+            textView->setTextSize(100);
+            textView->setBackgroundColor(SK_ColorRED);
+            textView->setStyle(SkPaint::kStroke_Style);
+            auto tvLayoutParams = LayoutParams::makeWrapContent();
+            tvLayoutParams->setMargin(50);
+            root->addView(textView, tvLayoutParams);
+        }
 
-            {
-                auto textView = new TextView();
-                textView->setConfig(root->config);
-                textView->setTextColor(SK_ColorGREEN);
-                textView->setTextSize(60);
-                textView->setBackgroundColor(SK_ColorRED);
-                textView->setStyle(SkPaint::kStroke_Style);
-                textView->pushText(TextView::StringBuilder(SkString("这是"), SK_ColorCYAN,
-                                                           SkFontStyle(SkFontStyle::kThin_Weight,
-                                                                       SkFontStyle::kNormal_Width,
-                                                                       SkFontStyle::kUpright_Slant),
-                                                           40));
-                textView->pushText(TextView::StringBuilder(SkString("StringBuilder"), SK_ColorGREEN,
-                                                           SkFontStyle(SkFontStyle::kThin_Weight,
-                                                                       SkFontStyle::kNormal_Width,
-                                                                       SkFontStyle::kUpright_Slant),
-                                                           100));
-                textView->pushText(TextView::StringBuilder(SkString("测试"), SK_ColorYELLOW,
-                                                           SkFontStyle(SkFontStyle::kThin_Weight,
-                                                                       SkFontStyle::kNormal_Width,
-                                                                       SkFontStyle::kUpright_Slant),
-                                                           40));
-                textView->pushText(TextView::StringBuilder(SkString("demo"), SK_ColorRED,
-                                                           SkFontStyle(SkFontStyle::kThin_Weight,
-                                                                       SkFontStyle::kNormal_Width,
-                                                                       SkFontStyle::kUpright_Slant),
-                                                           100));
-                auto tvLayoutParams = LayoutParams::makeWrapContent();
-                tvLayoutParams->setMargin(50);
-                root->addView(textView, tvLayoutParams);
-                auto listener = [](int l, int t, int r, int b) -> void {
+        {
+            auto textView = new TextView();
+            textView->setConfig(root->config);
+            textView->setTextColor(SK_ColorGREEN);
+            textView->setTextSize(60);
+            textView->setBackgroundColor(SK_ColorRED);
+            textView->setStyle(SkPaint::kStroke_Style);
+            textView->pushText(TextView::StringBuilder(SkString("这是"), SK_ColorCYAN,
+                                                       SkFontStyle(SkFontStyle::kThin_Weight,
+                                                                   SkFontStyle::kNormal_Width,
+                                                                   SkFontStyle::kUpright_Slant),
+                                                       40));
+            textView->pushText(TextView::StringBuilder(SkString("StringBuilder"), SK_ColorGREEN,
+                                                       SkFontStyle(SkFontStyle::kThin_Weight,
+                                                                   SkFontStyle::kNormal_Width,
+                                                                   SkFontStyle::kUpright_Slant),
+                                                       100));
+            textView->pushText(TextView::StringBuilder(SkString("测试"), SK_ColorYELLOW,
+                                                       SkFontStyle(SkFontStyle::kThin_Weight,
+                                                                   SkFontStyle::kNormal_Width,
+                                                                   SkFontStyle::kUpright_Slant),
+                                                       40));
+            textView->pushText(TextView::StringBuilder(SkString("demo"), SK_ColorRED,
+                                                       SkFontStyle(SkFontStyle::kThin_Weight,
+                                                                   SkFontStyle::kNormal_Width,
+                                                                   SkFontStyle::kUpright_Slant),
+                                                       100));
+            auto tvLayoutParams = LayoutParams::makeWrapContent();
+            tvLayoutParams->setMargin(50);
+            root->addView(textView, tvLayoutParams);
+            auto listener = [](int l, int t, int r, int b) -> void {
 //                    ALOGD("LayoutCallback result %d %d %d %d", l, t, r, b)
-                };
-                textView->setLayoutCallback(listener);
-            }
+            };
+            textView->setLayoutCallback(listener);
+        }
 
-            {
-                auto imageView = new ImageView();
-                imageView->setConfig(root->config);
-                imageView->setSource("raining.png");
-                imageView->setCornerRadius(200);
-                imageView->setScaleType(ImageView::ScaleType::CenterCrop);
-                imageView->setStyle(SkPaint::kStroke_Style);
-                imageView->setBackgroundColor(SK_ColorRED);
-                imageView->setStrokeWidth(2);
-                imageView->blur(2.0f * i);
-                auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
-                lp->setMargin({0, 100, 0, 0});
-                root->addView(imageView, lp);
-            }
+        {
+            auto imageView = new ImageView();
+            imageView->setConfig(root->config);
+            imageView->setSource("raining.png");
+            imageView->setCornerRadius(200);
+            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+            imageView->setStyle(SkPaint::kStroke_Style);
+            imageView->setBackgroundColor(SK_ColorRED);
+            imageView->setStrokeWidth(2);
+            imageView->blur(10.0f);
+            auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
+            lp->setMargin({0, 100, 0, 0});
+            root->addView(imageView, lp);
         }
 
     }
