@@ -1,15 +1,12 @@
 package com.temple.skiaui
 
 import android.content.res.AssetManager
-import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
-import androidx.annotation.RequiresApi
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -91,17 +88,13 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             finishDraw.set(false)
-            val start = System.currentTimeMillis()
             pic.set(nativeUIDoFrame(time))
-//            Log.d(TAG, "ui-thread: ${System.currentTimeMillis() - start}")
             finishDraw.set(true)
             drawCount.set(drawCount.get() + 1)
         }
         skiaGLHandler.post {
             if (pic.get() != 0L) {
-                val start = System.currentTimeMillis()
                 nativeSurfaceDoFrame(pic.get(), time)
-//                Log.d(TAG, "gl-thread: ${System.currentTimeMillis() - start}")
                 pic.set(0L)
             }
         }
