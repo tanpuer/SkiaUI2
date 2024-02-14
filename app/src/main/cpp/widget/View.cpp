@@ -8,6 +8,7 @@
 #include "effects/SkCornerPathEffect.h"
 #include "core/SkPathEffect.h"
 #include "SkiaUIContext.h"
+#include "effects/SkGradientShader.h"
 
 View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadius(0),
                skRectWithBorder(SkRect::MakeEmpty()),
@@ -83,6 +84,17 @@ void View::layout(int l, int t, int r, int b) {
     if (viewLayoutCallback != nullptr) {
         viewLayoutCallback(l, t, r, b);
     }
+    if (!gradientColors.empty()) {
+        SkPoint points[2]{SkPoint::Make(l, t), SkPoint::Make(r, b)};
+        auto gradientShader = SkGradientShader::MakeLinear(
+                points,
+                gradientColors.data(),
+                nullptr,
+                gradientColors.size(),
+                SkTileMode::kClamp
+        );
+        paint->setShader(gradientShader);
+    }
 }
 
 void View::draw(SkCanvas *canvas) {
@@ -93,7 +105,7 @@ void View::draw(SkCanvas *canvas) {
         SkRuntimeShaderBuilder builder(runtimeEffect);
         builder.uniform("iResolution") = uniforms;
         auto time = SkiaUIContext::getInstance()->getCurrentTimeMills();
-        builder.uniform("iTime") = (float )time / 1000;
+        builder.uniform("iTime") = (float) time / 1000;
         auto shader = builder.makeShader(nullptr);
         paint->setShader(std::move(shader));
     }
@@ -185,11 +197,14 @@ void View::setShaderSource(const char *data) {
     isDirty = true;
 }
 
-
 void View::setShaderPath(const char *path) {
     auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
     auto data = assetManager->readFile(path);
     setShaderSource(data);
+}
+
+void View::setGradient(std::vector<SkColor> colors) {
+    gradientColors = std::move(colors);
 }
 
 #pragma LayoutParams相关

@@ -30,9 +30,18 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
 
         auto shaderView = new View();
         shaderView->setConfig(root->config);
-//        shaderView->setBackgroundColor(SK_ColorGRAY);
         shaderView->setShaderPath("sincos.glsl");
         root->addView(shaderView, LayoutParams::makeExactlyLayoutParams(1080, 520));
+
+        {
+            auto view = new View();
+            view->setConfig(root->config);
+            auto colors = std::vector<SkColor>();
+            colors.push_back(SK_ColorRED);
+            colors.push_back(SK_ColorBLUE);
+            view->setGradient(colors);
+            root->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
+        }
 
         for (int i = 0; i < 10; ++i) {
             {

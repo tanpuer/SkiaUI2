@@ -128,11 +128,15 @@ public:
 
     SkRect skRectWithBorder;
 
-    virtual void setShaderSource(const char* data);
+    virtual void setShaderSource(const char *data);
 
-    virtual void setShaderPath(const char* path);
+    virtual void setShaderPath(const char *path);
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
+
+    virtual void setGradient(std::vector<SkColor> colors);
+
+    std::vector<SkColor> gradientColors;
 
 public:
     //todo 后续才支持的
