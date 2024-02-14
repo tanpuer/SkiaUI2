@@ -7,6 +7,7 @@
 #include "View.h"
 #include "effects/SkCornerPathEffect.h"
 #include "core/SkPathEffect.h"
+#include "SkiaUIContext.h"
 
 View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadius(0),
                skRectWithBorder(SkRect::MakeEmpty()),
@@ -86,7 +87,13 @@ void View::layout(int l, int t, int r, int b) {
 
 void View::draw(SkCanvas *canvas) {
     if (runtimeEffect != nullptr) {
+        ResolutionUniforms uniforms;
+        uniforms.width = width;
+        uniforms.height = height;
         SkRuntimeShaderBuilder builder(runtimeEffect);
+        builder.uniform("iResolution") = uniforms;
+        auto time = SkiaUIContext::getInstance()->getCurrentTimeMills();
+        builder.uniform("iTime") = (float )time / 1000;
         auto shader = builder.makeShader(nullptr);
         paint->setShader(std::move(shader));
     }
@@ -176,6 +183,13 @@ void View::setShaderSource(const char *data) {
     }
     this->runtimeEffect = effect;
     isDirty = true;
+}
+
+
+void View::setShaderPath(const char *path) {
+    auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
+    auto data = assetManager->readFile(path);
+    setShaderSource(data);
 }
 
 #pragma LayoutParams相关

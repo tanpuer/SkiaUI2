@@ -20,6 +20,11 @@
 
 static int64_t VIEW_ID = 0;
 
+struct ResolutionUniforms {
+    float width;
+    float height;
+};
+
 class View {
 
 public:
@@ -124,6 +129,8 @@ public:
     SkRect skRectWithBorder;
 
     virtual void setShaderSource(const char* data);
+
+    virtual void setShaderPath(const char* path);
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
 

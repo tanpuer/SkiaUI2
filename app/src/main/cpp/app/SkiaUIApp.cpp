@@ -10,6 +10,7 @@
 #include "BaseListView.h"
 #include "ScrollViewTest.h"
 #include "core/SkGraphics.h"
+#include "SkiaUIContext.h"
 
 SkiaUIApp::SkiaUIApp() {
     SkGraphics::Init();
@@ -21,6 +22,7 @@ SkiaUIApp::~SkiaUIApp() {
 }
 
 long SkiaUIApp::doFrame(long time) {
+    SkiaUIContext::getInstance()->setTimeMills(time);
     drawCount++;
     IAnimator::currTime = time;
     SkPictureRecorder recorder;

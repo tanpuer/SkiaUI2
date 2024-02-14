@@ -21,8 +21,18 @@ public:
         return assetManager;
     }
 
+    void setTimeMills(long time) {
+        currentTimeMills = time;
+    }
+
+    long getCurrentTimeMills() {
+        return currentTimeMills;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
+
+    long currentTimeMills = 0L;
 
 };
