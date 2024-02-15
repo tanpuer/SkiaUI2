@@ -20,7 +20,5 @@ Using Skia, Yoga, SurfaceView/TextureView to build a simple Flexbox-UI framework
 8. scrollView实现，滑动，fling，目前滑动效果过于僵硬，todo 优化滑动效果。
 9. 实现RecyclerView，adapter，ViewHolder复用机制，目前快速滑动有问题。
 
-![image](https://github.com/tanpuer/SkiaUI/blob/develop/app/example1.gif)
-![image](https://github.com/tanpuer/SkiaUI/blob/develop/app/example2.gif)
-![image](https://github.com/tanpuer/SkiaUI/blob/develop/app/example1.jpeg)
-![image](https://github.com/tanpuer/SkiaUI/blob/develop/app/example2.jpeg)
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example2.png)
