@@ -166,7 +166,7 @@ float ScrollView::calculateFlingTranslate() {
     float velocity = yVelocity - (yVelocity > 0 ? 1.0f : -1.0f) * GRAVITY *
                                  (IAnimator::currTime - startTime); //v' = v + gt;
 //    ALOGD("ScrollView velocity %f %f", yVelocity, velocity)
-    if (yVelocity / velocity < 0 || abs(velocity) <= MIN_VELOCITY) {
+    if (yVelocity / velocity <= 0 || abs(velocity) <= MIN_VELOCITY) {
         yVelocity = .0f;
         isFling = false;
     }
