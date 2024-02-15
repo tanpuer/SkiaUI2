@@ -11,14 +11,14 @@ static SkiaGLApp *glApp = nullptr;
 static SkiaUIApp *uiApp = nullptr;
 
 extern "C" JNIEXPORT void JNICALL
-native_Init(JNIEnv *env, jobject instance, jobject javaAssetManager) {
+native_GLInit(JNIEnv *env, jobject instance, jobject javaAssetManager) {
     ALOGD("native_init")
     globalAssets = env->NewGlobalRef(javaAssetManager);
     glApp = new SkiaGLApp(env, globalAssets);
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SurfaceCreated(JNIEnv *env, jobject instance, jobject javaSurface) {
+native_GLCreated(JNIEnv *env, jobject instance, jobject javaSurface) {
     ALOGD("native_SurfaceCreated")
     if (glApp != nullptr) {
         glApp->create(ANativeWindow_fromSurface(env, javaSurface));
@@ -26,7 +26,7 @@ native_SurfaceCreated(JNIEnv *env, jobject instance, jobject javaSurface) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SurfaceChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong time) {
+native_GLChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong time) {
     ALOGD("native_SurfaceChanged")
     if (glApp != nullptr) {
         glApp->change(width, height, time);
@@ -34,7 +34,7 @@ native_SurfaceChanged(JNIEnv *env, jobject instance, jint width, jint height, jl
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SurfaceDestroyed(JNIEnv *env, jobject instance) {
+native_GLDestroyed(JNIEnv *env, jobject instance) {
     ALOGD("native_SurfaceDestroyed")
     if (glApp != nullptr) {
         glApp->destroy();
@@ -42,7 +42,7 @@ native_SurfaceDestroyed(JNIEnv *env, jobject instance) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SurfaceDoFrame(JNIEnv *env, jobject instance, jlong pic, jlong time) {
+native_GLDoFrame(JNIEnv *env, jobject instance, jlong pic, jlong time) {
     if (glApp != nullptr) {
         glApp->doFrame(pic, time);
     }
@@ -99,17 +99,17 @@ native_Release(JNIEnv *env, jobject instance) {
 }
 
 static JNINativeMethod g_RenderMethods[] = {
-        {"nativeInit",             "(Landroid/content/res/AssetManager;)V", (void *) native_Init},
-        {"nativeSurfaceCreated",   "(Landroid/view/Surface;)V",             (void *) native_SurfaceCreated},
-        {"nativeSurfaceChanged",   "(IIJ)V",                                (void *) native_SurfaceChanged},
-        {"nativeSurfaceDestroyed", "()V",                                   (void *) native_SurfaceDestroyed},
-        {"nativeSurfaceDoFrame",   "(JJ)V",                                 (void *) native_SurfaceDoFrame},
-        {"nativeTouchEvent",       "(IFF)Z",                                (void *) native_TouchEvent},
-        {"nativeSetVelocity",      "(FF)V",                                 (void *) native_SetVelocity},
-        {"nativeUIInit",           "()V",                                   (void *) native_UIInit},
-        {"nativeUIDoFrame",        "(J)J",                                  (void *) native_UIDoFrame},
-        {"nativeUIChanged",        "(IIJ)V",                                (void *) native_UIChanged},
-        {"nativeRelease",          "()V",                                   (void *) native_Release},
+        {"nativeGLInit",      "(Landroid/content/res/AssetManager;)V", (void *) native_GLInit},
+        {"nativeGLCreated",   "(Landroid/view/Surface;)V",             (void *) native_GLCreated},
+        {"nativeGLChanged",   "(IIJ)V",                                (void *) native_GLChanged},
+        {"nativeGLDestroyed", "()V",                                   (void *) native_GLDestroyed},
+        {"nativeGLDoFrame",   "(JJ)V",                                 (void *) native_GLDoFrame},
+        {"nativeTouchEvent",  "(IFF)Z",                                (void *) native_TouchEvent},
+        {"nativeSetVelocity", "(FF)V",                                 (void *) native_SetVelocity},
+        {"nativeUIInit",      "()V",                                   (void *) native_UIInit},
+        {"nativeUIDoFrame",   "(J)J",                                  (void *) native_UIDoFrame},
+        {"nativeUIChanged",   "(IIJ)V",                                (void *) native_UIChanged},
+        {"nativeRelease",     "()V",                                   (void *) native_Release},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

@@ -44,7 +44,7 @@ class HYSkiaEngine {
 
     init {
         skiaGLHandler.post {
-            nativeInit(HYSkiaUIApp.getInstance().assets)
+            nativeGLInit(HYSkiaUIApp.getInstance().assets)
         }
         skiaUIHandler.post {
             nativeUIInit()
@@ -53,14 +53,14 @@ class HYSkiaEngine {
 
     fun createSurface(surface: Surface) {
         skiaGLHandler.post {
-            nativeSurfaceCreated(surface)
+            nativeGLCreated(surface)
         }
         velocityTracker = VelocityTracker.obtain()
     }
 
     fun changeSurfaceSize(width: Int, height: Int) {
         skiaGLHandler.post {
-            nativeSurfaceChanged(width, height, System.currentTimeMillis() / 1000)
+            nativeGLChanged(width, height, System.currentTimeMillis() / 1000)
         }
         skiaUIHandler.post {
             nativeUIChanged(width, height, System.currentTimeMillis() / 1000)
@@ -70,7 +70,7 @@ class HYSkiaEngine {
 
     fun destroySurface() {
         skiaGLHandler.post {
-            nativeSurfaceDestroyed()
+            nativeGLDestroyed()
         }
         velocityTracker?.recycle()
         velocityTracker = null
@@ -95,7 +95,7 @@ class HYSkiaEngine {
         }
         skiaGLHandler.post {
             if (pic.get() != 0L) {
-                nativeSurfaceDoFrame(pic.get(), time)
+                nativeGLDoFrame(pic.get(), time)
                 pic.set(0L)
             }
         }
@@ -124,11 +124,11 @@ class HYSkiaEngine {
         skiaGLHandlerThread.quitSafely()
     }
 
-    private external fun nativeInit(assets: AssetManager)
-    private external fun nativeSurfaceCreated(surface: Surface)
-    private external fun nativeSurfaceChanged(width: Int, height: Int, time: Long)
-    private external fun nativeSurfaceDestroyed()
-    private external fun nativeSurfaceDoFrame(pic: Long, time: Long)
+    private external fun nativeGLInit(assets: AssetManager)
+    private external fun nativeGLCreated(surface: Surface)
+    private external fun nativeGLChanged(width: Int, height: Int, time: Long)
+    private external fun nativeGLDestroyed()
+    private external fun nativeGLDoFrame(pic: Long, time: Long)
 
     private external fun nativeTouchEvent(action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(xVelocity: Float, yVelocity: Float)
