@@ -139,6 +139,7 @@ void ScrollView::setVelocity(float x, float y) {
 void ScrollView::startFling() {
     if (_direction == YGFlexDirectionColumn) {
         if (abs(yVelocity) <= MIN_VELOCITY) {
+            yVelocity = .0f;
             return;
         } else if (abs(yVelocity) >= MAX_VELOCITY) {
             yVelocity = yVelocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
@@ -147,6 +148,7 @@ void ScrollView::startFling() {
         isFling = true;
     } else {
         if (abs(xVelocity) <= MIN_VELOCITY) {
+            xVelocity = .0f;
             return;
         } else if (abs(xVelocity) >= MAX_VELOCITY) {
             xVelocity = xVelocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
@@ -165,6 +167,7 @@ float ScrollView::calculateFlingTranslate() {
                                  (IAnimator::currTime - startTime); //v' = v + gt;
 //    ALOGD("ScrollView velocity %f %f", yVelocity, velocity)
     if (yVelocity / velocity < 0 || abs(velocity) <= MIN_VELOCITY) {
+        yVelocity = .0f;
         isFling = false;
     }
 //    float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
