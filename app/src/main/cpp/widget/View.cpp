@@ -95,7 +95,7 @@ void View::layout(int l, int t, int r, int b) {
                 linearGradientColors.size(),
                 SkTileMode::kClamp
         );
-        paint->setShader(gradientShader);
+        paint->setShader(std::move(gradientShader));
     }
     if (!swiperGradientColors.empty()) {
         auto gradientShader = SkGradientShader::MakeSweep(
@@ -103,7 +103,7 @@ void View::layout(int l, int t, int r, int b) {
                 swiperGradientColors.data(),
                 nullptr,
                 swiperGradientColors.size());
-        paint->setShader(gradientShader);
+        paint->setShader(std::move(gradientShader));
     }
 }
 
