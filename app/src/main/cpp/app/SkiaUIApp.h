@@ -28,7 +28,7 @@ private:
 
     std::unique_ptr<TouchEvent> mTouchEvent;
 
-    ITestDraw *testDraw = nullptr;
+    std::unique_ptr<ITestDraw> testDraw;
 
     int mWidth = 0, mHeight = 0;
 
