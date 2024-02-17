@@ -12,7 +12,7 @@ include_directories(
 
         src/main/cpp
         src/main/cpp/base
-        src/main/cpp/fliter
+        src/main/cpp/filter
         src/main/cpp/yoga
         src/main/cpp/yoga/event
         src/main/cpp/widget
@@ -52,7 +52,7 @@ set_property(TARGET sksg PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_A
 
 aux_source_directory(src/main/cpp srcs)
 aux_source_directory(src/main/cpp/base srcs)
-aux_source_directory(src/main/cpp/fliter srcs)
+aux_source_directory(src/main/cpp/filter srcs)
 aux_source_directory(src/main/cpp/yoga srcs)
 aux_source_directory(src/main/cpp/yoga/event srcs)
 aux_source_directory(src/main/cpp/widget srcs)
