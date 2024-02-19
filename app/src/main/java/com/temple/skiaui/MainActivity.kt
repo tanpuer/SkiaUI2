@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity(), RenderCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        HYSkiaUIApp.getInstance().setFrameRate(this)
         setContentView(R.layout.activity_main)
         val controller = WindowCompat.getInsetsController(window, window.decorView)
         controller.hide(WindowInsetsCompat.Type.statusBars())

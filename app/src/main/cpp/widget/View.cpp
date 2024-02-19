@@ -140,6 +140,7 @@ void View::setAlignSelf(YGAlign align) {
         return;
     }
     YGNodeStyleSetAlignSelf(node, align);
+    isDirty = true;
 }
 
 bool View::isViewGroup() {
@@ -161,16 +162,19 @@ int View::getWidth() {
 void View::setBackgroundColor(SkColor color) {
     SkASSERT(paint);
     paint->setColor(color);
+    isDirty = true;
 }
 
 void View::setAntiAlias(bool antiAlias) {
     SkASSERT(paint);
     paint->setAntiAlias(antiAlias);
+    isDirty = true;
 }
 
 void View::setStyle(SkPaint::Style style) {
     SkASSERT(paint);
     paint->setStyle(style);
+    isDirty = true;
 }
 
 void View::setCornerRadius(int radius) {
@@ -181,6 +185,7 @@ void View::setCornerRadius(int radius) {
     }
     cornerRadius = radius;
     paint->setPathEffect(SkCornerPathEffect::Make(static_cast<SkScalar>(radius)));
+    isDirty = true;
 }
 
 void View::setStrokeWidth(SkScalar _width) {
@@ -190,11 +195,13 @@ void View::setStrokeWidth(SkScalar _width) {
         return;
     }
     paint->setStrokeWidth(_width);
+    isDirty = true;
 }
 
 void View::setAlpha(float alpha) {
     SkASSERT(paint);
     paint->setAlphaf(alpha);
+    isDirty = true;
 }
 
 void View::setShaderSource(const char *data) {
@@ -215,15 +222,18 @@ void View::setShaderPath(const char *path) {
 
 void View::setLinearGradient(std::vector<SkColor> colors) {
     linearGradientColors = std::move(colors);
+    isDirty = true;
 }
 
 void View::setSwiperGradient(std::vector<SkColor> colors) {
     swiperGradientColors = std::move(colors);
+    isDirty = true;
 }
 
 void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     auto filter =SkMaskFilter::MakeBlur(style, sigma);
     paint->setMaskFilter(filter);
+    isDirty = true;
 }
 
 #pragma LayoutParams相关
@@ -238,6 +248,7 @@ void View::setLayoutParams(LayoutParams *_layoutParams) {
     YGNodeStyleSetMargin(node, YGEdgeTop, layoutParams->_marginTop);
     YGNodeStyleSetMargin(node, YGEdgeRight, layoutParams->_marginRight);
     YGNodeStyleSetMargin(node, YGEdgeBottom, layoutParams->_marginBottom);
+    isDirty = true;
 }
 
 LayoutParams *View::getLayoutParams() {
@@ -256,6 +267,7 @@ void View::setPadding(std::array<int, 4> paddings) {
     YGNodeStyleSetPadding(node, YGEdgeTop, paddings[1]);
     YGNodeStyleSetPadding(node, YGEdgeRight, paddings[2]);
     YGNodeStyleSetPadding(node, YGEdgeBottom, paddings[3]);
+    isDirty = true;
 }
 
 void View::setPadding(int padding) {
@@ -264,6 +276,7 @@ void View::setPadding(int padding) {
         return;
     }
     YGNodeStyleSetPadding(node, YGEdgeAll, padding);
+    isDirty = true;
 }
 
 void View::setSizePercent(float widthPercent, float hwRatio) {
@@ -273,6 +286,7 @@ void View::setSizePercent(float widthPercent, float hwRatio) {
     }
     this->widthPercent = widthPercent;
     this->hwRatio = hwRatio;
+    isDirty = true;
 }
 
 void View::setWidthAuto() {
@@ -281,6 +295,7 @@ void View::setWidthAuto() {
         return;
     }
     YGNodeStyleSetWidthAuto(node);
+    isDirty = true;
 }
 
 void View::setHeightAuto() {
@@ -289,6 +304,7 @@ void View::setHeightAuto() {
         return;
     }
     YGNodeStyleSetHeightAuto(node);
+    isDirty = true;
 }
 
 void View::setConfig(YGConfigRef config) {
@@ -331,18 +347,22 @@ bool View::hasPercent() {
 
 void View::setLayoutCallback(std::function<void(int, int, int, int)> callback) {
     viewLayoutCallback = callback;
+    isDirty = true;
 }
 
 void View::removeLayoutCallback() {
     viewLayoutCallback = nullptr;
+    isDirty = true;
 }
 
 void View::setOnClickListener(std::function<void(View *)> clickListener) {
     viewClickListener = clickListener;
+    isDirty = true;
 }
 
 void View::removeClickListener() {
     viewClickListener = nullptr;
+    isDirty = true;
 }
 
 void View::performClick() {

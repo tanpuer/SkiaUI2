@@ -37,7 +37,7 @@ class HYSkiaEngine {
 
     private var pic = AtomicLong(0)
 
-    private val refreshRate = 60
+    private val refreshRate = HYSkiaUIApp.getInstance().getFrameRate()
     private var frameCount = 0
     private var drawCount = AtomicInteger(0)
     var renderCallback: RenderCallback? = null
