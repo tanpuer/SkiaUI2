@@ -41,6 +41,7 @@ class HYSkiaEngine {
     private var frameCount = 0
     private var drawCount = AtomicInteger(0)
     var renderCallback: RenderCallback? = null
+    private val start = System.currentTimeMillis()
 
     init {
         skiaGLHandler.post {
@@ -64,7 +65,7 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             nativeUIChanged(width, height, System.currentTimeMillis() / 1000)
-            pic.set(nativeUIDoFrame(System.currentTimeMillis()))
+            pic.set(nativeUIDoFrame(System.currentTimeMillis() - start))
         }
     }
 
@@ -89,7 +90,7 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             finishDraw.set(false)
-            pic.set(nativeUIDoFrame(time))
+            pic.set(nativeUIDoFrame(System.currentTimeMillis() - start))
             finishDraw.set(true)
             drawCount.set(drawCount.get() + 1)
         }
