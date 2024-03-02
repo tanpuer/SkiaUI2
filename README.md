@@ -2,7 +2,7 @@
 
 Using Skia, Yoga, SurfaceView/TextureView to build a simple Flexbox-UI framework for Android.
 
-步骤：
+steps：
 
 1. compile skia https://skia.org/docs/user/build/ ，or unzip arm64-v8a.zip and x86-64.zip files in jniLibs.
 2. Using Skia GL context.
