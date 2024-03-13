@@ -8,6 +8,7 @@
 
 #include "View.h"
 #include "core/SkImage.h"
+#include "android/SkAnimatedImage.h"
 
 class ImageView : public View {
 
@@ -48,6 +49,17 @@ public:
 private:
 
     sk_sp<SkImage> skImage;
+
+    sk_sp<SkAnimatedImage> skAnimatedImage;
+
+    /**
+     * >1 for gif
+     */
+    int frameCount = 1;
+
+    long lastTimeMills = 0L;
+
+    long currentFrameDuration = 60;
 
     SkRect srcRect;
 

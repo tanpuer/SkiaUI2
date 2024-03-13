@@ -6,9 +6,8 @@
 #include "ImageView.h"
 #include "core/SkData.h"
 #include "SkiaUIContext.h"
-#include "codec/SkCodec.h"
-#include "core/SkBitmap.h"
 #include "effects/SkImageFilters.h"
+#include "codec/SkAndroidCodec.h"
 
 ImageView::ImageView() : View(), radius(0), scaleType(ScaleType::FitXY) {
     imagePaint = std::make_unique<SkPaint>();
@@ -35,20 +34,17 @@ void ImageView::setSource(const char *path) {
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
     auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
-    std::unique_ptr<SkCodec> codec(SkCodec::MakeFromData(skData));
-    if (!codec) {
-        ALOGE("can not find image codec, pls check %s", path)
-        return;
-    }
-    auto info = codec->getInfo();
-    SkBitmap bm;
-    if (bm.tryAllocPixels(info)) {
-        SkCodec::Options options;
-        auto outSkBitmap = SkBitmap();
-        outSkBitmap.allocPixels(info);
-        if (SkCodec::kSuccess == codec->getPixels(outSkBitmap.pixmap(), &options)) {
-            skImage = SkImages::RasterFromBitmap(outSkBitmap);
-        }
+
+    auto androidCodec = SkAndroidCodec::MakeFromData(skData);
+    skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
+    frameCount = skAnimatedImage->getFrameCount();
+    ALOGD("animated info : %d %d %d", skAnimatedImage->getFrameCount(),
+          skAnimatedImage->getRepetitionCount(), skAnimatedImage->currentFrameDuration())
+    auto frame = skAnimatedImage->getCurrentFrame();
+    skImage = frame;
+    lastTimeMills = SkiaUIContext::getInstance()->getCurrentTimeMills();
+    if (skAnimatedImage->currentFrameDuration() > 0) {
+        currentFrameDuration = skAnimatedImage->currentFrameDuration();
     }
     if (skImage == nullptr) {
         ALOGE("skImage is null, pls check %s", path)
@@ -116,6 +112,14 @@ void ImageView::draw(SkCanvas *canvas) {
     if (width == 0 || height == 0) {
         ALOGE("ignore ImageView draw, pls check width and height %d %d", width, height)
         return;
+    }
+    if (frameCount > 1 && skAnimatedImage != nullptr) {
+        auto currentTimeMills = SkiaUIContext::getInstance()->getCurrentTimeMills();
+        if ((currentTimeMills - lastTimeMills) > currentFrameDuration) {
+            lastTimeMills = currentTimeMills;
+            skAnimatedImage->decodeNextFrame();
+            skImage = skAnimatedImage->getCurrentFrame();
+        }
     }
     canvas->save();
     clipRect.setRectXY(dstRect, radius, radius);
