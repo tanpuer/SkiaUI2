@@ -180,6 +180,19 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         {
             auto imageView = new ImageView();
             imageView->setConfig(root->config);
+            imageView->setSource("bird.gif");
+            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+            imageView->setStyle(SkPaint::kStroke_Style);
+            imageView->setBackgroundColor(SK_ColorRED);
+            imageView->setStrokeWidth(2);
+            auto lp = LayoutParams::makeExactlyLayoutParams(825, 465);
+            lp->setMargin({0, 100, 0, 0});
+            root->addView(imageView, lp);
+        }
+
+        {
+            auto imageView = new ImageView();
+            imageView->setConfig(root->config);
             imageView->setSource("raining.png");
             imageView->setCornerRadius(200);
             imageView->setScaleType(ImageView::ScaleType::CenterCrop);
