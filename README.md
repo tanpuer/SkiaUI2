@@ -12,9 +12,10 @@ steps：
 6. Animations support scale/rotate/translate，the interpolator will be executed in Layout then update SkRect.
 7. Supported Widgets: View/TextView/ImageView/ProgressBar/FlexboxLayout/ScrollView.
    View: rect, cornerRadius, shader.
-   ImageView: scaleType，cornerRadius, blur.
+   ImageView: support png/gif, scaleType，cornerRadius, blur.
    TextView: SkParagraph.
    ProgressBar: circle and linear style，also can be dragged.
+   SVGView: svg file.
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
