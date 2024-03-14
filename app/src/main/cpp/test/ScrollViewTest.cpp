@@ -61,6 +61,28 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         }
 
         {
+            auto imageView = new ImageView();
+            imageView->setConfig(root->config);
+            imageView->setSource("bird.gif");
+            imageView->setScaleType(ImageView::ScaleType::FitCenter);
+            imageView->setStyle(SkPaint::kStroke_Style);
+            imageView->setBackgroundColor(SK_ColorRED);
+            imageView->setStrokeWidth(2);
+            auto lp = LayoutParams::makeExactlyLayoutParams(800, 500);
+            lp->setMargin({0, 100, 0, 0});
+            root->addView(imageView, lp);
+        }
+
+        {
+            auto svgView = new SVGView();
+            svgView->setConfig(root->config);
+            svgView->setSource("tiger.svg");
+            auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
+            lp->setMargin({0, 100, 0, 0});
+            root->addView(svgView, lp);
+        }
+
+        {
             auto progressBar = new ProgressBar();
             progressBar->setConfig(root->config);
             progressBar->setBarColor(SK_ColorRED);
@@ -176,28 +198,6 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
 //                    ALOGD("LayoutCallback result %d %d %d %d", l, t, r, b)
             };
             textView->setLayoutCallback(listener);
-        }
-
-        {
-            auto imageView = new ImageView();
-            imageView->setConfig(root->config);
-            imageView->setSource("bird.gif");
-            imageView->setScaleType(ImageView::ScaleType::FitCenter);
-            imageView->setStyle(SkPaint::kStroke_Style);
-            imageView->setBackgroundColor(SK_ColorRED);
-            imageView->setStrokeWidth(2);
-            auto lp = LayoutParams::makeExactlyLayoutParams(800, 500);
-            lp->setMargin({0, 100, 0, 0});
-            root->addView(imageView, lp);
-        }
-
-        {
-            auto svgView = new SVGView();
-            svgView->setConfig(root->config);
-            svgView->setSource("tiger.svg");
-            auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
-            lp->setMargin({0, 100, 0, 0});
-            root->addView(svgView, lp);
         }
 
         {
