@@ -182,11 +182,11 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             auto imageView = new ImageView();
             imageView->setConfig(root->config);
             imageView->setSource("bird.gif");
-            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+            imageView->setScaleType(ImageView::ScaleType::FitCenter);
             imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setBackgroundColor(SK_ColorRED);
             imageView->setStrokeWidth(2);
-            auto lp = LayoutParams::makeExactlyLayoutParams(825, 465);
+            auto lp = LayoutParams::makeExactlyLayoutParams(800, 500);
             lp->setMargin({0, 100, 0, 0});
             root->addView(imageView, lp);
         }
