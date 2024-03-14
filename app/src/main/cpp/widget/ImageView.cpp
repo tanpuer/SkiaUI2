@@ -34,7 +34,6 @@ void ImageView::setSource(const char *path) {
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
     auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
-
     auto androidCodec = SkAndroidCodec::MakeFromData(skData);
     skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
     frameCount = skAnimatedImage->getFrameCount();
@@ -49,6 +48,11 @@ void ImageView::setSource(const char *path) {
     if (skImage == nullptr) {
         ALOGE("skImage is null, pls check %s", path)
         return;
+    }
+    skImages.push_back(skImage);
+    for (int i = 1; i < frameCount; ++i) {
+        skAnimatedImage->decodeNextFrame();
+        skImages.push_back(skAnimatedImage->getCurrentFrame());
     }
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
     ALOGD("decode image success %s %d %d", path, skImage->width(), skImage->height())
@@ -116,9 +120,11 @@ void ImageView::draw(SkCanvas *canvas) {
     if (frameCount > 1 && skAnimatedImage != nullptr) {
         auto currentTimeMills = SkiaUIContext::getInstance()->getCurrentTimeMills();
         if ((currentTimeMills - lastTimeMills) > currentFrameDuration) {
-            lastTimeMills = currentTimeMills;
-            skAnimatedImage->decodeNextFrame();
-            skImage = skAnimatedImage->getCurrentFrame();
+            currentFrameIndex++;
+            if (currentFrameIndex >= skImages.size()) {
+                currentFrameIndex = 0;
+            }
+            skImage = skImages[currentFrameIndex];
         }
     }
     canvas->save();

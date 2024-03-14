@@ -7,6 +7,7 @@
 #include "ScrollViewTest.h"
 #include "native_log.h"
 #include "Button.h"
+#include "SVGView.h"
 
 ScrollViewTest::ScrollViewTest() = default;
 
@@ -188,6 +189,15 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             auto lp = LayoutParams::makeExactlyLayoutParams(825, 465);
             lp->setMargin({0, 100, 0, 0});
             root->addView(imageView, lp);
+        }
+
+        {
+            auto svgView = new SVGView();
+            svgView->setConfig(root->config);
+            svgView->setSource("tiger.svg");
+            auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
+            lp->setMargin({0, 100, 0, 0});
+            root->addView(svgView, lp);
         }
 
         {
