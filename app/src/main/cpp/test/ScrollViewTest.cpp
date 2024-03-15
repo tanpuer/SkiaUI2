@@ -8,6 +8,7 @@
 #include "native_log.h"
 #include "Button.h"
 #include "SVGView.h"
+#include "ShaderView.h"
 
 ScrollViewTest::ScrollViewTest() = default;
 
@@ -51,12 +52,12 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             view->setCornerRadius(20);
             view->setBlurMask(kNormal_SkBlurStyle, 10);
             auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
-            lp->setMargin({0, 50, 0, 0});
+            lp->setMargin({0, 50, 0, 50});
             root->addView(view, lp);
         }
 
         {
-            auto shaderView = new View();
+            auto shaderView = new ShaderView();
             shaderView->setConfig(root->config);
             shaderView->setShaderPath("sincos.glsl");
             root->addView(shaderView, LayoutParams::makeExactlyLayoutParams(1080, 520));
