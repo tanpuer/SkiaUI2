@@ -80,6 +80,8 @@ int View::getDefaultSize(int minSize, int measureSpec) {
 void View::layout(int l, int t, int r, int b) {
     //todo 默认设置boarder位置 Android layout默认啥都不做
     skRect.setLTRB(l, t, r, b);
+    left = l;
+    top = t;
     width = r - l;
     height = b - t;
 //    ALOGD("%s layout %d %d", name(), width, height)

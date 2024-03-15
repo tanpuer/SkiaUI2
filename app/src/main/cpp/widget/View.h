@@ -82,6 +82,8 @@ protected:
 
     int width, height;
 
+    int left, top = 0;
+
     int minWidth, minHeight;
 
 protected:

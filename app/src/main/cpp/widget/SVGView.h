@@ -27,8 +27,6 @@ private:
 
     sk_sp<SkSVGDOM> skSVGDom;
 
-    int left, top = 0;
-
 };
 
 

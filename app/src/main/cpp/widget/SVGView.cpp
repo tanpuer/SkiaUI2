@@ -39,6 +39,4 @@ void SVGView::layout(int l, int t, int r, int b) {
         skSVGDom->setContainerSize(SkSize::Make(r - l, t - b));
     }
     View::layout(l, t, r, b);
-    left = l;
-    top = t;
 }

@@ -29,11 +29,6 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         root->setStyle(SkPaint::kStroke_Style);
         root->setBackgroundColor(SK_ColorBLUE);
 
-        auto shaderView = new View();
-        shaderView->setConfig(root->config);
-        shaderView->setShaderPath("sincos.glsl");
-        root->addView(shaderView, LayoutParams::makeExactlyLayoutParams(1080, 520));
-
         {
             auto view = new View();
             view->setConfig(root->config);
@@ -58,6 +53,13 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
             lp->setMargin({0, 50, 0, 0});
             root->addView(view, lp);
+        }
+
+        {
+            auto shaderView = new View();
+            shaderView->setConfig(root->config);
+            shaderView->setShaderPath("sincos.glsl");
+            root->addView(shaderView, LayoutParams::makeExactlyLayoutParams(1080, 520));
         }
 
         {
