@@ -80,6 +80,9 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             auto svgView = new SVGView();
             svgView->setConfig(root->config);
             svgView->setSource("tiger.svg");
+            svgView->setStyle(SkPaint::kStroke_Style);
+            svgView->setBackgroundColor(SK_ColorRED);
+            svgView->setStrokeWidth(2);
             auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
             lp->setMargin({0, 100, 0, 0});
             root->addView(svgView, lp);
