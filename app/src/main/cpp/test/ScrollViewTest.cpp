@@ -9,6 +9,7 @@
 #include "Button.h"
 #include "SVGView.h"
 #include "ShaderView.h"
+#include "CanvasTest.h"
 
 ScrollViewTest::ScrollViewTest() = default;
 
@@ -87,6 +88,18 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
             auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
             lp->setMargin({0, 100, 0, 0});
             root->addView(svgView, lp);
+        }
+
+        {
+            auto canvasTest = new CanvasTest();
+            canvasTest->setConfig(root->config);
+            canvasTest->setCircleSize(200);
+            canvasTest->setStyle(SkPaint::kStroke_Style);
+            canvasTest->setBackgroundColor(SK_ColorRED);
+            canvasTest->setStrokeWidth(2);
+            auto lp = LayoutParams::makeExactlyLayoutParams(600, 600);
+            lp->setMargin({0, 50, 0, 50});
+            root->addView(canvasTest, lp);
         }
 
         {
