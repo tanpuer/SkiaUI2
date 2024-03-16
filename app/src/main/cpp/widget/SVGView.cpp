@@ -28,7 +28,7 @@ void SVGView::draw(SkCanvas *canvas) {
     View::draw(canvas);
     if (skSVGDom != nullptr) {
         canvas->save();
-        canvas->translate(left, top);
+        canvas->translate(left + x, top + y);
         skSVGDom->render(canvas);
         canvas->restore();
     }
@@ -39,4 +39,10 @@ void SVGView::layout(int l, int t, int r, int b) {
         skSVGDom->setContainerSize(SkSize::Make(r - l, t - b));
     }
     View::layout(l, t, r, b);
+}
+
+void SVGView::setXY(int x, int y) {
+    this->x = x;
+    this->y = y;
+    isDirty = true;
 }

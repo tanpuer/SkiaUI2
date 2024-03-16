@@ -23,9 +23,13 @@ public:
 
     void layout(int l, int t, int r, int b) override;
 
+    void setXY(int x, int y);
+
 private:
 
     sk_sp<SkSVGDOM> skSVGDom;
+
+    int x, y = 0;
 
 };
 
