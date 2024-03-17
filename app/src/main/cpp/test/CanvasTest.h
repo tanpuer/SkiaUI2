@@ -24,6 +24,7 @@ public:
 private:
 
     std::unique_ptr<SkPaint> paint;
+    std::unique_ptr<SkPaint> pathPaint;
 
     int size = 0;
 
