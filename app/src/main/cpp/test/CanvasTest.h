@@ -28,6 +28,7 @@ private:
 
     int size = 0;
 
+    long testIndex = 0;
 };
 
 

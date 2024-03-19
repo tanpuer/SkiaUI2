@@ -24,6 +24,11 @@ void SVGView::setSource(const char *path) {
     skSVGDom = SkSVGDOM::Builder().make(*stream);
 }
 
+void SVGView::setText(const std::string &text) {
+    auto stream = SkMemoryStream::MakeDirect(text.c_str(), text.size());
+    skSVGDom = SkSVGDOM::Builder().make(*stream);
+}
+
 void SVGView::draw(SkCanvas *canvas) {
     View::draw(canvas);
     if (skSVGDom != nullptr) {
@@ -35,7 +40,7 @@ void SVGView::draw(SkCanvas *canvas) {
 }
 
 void SVGView::layout(int l, int t, int r, int b) {
-    if (width != (r - l) || height != (t - b)) {
+    if (skSVGDom != nullptr && (width != (r - l) || height != (t - b))) {
         skSVGDom->setContainerSize(SkSize::Make(r - l, t - b));
     }
     View::layout(l, t, r, b);

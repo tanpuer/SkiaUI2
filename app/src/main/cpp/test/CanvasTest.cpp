@@ -12,7 +12,7 @@ CanvasTest::CanvasTest() {
     pathPaint = std::make_unique<SkPaint>();
     pathPaint->setAntiAlias(true);
     pathPaint->setStyle(SkPaint::kStroke_Style);
-    pathPaint->setStrokeWidth(20);
+    pathPaint->setStrokeWidth(3);
 }
 
 CanvasTest::~CanvasTest() {
@@ -30,26 +30,20 @@ void CanvasTest::draw(SkCanvas *canvas) {
     paint->setColor(SK_ColorYELLOW);
     canvas->drawCircle(left + size, top + size, size, *paint);
 
-    canvas->translate(-size, size * 2);
+    canvas->translate(-size / 2, size * 2);
+    testIndex++;
     SkPath path;
-    path.moveTo(left, top);
-    path.moveTo(left + 50, top);
-    path.moveTo(left + 100, top + 80);
-    path.lineTo(left + 150, top + 50);
-    path.lineTo(left + 200, top + 80);
-    path.lineTo(left + 250, top + 120);
-    path.lineTo(left + 300, top + 70);
-    path.lineTo(left + 350, top + 40);
-    path.lineTo(left + 400, top + 100);
-    path.lineTo(left + 450, top + 200);
-    path.lineTo(left + 500, top + 150);
-    path.lineTo(left + 550, top + 40);
-    path.lineTo(left + 600, top + 0);
-    path.lineTo(left + 650, top - 100);
-    path.lineTo(left + 700, top + 0);
-    path.lineTo(left + 760, top + 30);
-    SkPoint points[2]{SkPoint::Make(left, top), SkPoint::Make(left + 700, top + 30)};
-
+    SkScalar firstX = left;
+    SkScalar firstY = top + 150.0 * sinf((firstX + testIndex) * 0.1);
+    path.moveTo(firstX, firstY);
+    for (SkScalar x = 1; x < width; x += 5.0f) {
+        SkScalar y = top + 150.0 * sinf((left + x + testIndex) * 0.1);
+        path.lineTo(left + x, y);
+    }
+    SkScalar lastX = left + width;
+    SkScalar lastY = top + 150.0 * sinf((left + width + testIndex) * 0.1);
+    path.lineTo(lastX, lastY);
+    SkPoint points[2]{SkPoint::Make(firstX, firstY), SkPoint::Make(lastX, lastY)};
     std::vector<SkColor> colors{SK_ColorGREEN, SK_ColorBLUE, SK_ColorMAGENTA};
     auto gradientShader = SkGradientShader::MakeLinear(
             points,

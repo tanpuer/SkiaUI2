@@ -19,6 +19,8 @@ public:
 
     virtual void setSource(const char *path);
 
+    virtual void setText(const std::string& text);
+
     void draw(SkCanvas *canvas) override;
 
     void layout(int l, int t, int r, int b) override;
