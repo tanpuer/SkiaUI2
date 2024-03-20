@@ -12,7 +12,7 @@ CanvasTest::CanvasTest() {
     pathPaint = std::make_unique<SkPaint>();
     pathPaint->setAntiAlias(true);
     pathPaint->setStyle(SkPaint::kStroke_Style);
-    pathPaint->setStrokeWidth(3);
+    pathPaint->setStrokeWidth(2);
 }
 
 CanvasTest::~CanvasTest() {
@@ -36,7 +36,7 @@ void CanvasTest::draw(SkCanvas *canvas) {
     SkScalar firstX = left;
     SkScalar firstY = top + 150.0 * sinf((firstX + testIndex) * 0.1);
     path.moveTo(firstX, firstY);
-    for (SkScalar x = 1; x < width; x += 5.0f) {
+    for (SkScalar x = 1; x < width; x += 2.0f) {
         SkScalar y = top + 150.0 * sinf((left + x + testIndex) * 0.1);
         path.lineTo(left + x, y);
     }
