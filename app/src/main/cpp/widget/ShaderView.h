@@ -8,6 +8,8 @@
 
 #include "View.h"
 #include "effects/SkRuntimeEffect.h"
+#include "vector"
+#include "core/SkImage.h"
 
 class ShaderView : public View {
 
@@ -15,17 +17,23 @@ public:
 
     ShaderView();
 
-    virtual void setShaderSource(const char *data);
+    virtual ~ShaderView();
 
-    virtual void setShaderPath(const char *path);
+    virtual void setShaderSource(const char *data, std::vector<std::string> images = {});
 
-    void layout(int l, int t, int r, int b) override;
+    virtual void setShaderPath(const char *path, std::vector<std::string> images = {});
 
-    void draw(SkCanvas *canvas) override;
+    virtual void layout(int l, int t, int r, int b) override;
+
+    virtual void draw(SkCanvas *canvas) override;
 
 private:
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
+
+    std::vector<sk_sp<SkShader>> skShaders;
+
+    std::vector<std::string> imageNames;
 
 };
 
