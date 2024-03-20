@@ -34,14 +34,14 @@ void CanvasTest::draw(SkCanvas *canvas) {
     testIndex++;
     SkPath path;
     SkScalar firstX = left;
-    SkScalar firstY = top + 150.0 * sinf((firstX + testIndex) * 0.1);
+    SkScalar firstY = top + 150.0 * sinf((firstX + testIndex) * 0.03);
     path.moveTo(firstX, firstY);
     for (SkScalar x = 1; x < width; x += 2.0f) {
-        SkScalar y = top + 150.0 * sinf((left + x + testIndex) * 0.1);
+        SkScalar y = top + 150.0 * sinf((left + x + testIndex) * 0.03);
         path.lineTo(left + x, y);
     }
     SkScalar lastX = left + width;
-    SkScalar lastY = top + 150.0 * sinf((left + width + testIndex) * 0.1);
+    SkScalar lastY = top + 150.0 * sinf((left + width + testIndex) * 0.03);
     path.lineTo(lastX, lastY);
     SkPoint points[2]{SkPoint::Make(firstX, firstY), SkPoint::Make(lastX, lastY)};
     std::vector<SkColor> colors{SK_ColorGREEN, SK_ColorBLUE, SK_ColorMAGENTA};
