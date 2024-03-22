@@ -23,8 +23,6 @@ public:
 
     virtual void setShaderPath(const char *path, std::vector<std::string> images = {});
 
-    virtual void layout(int l, int t, int r, int b) override;
-
     virtual void draw(SkCanvas *canvas) override;
 
 private:

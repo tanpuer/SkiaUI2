@@ -21,6 +21,7 @@ include_directories(
         src/main/cpp/anim
         src/main/cpp/app
         src/main/cpp/plugin
+        src/main/cpp/page
 )
 
 link_directories(
@@ -61,6 +62,7 @@ aux_source_directory(src/main/cpp/touch srcs)
 aux_source_directory(src/main/cpp/anim srcs)
 aux_source_directory(src/main/cpp/app srcs)
 aux_source_directory(src/main/cpp/plugin srcs)
+aux_source_directory(src/main/cpp/page srcs)
 
 add_library(skiaui SHARED ${srcs})
 

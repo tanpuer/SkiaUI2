@@ -48,10 +48,6 @@ void ShaderView::setShaderPath(const char *path, std::vector<std::string> images
     isDirty = true;
 }
 
-void ShaderView::layout(int l, int t, int r, int b) {
-    View::layout(l, t, r, b);
-}
-
 void ShaderView::draw(SkCanvas *canvas) {
     if (runtimeEffect != nullptr) {
         SkCanvas *skCanvas;

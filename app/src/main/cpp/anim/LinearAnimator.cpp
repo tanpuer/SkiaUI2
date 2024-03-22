@@ -42,7 +42,7 @@ void LinearAnimator::update(SkIRect &rect) {
     translateMatrix.setTranslate(x, y);
     //todo rotate设置不对
 //    rotateMatrix.setRotate(45, src.centerX(), src.centerY());
-    scaleMatrix.setScale(1 - interpolation, 1 - interpolation, src.centerX(), src.centerY());
+//    scaleMatrix.setScale(1 - interpolation, 1 - interpolation, src.centerX(), src.centerY());
     m.preConcat(translateMatrix);
     m.preConcat(rotateMatrix);
     m.preConcat(scaleMatrix);

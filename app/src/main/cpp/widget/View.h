@@ -77,11 +77,11 @@ public:
 
     YGConfigRef config = nullptr;
 
+    int left, top = 0;
+
 protected:
 
     int width, height;
-
-    int left, top = 0;
 
     int minWidth, minHeight;
 

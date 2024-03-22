@@ -11,10 +11,12 @@
 #include "ScrollViewTest.h"
 #include "core/SkGraphics.h"
 #include "SkiaUIContext.h"
+#include "PageTest.h"
 
 SkiaUIApp::SkiaUIApp() {
     SkGraphics::Init();
     testDraw = std::make_unique<ScrollViewTest>();
+//    testDraw = std::make_unique<PageTest>();
 }
 
 SkiaUIApp::~SkiaUIApp() {
