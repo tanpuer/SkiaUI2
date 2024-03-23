@@ -17,20 +17,6 @@ Page::~Page() {
     ALOGD("page destroy")
 }
 
-void Page::draw(SkCanvas *canvas) {
-    SkPictureRecorder recorder;
-    auto skCanvas = recorder.beginRecording(width, height);
-    View::draw(skCanvas);
-    SkASSERT(children.size() == 1);
-    auto root = children[0];
-    root->draw(skCanvas);
-    auto picture = recorder.finishRecordingAsPicture();
-    canvas->save();
-    canvas->translate(left, top);
-    canvas->drawPicture(picture);
-    canvas->restore();
-}
-
 void Page::enterFromRight(const EnterExitInfo &info) {
     ALOGD("enterFromRight %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
@@ -47,6 +33,16 @@ void Page::exitToLeft(const EnterExitInfo &info) {
         auto page = PageStackManager::getInstance()->pop();
         delete page;
     });
+}
+
+void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {
+    SkASSERT(children.size() == 1);
+    auto root = children[0];
+    measureChild(root, widthMeasureSpec, heightMeasureSpec);
+    ViewGroup::setMeasuredDimension(MeasureSpec::getSize(widthMeasureSpec),
+                                    MeasureSpec::getSize(heightMeasureSpec));
+    YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
+                          YGDirectionLTR);
 }
 
 void Page::layout(int l, int t, int r, int b) {
@@ -71,14 +67,18 @@ void Page::layout(int l, int t, int r, int b) {
                  top + animTranslateY + height);
 }
 
-void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {
+void Page::draw(SkCanvas *canvas) {
+    SkPictureRecorder recorder;
+    auto skCanvas = recorder.beginRecording(width, height);
+    View::draw(skCanvas);
     SkASSERT(children.size() == 1);
     auto root = children[0];
-    measureChild(root, widthMeasureSpec, heightMeasureSpec);
-    ViewGroup::setMeasuredDimension(MeasureSpec::getSize(widthMeasureSpec),
-                                    MeasureSpec::getSize(heightMeasureSpec));
-    YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
-                          YGDirectionLTR);
+    root->draw(skCanvas);
+    auto picture = recorder.finishRecordingAsPicture();
+    canvas->save();
+    canvas->translate(left, top);
+    canvas->drawPicture(picture);
+    canvas->restore();
 }
 
 bool Page::dispatchTouchEvent(TouchEvent *touchEvent) {
