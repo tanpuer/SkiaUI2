@@ -17,6 +17,13 @@ Page *PageStackManager::pop() {
     return page;
 }
 
+Page *PageStackManager::back() {
+    if (pages.empty()) {
+        return nullptr;
+    }
+    return pages.back();
+}
+
 const std::vector<Page *> &PageStackManager::getPages() {
     return pages;
 }

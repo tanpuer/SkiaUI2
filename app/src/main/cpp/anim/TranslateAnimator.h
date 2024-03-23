@@ -13,11 +13,13 @@ class TranslateAnimator : public IAnimator {
 
 public:
 
-    TranslateAnimator(View *view, float animEndX, float animEndY);
+    TranslateAnimator(View *view,
+                      float animStartX, float animEndX,
+                      float animStartY, float animEndY);
 
     virtual ~TranslateAnimator();
 
-    virtual void update(SkIRect &rect, AnimationResult &animationResult) override;
+    virtual void update(SkIRect &rect) override;
 
     virtual void start() override;
 

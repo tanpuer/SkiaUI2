@@ -27,3 +27,7 @@ bool IAnimator::isEnd() {
     return end;
 }
 
+void IAnimator::addListener(std::function<void()> finishCallback) {
+    this->finishCallback = std::move(finishCallback);
+}
+

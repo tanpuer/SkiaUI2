@@ -7,13 +7,14 @@
 #include "core/SkPicture.h"
 #include "LinearAnimator.h"
 #include "TranslateAnimator.h"
+#include "PageStackManager.h"
 
 Page::Page() {
     pageId = PAGE_ID++;
 }
 
 Page::~Page() {
-
+    ALOGD("page destroy")
 }
 
 void Page::draw(SkCanvas *canvas) {
@@ -30,28 +31,22 @@ void Page::draw(SkCanvas *canvas) {
     canvas->restore();
 }
 
-void Page::enterFromRight(int distance) {
-    ALOGD("enterFromRight %d", distance)
-    animTranslateX = 0.0f;
-    animator = std::make_unique<TranslateAnimator>(this, distance, 0);
-    animator->setDuration(1000);
+void Page::enterFromRight(const EnterExitInfo &info) {
+    ALOGD("enterFromRight %d %d %d", info.from, info.to, info.duration)
+    animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
+    animator->setDuration(info.duration);
     animator->start();
 }
 
-void Page::exitToLeft(int distance) {
-    animTranslateX = distance;
-    ALOGD("enterFromRight %d", distance)
-    animator = std::make_unique<TranslateAnimator>(this, 0, 0);
-    animator->setDuration(1000);
+void Page::exitToLeft(const EnterExitInfo &info) {
+    ALOGD("exitToLeft %d %d %d", info.from, info.to, info.duration)
+    animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
+    animator->setDuration(info.duration);
     animator->start();
-}
-
-void Page::enterFromBottom(int distance) {
-    auto animation = new LinearAnimator(0, distance);
-}
-
-void Page::exitToTop(int distance) {
-
+    animator->addListener([]() {
+        auto page = PageStackManager::getInstance()->pop();
+        delete page;
+    });
 }
 
 void Page::layout(int l, int t, int r, int b) {
@@ -62,19 +57,18 @@ void Page::layout(int l, int t, int r, int b) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(root->node));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(root->node));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(root->node));
-    AnimationResult result;
     if (animator != nullptr) {
         if (animator->isEnd()) {
             animator.reset();
         } else {
-            animator->update(skRect, result);
-            ALOGD("page animator update %f %f", result.translateX, result.translateY)
+            animator->update(skRect);
+            ALOGD("page animator update %f %f", animTranslateX, animTranslateY)
         }
     }
-    root->layout(left + result.translateX,
-                 top + result.translateY,
-                 left + result.translateX + width,
-                 top + result.translateY + height);
+    root->layout(left + animTranslateX,
+                 top + animTranslateY,
+                 left + animTranslateX + width,
+                 top + animTranslateY + height);
 }
 
 void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {

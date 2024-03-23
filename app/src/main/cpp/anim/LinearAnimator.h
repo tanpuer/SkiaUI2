@@ -27,7 +27,7 @@ public:
 
     virtual float getInterpolation(float factor) override;
 
-    void update(SkIRect &rect, AnimationResult &animationResult) override;
+    void update(SkIRect &rect) override;
 
 private:
 

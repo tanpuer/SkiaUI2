@@ -15,8 +15,8 @@
 
 SkiaUIApp::SkiaUIApp() {
     SkGraphics::Init();
-    testDraw = std::make_unique<ScrollViewTest>();
-//    testDraw = std::make_unique<PageTest>();
+//    testDraw = std::make_unique<ScrollViewTest>();
+    testDraw = std::make_unique<PageTest>();
 }
 
 SkiaUIApp::~SkiaUIApp() {

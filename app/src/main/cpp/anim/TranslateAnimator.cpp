@@ -4,8 +4,12 @@
 
 #include "TranslateAnimator.h"
 
-TranslateAnimator::TranslateAnimator(View *view, float animEndX, float animEndY) {
+TranslateAnimator::TranslateAnimator(View *view,
+                                     float animStartX, float animEndX,
+                                     float animStartY, float animEndY) {
     this->targetView = view;
+    view->animTranslateX = animStartX;
+    view->animTranslateY = animStartY;
     this->animEndX = animEndX;
     this->animEndY = animEndY;
 }
@@ -14,14 +18,19 @@ TranslateAnimator::~TranslateAnimator() {
     this->targetView = nullptr;
 }
 
-void TranslateAnimator::update(SkIRect &rect, AnimationResult &animationResult) {
+void TranslateAnimator::update(SkIRect &rect) {
     if (currTime > endTime || targetView == nullptr) {
+        targetView->animTranslateX = animEndX;
+        targetView->animTranslateY = animEndY;
+        if (finishCallback != nullptr) {
+            finishCallback();
+        }
         end = true;
         return;
     }
     auto interpolator = getInterpolation(1.0f);
-    animationResult.translateX = animStartX + (animEndX - animStartX) * interpolator;
-    animationResult.translateY = animStartY + (animEndY - animStartY) * interpolator;
+    targetView->animTranslateX = animStartX + (animEndX - animStartX) * interpolator;
+    targetView->animTranslateY = animStartY + (animEndY - animStartY) * interpolator;
 }
 
 void TranslateAnimator::start() {
@@ -32,5 +41,5 @@ void TranslateAnimator::start() {
 }
 
 float TranslateAnimator::getInterpolation(float factor) {
-    return static_cast<float >(endTime - currTime) / static_cast<float >(duration);
+    return static_cast<float >(currTime - startTime) / static_cast<float >(duration);
 }

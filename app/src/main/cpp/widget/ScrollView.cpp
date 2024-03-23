@@ -186,6 +186,7 @@ void ScrollView::addScrollCallback(std::function<void(float, float)> callback) {
 }
 
 void ScrollView::draw(SkCanvas *canvas) {
+    View::draw(canvas);
     for (auto child: children) {
         if (ignoreChildDraw(child)) {
 //            ALOGD("ScrollView draw ignore invisible child %s %d %d", child->name(),
@@ -194,7 +195,6 @@ void ScrollView::draw(SkCanvas *canvas) {
             child->draw(canvas);
         }
     }
-    View::draw(canvas);
 }
 
 bool ScrollView::ignoreChildDraw(const View *child) {

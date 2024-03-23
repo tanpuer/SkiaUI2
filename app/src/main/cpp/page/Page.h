@@ -18,6 +18,26 @@ class Page : public ViewGroup {
 
 public:
 
+    struct EnterExitInfo {
+        int from;
+        int to;
+        int duration = 1000;
+
+        EnterExitInfo(int from, int to, int duration) {
+            this->from = from;
+            this->to = to;
+            this->duration = duration;
+        }
+
+        EnterExitInfo(int from, int to) {
+            this->from = from;
+            this->to = to;
+        }
+
+    };
+
+public:
+
     Page();
 
     ~Page();
@@ -30,13 +50,9 @@ public:
 
     bool dispatchTouchEvent(TouchEvent *touchEvent) override;
 
-    void enterFromRight(int distance);
+    void enterFromRight(const EnterExitInfo &info);
 
-    void exitToLeft(int distance);
-
-    void enterFromBottom(int distance);
-
-    void exitToTop(int distance);
+    void exitToLeft(const EnterExitInfo &info);
 
     void setVisibility(bool visible);
 

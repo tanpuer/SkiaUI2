@@ -19,7 +19,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         root = page;
         initChildren(root, width, height);
         PageStackManager::getInstance()->push(page);
-        page->enterFromRight(width);
+        page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
     auto scrollViewWidthSpec = MeasureSpec::makeMeasureSpec(width, EXACTLY);
     auto scrollViewHeightSpec = MeasureSpec::makeMeasureSpec(height, EXACTLY);
@@ -43,9 +43,8 @@ void PageTest::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setJustifyContent(YGJustifyFlexStart);
     scrollView->setAlignItems(YGAlignCenter);
     scrollView->setAlignContent(YGAlignCenter);
-    scrollView->setStrokeWidth(10);
-    scrollView->setStyle(SkPaint::kStroke_Style);
-    scrollView->setBackgroundColor(SK_ColorBLUE);
+    scrollView->setStyle(SkPaint::kFill_Style);
+    scrollView->setBackgroundColor(SK_ColorWHITE);
     root->addView(scrollView, LayoutParams::makeExactlyLayoutParams(width, height));
 
     {
@@ -60,7 +59,7 @@ void PageTest::initChildren(ViewGroup *root, int width, int height) {
             auto page = initPage(width, height);
             initChildren(page, width, height);
             PageStackManager::getInstance()->push(page);
-            page->enterFromRight(width);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
     }
 
@@ -79,12 +78,12 @@ void PageTest::initChildren(ViewGroup *root, int width, int height) {
         lp->setMargin({0, 50, 0, 50});
         scrollView->addView(view, lp);
         view->setOnClickListener([this, width, height](View *view) {
-            auto page = PageStackManager::getInstance()->getPages().back();
+            auto page = PageStackManager::getInstance()->back();
             if (page == nullptr) {
                 ALOGE("pop failed due to empty pages")
                 return;
             }
-            page->exitToLeft(width);
+            page->exitToLeft(Page::EnterExitInfo(0, width));
         });
     }
 
@@ -282,14 +281,13 @@ Page *PageTest::initPage(int width, int height) {
     page->setJustifyContent(YGJustifyCenter);
     page->setAlignItems(YGAlignCenter);
     page->setAlignContent(YGAlignCenter);
-    page->setStrokeWidth(10);
-    page->setStyle(SkPaint::kStroke_Style);
-    page->setBackgroundColor(SK_ColorBLUE);
+    page->setStyle(SkPaint::kFill_Style);
+    page->setBackgroundColor(SK_ColorTRANSPARENT);
     return page;
 }
 
 View *PageTest::getRootView() {
-    auto page = PageStackManager::getInstance()->getPages().back();
+    auto page = PageStackManager::getInstance()->back();
     SkASSERT(page != nullptr && page->children.size() == 1);
     return page->children[0];
 }

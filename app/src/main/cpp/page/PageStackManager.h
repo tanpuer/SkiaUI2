@@ -22,6 +22,8 @@ public:
 
     Page *pop();
 
+    Page *back();
+
     const std::vector<Page *> &getPages();
 
 private:

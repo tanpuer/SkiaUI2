@@ -7,7 +7,6 @@
 
 #include "functional"
 #include "core/SkRect.h"
-#include "AnimationResult.h"
 
 class IAnimator {
 
@@ -32,7 +31,9 @@ public:
 
     virtual bool isEnd();
 
-    virtual void update(SkIRect &rect, AnimationResult &animationResult) = 0;
+    virtual void update(SkIRect &rect) = 0;
+
+    virtual void addListener(std::function<void()> finishCallback);
 
 protected:
 
@@ -42,7 +43,7 @@ protected:
 
     bool end;
 
-    std::function<void(const SkIRect &)> animatorCallback;
+    std::function<void()> finishCallback = nullptr;
 
 };
 
