@@ -4,27 +4,31 @@
 
 #include "TranslateAnimator.h"
 
-TranslateAnimator::TranslateAnimator(View *view, float translateX, float translateY) {
+TranslateAnimator::TranslateAnimator(View *view, float animEndX, float animEndY) {
     this->targetView = view;
-    this->animTransX = translateX;
-    this->animTransY = translateY;
+    this->animEndX = animEndX;
+    this->animEndY = animEndY;
 }
 
 TranslateAnimator::~TranslateAnimator() {
     this->targetView = nullptr;
 }
 
-void TranslateAnimator::update(SkIRect &rect) {
-    if (targetView == nullptr) {
+void TranslateAnimator::update(SkIRect &rect, AnimationResult &animationResult) {
+    if (currTime > endTime || targetView == nullptr) {
+        end = true;
         return;
     }
     auto interpolator = getInterpolation(1.0f);
-    auto targetLeft = animTransX * interpolator + targetView->left;
-    auto targetTop = animTransY * interpolator + targetView->top;
+    animationResult.translateX = animStartX + (animEndX - animStartX) * interpolator;
+    animationResult.translateY = animStartY + (animEndY - animStartY) * interpolator;
 }
 
 void TranslateAnimator::start() {
     IAnimator::start();
+    SkASSERT(targetView);
+    animStartX = targetView->animTranslateX;
+    animStartY = targetView->animTranslateY;
 }
 
 float TranslateAnimator::getInterpolation(float factor) {

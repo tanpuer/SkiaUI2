@@ -310,12 +310,6 @@ void View::setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatc
     this->touchEventDispatcher->setWeakView(this);
 }
 
-void View::handleAnimation() {
-    if (animator != nullptr) {
-
-    }
-}
-
 bool View::hasPercent() {
     return !YGFloatsEqual(0.0f, widthPercent) && YGFloatsEqual(0.0f, hwRatio);
 }

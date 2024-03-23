@@ -24,7 +24,7 @@ float LinearAnimator::getInterpolation(float factor) {
     return static_cast<float >(endTime - currTime) / static_cast<float >(duration);
 }
 
-void LinearAnimator::update(SkIRect &rect) {
+void LinearAnimator::update(SkIRect &rect, AnimationResult &animationResult) {
     if (currTime > endTime) {
         end = true;
         return;

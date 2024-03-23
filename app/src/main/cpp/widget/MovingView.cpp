@@ -51,7 +51,8 @@ void MovingView::layout(int l, int t, int r, int b) {
         if (animator->isEnd()) {
             animator.reset();
         } else {
-            animator->update(skRect);
+            AnimationResult result;
+            animator->update(skRect, result);
         }
     }
 }

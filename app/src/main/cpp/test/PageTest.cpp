@@ -79,7 +79,7 @@ void PageTest::initChildren(ViewGroup *root, int width, int height) {
         lp->setMargin({0, 50, 0, 50});
         scrollView->addView(view, lp);
         view->setOnClickListener([this, width, height](View *view) {
-            auto page = PageStackManager::getInstance()->pop();
+            auto page = PageStackManager::getInstance()->getPages().back();
             if (page == nullptr) {
                 ALOGE("pop failed due to empty pages")
                 return;

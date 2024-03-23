@@ -13,11 +13,11 @@ class TranslateAnimator : public IAnimator {
 
 public:
 
-    TranslateAnimator(View *view, float translateX, float translateY);
+    TranslateAnimator(View *view, float animEndX, float animEndY);
 
     virtual ~TranslateAnimator();
 
-    virtual void update(SkIRect &rect) override;
+    virtual void update(SkIRect &rect, AnimationResult &animationResult) override;
 
     virtual void start() override;
 
@@ -25,7 +25,9 @@ public:
 
 private:
 
-    float animTransX, animTransY;
+    float animEndX, animEndY = 0.0f;
+
+    float animStartX, animStartY = 0.0f;
 
     View *targetView = nullptr;
 

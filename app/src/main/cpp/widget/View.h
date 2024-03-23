@@ -196,7 +196,9 @@ protected:
 
     std::unique_ptr<IAnimator> animator;
 
-    virtual void handleAnimation();
+public:
+    float animTranslateX = 0.0f;
+    float animTranslateY = 0.0f;
 
 protected:
 
