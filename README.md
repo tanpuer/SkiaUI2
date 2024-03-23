@@ -20,6 +20,7 @@ steps：
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
+10. Page: act as the same role as Activity.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example2.png)
