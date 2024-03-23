@@ -66,6 +66,8 @@ private:
 
     bool visible = true;
 
+    std::unique_ptr<SkPaint> pagePaint;
+
 };
 
 

@@ -11,10 +11,12 @@
 
 Page::Page() {
     pageId = PAGE_ID++;
+    ALOGD("Page create %d", pageId)
+    pagePaint = std::make_unique<SkPaint>();
 }
 
 Page::~Page() {
-    ALOGD("page destroy")
+    ALOGD("page destroy %d", pageId)
 }
 
 void Page::enterFromRight(const EnterExitInfo &info) {
@@ -77,7 +79,7 @@ void Page::draw(SkCanvas *canvas) {
     auto picture = recorder.finishRecordingAsPicture();
     canvas->save();
     canvas->translate(left, top);
-    canvas->drawPicture(picture);
+    canvas->drawPicture(picture, nullptr, pagePaint.get());
     canvas->restore();
 }
 
