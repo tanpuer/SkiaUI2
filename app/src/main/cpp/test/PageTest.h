@@ -25,7 +25,7 @@ private:
 
     Page *initPage(int width, int height);
 
-    void initChildren(ViewGroup *root, int width, int height);
+    void initChildren(int drawCount, ViewGroup *root, int width, int height);
 
 };
 

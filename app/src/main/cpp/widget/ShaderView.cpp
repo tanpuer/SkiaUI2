@@ -33,8 +33,7 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
         auto androidCodec = SkAndroidCodec::MakeFromData(skData);
         auto skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
         auto skImage = skAnimatedImage->getCurrentFrame();
-        auto shader = skImage->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
-                                          SkFilterMode::kLinear);
+        auto shader = skImage->makeShader(SkSamplingOptions());
         skShaders.push_back(std::move(shader));
         imageNames.push_back("iChannel" + std::to_string(i));
     }
@@ -60,6 +59,9 @@ void ShaderView::draw(SkCanvas *canvas) {
         builder.uniform("iResolution") = uniforms;
         auto time = SkiaUIContext::getInstance()->getCurrentTimeMills();
         builder.uniform("iTime") = (float) time / 1000;
+        for (const auto &item: uniformVector) {
+            builder.uniform(item.first) = item.second;
+        }
         for (int i = 0; i < skShaders.size(); ++i) {
             builder.child(imageNames[i]) = skShaders[i];
         }
@@ -73,4 +75,20 @@ void ShaderView::draw(SkCanvas *canvas) {
         canvas->drawPicture(picture);
         canvas->restore();
     }
+}
+
+void ShaderView::setPictures(std::vector<sk_sp<SkPicture>> otherPictures) {
+    skShaders.clear();
+    imageNames.clear();
+    for (int i = 0; i < otherPictures.size(); ++i) {
+        auto skShader = otherPictures[i]->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
+                                                     SkFilterMode::kLinear);
+        skShaders.push_back(std::move(skShader));
+        imageNames.push_back("iChannel" + std::to_string(i));
+    }
+    isDirty = true;
+}
+
+void ShaderView::setCustomUniforms(std::string key, float value) {
+    uniformVector[key] = value;
 }

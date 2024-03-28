@@ -10,6 +10,7 @@
 #include "effects/SkRuntimeEffect.h"
 #include "vector"
 #include "core/SkImage.h"
+#include "unordered_map"
 
 class ShaderView : public View {
 
@@ -25,6 +26,10 @@ public:
 
     virtual void draw(SkCanvas *canvas) override;
 
+    virtual void setCustomUniforms(std::string key, float value);
+
+    virtual void setPictures(std::vector<sk_sp<SkPicture>> otherPictures);
+
 private:
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
@@ -32,6 +37,8 @@ private:
     std::vector<sk_sp<SkShader>> skShaders;
 
     std::vector<std::string> imageNames;
+
+    std::unordered_map<std::string, float> uniformVector;
 
 };
 

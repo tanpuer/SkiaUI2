@@ -17,7 +17,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         ALOGD("doDrawTest %d %d", width, height)
         auto page = initPage(width, height);
         root = page;
-        initChildren(root, width, height);
+        initChildren(drawCount, root, width, height);
         PageStackManager::getInstance()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
@@ -34,7 +34,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
     }
 }
 
-void PageTest::initChildren(ViewGroup *root, int width, int height) {
+void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int height) {
     auto scrollView = new ScrollView();
     config = YGConfigNew();
     scrollView->setConfig(config);
@@ -55,9 +55,9 @@ void PageTest::initChildren(ViewGroup *root, int width, int height) {
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
         scrollView->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
-        view->setOnClickListener([this, width, height](View *view) {
+        view->setOnClickListener([this, width, height, drawCount](View *view) {
             auto page = initPage(width, height);
-            initChildren(page, width, height);
+            initChildren(drawCount, page, width, height);
             PageStackManager::getInstance()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
@@ -104,51 +104,15 @@ void PageTest::initChildren(ViewGroup *root, int width, int height) {
     }
 
     {
-        auto imageView = new ImageView();
-        imageView->setConfig(scrollView->config);
-        imageView->setSource("bird.gif");
-        imageView->setScaleType(ImageView::ScaleType::FitCenter);
-        imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorRED);
-        imageView->setStrokeWidth(2);
-        auto lp = LayoutParams::makeExactlyLayoutParams(800, 500);
-        lp->setMargin({0, 100, 0, 0});
-        scrollView->addView(imageView, lp);
-    }
-
-    {
-        auto svgView = new SVGView();
-        svgView->setConfig(scrollView->config);
-        svgView->setSource("tiger.svg");
-        svgView->setStyle(SkPaint::kStroke_Style);
-        svgView->setBackgroundColor(SK_ColorRED);
-        svgView->setStrokeWidth(2);
-        svgView->setXY(100, 100);
-        auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
-        lp->setMargin({0, 100, 0, 0});
-        scrollView->addView(svgView, lp);
-    }
-
-    {
-        auto canvasTest = new CanvasTest();
-        canvasTest->setConfig(scrollView->config);
-        canvasTest->setCircleSize(200);
-        canvasTest->setStyle(SkPaint::kStroke_Style);
-        canvasTest->setBackgroundColor(SK_ColorRED);
-        canvasTest->setStrokeWidth(2);
-        auto lp = LayoutParams::makeExactlyLayoutParams(600, 800);
-        lp->setMargin({0, 50, 0, 50});
-        scrollView->addView(canvasTest, lp);
-    }
-
-    {
-        auto progressBar = new ProgressBar();
-        progressBar->setConfig(scrollView->config);
-        progressBar->setBarColor(SK_ColorRED);
-        progressBar->setBackgroundColor(SK_ColorGRAY);
-        progressBar->setStrokeWidth(10.0);
-        progressBar->setStyle(SkPaint::kStroke_Style);
-        scrollView->addView(progressBar, LayoutParams::makeExactlyLayoutParams(200, 200));
+        auto shaderView = new ShaderView();
+        shaderView->setConfig(scrollView->config);
+        shaderView->setShaderPath("gl_transition_window_slice.glsl",
+                                  {"transition1.png", "transition2.png"});
+        shaderView->setCustomUniforms("count", 10.0);
+        shaderView->setCustomUniforms("smoothness", 0.5);
+        auto lp = LayoutParams::makeExactlyLayoutParams(512, 400);
+        lp->setMargin({0, 50, 0, 0});
+        scrollView->addView(shaderView, lp);
     }
 
     {
