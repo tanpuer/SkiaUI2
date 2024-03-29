@@ -97,7 +97,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     {
         auto shaderView = new ShaderView();
         shaderView->setConfig(scrollView->config);
-        shaderView->setShaderPath("raining.sksl", {"raining.png"});
+        shaderView->setShaderPath("raining.glsl", {"raining.png"});
         auto lp = LayoutParams::makeExactlyLayoutParams(1080, 520);
         lp->setMargin({0, 50, 0, 0});
         scrollView->addView(shaderView, lp);

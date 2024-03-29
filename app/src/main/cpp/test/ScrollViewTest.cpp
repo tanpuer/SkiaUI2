@@ -67,7 +67,7 @@ void ScrollViewTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         {
             auto shaderView = new ShaderView();
             shaderView->setConfig(root->config);
-            shaderView->setShaderPath("raining.sksl", {"raining.png"});
+            shaderView->setShaderPath("raining.glsl", {"raining.png"});
             auto lp = LayoutParams::makeExactlyLayoutParams(1080, 520);
             lp->setMargin({0, 50, 0, 0});
             root->addView(shaderView, lp);

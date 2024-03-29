@@ -139,6 +139,7 @@ float4 main(float2 coord)
 
     
     float focus = mix(maxBlur-c.y, minBlur, S(.1, .2, c.x));
+    //float3 col = iChannel0.eval((UV/iResolution.xy + n) * iChannel0Resolution).rgb;
     float3 col = iChannel0.eval((UV/iResolution.xy + n) * iResolution.xy).rgb;
     //col += vec3(n * focus, 0.);
     //col = vec3(n * focus, 0.);
