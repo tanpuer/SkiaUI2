@@ -34,8 +34,11 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
         auto skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
         auto skImage = skAnimatedImage->getCurrentFrame();
         auto shader = skImage->makeShader(SkSamplingOptions());
-        skShaders.push_back(std::move(shader));
-        imageNames.push_back("iChannel" + std::to_string(i));
+        skShaders["iChannel" + std::to_string(i)] = std::move(shader);
+        ResolutionUniforms resolutionUniforms;
+        resolutionUniforms.width = skImage->width();
+        resolutionUniforms.height = skImage->height();
+        imageResolutions["iChannel" + std::to_string(i) + "Resolution"] = resolutionUniforms;
     }
     isDirty = true;
 }
@@ -62,8 +65,11 @@ void ShaderView::draw(SkCanvas *canvas) {
         for (const auto &item: uniformVector) {
             builder.uniform(item.first) = item.second;
         }
-        for (int i = 0; i < skShaders.size(); ++i) {
-            builder.child(imageNames[i]) = skShaders[i];
+        for (auto &pair: skShaders) {
+            builder.child(pair.first) = pair.second;
+        }
+        for (auto &pair: imageResolutions) {
+            builder.uniform(pair.first) = pair.second;
         }
         auto shader = builder.makeShader(nullptr);
         SkPaint skPaint;
@@ -79,12 +85,10 @@ void ShaderView::draw(SkCanvas *canvas) {
 
 void ShaderView::setPictures(std::vector<sk_sp<SkPicture>> otherPictures) {
     skShaders.clear();
-    imageNames.clear();
     for (int i = 0; i < otherPictures.size(); ++i) {
-        auto skShader = otherPictures[i]->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
-                                                     SkFilterMode::kLinear);
-        skShaders.push_back(std::move(skShader));
-        imageNames.push_back("iChannel" + std::to_string(i));
+        auto shader = otherPictures[i]->makeShader(SkTileMode::kClamp, SkTileMode::kClamp,
+                                                   SkFilterMode::kLinear);
+        skShaders["iChannel" + std::to_string(i)] = std::move(shader);
     }
     isDirty = true;
 }

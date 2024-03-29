@@ -34,9 +34,9 @@ private:
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
 
-    std::vector<sk_sp<SkShader>> skShaders;
+    std::unordered_map<std::string, sk_sp<SkShader>> skShaders;
 
-    std::vector<std::string> imageNames;
+    std::unordered_map<std::string, ResolutionUniforms> imageResolutions;
 
     std::unordered_map<std::string, float> uniformVector;
 
