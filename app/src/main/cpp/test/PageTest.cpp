@@ -116,6 +116,17 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     }
 
     {
+        auto shaderView = new ShaderView();
+        shaderView->setConfig(scrollView->config);
+        shaderView->setShaderPath("gl_transition_cross_zoom.glsl",
+                                  {"transition1.png", "transition2.png"});
+        shaderView->setCustomUniforms("strength", 0.4);
+        auto lp = LayoutParams::makeExactlyLayoutParams(512, 400);
+        lp->setMargin({0, 50, 0, 0});
+        scrollView->addView(shaderView, lp);
+    }
+
+    {
         auto progressBar = new ProgressBar();
         progressBar->setConfig(scrollView->config);
         progressBar->setBarColor(SK_ColorRED);
