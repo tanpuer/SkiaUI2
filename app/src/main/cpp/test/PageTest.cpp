@@ -20,6 +20,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         initChildren(drawCount, root, width, height);
         PageStackManager::getInstance()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
+//        page->enterFromBottom(Page::EnterExitInfo(height, 0));
     }
     auto scrollViewWidthSpec = MeasureSpec::makeMeasureSpec(width, EXACTLY);
     auto scrollViewHeightSpec = MeasureSpec::makeMeasureSpec(height, EXACTLY);
@@ -60,6 +61,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
             initChildren(drawCount, page, width, height);
             PageStackManager::getInstance()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
+//            page->enterFromBottom(Page::EnterExitInfo(height, 0));
         });
     }
 
@@ -84,6 +86,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
                 return;
             }
             page->exitToLeft(Page::EnterExitInfo(0, width));
+//            page->exitToTop(Page::EnterExitInfo(0, height));
         });
     }
 

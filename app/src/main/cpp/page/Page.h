@@ -54,6 +54,10 @@ public:
 
     void exitToLeft(const EnterExitInfo &info);
 
+    void enterFromBottom(const EnterExitInfo &info);
+
+    void exitToTop(const EnterExitInfo &info);
+
     void setVisibility(bool visible);
 
     bool getVisibility();

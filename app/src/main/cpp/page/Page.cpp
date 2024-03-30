@@ -37,6 +37,24 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     });
 }
 
+void Page::enterFromBottom(const Page::EnterExitInfo &info) {
+    ALOGD("enterFromBottom %d %d %d", info.from, info.to, info.duration)
+    animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
+    animator->setDuration(info.duration);
+    animator->start();
+}
+
+void Page::exitToTop(const Page::EnterExitInfo &info) {
+    ALOGD("exitToTop %d %d %d", info.from, info.to, info.duration)
+    animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
+    animator->setDuration(info.duration);
+    animator->start();
+    animator->addListener([]() {
+        auto page = PageStackManager::getInstance()->pop();
+        delete page;
+    });
+}
+
 void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {
     SkASSERT(children.size() == 1);
     auto root = children[0];
