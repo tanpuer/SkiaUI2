@@ -27,3 +27,13 @@ Page *PageStackManager::back() {
 const std::vector<Page *> &PageStackManager::getPages() {
     return pages;
 }
+
+void PageStackManager::updateVisibility(bool isAnimationEnd) {
+    if (pages.size() > 0) {
+        pages[pages.size() - 1]->setVisibility(true);
+    }
+    if (pages.size() < 2) {
+        return;
+    }
+    pages[pages.size() - 2]->setVisibility(!isAnimationEnd);
+}

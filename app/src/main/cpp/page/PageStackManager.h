@@ -26,6 +26,8 @@ public:
 
     const std::vector<Page *> &getPages();
 
+    void updateVisibility(bool isAnimationEnd);
+
 private:
 
     std::vector<Page *> pages;

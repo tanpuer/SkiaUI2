@@ -23,39 +23,56 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     ALOGD("enterFromRight %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
+    animator->addListener([]() {
+        PageStackManager::getInstance()->updateVisibility(true);
+    });
     animator->start();
+    PageStackManager::getInstance()->updateVisibility(false);
 }
 
 void Page::exitToLeft(const EnterExitInfo &info) {
     ALOGD("exitToLeft %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
-    animator->start();
     animator->addListener([]() {
         auto page = PageStackManager::getInstance()->pop();
+        PageStackManager::getInstance()->updateVisibility(true);
         delete page;
     });
+    animator->start();
+    PageStackManager::getInstance()->updateVisibility(false);
 }
 
 void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     ALOGD("enterFromBottom %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
+    animator->addListener([]() {
+        auto page = PageStackManager::getInstance()->pop();
+        PageStackManager::getInstance()->updateVisibility(true);
+        delete page;
+    });
     animator->start();
+    PageStackManager::getInstance()->updateVisibility(false);
 }
 
 void Page::exitToTop(const Page::EnterExitInfo &info) {
     ALOGD("exitToTop %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
-    animator->start();
     animator->addListener([]() {
         auto page = PageStackManager::getInstance()->pop();
+        PageStackManager::getInstance()->updateVisibility(true);
         delete page;
     });
+    animator->start();
+    PageStackManager::getInstance()->updateVisibility(false);
 }
 
 void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {
+    if (!visible) {
+        return;
+    }
     SkASSERT(children.size() == 1);
     auto root = children[0];
     measureChild(root, widthMeasureSpec, heightMeasureSpec);
@@ -66,6 +83,9 @@ void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {
 }
 
 void Page::layout(int l, int t, int r, int b) {
+    if (!visible) {
+        return;
+    }
     View::layout(l, t, r, b);
     SkASSERT(children.size() == 1);
     auto root = children[0];
@@ -88,6 +108,9 @@ void Page::layout(int l, int t, int r, int b) {
 }
 
 void Page::draw(SkCanvas *canvas) {
+    if (!visible) {
+        return;
+    }
     SkPictureRecorder recorder;
     auto skCanvas = recorder.beginRecording(width, height);
     View::draw(skCanvas);
