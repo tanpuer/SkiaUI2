@@ -125,19 +125,24 @@ class HYSkiaEngine {
         skiaGLHandlerThread.quitSafely()
     }
 
+    fun onBackPressed() {
+        skiaUIHandler.post {
+            nativeBackPressed()
+        }
+    }
+
     private external fun nativeGLInit(assets: AssetManager)
     private external fun nativeGLCreated(surface: Surface)
     private external fun nativeGLChanged(width: Int, height: Int, time: Long)
     private external fun nativeGLDestroyed()
     private external fun nativeGLDoFrame(pic: Long, time: Long)
-
     private external fun nativeTouchEvent(action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(xVelocity: Float, yVelocity: Float)
     private external fun nativeUIInit()
     private external fun nativeUIChanged(width: Int, height: Int, time: Long)
     private external fun nativeUIDoFrame(time: Long): Long
-
     private external fun nativeRelease()
+    private external fun nativeBackPressed();
 
     companion object {
         init {

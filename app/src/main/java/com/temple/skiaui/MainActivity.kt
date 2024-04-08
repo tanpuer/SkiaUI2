@@ -26,4 +26,8 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         fpsView.text = "fps: $value"
     }
 
+    override fun onBackPressed() {
+        surfaceView.onBackPressed()
+    }
+
 }

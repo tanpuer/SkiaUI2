@@ -98,6 +98,14 @@ native_Release(JNIEnv *env, jobject instance) {
     ALOGD("native_Release")
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_BackPressed(JNIEnv *env, jobject instance) {
+    if (uiApp != nullptr) {
+        uiApp->onBackPressed();
+    }
+    ALOGD("native_BackPressed")
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",      "(Landroid/content/res/AssetManager;)V", (void *) native_GLInit},
         {"nativeGLCreated",   "(Landroid/view/Surface;)V",             (void *) native_GLCreated},
@@ -110,6 +118,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUIDoFrame",   "(J)J",                                  (void *) native_UIDoFrame},
         {"nativeUIChanged",   "(IIJ)V",                                (void *) native_UIChanged},
         {"nativeRelease",     "()V",                                   (void *) native_Release},
+        {"nativeBackPressed", "()V",                                   (void *) native_BackPressed},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

@@ -24,6 +24,8 @@ public:
 
     long doFrame(long time);
 
+    void onBackPressed();
+
 private:
 
     std::unique_ptr<TouchEvent> mTouchEvent;

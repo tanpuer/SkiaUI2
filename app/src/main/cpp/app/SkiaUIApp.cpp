@@ -12,6 +12,7 @@
 #include "core/SkGraphics.h"
 #include "SkiaUIContext.h"
 #include "PageTest.h"
+#include "PageStackManager.h"
 
 SkiaUIApp::SkiaUIApp() {
     SkGraphics::Init();
@@ -60,4 +61,16 @@ void SkiaUIApp::setVelocity(Velocity *velocity) {
 void SkiaUIApp::setWindowSize(int width, int height) {
     mWidth = width;
     mHeight = height;
+}
+
+void SkiaUIApp::onBackPressed() {
+    auto pageTest = dynamic_cast<PageTest *>(testDraw.get());
+    if (pageTest != nullptr) {
+        auto page = PageStackManager::getInstance()->back();
+        if (page == nullptr) {
+            ALOGE("pop failed due to empty pages")
+            return;
+        }
+        page->exitToLeft(Page::EnterExitInfo(0, mWidth));
+    }
 }

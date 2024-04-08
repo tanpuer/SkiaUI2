@@ -53,4 +53,8 @@ class HYSkiaTextureView @JvmOverloads constructor(
         engine.renderCallback = renderCallback
     }
 
+    fun onBackPressed() {
+        engine.onBackPressed()
+    }
+
 }
