@@ -62,6 +62,8 @@ public:
 
     bool getVisibility();
 
+    void setBlackWhiteMode();
+
 private:
 
     std::unique_ptr<View> rootView;

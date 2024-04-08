@@ -8,6 +8,7 @@
 #include "LinearAnimator.h"
 #include "TranslateAnimator.h"
 #include "PageStackManager.h"
+#include "core/SkColorFilter.h"
 
 Page::Page() {
     pageId = PAGE_ID++;
@@ -138,4 +139,15 @@ void Page::setVisibility(bool visible) {
 
 bool Page::getVisibility() {
     return visible;
+}
+
+void Page::setBlackWhiteMode() {
+    auto rowMajor = {
+            0.2126f, 0.7152f, 0.0722f, 0.0f, 0.0f,
+            0.2126f, 0.7152f, 0.0722f, 0.0f, 0.0f,
+            0.2126f, 0.7152f, 0.0722f, 0.0f, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f, 0.0f
+    };
+    auto colorFilter = SkColorFilters::Matrix(data(rowMajor));
+    pagePaint->setColorFilter(colorFilter);
 }
