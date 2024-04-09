@@ -24,7 +24,7 @@ public:
 
     long doFrame(long time);
 
-    void onBackPressed();
+    bool onBackPressed();
 
 private:
 

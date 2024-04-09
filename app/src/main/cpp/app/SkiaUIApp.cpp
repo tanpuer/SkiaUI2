@@ -63,14 +63,16 @@ void SkiaUIApp::setWindowSize(int width, int height) {
     mHeight = height;
 }
 
-void SkiaUIApp::onBackPressed() {
+bool SkiaUIApp::onBackPressed() {
     auto pageTest = dynamic_cast<PageTest *>(testDraw.get());
     if (pageTest != nullptr) {
-        auto page = PageStackManager::getInstance()->back();
-        if (page == nullptr) {
+        if (PageStackManager::getInstance()->getPages().size() <= 1) {
             ALOGE("pop failed due to empty pages")
-            return;
+            return false;
         }
+        auto page = PageStackManager::getInstance()->back();
         page->exitToLeft(Page::EnterExitInfo(0, mWidth));
+        return true;
     }
+    return false;
 }

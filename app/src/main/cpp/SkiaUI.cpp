@@ -98,12 +98,13 @@ native_Release(JNIEnv *env, jobject instance) {
     ALOGD("native_Release")
 }
 
-extern "C" JNIEXPORT void JNICALL
+extern "C" JNIEXPORT jboolean JNICALL
 native_BackPressed(JNIEnv *env, jobject instance) {
-    if (uiApp != nullptr) {
-        uiApp->onBackPressed();
-    }
     ALOGD("native_BackPressed")
+    if (uiApp != nullptr) {
+        return uiApp->onBackPressed();
+    }
+    return false;
 }
 
 static JNINativeMethod g_RenderMethods[] = {
@@ -118,7 +119,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUIDoFrame",   "(J)J",                                  (void *) native_UIDoFrame},
         {"nativeUIChanged",   "(IIJ)V",                                (void *) native_UIChanged},
         {"nativeRelease",     "()V",                                   (void *) native_Release},
-        {"nativeBackPressed", "()V",                                   (void *) native_BackPressed},
+        {"nativeBackPressed", "()Z",                                   (void *) native_BackPressed},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

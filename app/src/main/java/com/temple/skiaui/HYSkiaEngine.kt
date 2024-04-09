@@ -3,6 +3,7 @@ package com.temple.skiaui
 import android.content.res.AssetManager
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
@@ -127,7 +128,11 @@ class HYSkiaEngine {
 
     fun onBackPressed() {
         skiaUIHandler.post {
-            nativeBackPressed()
+            if (!nativeBackPressed()) {
+                Handler(Looper.getMainLooper()).post {
+                    renderCallback?.onPlatformBackPressed()
+                }
+            }
         }
     }
 
@@ -142,7 +147,7 @@ class HYSkiaEngine {
     private external fun nativeUIChanged(width: Int, height: Int, time: Long)
     private external fun nativeUIDoFrame(time: Long): Long
     private external fun nativeRelease()
-    private external fun nativeBackPressed();
+    private external fun nativeBackPressed(): Boolean
 
     companion object {
         init {

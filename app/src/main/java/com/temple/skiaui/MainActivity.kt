@@ -22,12 +22,16 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         fpsView = findViewById(R.id.tvFps)
     }
 
+    override fun onBackPressed() {
+        surfaceView.onBackPressed()
+    }
+
     override fun updateFps(value: Int) {
         fpsView.text = "fps: $value"
     }
 
-    override fun onBackPressed() {
-        surfaceView.onBackPressed()
+    override fun onPlatformBackPressed() {
+        super.onBackPressed()
     }
 
 }
