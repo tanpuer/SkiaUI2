@@ -4,6 +4,6 @@ interface RenderCallback {
 
     fun updateFps(value: Int)
 
-    fun onPlatformBackPressed();
+    fun onPlatformBackPressed()
     
 }
