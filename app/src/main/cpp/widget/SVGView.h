@@ -1,10 +1,4 @@
-//
-// Created by banma-3412 on 2024/3/14.
-//
-
-#ifndef SKIAUI_SVGVIEW_H
-#define SKIAUI_SVGVIEW_H
-
+#pragma once
 
 #include "View.h"
 #include "svg/include/SkSVGDOM.h"
@@ -34,6 +28,3 @@ private:
     int x, y = 0;
 
 };
-
-
-#endif //SKIAUI_SVGVIEW_H

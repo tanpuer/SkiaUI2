@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/7/15.
-//
-
-#ifndef SKIAUI_SCROLLVIEW_H
-#define SKIAUI_SCROLLVIEW_H
-
+#pragma once
 
 #include "FlexboxLayout.h"
 
@@ -82,6 +76,3 @@ protected:
     bool lastScrollRight = true;
 
 };
-
-
-#endif //SKIAUI_SCROLLVIEW_H

@@ -1,7 +1,3 @@
-//
-// Created by cw on 2/11/22.
-//
-
 #include "LayoutParams.h"
 
 LayoutParams::LayoutParams() : _width(0), _height(0),

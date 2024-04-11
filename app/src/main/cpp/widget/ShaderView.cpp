@@ -1,7 +1,3 @@
-//
-// Created by banma-3412 on 2024/3/16.
-//
-
 #include "ShaderView.h"
 #include "SkiaUIContext.h"
 #include "core/SkPictureRecorder.h"

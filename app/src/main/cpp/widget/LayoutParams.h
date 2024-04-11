@@ -1,9 +1,4 @@
-//
-// Created by cw on 2/11/22.
-//
-
-#ifndef SKIAUI_LAYOUTPARAMS_H
-#define SKIAUI_LAYOUTPARAMS_H
+#pragma once
 
 #include <yoga/YGEnums.h>
 #include "array"
@@ -59,6 +54,3 @@ public:
     void setPadding(const std::array<int, 4> &paddings);
 
 };
-
-
-#endif //SKIAUI_LAYOUTPARAMS_H

@@ -1,7 +1,3 @@
-//
-// Created by cw on 1/24/22.
-//
-
 #include <base/native_log.h>
 #include <yoga/Utils.h>
 #include "View.h"

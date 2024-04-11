@@ -1,10 +1,4 @@
-//
-// Created by cw on 1/26/22.
-//
-
-#ifndef SKIAUI_TEXTVIEW_H
-#define SKIAUI_TEXTVIEW_H
-
+#pragma once
 
 #include "View.h"
 #include "string"
@@ -123,6 +117,3 @@ protected:
     std::vector<StringBuilder> stringBuilders;
 
 };
-
-
-#endif //SKIAUI_TEXTVIEW_H

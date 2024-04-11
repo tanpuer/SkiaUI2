@@ -1,9 +1,4 @@
-//
-// Created by cw on 1/24/22.
-//
-
-#ifndef SKIAUI_VIEW_H
-#define SKIAUI_VIEW_H
+#pragma once
 
 #include <cstdint>
 #include <yoga/Yoga.h>
@@ -227,5 +222,3 @@ protected:
     std::function<void(View *)> viewClickListener = nullptr;
 
 };
-
-#endif //SKIAUI_VIEW_H

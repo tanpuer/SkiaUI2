@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2022/12/6.
-//
-
-#ifndef SKIAUI_RECYCLERVIEWHOLDER_H
-#define SKIAUI_RECYCLERVIEWHOLDER_H
+#pragma once
 
 #include "View.h"
 
@@ -36,5 +31,3 @@ protected:
     View *itemView;
 
 };
-
-#endif //SKIAUI_RECYCLERVIEWHOLDER_H

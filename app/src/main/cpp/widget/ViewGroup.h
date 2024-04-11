@@ -1,10 +1,4 @@
-//
-// Created by cw on 1/24/22.
-//
-
-#ifndef SKIAUI_VIEWGROUP_H
-#define SKIAUI_VIEWGROUP_H
-
+#pragma once
 
 #include "View.h"
 #include "vector"
@@ -110,6 +104,3 @@ public:
     void requestDisallowInterceptTouchEvent(bool disallowIntercept) override;
 
 };
-
-
-#endif //SKIAUI_VIEWGROUP_H

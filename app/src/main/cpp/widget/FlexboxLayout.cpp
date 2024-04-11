@@ -1,7 +1,3 @@
-//
-// Created by cw on 2022/5/24.
-//
-
 #include "FlexboxLayout.h"
 
 FlexboxLayout::FlexboxLayout() : ViewGroup() {

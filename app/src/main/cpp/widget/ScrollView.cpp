@@ -1,7 +1,3 @@
-//
-// Created by ByteDance on 2022/7/15.
-//
-
 #include <ScrollDispatcher.h>
 #include "ScrollView.h"
 #include "algorithm"

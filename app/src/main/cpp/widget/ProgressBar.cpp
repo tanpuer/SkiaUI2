@@ -1,7 +1,3 @@
-//
-// Created by ByteDance on 2022/8/5.
-//
-
 #include <core/SkPath.h>
 #include "ProgressBar.h"
 #include "effects/SkGradientShader.h"

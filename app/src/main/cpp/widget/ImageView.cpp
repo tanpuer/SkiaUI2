@@ -1,6 +1,3 @@
-//
-// Created by cw on 1/26/22.
-//
 #include <base/native_log.h>
 #include "core/SkColorFilter.h"
 #include "ImageView.h"

@@ -1,10 +1,4 @@
-//
-// Created by cw on 2022/5/24.
-//
-
-#ifndef SKIAUI_FLEXBOXLAYOUT_H
-#define SKIAUI_FLEXBOXLAYOUT_H
-
+#pragma once
 
 #include "ViewGroup.h"
 
@@ -19,7 +13,7 @@ public:
 
     ~FlexboxLayout();
 
-    const char * name() override;
+    const char *name() override;
 
     virtual void setFlexDirection(YGFlexDirection direction) override;
 
@@ -42,6 +36,3 @@ protected:
     void layoutHorizontal(int l, int t, int r, int b);
 
 };
-
-
-#endif //SKIAUI_FLEXBOXLAYOUT_H

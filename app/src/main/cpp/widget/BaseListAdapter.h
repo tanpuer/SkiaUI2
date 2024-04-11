@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2022/8/5.
-//
-
-#ifndef SKIAUI_BASELISTADAPTER_H
-#define SKIAUI_BASELISTADAPTER_H
+#pragma once
 
 #include "vector"
 #include "View.h"
@@ -93,6 +88,3 @@ protected:
     int startIndex;
 
 };
-
-
-#endif //SKIAUI_BASELISTADAPTER_H

@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2022/12/6.
-//
-
-#ifndef SKIAUI_RECYCLERVIEWADAPTER_H
-#define SKIAUI_RECYCLERVIEWADAPTER_H
+#pragma once
 
 #include "vector"
 #include "stack"
@@ -197,5 +192,3 @@ public:
     std::vector<RecyclerViewHolder<T> *> currVHList;
 
 };
-
-#endif //SKIAUI_RECYCLERVIEWADAPTER_H

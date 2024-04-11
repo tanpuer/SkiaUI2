@@ -1,9 +1,4 @@
-//
-// Created by cw on 2/15/22.
-//
-
-#ifndef SKIAUI_MEASURESPEC_H
-#define SKIAUI_MEASURESPEC_H
+#pragma once
 
 #include <yoga/YGEnums.h>
 #include <yoga/Utils.h>
@@ -76,6 +71,3 @@ public:
     }
 
 };
-
-
-#endif //SKIAUI_MEASURESPEC_H

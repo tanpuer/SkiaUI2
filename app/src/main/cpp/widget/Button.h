@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/10/26.
-//
-
-#ifndef SKIAUI_BUTTON_H
-#define SKIAUI_BUTTON_H
-
+#pragma once
 
 #include "TextView.h"
 
@@ -32,6 +26,3 @@ private:
     int defaultPadding = 20;
 
 };
-
-
-#endif //SKIAUI_BUTTON_H

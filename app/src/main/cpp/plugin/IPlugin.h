@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2023/1/6.
-//
-
-#ifndef SKIAUI_IPLUGIN_H
-#define SKIAUI_IPLUGIN_H
+#pragma once
 
 #include "string"
 
@@ -11,11 +6,22 @@ class IPlugin {
 
 public:
 
-    IPlugin() = delete;
-
     IPlugin(std::string name);
 
+    virtual ~IPlugin();
+
+    virtual void invoke(const std::string &methodName, const std::string &methodParam) = 0;
+
+    IPlugin() = delete;
+
+    IPlugin(IPlugin &plugin) = delete;
+
+    IPlugin &operator=(IPlugin &plugin) = delete;
+
+    IPlugin(IPlugin &&plugin) = delete;
+
+private:
+
+    std::string name;
+
 };
-
-
-#endif //SKIAUI_IPLUGIN_H

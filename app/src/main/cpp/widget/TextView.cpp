@@ -1,7 +1,3 @@
-//
-// Created by cw on 1/26/22.
-//
-
 #include "TextView.h"
 
 #include <utility>

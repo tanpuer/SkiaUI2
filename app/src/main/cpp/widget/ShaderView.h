@@ -1,10 +1,4 @@
-//
-// Created by banma-3412 on 2024/3/16.
-//
-
-#ifndef SKIAUI_SHADERVIEW_H
-#define SKIAUI_SHADERVIEW_H
-
+#pragma once
 
 #include "View.h"
 #include "effects/SkRuntimeEffect.h"
@@ -41,6 +35,3 @@ private:
     std::unordered_map<std::string, float> uniformVector;
 
 };
-
-
-#endif //SKIAUI_SHADERVIEW_H

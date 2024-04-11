@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/8/5.
-//
-
-#ifndef SKIAUI_PROGRESSBAR_H
-#define SKIAUI_PROGRESSBAR_H
-
+#pragma once
 
 #include "View.h"
 
@@ -81,6 +75,3 @@ private:
     SkPaint *backgroundPaint;
 
 };
-
-
-#endif //SKIAUI_PROGRESSBAR_H

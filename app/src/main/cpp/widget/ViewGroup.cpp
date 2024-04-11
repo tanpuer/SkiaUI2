@@ -1,7 +1,3 @@
-//
-// Created by cw on 1/24/22.
-//
-
 #include <yoga/Utils.h>
 #include <base/native_log.h>
 #include "ViewGroup.h"

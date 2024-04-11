@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/6/22.
-//
-
-#ifndef SKIAUI_MOVINGVIEW_H
-#define SKIAUI_MOVINGVIEW_H
-
+#pragma once
 
 #include "View.h"
 
@@ -30,6 +24,3 @@ private:
     float lastY;
 
 };
-
-
-#endif //SKIAUI_MOVINGVIEW_H

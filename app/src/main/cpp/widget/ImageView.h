@@ -1,10 +1,4 @@
-//
-// Created by cw on 1/26/22.
-//
-
-#ifndef SKIAUI_IMAGEVIEW_H
-#define SKIAUI_IMAGEVIEW_H
-
+#pragma once
 
 #include "View.h"
 #include "core/SkImage.h"
@@ -80,6 +74,3 @@ private:
     ScaleType scaleType;
 
 };
-
-
-#endif //SKIAUI_IMAGEVIEW_H

@@ -1,11 +1,7 @@
-//
-// Created by ByteDance on 2023/1/6.
-//
-
-#ifndef SKIAUI_PLUGINMANAGER_H
-#define SKIAUI_PLUGINMANAGER_H
+#pragma once
 
 #include "IPlugin.h"
+#include "unordered_map"
 
 class PluginManager {
 
@@ -23,14 +19,17 @@ public:
 
     void registerPlugin(IPlugin *plugin);
 
+    void unRegisterPlugin(IPlugin *plugin);
+
     void clearPlugins();
 
-    static PluginManager &getInstance() {
+    static PluginManager *getInstance() {
         static PluginManager manager;
-        return manager;
+        return &manager;
     }
 
+private:
+
+    std::unordered_map<std::string, IPlugin *> plugins;
+
 };
-
-
-#endif //SKIAUI_PLUGINMANAGER_H

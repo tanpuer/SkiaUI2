@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/12/6.
-//
-
-#ifndef SKIAUI_RECYCLERVIEW_H
-#define SKIAUI_RECYCLERVIEW_H
-
+#pragma once
 
 #include "ScrollView.h"
 #include "RecyclerViewAdapter.h"
@@ -181,6 +175,3 @@ protected:
     RecyclerViewAdapter<T> *adapter;
 
 };
-
-
-#endif //SKIAUI_RECYCLERVIEW_H

@@ -1,5 +1,9 @@
-//
-// Created by ByteDance on 2023/1/6.
-//
-
 #include "IPlugin.h"
+
+IPlugin::IPlugin(std::string name) {
+
+}
+
+IPlugin::~IPlugin() {
+
+}

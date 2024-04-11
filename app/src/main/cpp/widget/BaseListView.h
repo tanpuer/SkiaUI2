@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2022/8/5.
-//
-
-#ifndef SKIAUI_BASELISTVIEW_H
-#define SKIAUI_BASELISTVIEW_H
+#pragma once
 
 #include "BaseListAdapter.h"
 #include "FlexboxLayout.h"
@@ -302,6 +297,3 @@ protected:
     float startY = 0.0f;
 
 };
-
-
-#endif //SKIAUI_BASELISTVIEW_H
