@@ -6,11 +6,19 @@ class IPlugin {
 
 public:
 
+    enum class PluginType {
+        Toast,
+    };
+
+public:
+
     IPlugin(std::string name);
 
     virtual ~IPlugin();
 
-    virtual void invoke(const std::string &methodName, const std::string &methodParam) = 0;
+    virtual std::string invoke(const std::string &methodName, const std::string &methodParam) = 0;
+
+    const char *getName() { return name.c_str(); }
 
     IPlugin() = delete;
 
