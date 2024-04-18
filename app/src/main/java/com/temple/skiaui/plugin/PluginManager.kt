@@ -1,6 +1,12 @@
 package com.temple.skiaui.plugin
 
-object PluginManager {
+class PluginManager {
+
+    private val plugins = mutableMapOf<String, IPlugin>()
+
+    init {
+        registerPlugin(ToastPlugin())
+    }
 
     fun registerPlugin(plugin: IPlugin) {
         plugins[plugin.getName()] = plugin
@@ -13,7 +19,5 @@ object PluginManager {
     fun invokeMethod(pluginName: String, methodName: String, methodParam: String): String {
         return plugins[pluginName]?.invoke(methodName, methodParam) ?: ""
     }
-
-    private val plugins = mutableMapOf<String, IPlugin>()
 
 }

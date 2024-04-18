@@ -1,8 +1,8 @@
 #pragma once
 
 #include <jni.h>
-#include "IPlugin.h"
 #include "unordered_map"
+#include "string"
 
 class PluginManager {
 
@@ -18,10 +18,6 @@ public:
 
     ~PluginManager();
 
-    void registerPlugin(IPlugin *plugin);
-
-    void clearPlugins();
-
     std::string invokeMethod(const std::string &pluginName,
                              const std::string &methodName,
                              const std::string &methodParam);
@@ -31,10 +27,16 @@ public:
         return &manager;
     }
 
-    void initJavaPluginManager(JNIEnv *env);
+    void initJavaPluginManager(jobject javaPlugins, JNIEnv *env);
+
+    void releaseJavaPluginManager(JNIEnv *env);
 
 private:
 
-    std::unordered_map<std::string, IPlugin *> plugins;
+    jobject globalJavaPlugins = nullptr;
+    jclass javaPluginsClass = nullptr;
+    jmethodID javaInvokeMethod = nullptr;
+
+    JNIEnv *env = nullptr;
 
 };

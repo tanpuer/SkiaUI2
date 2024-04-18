@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
+import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -43,6 +44,7 @@ class HYSkiaEngine {
     private var drawCount = AtomicInteger(0)
     var renderCallback: RenderCallback? = null
     private val start = System.currentTimeMillis()
+    private val pluginManager = PluginManager()
 
     init {
         skiaGLHandler.post {
@@ -50,6 +52,7 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             nativeUIInit()
+            nativeSetPlugins(pluginManager)
         }
     }
 
@@ -148,6 +151,7 @@ class HYSkiaEngine {
     private external fun nativeUIDoFrame(time: Long): Long
     private external fun nativeRelease()
     private external fun nativeBackPressed(): Boolean
+    private external fun nativeSetPlugins(pluginManager: PluginManager)
 
     companion object {
         init {

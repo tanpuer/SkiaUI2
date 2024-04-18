@@ -9,6 +9,7 @@
 #include "TranslateAnimator.h"
 #include "PageStackManager.h"
 #include "core/SkColorFilter.h"
+#include "PluginManager.h"
 
 Page::Page() {
     pageId = PAGE_ID++;
@@ -29,6 +30,7 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     });
     animator->start();
     PageStackManager::getInstance()->updateVisibility(false);
+    PluginManager::getInstance()->invokeMethod("toast", "show", "push");
 }
 
 void Page::exitToLeft(const EnterExitInfo &info) {
@@ -42,6 +44,7 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     });
     animator->start();
     PageStackManager::getInstance()->updateVisibility(false);
+    PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
 }
 
 void Page::enterFromBottom(const Page::EnterExitInfo &info) {
@@ -55,6 +58,7 @@ void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     });
     animator->start();
     PageStackManager::getInstance()->updateVisibility(false);
+    PluginManager::getInstance()->invokeMethod("toast", "show", "push");
 }
 
 void Page::exitToTop(const Page::EnterExitInfo &info) {
@@ -68,6 +72,7 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     });
     animator->start();
     PageStackManager::getInstance()->updateVisibility(false);
+    PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
 }
 
 void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {

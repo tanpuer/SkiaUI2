@@ -2,6 +2,7 @@
 #include "assert.h"
 #include "native_log.h"
 
+
 PluginManager::PluginManager() {
 
 }
@@ -10,31 +11,36 @@ PluginManager::~PluginManager() {
 
 }
 
-void PluginManager::registerPlugin(IPlugin *plugin) {
-    assert(plugins.find(plugin->getName()) == plugins.end());
-    plugins[plugin->getName()] = plugin;
-}
-
-void PluginManager::clearPlugins() {
-    for (const auto &item: plugins) {
-        delete item.second;
-    }
-    plugins.clear();
-}
-
 std::string PluginManager::invokeMethod(const std::string &pluginName,
                                         const std::string &methodName,
                                         const std::string &methodParam) {
-    if (plugins.find(pluginName) == plugins.end()) {
-        ALOGE("invalid pluginName: %s", pluginName.c_str())
-        static std::string empty = "";
-        return empty;
+    if (globalJavaPlugins != nullptr && this->env != nullptr) {
+        env->NewStringUTF(pluginName.c_str());
+        auto result = (jstring) env->CallObjectMethod(globalJavaPlugins, javaInvokeMethod,
+                                                      env->NewStringUTF(pluginName.c_str()),
+                                                      env->NewStringUTF(methodName.c_str()),
+                                                      env->NewStringUTF(methodParam.c_str()));
+        return env->GetStringUTFChars(result, nullptr);
     }
-    return plugins[pluginName]->invoke(methodName, methodParam);
+    static std::string tmp = "";
+    return tmp;
 }
 
-void PluginManager::initJavaPluginManager(JNIEnv *env) {
-    const char *javaPluginManagerPath = "com/temple/skiaui/plugin/PluginManager";
-    auto javaPluginManager = env->FindClass(javaPluginManagerPath);
-    assert(javaPluginManager != nullptr);
+void PluginManager::initJavaPluginManager(jobject javaPlugins, JNIEnv *env) {
+    globalJavaPlugins = env->NewGlobalRef(javaPlugins);
+    javaPluginsClass = env->FindClass("com/temple/skiaui/plugin/PluginManager");
+    assert(javaPluginsClass);
+    javaInvokeMethod = env->GetMethodID(javaPluginsClass, "invokeMethod",
+                                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;");
+    assert(javaInvokeMethod);
+    this->env = env;
 }
+
+void PluginManager::releaseJavaPluginManager(JNIEnv *env) {
+    env->DeleteGlobalRef(globalJavaPlugins);
+    globalJavaPlugins = nullptr;
+    javaPluginsClass = nullptr;
+    javaInvokeMethod = nullptr;
+    this->env = nullptr;
+}
+
