@@ -166,10 +166,10 @@ int ViewGroup::getChildMeasureSpec(View *child, int parentMeasureSpec, int paddi
 }
 
 void ViewGroup::draw(SkCanvas *canvas) {
+    View::draw(canvas);
     for (auto child: children) {
         child->draw(canvas);
     }
-    View::draw(canvas);
 }
 
 void ViewGroup::setAlignItems(YGAlign align) {

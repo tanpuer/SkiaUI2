@@ -68,6 +68,14 @@ public:
      */
     virtual void setAlignSelf(YGAlign align);
 
+    virtual void setPositionType(YGPositionType type);
+
+    virtual void setDisplay(YGDisplay display);
+
+    virtual void setFlexGrow(float grow);
+
+    virtual void setGap(const YGGutter gutter, const float gapLength);
+
     YGNodeRef node;
 
     YGConfigRef config = nullptr;

@@ -13,11 +13,13 @@
 #include "SkiaUIContext.h"
 #include "PageTest.h"
 #include "PageStackManager.h"
+#include "FlexboxLayoutTest.h"
 
 SkiaUIApp::SkiaUIApp() {
     SkGraphics::Init();
 //    testDraw = std::make_unique<ScrollViewTest>();
     testDraw = std::make_unique<PageTest>();
+//    testDraw = std::make_unique<FlexboxLayoutTest>();
 }
 
 SkiaUIApp::~SkiaUIApp() {

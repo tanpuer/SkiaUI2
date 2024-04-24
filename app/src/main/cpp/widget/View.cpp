@@ -343,3 +343,39 @@ std::function<void(View *)> View::getClickListener() {
 bool View::forceRequestTouchMove() {
     return false;
 }
+
+void View::setPositionType(YGPositionType type) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    YGNodeStyleSetPositionType(node, type);
+    isDirty = true;
+}
+
+void View::setDisplay(YGDisplay display) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    YGNodeStyleSetDisplay(node, display);
+    isDirty = true;
+}
+
+void View::setFlexGrow(float grow) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    YGNodeStyleSetFlexGrow(node, grow);
+    isDirty = true;
+}
+
+void View::setGap(const YGGutter gutter, const float gapLength) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    YGNodeStyleSetGap(node, gutter, gapLength);
+    isDirty = true;
+}
