@@ -33,18 +33,8 @@ View::~View() {
 
 #pragma mark yoga
 
-/**
- * This is called to find out how big a view should be. The parent supplies constraint information in the width and height parameters.
-The actual measurement work of a view is performed in onMeasure(int, int), called by this method. Therefore, only onMeasure(int, int) can and must be overridden by subclasses.
- * @param widthMeasureSpec
- * @param heightMeasureSpec
- */
-void View::measure(int widthMeasureSpec, int heightMeasureSpec) {
-    //todo 目前每次都是forceLayout Android子类只能override onMeasure方法，精简处理
-    auto measuredWidth = getDefaultSize(minWidth, widthMeasureSpec);
-    auto measuredHeight = getDefaultSize(minHeight, heightMeasureSpec);
-    setMeasuredDimension(measuredWidth, measuredHeight);
-//    ALOGD("setMeasuredDimension %s %d %d", name(), measuredWidth, measuredHeight)
+void View::measure() {
+
 }
 
 void View::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
@@ -52,25 +42,6 @@ void View::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
     height = _measuredHeight;
     YGNodeStyleSetWidth(node, _measuredWidth);
     YGNodeStyleSetHeight(node, _measuredHeight);
-}
-
-int View::getDefaultSize(int minSize, int measureSpec) {
-    int result = minSize;
-    switch (MeasureSpec::getMode(measureSpec)) {
-        case UNSPECIFIED: {
-            result = minSize;
-            break;
-        }
-        case AT_MOST:
-        case EXACTLY: {
-            result = MeasureSpec::getSize(measureSpec);
-            break;
-        }
-        default: {
-            break;
-        }
-    }
-    return result;
 }
 
 void View::layout(int l, int t, int r, int b) {
@@ -205,25 +176,6 @@ void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     auto filter =SkMaskFilter::MakeBlur(style, sigma);
     paint->setMaskFilter(filter);
     isDirty = true;
-}
-
-#pragma LayoutParams相关
-
-void View::setLayoutParams(LayoutParams *_layoutParams) {
-    this->marginLeft = _layoutParams->_marginLeft;
-    this->marginTop = _layoutParams->_marginTop;
-    this->marginRight = _layoutParams->_marginRight;
-    this->marginBottom = _layoutParams->_marginBottom;
-    layoutParams = std::unique_ptr<LayoutParams>(_layoutParams);
-    YGNodeStyleSetMargin(node, YGEdgeLeft, layoutParams->_marginLeft);
-    YGNodeStyleSetMargin(node, YGEdgeTop, layoutParams->_marginTop);
-    YGNodeStyleSetMargin(node, YGEdgeRight, layoutParams->_marginRight);
-    YGNodeStyleSetMargin(node, YGEdgeBottom, layoutParams->_marginBottom);
-    isDirty = true;
-}
-
-LayoutParams *View::getLayoutParams() {
-    return layoutParams.get();
 }
 
 #pragma mark 后续才支持的
@@ -387,4 +339,37 @@ void View::setFlex(float flex) {
     }
     YGNodeStyleSetFlex(node, flex);
     isDirty = true;
+}
+
+void View::setWidth(int width) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    this->width = width;
+    YGNodeStyleSetWidth(node, width);
+}
+
+void View::setHeight(int height) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    this->height = height;
+    YGNodeStyleSetHeight(node, height);
+}
+
+void View::setMargin(std::vector<int> margins) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    marginLeft = margins[0];
+    marginTop = margins[1];
+    marginRight = margins[2];
+    marginBottom = margins[3];
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeLeft, marginLeft);
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeTop, marginTop);
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeRight, marginRight);
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeBottom, marginBottom);
 }

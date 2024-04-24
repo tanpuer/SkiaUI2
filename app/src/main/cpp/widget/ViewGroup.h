@@ -2,7 +2,6 @@
 
 #include "View.h"
 #include "vector"
-#include "LayoutParams.h"
 
 class ViewGroup : public View {
 
@@ -14,9 +13,9 @@ public:
 
     const char *name() override;
 
-    void measureChild(View *child, int parentWidthMeasureSpec, int parentHeightMeasureSpec);
+    void measureChild(View *child);
 
-    int getChildMeasureSpec(View *child, int parentMeasureSpec, int padding, int childDimension);
+    int getChildMeasureSpec(View *child);
 
     void setMeasuredDimension(int _measuredWidth, int _measuredHeight) override;
 
@@ -45,9 +44,9 @@ public:
 
 #pragma mark ViewGroup api
 
-    virtual bool addView(View *view, LayoutParams *layoutParams);
+    virtual bool addView(View *view);
 
-    virtual bool addViewAt(View *view, LayoutParams *layoutParams, uint32_t index);
+    virtual bool addViewAt(View *view, uint32_t index);
 
     virtual bool removeView(View *view);
 

@@ -10,13 +10,11 @@ void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, i
         PageStackManager::getInstance()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
-    auto widthSpec = MeasureSpec::makeMeasureSpec(width, EXACTLY);
-    auto heightSpec = MeasureSpec::makeMeasureSpec(height, EXACTLY);
     for (const auto &item: PageStackManager::getInstance()->getPages()) {
         if (!item->getVisibility()) {
             continue;
         }
-        item->measure(widthSpec, heightSpec);
+        item->measure();
         item->layout(0, 0, width, height);
         item->draw(canvas);
     }
@@ -36,7 +34,9 @@ void FlexboxLayoutTest::testAbsolute(int drawCount, ViewGroup *root, int width, 
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     {
         auto view = new View();
@@ -45,7 +45,9 @@ void FlexboxLayoutTest::testAbsolute(int drawCount, ViewGroup *root, int width, 
         colors.push_back(SK_ColorYELLOW);
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
-        flexboxLayout->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
+        view->setWidth(200);
+        view->setHeight(200);
+        flexboxLayout->addView(view);
     }
 
     {
@@ -54,9 +56,10 @@ void FlexboxLayoutTest::testAbsolute(int drawCount, ViewGroup *root, int width, 
         view->setBackgroundColor(SK_ColorBLUE);
         view->setPositionType(YGPositionTypeAbsolute);
         view->setAlignSelf(YGAlign::YGAlignFlexStart);
-        auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
-        lp->setMargin({0, 50, 0, 50});
-        flexboxLayout->addView(view, lp);
+        view->setWidth(200);
+        view->setHeight(200);
+        view->setMargin({0, 50, 0, 50});
+        flexboxLayout->addView(view);
     }
 }
 
@@ -71,16 +74,19 @@ void FlexboxLayoutTest::testWrap(int drawCount, ViewGroup *root, int width, int 
     flexboxLayout->setFlexDirection(YGFlexDirectionColumn);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     for (int i = 0; i < 13; ++i) {
         {
             auto view = new View();
             view->setConfig(flexboxLayout->config);
             view->setBackgroundColor(SK_ColorBLUE);
-            auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
-            lp->setMargin({0, 50, 50, 50});
-            flexboxLayout->addView(view, lp);
+            view->setWidth(200);
+            view->setHeight(200);
+            view->setMargin({0, 50, 50, 50});
+            flexboxLayout->addView(view);
         }
     }
 }
@@ -100,7 +106,9 @@ void FlexboxLayoutTest::testDisplay(int drawCount, ViewGroup *root, int width, i
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     {
         auto view = new View();
@@ -109,7 +117,9 @@ void FlexboxLayoutTest::testDisplay(int drawCount, ViewGroup *root, int width, i
         colors.push_back(SK_ColorYELLOW);
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
-        flexboxLayout->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
+        view->setWidth(200);
+        view->setHeight(200);
+        flexboxLayout->addView(view);
     }
 
     {
@@ -118,9 +128,10 @@ void FlexboxLayoutTest::testDisplay(int drawCount, ViewGroup *root, int width, i
         view->setBackgroundColor(SK_ColorBLUE);
         view->setAlignSelf(YGAlign::YGAlignFlexStart);
         view->setDisplay(YGDisplayNone);
-        auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
-        lp->setMargin({0, 50, 0, 50});
-        flexboxLayout->addView(view, lp);
+        view->setWidth(200);
+        view->setHeight(200);
+        view->setMargin({0, 50, 0, 50});
+        flexboxLayout->addView(view);
     }
 }
 
@@ -136,7 +147,9 @@ void FlexboxLayoutTest::testFlexGrow(int drawCount, ViewGroup *root, int width, 
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     {
         auto view = new View();
@@ -146,7 +159,7 @@ void FlexboxLayoutTest::testFlexGrow(int drawCount, ViewGroup *root, int width, 
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
         view->setFlexGrow(0.3);
-        flexboxLayout->addView(view, LayoutParams::makeExactlyLayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        flexboxLayout->addView(view);
     }
 
     {
@@ -155,10 +168,9 @@ void FlexboxLayoutTest::testFlexGrow(int drawCount, ViewGroup *root, int width, 
         view->setBackgroundColor(SK_ColorBLUE);
         view->setAlignSelf(YGAlign::YGAlignFlexStart);
         view->setDisplay(YGDisplayFlex);
-        auto lp = LayoutParams::makeExactlyLayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        lp->setMargin({50, 50, 50, 50});
+        view->setMargin({50, 50, 50, 50});
         view->setFlexGrow(0.7);
-        flexboxLayout->addView(view, lp);
+        flexboxLayout->addView(view);
     }
 
 }
@@ -177,7 +189,9 @@ void FlexboxLayoutTest::testFlexDirection(int drawCount, ViewGroup *root, int wi
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     {
         auto view = new View();
@@ -186,16 +200,19 @@ void FlexboxLayoutTest::testFlexDirection(int drawCount, ViewGroup *root, int wi
         colors.push_back(SK_ColorYELLOW);
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
-        flexboxLayout->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
+        view->setWidth(200);
+        view->setHeight(200);
+        flexboxLayout->addView(view);
     }
 
     {
         auto view = new View();
         view->setConfig(flexboxLayout->config);
         view->setBackgroundColor(SK_ColorBLUE);
-        auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
-        lp->setMargin({0, 50, 0, 50});
-        flexboxLayout->addView(view, lp);
+        view->setWidth(200);
+        view->setHeight(200);
+        view->setMargin({0, 50, 0, 50});
+        flexboxLayout->addView(view);
     }
 }
 
@@ -208,7 +225,9 @@ void FlexboxLayoutTest::testGap(int drawCount, ViewGroup *root, int width, int h
     flexboxLayout->setFlexDirection(YGFlexDirectionColumn);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     for (int i = 0; i < 18; ++i) {
         {
@@ -216,8 +235,9 @@ void FlexboxLayoutTest::testGap(int drawCount, ViewGroup *root, int width, int h
             view->setConfig(flexboxLayout->config);
             view->setBackgroundColor(SK_ColorBLUE);
             view->setGap(YGGutterAll, 20);
-            auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
-            flexboxLayout->addView(view, lp);
+            view->setWidth(200);
+            view->setHeight(200);
+            flexboxLayout->addView(view);
         }
     }
 }
@@ -233,7 +253,9 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     {
         auto view = new View();
@@ -243,7 +265,7 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
         view->setFlex(1);
-        flexboxLayout->addView(view,LayoutParams::makeExactlyLayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+        flexboxLayout->addView(view);
     }
 
     {
@@ -251,9 +273,8 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
         view->setConfig(flexboxLayout->config);
         view->setBackgroundColor(SK_ColorBLUE);
         view->setFlex(2);
-        auto lp = LayoutParams::makeExactlyLayoutParams(WRAP_CONTENT, WRAP_CONTENT);
-        lp->setMargin({0, 50, 0, 50});
-        flexboxLayout->addView(view, lp);
+        view->setMargin({0, 50, 0, 50});
+        flexboxLayout->addView(view);
     }
 }
 
@@ -269,23 +290,28 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-    root->addView(flexboxLayout, LayoutParams::makeExactlyLayoutParams(width, height));
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
 
     {
         auto container = new FlexboxLayout();
         container->setConfig(flexboxLayout->config);
         container->setFlexDirection(YGFlexDirectionRow);
         container->setBackgroundColor(SkColorSetARGB(0x66, 0xFF, 0xFF, 0x00));
-        flexboxLayout->addView(container, LayoutParams::makeExactlyLayoutParams(width, 200));
+        container->setWidth(width);
+        container->setHeight(200);
+        flexboxLayout->addView(container);
         {
             for (int i = 0; i < 3; ++i) {
                 {
                     auto view = new View();
                     view->setConfig(flexboxLayout->config);
                     view->setBackgroundColor(SK_ColorBLUE);
-                    auto lp = LayoutParams::makeExactlyLayoutParams(200, 200);
-                    lp->setMargin({20, 0, 0, 0});
-                    container->addView(view, lp);
+                    view->setWidth(200);
+                    view->setHeight(200);
+                    view->setMargin({20, 0, 0, 0});
+                    container->addView(view);
                 }
             }
         }
@@ -296,13 +322,17 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
         container->setConfig(flexboxLayout->config);
         container->setFlexDirection(YGFlexDirectionRow);
         container->setBackgroundColor(SkColorSetARGB(0x66, 0x00, 0xFF, 0xFF));
-        flexboxLayout->addView(container, LayoutParams::makeExactlyLayoutParams(width, height - 200));
+        container->setWidth(width);
+        container->setHeight(height - 200);
+        flexboxLayout->addView(container);
         {
             auto left = new FlexboxLayout();
             left->setConfig(flexboxLayout->config);
             left->setFlexDirection(YGFlexDirectionColumn);
             left->setBackgroundColor(SK_ColorBLACK);
-            container->addView(left, LayoutParams::makeExactlyLayoutParams(500, height - 200));
+            left->setWidth(500);
+            left->setHeight(height - 200);
+            container->addView(left);
         }
 
         {
@@ -310,7 +340,9 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
             right->setConfig(flexboxLayout->config);
             right->setFlexDirection(YGFlexDirectionColumn);
             right->setBackgroundColor(SK_ColorRED);
-            container->addView(right, LayoutParams::makeExactlyLayoutParams(width - 500, height - 200));
+            right->setWidth(width - 500);
+            right->setHeight(height - 200);
+            container->addView(right);
         }
     }
 
@@ -320,7 +352,8 @@ Page *FlexboxLayoutTest::initPage(int width, int height) {
     auto page = new Page();
     config = YGConfigNew();
     page->setConfig(config);
-    page->setLayoutParams(LayoutParams::makeExactlyLayoutParams(width, height));
+    page->setWidth(width);
+    page->setHeight(height);
     page->setStyle(SkPaint::kFill_Style);
     page->setBackgroundColor(SK_ColorTRANSPARENT);
     return page;

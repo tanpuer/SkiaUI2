@@ -21,14 +21,14 @@ public:
         return "RecyclerView";
     }
 
-    bool addView(View *view, LayoutParams *layoutParams) override {
+    bool addView(View *view) override {
         ALOGD("RecyclerView addView at %d %ld", YGNodeGetChildCount(node), children.size())
-        return ScrollView::addView(view, layoutParams);
+        return ScrollView::addView(view);
     }
 
-    bool addViewAt(View *view, LayoutParams *layoutParams, uint32_t index) override {
+    bool addViewAt(View *view, uint32_t index) override {
         ALOGD("RecyclerView addView at %d %ld", index, children.size())
-        return ScrollView::addViewAt(view, layoutParams, index);
+        return ScrollView::addViewAt(view, index);
     }
 
     bool removeViewAt(uint32_t index) override {
@@ -36,10 +36,8 @@ public:
         return ScrollView::removeViewAt(index);
     }
 
-    virtual void measure(int widthMeasureSpec, int heightMeasureSpec) override {
+    virtual void measure() override {
         //简化处理RecyclerView必须指定宽高
-        assert(layoutParams->_heightMode == EXACTLY);
-        assert(layoutParams->_widthMode == EXACTLY);
         if (adapter == nullptr) {
             ALOGD("RecyclerView Adapter is null, ignore measure")
             ViewGroup::setMeasuredDimension(width, height);
@@ -97,7 +95,7 @@ public:
             //todo
             //虽然child add进去了，但是只经过measure过程，还没layout，所以没法得知新加进去child的top或者bottom
             while ((children.empty() && adapter->getSize() > 0) ||
-                   (height == 0 && childHeightSum < layoutParams->_height) ||
+                   (height == 0 && childHeightSum < YGNodeLayoutGetHeight(node)) ||
                    (firstChild != nullptr && height > 0 && !lastScrollDown &&
                     adapter->startIndex > 0 &&
                     firstChild->skRect.top() - addedHeight > skRect.top() - 50) ||
@@ -111,14 +109,14 @@ public:
                     vh = adapter->handleStartVH();
                 }
                 View *child = vh->getItemView();
-                auto viewLayoutParams = LayoutParams::makeExactlyWidth(layoutParams->_width);
+                child->setWidth(YGNodeLayoutGetWidth(node));
                 assert(child->node->getOwner() == nullptr);
                 if (lastScrollDown) {
-                    addView(child, viewLayoutParams);
+                    addView(child);
                 } else {
-                    addViewAt(child, viewLayoutParams, 0);
+                    addViewAt(child, 0);
                 }
-                child->measure(widthMeasureSpec, heightMeasureSpec);
+                child->measure();
                 if (!lastScrollDown) {
                     translateY -= child->getHeight();
                 }
@@ -128,7 +126,7 @@ public:
         } else {
             //todo 横向滑动暂时忽略
         }
-        ViewGroup::setMeasuredDimension(layoutParams->_width, layoutParams->_height);
+//        ViewGroup::setMeasuredDimension(layoutParams->_width, layoutParams->_height);
         YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value,
                               YGNodeStyleGetHeight(node).value,
                               YGDirectionLTR);

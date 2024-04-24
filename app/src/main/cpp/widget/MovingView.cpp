@@ -1,5 +1,6 @@
 #include "MovingView.h"
 #include "LinearAnimator.h"
+#include "yoga/Utils.h"
 
 bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
     switch (touchEvent->action) {

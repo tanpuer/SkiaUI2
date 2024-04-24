@@ -112,17 +112,12 @@ public:
     /**
      * ListView的宽高要固定
      * 在onMeasure过程中发现还没铺满，要创建子view并添加进来
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
      */
-    virtual void measure(int widthMeasureSpec, int heightMeasureSpec) override {
+    virtual void measure() override {
         //ListView和ScrollView不同，ScrollView可以一口气算出总高度，ListView此处采取预绘制，在现有高度基础上
         //目前如果bottom < 0 || top > height就要remove
         //remove的时候还要更新translate: translateY += (被移除view的高度 + marginTop + marginBottom)
         SkASSERT(adapter != nullptr);
-        SkASSERT(layoutParams->_widthMode == EXACTLY && layoutParams->_heightMode == EXACTLY);
-        auto width = layoutParams->_width;
-        auto height = layoutParams->_height;
         ViewGroup::setMeasuredDimension(width, height);
 
         //todo 现在假设ListView铺满可滚动
@@ -134,7 +129,7 @@ public:
                 //加入view的时候要attach，remove的时候要detach
                 attachChild(child);
                 adapter->bindView(child, adapter->getItem(index));
-                measureChild(child, widthMeasureSpec, heightMeasureSpec);
+                measureChild(child);
 
                 //remove top
                 while (children.size() >= 2 && children[0]->skRect.bottom() < -100) {

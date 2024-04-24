@@ -34,8 +34,8 @@ void ProgressBar::setBackgroundColor(SkColor color) {
     backgroundPaint->setColor(color);
 }
 
-void ProgressBar::measure(int widthMeasureSpec, int heightMeasureSpec) {
-    View::measure(widthMeasureSpec, heightMeasureSpec);
+void ProgressBar::measure() {
+    View::measure();
 }
 
 void ProgressBar::layout(int l, int t, int r, int b) {

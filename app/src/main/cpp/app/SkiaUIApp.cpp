@@ -8,7 +8,6 @@
 #include "ViewGroup.h"
 #include "ScrollView.h"
 #include "BaseListView.h"
-#include "ScrollViewTest.h"
 #include "core/SkGraphics.h"
 #include "SkiaUIContext.h"
 #include "PageTest.h"
@@ -17,7 +16,6 @@
 
 SkiaUIApp::SkiaUIApp() {
     SkGraphics::Init();
-//    testDraw = std::make_unique<ScrollViewTest>();
     testDraw = std::make_unique<PageTest>();
 //    testDraw = std::make_unique<FlexboxLayoutTest>();
 }
@@ -66,13 +64,8 @@ void SkiaUIApp::setWindowSize(int width, int height) {
 }
 
 bool SkiaUIApp::onBackPressed() {
-    auto pageTest = dynamic_cast<PageTest *>(testDraw.get());
-    if (pageTest != nullptr) {
-        if (PageStackManager::getInstance()->getPages().size() <= 1) {
-            ALOGE("pop failed due to empty pages")
-            return false;
-        }
-        auto page = PageStackManager::getInstance()->back();
+    auto page = PageStackManager::getInstance()->back();
+    if (page != nullptr) {
         page->exitToLeft(Page::EnterExitInfo(0, mWidth));
         return true;
     }

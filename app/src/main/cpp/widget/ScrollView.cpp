@@ -14,32 +14,10 @@ ScrollView::~ScrollView() {
     scrollCallbacks.clear();
 }
 
-void ScrollView::measure(int widthMeasureSpec, int heightMeasureSpec) {
+void ScrollView::measure() {
     for (auto &child: children) {
-        measureChild(child, widthMeasureSpec, heightMeasureSpec);
+        measureChild(child);
     }
-    auto width = 0;
-    auto height = 0;
-    if (_direction == YGFlexDirectionColumn) {
-        if (layoutParams->_widthMode == EXACTLY) {
-            width = layoutParams->_width;
-        } else {
-            width = getMaxWidthInChildren();
-        }
-        //竖向滑动必须制定高度
-        assert(layoutParams->_heightMode == EXACTLY);
-        height = layoutParams->_height;
-    } else {
-        if (layoutParams->_heightMode == EXACTLY) {
-            height = layoutParams->_height;
-        } else {
-            height = getMaxHeightInChildren();
-        }
-        //横向滑动必须制定宽度
-        assert(layoutParams->_widthMode == EXACTLY);
-        width = layoutParams->_width;
-    }
-    ViewGroup::setMeasuredDimension(width, height);
     YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
                           YGDirectionLTR);
 }
@@ -96,16 +74,16 @@ void ScrollView::updateTranslateX(float diffX) {
     lastScrollRight = diffX < 0.0f;
 }
 
-bool ScrollView::addView(View *view, LayoutParams *layoutParams) {
+bool ScrollView::addView(View *view) {
     isDirty = true;
     auto index = YGNodeGetChildCount(node);
 //    ALOGD("RecyclerView addView at %d %ld", index, children.size())
-    return FlexboxLayout::addViewAt(view, layoutParams, index);
+    return FlexboxLayout::addViewAt(view, index);
 }
 
-bool ScrollView::addViewAt(View *view, LayoutParams *layoutParams, uint32_t index) {
+bool ScrollView::addViewAt(View *view, uint32_t index) {
     isDirty = true;
-    return ViewGroup::addViewAt(view, layoutParams, index);
+    return ViewGroup::addViewAt(view, index);
 }
 
 bool ScrollView::removeView(View *view) {

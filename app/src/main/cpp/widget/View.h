@@ -5,10 +5,10 @@
 #include <memory>
 #include "array"
 #include "memory"
+#include "vector"
 #include "core/SkPaint.h"
 #include "core/SkCanvas.h"
 #include "core/SkRRect.h"
-#include "LayoutParams.h"
 #include "TouchEventDispatcher.h"
 #include "IAnimator.h"
 #include "core/SkBlurTypes.h"
@@ -40,18 +40,8 @@ public:
 
 #pragma mark yoga 设置相关
 
-    /**
-     * 任何组件都可以复写，计算完宽高后必须调用setMeasuredDimension，包括ViewGroup及其子类
-     * @param widthMeasureSpec
-     * @param heightMeasureSpec
-     */
-    virtual void measure(int widthMeasureSpec, int heightMeasureSpec);
+    virtual void measure();
 
-    /**
-     * 作为View/TextView/ImageView 这种组件必须明确指出自己的宽高，ViewGroup根据子View的宽高和parent-ViewGroup的限制来设置自己的宽高
-     * @param _measuredWidth
-     * @param _measuredHeight
-     */
     virtual void setMeasuredDimension(int _measuredWidth, int _measuredHeight);
 
     virtual void layout(int l, int t, int r, int b);
@@ -78,6 +68,10 @@ public:
 
     virtual void setFlex(float flex);
 
+    virtual void setWidth(int width);
+
+    virtual void setHeight(int height);
+
     YGNodeRef node;
 
     YGConfigRef config = nullptr;
@@ -89,19 +83,6 @@ protected:
     int width, height;
 
     int minWidth, minHeight;
-
-protected:
-
-    static int getDefaultSize(int minSize, int measureSpec);
-
-#pragma mark LayoutParams相关
-public:
-
-    std::unique_ptr<LayoutParams> layoutParams;
-
-    virtual void setLayoutParams(LayoutParams *layoutParams);
-
-    virtual LayoutParams *getLayoutParams();
 
 #pragma mark yoga 获取相关
 
@@ -124,6 +105,8 @@ public:
     virtual void setCornerRadius(int radius);
 
     virtual void setAlpha(float alpha);
+
+    virtual void setMargin(std::vector<int> margins);
 
     SkPaint *paint;
 

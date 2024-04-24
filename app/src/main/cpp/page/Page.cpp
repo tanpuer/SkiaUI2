@@ -75,15 +75,13 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
 }
 
-void Page::measure(int widthMeasureSpec, int heightMeasureSpec) {
+void Page::measure() {
     if (!visible) {
         return;
     }
     SkASSERT(children.size() == 1);
     auto root = children[0];
-    measureChild(root, widthMeasureSpec, heightMeasureSpec);
-    ViewGroup::setMeasuredDimension(MeasureSpec::getSize(widthMeasureSpec),
-                                    MeasureSpec::getSize(heightMeasureSpec));
+    measureChild(root);
     YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
                           YGDirectionLTR);
 }

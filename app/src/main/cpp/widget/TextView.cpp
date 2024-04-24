@@ -46,7 +46,7 @@ void TextView::setAlpha(float alpha) {
     isDirty = true;
 }
 
-void TextView::measure(int widthMeasureSpec, int heightMeasureSpec) {
+void TextView::measure() {
     if (text.isEmpty() && stringBuilders.empty()) {
         setMeasuredDimension(0, 0);
         return;
@@ -77,22 +77,22 @@ void TextView::measure(int widthMeasureSpec, int heightMeasureSpec) {
         auto width = 0.0f;
         auto height = 0.0f;
         //为了方便计算大小，最好强制制定TextView的宽度，否则默认用maxIntrinsicWidth
-        if (layoutParams->_widthMode == EXACTLY) {
-            width = static_cast<float >(layoutParams->_width);
-            paragraph->layout(width);
+        if (this->width > 0) {
+            width = this->width;
+            paragraph->layout(this->width);
         } else {
             paragraph->layout(SK_ScalarInfinity);
             width = paragraph->getMaxIntrinsicWidth() + 1;
             paragraph->layout(width);
         }
         auto spacing = font.getSpacing();
-        if (layoutParams->_heightMode == EXACTLY) {
+        if (this->height > 0) {
             // Parent has told us how big to be. So be it.
-            height = static_cast<float >(layoutParams->_height);
-            if (paragraph->getHeight() > layoutParams->_height) {
-                setMaxLines(floor(layoutParams->_height / spacing));
+            height = static_cast<float >(this->height);
+            if (paragraph->getHeight() > this->height) {
+                setMaxLines(floor(this->height / spacing));
                 //当发现文字高度大于textview高度，更新maxLine，重新走measure方法
-                measure(widthMeasureSpec, heightMeasureSpec);
+                measure();
                 return;
             }
         } else {
@@ -105,9 +105,6 @@ void TextView::measure(int widthMeasureSpec, int heightMeasureSpec) {
 
 void TextView::draw(SkCanvas *canvas) {
     View::draw(canvas);
-    //y是基线的位置
-//    canvas->drawSimpleText(text.c_str(), text.size(), SkTextEncoding::kUTF8, skRect.left(),
-//                           skRect.top() + textRect.height(), font, *textPaint);
     if (paragraph == nullptr) {
         return;
     }

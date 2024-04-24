@@ -15,11 +15,11 @@ ViewGroup::~ViewGroup() {
     }
 }
 
-bool ViewGroup::addView(View *view, LayoutParams *layoutParams) {
-    return addViewAt(view, layoutParams, YGNodeGetChildCount(node));
+bool ViewGroup::addView(View *view) {
+    return addViewAt(view, YGNodeGetChildCount(node));
 }
 
-bool ViewGroup::addViewAt(View *view, LayoutParams *layoutParams, uint32_t index) {
+bool ViewGroup::addViewAt(View *view, uint32_t index) {
     if (view == nullptr || view->node == nullptr) {
         ALOGE("add null view, pls check view!")
         return false;
@@ -28,7 +28,6 @@ bool ViewGroup::addViewAt(View *view, LayoutParams *layoutParams, uint32_t index
     view->parentName = name();
     view->parentId = viewId;
     children.insert(children.cbegin() + index, view);
-    view->setLayoutParams(layoutParams);
     return true;
 }
 
@@ -74,95 +73,12 @@ void ViewGroup::removeAllViews() {
 void ViewGroup::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
     width = _measuredWidth;
     height = _measuredHeight;
-//    ALOGD("ViewGroup setMeasuredDimension %s %d %d", name(), _measuredWidth, _measuredHeight)
     YGNodeStyleSetWidth(node, static_cast<float>(_measuredWidth));
     YGNodeStyleSetHeight(node, static_cast<float>(_measuredHeight));
 }
 
-void ViewGroup::measureChild(View *child, int parentWidthMeasureSpec,
-                             int parentHeightMeasureSpec) {
-    auto lp = layoutParams.get();
-    auto childWidthMeasureSpec = getChildMeasureSpec(child, parentWidthMeasureSpec,
-                                                     lp->_paddingStart + lp->_paddingEnd,
-                                                     child->layoutParams->_width);
-    auto childHeightMeasureSpec = getChildMeasureSpec(child, parentHeightMeasureSpec,
-                                                      lp->_paddingTop + lp->_paddingBottom,
-                                                      child->layoutParams->_height);
-//    ALOGD("measureChild %s %d %d", child->name(), MeasureSpec::getSize(childWidthMeasureSpec),
-//          MeasureSpec::getSize(childHeightMeasureSpec));
-    child->measure(childWidthMeasureSpec, childHeightMeasureSpec);
-}
-
-int ViewGroup::getChildMeasureSpec(View *child, int parentMeasureSpec, int padding,
-                                   int childDimension) {
-    MeasureSpec::toString(parentMeasureSpec);
-    auto specMode = MeasureSpec::getMode(parentMeasureSpec);
-    auto specSize = MeasureSpec::getSize(parentMeasureSpec);
-    auto size = std::max(0, specSize - padding);
-    auto resultSize = 0;
-    auto resultMode = UNSPECIFIED;
-    switch (specMode) {
-        // Parent has imposed an exact size on us
-        case EXACTLY: {
-//            ALOGD("getChildMeasureSpec exactly %s %d", child->name(), childDimension)
-            if (childDimension >= 0) {
-                resultSize = childDimension;
-                resultMode = EXACTLY;
-            } else if (MeasureSpec::isMatchParent(childDimension)) {
-                // Child wants to be our size. So be it.
-                resultSize = size;
-                resultMode = EXACTLY;
-            } else {
-                // Child wants to determine its own size. It can't be
-                // bigger than us.
-                resultSize = size;
-                resultMode = AT_MOST;
-            }
-            break;
-        }
-            // Parent has imposed a maximum size on us
-        case AT_MOST: {
-            if (childDimension >= 0) {
-                // Child wants a specific size... so be it
-                resultSize = childDimension;
-                resultMode = EXACTLY;
-            } else if (MeasureSpec::isMatchParent(childDimension)) {
-                // Child wants to be our size, but our size is not fixed.
-                // Constrain child to not be bigger than us.
-                resultSize = size;
-                resultMode = AT_MOST;
-            } else {
-                // Child wants to determine its own size. It can't be
-                // bigger than us.
-                resultSize = size;
-                resultMode = AT_MOST;
-            }
-            break;
-        }
-
-            // Parent asked to see how big we want to be
-        case UNSPECIFIED: {
-            if (childDimension >= 0) {
-                // Child wants a specific size... let him have it
-                resultSize = childDimension;
-                resultMode = EXACTLY;
-            } else if (MeasureSpec::isMatchParent(childDimension)) {
-                // Child wants to be our size... find out how big it should be
-                resultSize = size;
-                resultMode = UNSPECIFIED;
-            } else {
-                // Child wants to determine its own size.... find out how big it should be
-                resultSize = size;
-                resultMode = UNSPECIFIED;
-            }
-            break;
-        }
-        default: {
-            ALOGD("illegal specMode")
-            assert(nullptr);
-        }
-    }
-    return MeasureSpec::makeMeasureSpec(resultSize, resultMode);
+void ViewGroup::measureChild(View *child) {
+    child->measure();
 }
 
 void ViewGroup::draw(SkCanvas *canvas) {

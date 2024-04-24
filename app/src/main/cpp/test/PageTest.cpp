@@ -22,14 +22,12 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         page->enterFromRight(Page::EnterExitInfo(width, 0));
 //        page->enterFromBottom(Page::EnterExitInfo(height, 0));
     }
-    auto scrollViewWidthSpec = MeasureSpec::makeMeasureSpec(width, EXACTLY);
-    auto scrollViewHeightSpec = MeasureSpec::makeMeasureSpec(height, EXACTLY);
 
     for (const auto &item: PageStackManager::getInstance()->getPages()) {
         if (!item->getVisibility()) {
             continue;
         }
-        item->measure(scrollViewWidthSpec, scrollViewHeightSpec);
+        item->measure();
         item->layout(0, 0, width, height);
         item->draw(canvas);
     }
@@ -46,7 +44,9 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     scrollView->setAlignContent(YGAlignCenter);
     scrollView->setStyle(SkPaint::kFill_Style);
     scrollView->setBackgroundColor(SK_ColorWHITE);
-    root->addView(scrollView, LayoutParams::makeExactlyLayoutParams(width, height));
+    scrollView->setWidth(width);
+    scrollView->setHeight(height);
+    root->addView(scrollView);
 
     {
         auto view = new View();
@@ -55,7 +55,9 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         colors.push_back(SK_ColorYELLOW);
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
-        scrollView->addView(view, LayoutParams::makeExactlyLayoutParams(200, 200));
+        view->setWidth(200);
+        view->setHeight(200);
+        scrollView->addView(view);
         view->setOnClickListener([this, width, height, drawCount](View *view) {
             auto page = initPage(width, height);
             initChildren(drawCount, page, width, height);
@@ -76,9 +78,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         view->setSwiperGradient(colors);
         view->setCornerRadius(20);
         view->setBlurMask(kNormal_SkBlurStyle, 10);
-        auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
-        lp->setMargin({0, 50, 0, 50});
-        scrollView->addView(view, lp);
+        view->setWidth(400);
+        view->setHeight(400);
+        view->setMargin({0, 50, 0, 50});
+        scrollView->addView(view);
         view->setOnClickListener([this, width, height](View *view) {
             auto page = PageStackManager::getInstance()->back();
             if (page == nullptr) {
@@ -94,16 +97,19 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         auto shaderView = new ShaderView();
         shaderView->setConfig(scrollView->config);
         shaderView->setShaderPath("sincos.glsl");
-        scrollView->addView(shaderView, LayoutParams::makeExactlyLayoutParams(1080, 520));
+        shaderView->setWidth(1080);
+        shaderView->setHeight(520);
+        scrollView->addView(shaderView);
     }
 
     {
         auto shaderView = new ShaderView();
         shaderView->setConfig(scrollView->config);
         shaderView->setShaderPath("raining.glsl", {"raining.png"});
-        auto lp = LayoutParams::makeExactlyLayoutParams(1080, 520);
-        lp->setMargin({0, 50, 0, 0});
-        scrollView->addView(shaderView, lp);
+        shaderView->setWidth(1080);
+        shaderView->setHeight(520);
+        shaderView->setMargin({0, 50, 0, 0});
+        scrollView->addView(shaderView);
     }
 
     {
@@ -113,9 +119,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
                                   {"transition1.png", "transition2.png"});
         shaderView->setCustomUniforms("count", 10.0);
         shaderView->setCustomUniforms("smoothness", 0.5);
-        auto lp = LayoutParams::makeExactlyLayoutParams(512, 400);
-        lp->setMargin({0, 50, 0, 0});
-        scrollView->addView(shaderView, lp);
+        shaderView->setWidth(512);
+        shaderView->setHeight(400);
+        shaderView->setMargin({0, 50, 0, 0});
+        scrollView->addView(shaderView);
     }
 
     {
@@ -124,9 +131,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         shaderView->setShaderPath("gl_transition_cross_zoom.glsl",
                                   {"transition1.png", "transition2.png"});
         shaderView->setCustomUniforms("strength", 0.4);
-        auto lp = LayoutParams::makeExactlyLayoutParams(512, 400);
-        lp->setMargin({0, 50, 0, 0});
-        scrollView->addView(shaderView, lp);
+        shaderView->setWidth(512);
+        shaderView->setHeight(400);
+        shaderView->setMargin({0, 50, 0, 0});
+        scrollView->addView(shaderView);
     }
 
     {
@@ -137,9 +145,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         imageView->setStyle(SkPaint::kStroke_Style);
         imageView->setBackgroundColor(SK_ColorRED);
         imageView->setStrokeWidth(2);
-        auto lp = LayoutParams::makeExactlyLayoutParams(800, 500);
-        lp->setMargin({0, 100, 0, 0});
-        scrollView->addView(imageView, lp);
+        imageView->setWidth(800);
+        imageView->setHeight(500);
+        imageView->setMargin({0, 100, 0, 0});
+        scrollView->addView(imageView);
     }
 
     {
@@ -150,9 +159,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         svgView->setBackgroundColor(SK_ColorRED);
         svgView->setStrokeWidth(2);
         svgView->setXY(100, 100);
-        auto lp = LayoutParams::makeExactlyLayoutParams(800, 800);
-        lp->setMargin({0, 100, 0, 0});
-        scrollView->addView(svgView, lp);
+        svgView->setWidth(800);
+        svgView->setHeight(800);
+        svgView->setMargin({0, 100, 0, 0});
+        scrollView->addView(svgView);
     }
 
     {
@@ -162,9 +172,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         canvasTest->setStyle(SkPaint::kStroke_Style);
         canvasTest->setBackgroundColor(SK_ColorRED);
         canvasTest->setStrokeWidth(2);
-        auto lp = LayoutParams::makeExactlyLayoutParams(600, 800);
-        lp->setMargin({0, 50, 0, 50});
-        scrollView->addView(canvasTest, lp);
+        canvasTest->setWidth(600);
+        canvasTest->setHeight(800);
+        canvasTest->setMargin({0, 50, 0, 50});
+        scrollView->addView(canvasTest);
     }
 
     {
@@ -177,9 +188,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
         progressBar->setProgress(30);
         progressBar->setStyle(SkPaint::kStroke_Style);
-        auto lp = LayoutParams::makeExactlyLayoutParams(width, 60);
-        lp->setMargin({50, 50, 50, 50});
-        scrollView->addView(progressBar, lp);
+        progressBar->setWidth(width);
+        progressBar->setHeight(60);
+        progressBar->setMargin({50, 50, 50, 50});
+        scrollView->addView(progressBar);
         progressBar->setProgressCallback([](int progress) {
             ALOGD("ProgressBar progress: %d", progress)
         });
@@ -191,9 +203,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         view->setBackgroundColor(SK_ColorBLUE);
         view->setStyle(SkPaint::kFill_Style);
         view->setCornerRadius(30);
-        auto viewLayoutParams = LayoutParams::makeExactlyLayoutParams(200, 200);
-        viewLayoutParams->setMargin({0, 30, 0, 0});
-        scrollView->addView(view, viewLayoutParams);
+        view->setWidth(200);
+        view->setHeight(200);
+        view->setMargin({0, 30, 0, 0});
+        scrollView->addView(view);
     }
 
     {
@@ -205,9 +218,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         button->setBackgroundColor(SK_ColorRED);
         button->setTextColor(SK_ColorBLACK);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
-        auto btnLayoutParams = LayoutParams::makeWrapContent();
-        btnLayoutParams->setMargin(50);
-        scrollView->addView(button, btnLayoutParams);
+        button->setMargin({50, 50, 50, 50});
+        button->setWidth(260);
+        button->setHeight(100);
+        scrollView->addView(button);
         button->setOnClickListener([](View *view) {
             ALOGD("setOnClickListener perform %s", view->name())
         });
@@ -221,9 +235,8 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         textView->setTextSize(60);
         textView->setBackgroundColor(SK_ColorRED);
         textView->setStyle(SkPaint::kStroke_Style);
-        auto tvLayoutParams = LayoutParams::makeWrapContent();
-        tvLayoutParams->setMargin(50);
-        scrollView->addView(textView, tvLayoutParams);
+        textView->setMargin({50, 50, 50, 50});
+        scrollView->addView(textView);
     }
 
     {
@@ -234,9 +247,8 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         textView->setTextSize(100);
         textView->setBackgroundColor(SK_ColorRED);
         textView->setStyle(SkPaint::kStroke_Style);
-        auto tvLayoutParams = LayoutParams::makeWrapContent();
-        tvLayoutParams->setMargin(50);
-        scrollView->addView(textView, tvLayoutParams);
+        textView->setMargin({50, 50, 50, 50});
+        scrollView->addView(textView);
     }
 
     {
@@ -266,9 +278,8 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
                                                                SkFontStyle::kNormal_Width,
                                                                SkFontStyle::kUpright_Slant),
                                                    100));
-        auto tvLayoutParams = LayoutParams::makeWrapContent();
-        tvLayoutParams->setMargin(50);
-        scrollView->addView(textView, tvLayoutParams);
+        textView->setMargin({50, 50, 50, 50});
+        scrollView->addView(textView);
     }
 
     {
@@ -281,9 +292,10 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         imageView->setBackgroundColor(SK_ColorRED);
         imageView->setStrokeWidth(2);
         imageView->blur(10.0f);
-        auto lp = LayoutParams::makeExactlyLayoutParams(400, 400);
-        lp->setMargin({0, 100, 0, 0});
-        scrollView->addView(imageView, lp);
+        imageView->setWidth(400);
+        imageView->setHeight(400);
+        imageView->setMargin({0, 100, 0, 0});
+        scrollView->addView(imageView);
     }
 }
 
@@ -291,7 +303,8 @@ Page *PageTest::initPage(int width, int height) {
     auto page = new Page();
     config = YGConfigNew();
     page->setConfig(config);
-    page->setLayoutParams(LayoutParams::makeExactlyLayoutParams(width, height));
+    page->setWidth(width);
+    page->setHeight(height);
     page->setFlexWrap(YGWrapWrap);
     page->setFlexDirection(YGFlexDirectionColumn);
     page->setJustifyContent(YGJustifyCenter);

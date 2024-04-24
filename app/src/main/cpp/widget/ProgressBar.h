@@ -29,7 +29,7 @@ public:
 
     virtual void draw(SkCanvas *canvas) override;
 
-    void measure(int widthMeasureSpec, int heightMeasureSpec) override;
+    void measure() override;
 
     virtual void layout(int l, int t, int r, int b) override;
 

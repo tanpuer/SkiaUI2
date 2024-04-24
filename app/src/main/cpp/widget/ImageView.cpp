@@ -56,22 +56,14 @@ void ImageView::setSource(const char *path) {
     isDirty = true;
 }
 
-void ImageView::measure(int widthMeasureSpec, int heightMeasureSpec) {
+void ImageView::measure() {
     if (skImage == nullptr) {
-        setMeasuredDimension(MeasureSpec::getSize(widthMeasureSpec),
-                             MeasureSpec::getSize(heightMeasureSpec));
         return;
     }
     if (isDirty) {
-        if (MeasureSpec::getMode(widthMeasureSpec) == EXACTLY &&
-            MeasureSpec::getMode(heightMeasureSpec) == EXACTLY) {
-            auto width = MeasureSpec::getSize(widthMeasureSpec);
-            auto height = MeasureSpec::getSize(heightMeasureSpec);
-            setMeasuredDimension(width, height);
-//            ALOGD("imageView size: %d %d", width, height)
+        if (this->width > 0 && this->height > 0) {
             return;
         }
-//        ALOGD("imageView size: %d %d", skImage->width(), skImage->height())
         setMeasuredDimension(skImage->width(), skImage->height());
     }
 }

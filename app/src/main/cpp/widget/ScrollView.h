@@ -21,7 +21,7 @@ public:
 
     virtual ~ScrollView();
 
-    virtual void measure(int widthMeasureSpec, int heightMeasureSpec) override;
+    virtual void measure() override;
 
     virtual void layout(int l, int t, int r, int b) override;
 
@@ -33,9 +33,9 @@ public:
 
     virtual void setFlexDirection(YGFlexDirection direction) override;
 
-    virtual bool addView(View *view, LayoutParams *layoutParams) override;
+    virtual bool addView(View *view) override;
 
-    virtual bool addViewAt(View *view, LayoutParams *layoutParams, uint32_t index) override;
+    virtual bool addViewAt(View *view, uint32_t index) override;
 
     virtual bool removeView(View *view) override;
 

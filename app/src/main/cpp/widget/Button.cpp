@@ -10,8 +10,7 @@ Button::~Button() {
 }
 
 void Button::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
-    TextView::setMeasuredDimension(_measuredWidth + defaultPadding * 2,
-                               _measuredHeight + defaultPadding * 2);
+    TextView::setMeasuredDimension(_measuredWidth, _measuredHeight);
 }
 
 void Button::draw(SkCanvas *canvas) {

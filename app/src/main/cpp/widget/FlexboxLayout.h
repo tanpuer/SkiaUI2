@@ -17,13 +17,13 @@ public:
 
     virtual void setFlexDirection(YGFlexDirection direction) override;
 
-    void measure(int widthMeasureSpec, int heightMeasureSpec) override;
+    void measure() override;
 
     virtual void layout(int l, int t, int r, int b) override;
 
     virtual void setFlexWrap(YGWrap wrap) override;
 
-    virtual bool addView(View *view, LayoutParams *layoutParams) override;
+    virtual bool addView(View *view) override;
 
     virtual bool removeView(View *view) override;
 
