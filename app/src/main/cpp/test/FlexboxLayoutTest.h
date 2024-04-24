@@ -32,5 +32,9 @@ private:
 
     void testGap(int drawCount, ViewGroup *root, int width, int height);
 
+    void testSetFlex(int drawCount, ViewGroup *root, int width, int height);
+
+    void testNested(int drawCount, ViewGroup *root, int width, int height);
+
 };
 

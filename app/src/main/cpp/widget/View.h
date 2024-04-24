@@ -76,6 +76,8 @@ public:
 
     virtual void setGap(const YGGutter gutter, const float gapLength);
 
+    virtual void setFlex(float flex);
+
     YGNodeRef node;
 
     YGConfigRef config = nullptr;

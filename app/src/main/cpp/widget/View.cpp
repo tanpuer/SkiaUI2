@@ -379,3 +379,12 @@ void View::setGap(const YGGutter gutter, const float gapLength) {
     YGNodeStyleSetGap(node, gutter, gapLength);
     isDirty = true;
 }
+
+void View::setFlex(float flex) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    YGNodeStyleSetFlex(node, flex);
+    isDirty = true;
+}
