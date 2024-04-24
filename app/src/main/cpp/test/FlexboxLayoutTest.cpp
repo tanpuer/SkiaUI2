@@ -286,8 +286,8 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
     flexboxLayout->setFlexWrap(YGWrapNoWrap);
     flexboxLayout->setFlexDirection(YGFlexDirectionColumn);
     flexboxLayout->setJustifyContent(YGJustifyFlexStart);
-    flexboxLayout->setAlignItems(YGAlignCenter);
-    flexboxLayout->setAlignContent(YGAlignCenter);
+//    flexboxLayout->setAlignItems(YGAlignCenter);
+//    flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
     flexboxLayout->setWidth(width);
@@ -299,7 +299,7 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
         container->setConfig(flexboxLayout->config);
         container->setFlexDirection(YGFlexDirectionRow);
         container->setBackgroundColor(SkColorSetARGB(0x66, 0xFF, 0xFF, 0x00));
-        container->setWidth(width);
+//        container->setWidth(width);
         container->setHeight(200);
         flexboxLayout->addView(container);
         {
@@ -321,7 +321,7 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
         auto container = new FlexboxLayout();
         container->setConfig(flexboxLayout->config);
         container->setFlexDirection(YGFlexDirectionRow);
-        container->setBackgroundColor(SkColorSetARGB(0x66, 0x00, 0xFF, 0xFF));
+        container->setBackgroundColor(SkColorSetARGB(0x33, 0x00, 0xFF, 0xFF));
         container->setWidth(width);
         container->setHeight(height - 200);
         flexboxLayout->addView(container);
@@ -330,8 +330,7 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
             left->setConfig(flexboxLayout->config);
             left->setFlexDirection(YGFlexDirectionColumn);
             left->setBackgroundColor(SK_ColorBLACK);
-            left->setWidth(500);
-            left->setHeight(height - 200);
+            left->setFlex(1);
             container->addView(left);
         }
 
@@ -340,8 +339,7 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
             right->setConfig(flexboxLayout->config);
             right->setFlexDirection(YGFlexDirectionColumn);
             right->setBackgroundColor(SK_ColorRED);
-            right->setWidth(width - 500);
-            right->setHeight(height - 200);
+            right->setFlex(2);
             container->addView(right);
         }
     }

@@ -156,9 +156,6 @@ public:
                 SK_ABORT("scrollOrientation is illegal!!!");
             }
         }
-
-
-        YGNodeCalculateLayout(node, width, height, YGDirectionLTR);
     }
 
     virtual void layout(int l, int t, int r, int b) override {

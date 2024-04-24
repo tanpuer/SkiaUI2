@@ -21,33 +21,33 @@ void FlexboxLayout::measure() {
     for (auto &child: children) {
         measureChild(child);
     }
-    if (YGNodeStyleGetFlexDirection(node) == YGFlexDirectionRow) {
-        if (YGNodeStyleGetWidth(node).value > 0) {
-            YGNodeStyleSetWidth(node, YGNodeStyleGetWidth(node).value);
-        } else {
-            YGNodeStyleSetWidth(node, getChildWidthSum());
-        }
-        if (YGNodeStyleGetHeight(node).value > 0) {
-            YGNodeStyleSetHeight(node, YGNodeStyleGetHeight(node).value);
-        } else {
-            //no-wrap
-            YGNodeStyleSetHeight(node, getMaxHeightInChildren());
-        }
-    } else {
-        if (YGNodeStyleGetWidth(node).value > 0) {
-            YGNodeStyleSetWidth(node, YGNodeStyleGetWidth(node).value);
-        } else {
-            //no-wrap
-            YGNodeStyleSetWidth(node, getMaxWidthInChildren());
-        }
-        if (YGNodeStyleGetHeight(node).value > 0) {
-            YGNodeStyleSetHeight(node, YGNodeStyleGetHeight(node).value);
-        } else {
-            YGNodeStyleSetHeight(node, getChildHeightSum());
-        }
-    }
-    YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
-                          YGDirectionLTR);
+//    if (YGNodeStyleGetFlexDirection(node) == YGFlexDirectionRow) {
+//        if (YGNodeStyleGetWidth(node).value > 0) {
+//            YGNodeStyleSetWidth(node, YGNodeStyleGetWidth(node).value);
+//        } else {
+//            YGNodeStyleSetWidth(node, getChildWidthSum());
+//        }
+//        if (YGNodeStyleGetHeight(node).value > 0) {
+//            YGNodeStyleSetHeight(node, YGNodeStyleGetHeight(node).value);
+//        } else {
+//            //no-wrap
+//            YGNodeStyleSetHeight(node, getMaxHeightInChildren());
+//        }
+//    } else {
+//        if (YGNodeStyleGetWidth(node).value > 0) {
+//            YGNodeStyleSetWidth(node, YGNodeStyleGetWidth(node).value);
+//        } else {
+//            //no-wrap
+//            YGNodeStyleSetWidth(node, getMaxWidthInChildren());
+//        }
+//        if (YGNodeStyleGetHeight(node).value > 0) {
+//            YGNodeStyleSetHeight(node, YGNodeStyleGetHeight(node).value);
+//        } else {
+//            YGNodeStyleSetHeight(node, getChildHeightSum());
+//        }
+//    }
+//    YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
+//                          YGDirectionLTR);
 //    ViewGroup::setMeasuredDimension(YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value);
 //    //如果是wrap，存在换行的情况，要重新计算FlexboxLayout的宽高
 //    if (layoutParams->_heightMode != EXACTLY && _direction == YGFlexDirectionRow &&

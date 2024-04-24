@@ -18,8 +18,6 @@ void ScrollView::measure() {
     for (auto &child: children) {
         measureChild(child);
     }
-    YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
-                          YGDirectionLTR);
 }
 
 void ScrollView::layout(int l, int t, int r, int b) {
