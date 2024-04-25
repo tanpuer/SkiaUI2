@@ -6,7 +6,7 @@ void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, i
         ALOGD("doDrawTest %d %d", width, height)
         auto page = initPage(width, height);
         root = page;
-        testNested(drawCount, root, width, height);
+        testSetFlex(drawCount, root, width, height);
         PageStackManager::getInstance()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
@@ -246,7 +246,7 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
     auto flexboxLayout = new FlexboxLayout();
     config = YGConfigNew();
     flexboxLayout->setConfig(config);
-    flexboxLayout->setFlexWrap(YGWrapNoWrap);
+    flexboxLayout->setFlexWrap(YGWrapWrap);
     flexboxLayout->setFlexDirection(YGFlexDirectionColumn);
     flexboxLayout->setJustifyContent(YGJustifyFlexStart);
     flexboxLayout->setAlignItems(YGAlignCenter);
@@ -265,6 +265,7 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
         view->setFlex(1);
+        view->setWidth(width);
         flexboxLayout->addView(view);
     }
 
@@ -274,6 +275,7 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
         view->setBackgroundColor(SK_ColorBLUE);
         view->setFlex(2);
         view->setMargin({0, 50, 0, 50});
+        view->setWidth(width);
         flexboxLayout->addView(view);
     }
 }
@@ -329,7 +331,7 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
             auto left = new FlexboxLayout();
             left->setConfig(flexboxLayout->config);
             left->setFlexDirection(YGFlexDirectionColumn);
-            left->setBackgroundColor(SK_ColorBLACK);
+            left->setBackgroundColor(SK_ColorWHITE);
             left->setFlex(1);
             container->addView(left);
         }

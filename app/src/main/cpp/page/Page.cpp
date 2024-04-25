@@ -82,8 +82,7 @@ void Page::measure() {
     SkASSERT(children.size() == 1);
     auto root = children[0];
     measureChild(root);
-    YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value, YGNodeStyleGetHeight(node).value,
-                          YGDirectionLTR);
+    YGNodeCalculateLayout(node, this->width, this->height,YGDirectionLTR);
 }
 
 void Page::layout(int l, int t, int r, int b) {
