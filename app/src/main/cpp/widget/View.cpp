@@ -13,6 +13,7 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
                minWidth(0), minHeight(0),
                parentId(0),
                marginLeft(0), marginTop(0), marginRight(0), marginBottom(0),
+               paddingLeft(0), paddingTop(0), paddingRight(0), paddingBottom(0),
                isDirty(false),
                widthPercent(0.0f), hwRatio(0.0f) {
     viewId = VIEW_ID++;
@@ -179,28 +180,6 @@ void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
 }
 
 #pragma mark 后续才支持的
-
-void View::setPadding(std::array<int, 4> paddings) {
-    YGAssert(node, "view is null, pls check");
-    if (node == nullptr) {
-        ALOGE("YGNodeRef not initialized, pls check!")
-        return;
-    }
-    YGNodeStyleSetPadding(node, YGEdgeLeft, paddings[0]);
-    YGNodeStyleSetPadding(node, YGEdgeTop, paddings[1]);
-    YGNodeStyleSetPadding(node, YGEdgeRight, paddings[2]);
-    YGNodeStyleSetPadding(node, YGEdgeBottom, paddings[3]);
-    isDirty = true;
-}
-
-void View::setPadding(int padding) {
-    YGAssert(node, "view is null, pls check");
-    if (node == nullptr) {
-        return;
-    }
-    YGNodeStyleSetPadding(node, YGEdgeAll, padding);
-    isDirty = true;
-}
 
 void View::setSizePercent(float widthPercent, float hwRatio) {
     YGAssert(node, "view is null, pls check");
@@ -372,4 +351,29 @@ void View::setMargin(std::vector<int> margins) {
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeTop, marginTop);
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeRight, marginRight);
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeBottom, marginBottom);
+}
+
+void View::setPadding(std::vector<int> paddings) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    paddingLeft = paddings[0];
+    paddingTop = paddings[1];
+    paddingRight = paddings[2];
+    paddingBottom = paddings[3];
+    YGNodeStyleSetPadding(node, YGEdge::YGEdgeLeft, paddings[0]);
+    YGNodeStyleSetPadding(node, YGEdge::YGEdgeTop, paddings[1]);
+    YGNodeStyleSetPadding(node, YGEdge::YGEdgeRight, paddings[2]);
+    YGNodeStyleSetPadding(node, YGEdge::YGEdgeBottom, paddings[3]);
+    isDirty = true;
+}
+
+void View::setAspectRatio(float ratio) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    YGNodeStyleSetAspectRatio(node, ratio);
+    isDirty = true;
 }

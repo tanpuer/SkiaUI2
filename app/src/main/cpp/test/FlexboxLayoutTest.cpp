@@ -1,12 +1,13 @@
 #include "FlexboxLayoutTest.h"
 #include "PageStackManager.h"
+#include "Button.h"
 
 void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
         ALOGD("doDrawTest %d %d", width, height)
         auto page = initPage(width, height);
         root = page;
-        testSetFlex(drawCount, root, width, height);
+        testNested(drawCount, root, width, height);
         PageStackManager::getInstance()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
@@ -45,8 +46,8 @@ void FlexboxLayoutTest::testAbsolute(int drawCount, ViewGroup *root, int width, 
         colors.push_back(SK_ColorYELLOW);
         colors.push_back(SK_ColorBLUE);
         view->setLinearGradient(colors);
-        view->setWidth(200);
         view->setHeight(200);
+        view->setAspectRatio(0.5);
         flexboxLayout->addView(view);
     }
 
@@ -56,8 +57,8 @@ void FlexboxLayoutTest::testAbsolute(int drawCount, ViewGroup *root, int width, 
         view->setBackgroundColor(SK_ColorBLUE);
         view->setPositionType(YGPositionTypeAbsolute);
         view->setAlignSelf(YGAlign::YGAlignFlexStart);
-        view->setWidth(200);
         view->setHeight(200);
+        view->setAspectRatio(1.0);
         view->setMargin({0, 50, 0, 50});
         flexboxLayout->addView(view);
     }
@@ -253,6 +254,7 @@ void FlexboxLayoutTest::testSetFlex(int drawCount, ViewGroup *root, int width, i
     flexboxLayout->setAlignContent(YGAlignCenter);
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
+    flexboxLayout->setPadding({100, 100, 0, 0});
     flexboxLayout->setWidth(width);
     flexboxLayout->setHeight(height);
     root->addView(flexboxLayout);
@@ -334,13 +336,31 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
             left->setBackgroundColor(SK_ColorWHITE);
             left->setFlex(1);
             container->addView(left);
+
+            {
+                auto button = new Button();
+                button->setConfig(flexboxLayout->config);
+                button->setText(SkString("Button"));
+                button->setTextSize(60);
+                button->setCornerRadius(20);
+                button->setBackgroundColor(SK_ColorRED);
+                button->setTextColor(SK_ColorBLACK);
+                button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+                button->setMargin({50, 50, 50, 50});
+                button->setWidth(260);
+                button->setHeight(100);
+                left->addView(button);
+                button->setOnClickListener([](View *view) {
+                    ALOGD("setOnClickListener perform %s", view->name())
+                });
+            }
         }
 
         {
             auto right = new FlexboxLayout();
             right->setConfig(flexboxLayout->config);
             right->setFlexDirection(YGFlexDirectionColumn);
-            right->setBackgroundColor(SK_ColorRED);
+            right->setBackgroundColor(SkColorSetARGB(0x55, 0xFF, 0x00, 0x00));
             right->setFlex(2);
             container->addView(right);
         }

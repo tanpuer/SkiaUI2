@@ -9,6 +9,11 @@ Button::~Button() {
     delete ripplePaint;
 }
 
+void Button::setConfig(YGConfigRef config) {
+    View::setConfig(config);
+    setPadding({defaultPadding, defaultPadding, defaultPadding});
+}
+
 void Button::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
     TextView::setMeasuredDimension(_measuredWidth, _measuredHeight);
 }
@@ -19,5 +24,5 @@ void Button::draw(SkCanvas *canvas) {
     }
     View::draw(canvas);
     SkASSERT(paragraph);
-    paragraph->paint(canvas, skRect.left() + defaultPadding, skRect.top() + defaultPadding);
+    paragraph->paint(canvas, skRect.left(), skRect.top() + defaultPadding);
 }

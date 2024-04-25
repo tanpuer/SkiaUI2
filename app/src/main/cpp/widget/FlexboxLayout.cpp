@@ -38,7 +38,6 @@ void FlexboxLayout::layoutVertical(int l, int t, int r, int b) {
         auto top = static_cast<int>(YGNodeLayoutGetTop(child->node));
         auto width = static_cast<int>(YGNodeLayoutGetWidth(child->node));
         auto height = static_cast<int>(YGNodeLayoutGetHeight(child->node));
-        //todo 需要考虑padding
 //        ALOGD("FlexboxLayout: layout vertical %s %d %d %d %d", child->name(), left, top, width, height)
         child->layout(left + l, top + t, left + l + width, top + t + height);
     }
@@ -51,7 +50,6 @@ void FlexboxLayout::layoutHorizontal(int l, int t, int r, int b) {
         auto width = static_cast<int>(YGNodeLayoutGetWidth(child->node));
         auto height = static_cast<int>(YGNodeLayoutGetHeight(child->node));
 //        ALOGD("FlexboxLayout: layout horizontal %s %d %d %d %d", child->name(), left, top, width, height)
-        //todo 需要考虑padding
         child->layout(left + l, top + t, left + l + width, top + t + height);
     }
 }

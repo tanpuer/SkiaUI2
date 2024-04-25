@@ -50,7 +50,7 @@ public:
 
     virtual bool isViewGroup();
 
-    void setConfig(YGConfigRef config);
+    virtual void setConfig(YGConfigRef config);
 
     /**
      * 在AlignItems的基础上自定义每个子视图的对齐方式
@@ -108,9 +108,13 @@ public:
 
     virtual void setMargin(std::vector<int> margins);
 
+    virtual void setPadding(std::vector<int> paddings);
+
     SkPaint *paint;
 
     int marginLeft, marginTop, marginRight, marginBottom;
+
+    int paddingLeft, paddingTop, paddingRight, paddingBottom;
 
     SkIRect skRect;
 
@@ -128,12 +132,10 @@ public:
 
     virtual void setBlurMask(SkBlurStyle style, SkScalar sigma);
 
+    virtual void setAspectRatio(float ratio);
+
 public:
     //todo 后续才支持的
-    virtual void setPadding(std::array<int, 4> paddings);
-
-    virtual void setPadding(int padding);
-
     /**
      * 绝大部分情况下，宽度根据屏幕宽度百分比设置，高度参考宽度，保持宽高比
      * @param widthPercent

@@ -10,6 +10,8 @@ public:
 
     ~Button();
 
+    void setConfig(YGConfigRef config) override;
+
     void setMeasuredDimension(int _measuredWidth, int _measuredHeight) override;
 
     void draw(SkCanvas *canvas) override;
