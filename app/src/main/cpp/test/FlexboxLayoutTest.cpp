@@ -1,6 +1,7 @@
 #include "FlexboxLayoutTest.h"
 #include "PageStackManager.h"
 #include "Button.h"
+#include "ClockView.h"
 
 void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
@@ -363,6 +364,15 @@ void FlexboxLayoutTest::testNested(int drawCount, ViewGroup *root, int width, in
             right->setBackgroundColor(SkColorSetARGB(0x55, 0xFF, 0x00, 0x00));
             right->setFlex(2);
             container->addView(right);
+
+            {
+                auto clockView = new ClockView();
+                clockView->setConfig(flexboxLayout->config);
+                clockView->setWidth(500);
+                clockView->setHeight(500);
+                clockView->setMargin({50, 50, 0, 0});
+                right->addView(clockView);
+            }
         }
     }
 
