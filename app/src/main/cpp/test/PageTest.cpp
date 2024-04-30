@@ -11,6 +11,7 @@
 #include "ProgressBar.h"
 #include "Button.h"
 #include "PageStackManager.h"
+#include "ClockView.h"
 
 void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
@@ -174,6 +175,15 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         canvasTest->setStrokeWidth(2);
         canvasTest->setWidth(600);
         canvasTest->setHeight(800);
+        canvasTest->setMargin({0, 50, 0, 50});
+        scrollView->addView(canvasTest);
+    }
+
+    {
+        auto canvasTest = new ClockView();
+        canvasTest->setConfig(scrollView->config);
+        canvasTest->setWidth(600);
+        canvasTest->setHeight(600);
         canvasTest->setMargin({0, 50, 0, 50});
         scrollView->addView(canvasTest);
     }

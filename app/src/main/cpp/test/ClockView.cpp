@@ -19,7 +19,8 @@ void ClockView::draw(SkCanvas *canvas) {
     drawClockHand(canvas, (now_tm->tm_hour % 12 * 30) + (now_tm->tm_min * 0.5),
                   skRect.width() * 0.2, 20, SK_ColorBLUE);
     // 分针
-    drawClockHand(canvas, now_tm->tm_min * 6, skRect.width() * 0.3, 10, SK_ColorYELLOW);
+    drawClockHand(canvas, now_tm->tm_min * 6 + now_tm->tm_sec * 0.1, skRect.width() * 0.3, 10,
+                  SK_ColorYELLOW);
     // 秒针
     drawClockHand(canvas, now_tm->tm_sec * 6, skRect.width() * 0.4, 5, SK_ColorRED);
 
