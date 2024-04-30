@@ -15,6 +15,8 @@ public:
 
 private:
 
+    void drawBackground(SkCanvas* canvas);
+
     void drawClockHand(SkCanvas* canvas, float angle, float length, float handWidth, SkColor color);
 
 };
