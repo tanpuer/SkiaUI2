@@ -351,6 +351,7 @@ void View::setMargin(std::vector<int> margins) {
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeTop, marginTop);
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeRight, marginRight);
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeBottom, marginBottom);
+    isDirty = true;
 }
 
 void View::setPadding(std::vector<int> paddings) {

@@ -118,7 +118,7 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
             case TouchEvent::ACTION_MOVE: {
                 pressed = true;
                 auto lastProgress = progress;
-                progress = static_cast<int>((touchEvent->x - YGNodeLayoutGetLeft(node) - marginLeft)
+                progress = static_cast<int>((touchEvent->x - left - marginLeft)
                                             * 100 / (width - marginLeft - marginRight));
                 if (progress > 100) {
                     progress = 100;

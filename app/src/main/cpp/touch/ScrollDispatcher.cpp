@@ -91,12 +91,10 @@ View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent
     }
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
-        auto left = YGNodeLayoutGetLeft(child->node) + tempLeft + diffX;
-        auto top = YGNodeLayoutGetTop(child->node) + tempTop + diffY;
-        auto width = YGNodeLayoutGetWidth(child->node);
-        auto height = YGNodeLayoutGetHeight(child->node);
-//        ALOGD("findTargetViewTraversal %f %f %f %f %f %f", left, top, width, height, touchEvent->x,
-//              touchEvent->y)
+        auto left = child->left;
+        auto top = child->top;
+        auto width = child->getWidth();
+        auto height = child->getHeight();
         if (touchEvent->x >= left && touchEvent->x <= left + width &&
             touchEvent->y >= top && touchEvent->y <= top + height) {
             if (child->isViewGroup()) {

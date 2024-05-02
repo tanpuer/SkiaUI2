@@ -119,10 +119,10 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
     ALOGD("findTargetViewTraversal %s %d", viewGroup->name(), viewGroup->children.size())
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
-        auto left = YGNodeLayoutGetLeft(child->node) + tempLeft;
-        auto top = YGNodeLayoutGetTop(child->node) + tempTop;
-        auto width = YGNodeLayoutGetWidth(child->node);
-        auto height = YGNodeLayoutGetHeight(child->node);
+        auto left = child->left;
+        auto top = child->top;
+        auto width = child->getWidth();
+        auto height = child->getHeight();
         ALOGD("findTargetViewTraversal %f %f %f %f %f %f", left, top, width, height, touchEvent->x,
               touchEvent->y)
         if (touchEvent->x >= left && touchEvent->x <= left + width &&
