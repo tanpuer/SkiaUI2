@@ -45,37 +45,39 @@ class HYSkiaEngine {
     var renderCallback: RenderCallback? = null
     private val start = System.currentTimeMillis()
     private val pluginManager = PluginManager()
+    private var glApp = 0L
+    private var uiApp = 0L
 
     init {
         skiaGLHandler.post {
-            nativeGLInit(HYSkiaUIApp.getInstance().assets)
+            glApp = nativeGLInit(HYSkiaUIApp.getInstance().assets)
         }
         skiaUIHandler.post {
-            nativeUIInit()
+            uiApp = nativeUIInit()
             nativeSetPlugins(pluginManager)
         }
     }
 
     fun createSurface(surface: Surface) {
         skiaGLHandler.post {
-            nativeGLCreated(surface)
+            nativeGLCreated(glApp, surface)
         }
         velocityTracker = VelocityTracker.obtain()
     }
 
     fun changeSurfaceSize(width: Int, height: Int) {
         skiaGLHandler.post {
-            nativeGLChanged(width, height, System.currentTimeMillis() / 1000)
+            nativeGLChanged(glApp, width, height, System.currentTimeMillis() / 1000)
         }
         skiaUIHandler.post {
-            nativeUIChanged(width, height, System.currentTimeMillis() / 1000)
-            pic.set(nativeUIDoFrame(System.currentTimeMillis() - start))
+            nativeUIChanged(uiApp, width, height, System.currentTimeMillis() / 1000)
+            pic.set(nativeUIDoFrame(uiApp, System.currentTimeMillis() - start))
         }
     }
 
     fun destroySurface() {
         skiaGLHandler.post {
-            nativeGLDestroyed()
+            nativeGLDestroyed(glApp)
         }
         velocityTracker?.recycle()
         velocityTracker = null
@@ -94,13 +96,13 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             finishDraw.set(false)
-            pic.set(nativeUIDoFrame(System.currentTimeMillis() - start))
+            pic.set(nativeUIDoFrame(uiApp, System.currentTimeMillis() - start))
             finishDraw.set(true)
             drawCount.set(drawCount.get() + 1)
         }
         skiaGLHandler.post {
             if (pic.get() != 0L) {
-                nativeGLDoFrame(pic.get(), time)
+                nativeGLDoFrame(glApp, pic.get(), time)
                 pic.set(0L)
             }
         }
@@ -111,13 +113,14 @@ class HYSkiaEngine {
         val y = event.y
         val action = event.action
         skiaUIHandler.post {
-            nativeTouchEvent(action, x, y)
+            nativeTouchEvent(uiApp, action, x, y)
         }
         velocityTracker?.addMovement(event)
         if (action == MotionEvent.ACTION_UP) {
             velocityTracker?.computeCurrentVelocity(1000)
             skiaUIHandler.post {
                 nativeSetVelocity(
+                    uiApp,
                     velocityTracker?.xVelocity ?: 0f,
                     velocityTracker?.yVelocity ?: 0f
                 )
@@ -127,14 +130,16 @@ class HYSkiaEngine {
     }
 
     fun release() {
-        nativeRelease()
+        nativeRelease(uiApp, glApp)
         skiaUIHandlerThread.quitSafely()
         skiaGLHandlerThread.quitSafely()
+        uiApp = 0L
+        glApp = 0L
     }
 
     fun onBackPressed() {
         skiaUIHandler.post {
-            if (!nativeBackPressed()) {
+            if (!nativeBackPressed(uiApp)) {
                 Handler(Looper.getMainLooper()).post {
                     renderCallback?.onPlatformBackPressed()
                 }
@@ -142,18 +147,18 @@ class HYSkiaEngine {
         }
     }
 
-    private external fun nativeGLInit(assets: AssetManager)
-    private external fun nativeGLCreated(surface: Surface)
-    private external fun nativeGLChanged(width: Int, height: Int, time: Long)
-    private external fun nativeGLDestroyed()
-    private external fun nativeGLDoFrame(pic: Long, time: Long)
-    private external fun nativeTouchEvent(action: Int, x: Float, y: Float): Boolean
-    private external fun nativeSetVelocity(xVelocity: Float, yVelocity: Float)
-    private external fun nativeUIInit()
-    private external fun nativeUIChanged(width: Int, height: Int, time: Long)
-    private external fun nativeUIDoFrame(time: Long): Long
-    private external fun nativeRelease()
-    private external fun nativeBackPressed(): Boolean
+    private external fun nativeGLInit(assets: AssetManager): Long
+    private external fun nativeGLCreated(glApp: Long, surface: Surface)
+    private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
+    private external fun nativeGLDestroyed(glApp: Long)
+    private external fun nativeGLDoFrame(glApp: Long, pic: Long, time: Long)
+    private external fun nativeUIInit(): Long
+    private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean
+    private external fun nativeSetVelocity(uiApp: Long, xVelocity: Float, yVelocity: Float)
+    private external fun nativeUIChanged(uiApp: Long, width: Int, height: Int, time: Long)
+    private external fun nativeUIDoFrame(uiApp: Long, time: Long): Long
+    private external fun nativeBackPressed(uiApp: Long): Boolean
+    private external fun nativeRelease(uiApp: Long, glApp: Long)
     private external fun nativeSetPlugins(pluginManager: PluginManager)
 
     companion object {

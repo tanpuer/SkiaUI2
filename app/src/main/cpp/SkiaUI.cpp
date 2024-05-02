@@ -7,50 +7,54 @@
 #include "PluginManager.h"
 
 const char *HYSkiaEngine = "com/temple/skiaui/HYSkiaEngine";
-jobject globalAssets = nullptr;
-static SkiaGLApp *glApp = nullptr;
-static SkiaUIApp *uiApp = nullptr;
 
-extern "C" JNIEXPORT void JNICALL
+extern "C" JNIEXPORT jlong JNICALL
 native_GLInit(JNIEnv *env, jobject instance, jobject javaAssetManager) {
     ALOGD("native_init")
-    globalAssets = env->NewGlobalRef(javaAssetManager);
-    glApp = new SkiaGLApp(env, globalAssets);
+    auto globalAssets = env->NewGlobalRef(javaAssetManager);
+    auto glApp = new SkiaGLApp(env, globalAssets);
+    return reinterpret_cast<long>(glApp);
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_GLCreated(JNIEnv *env, jobject instance, jobject javaSurface) {
+native_GLCreated(JNIEnv *env, jobject instance, jlong javaGLApp, jobject javaSurface) {
     ALOGD("native_SurfaceCreated")
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
         glApp->create(ANativeWindow_fromSurface(env, javaSurface));
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_GLChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong time) {
+native_GLChanged(JNIEnv *env, jobject instance, jlong javaGLApp, jint width, jint height,
+                 jlong time) {
     ALOGD("native_SurfaceChanged")
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
         glApp->change(width, height, time);
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_GLDestroyed(JNIEnv *env, jobject instance) {
+native_GLDestroyed(JNIEnv *env, jobject instance, jlong javaGLApp) {
     ALOGD("native_SurfaceDestroyed")
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
         glApp->destroy();
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_GLDoFrame(JNIEnv *env, jobject instance, jlong pic, jlong time) {
+native_GLDoFrame(JNIEnv *env, jobject instance, jlong javaGLApp, jlong pic, jlong time) {
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
         glApp->doFrame(pic, time);
     }
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_TouchEvent(JNIEnv *env, jobject instance, jint action, jfloat x, jfloat y) {
+native_TouchEvent(JNIEnv *env, jobject instance, jlong javaUIApp, jint action, jfloat x, jfloat y) {
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         auto touchEvent = new TouchEvent(static_cast<TouchEvent::MotionEvent>(action), x, y);
         uiApp->dispatchTouchEvent(touchEvent);
@@ -59,7 +63,8 @@ native_TouchEvent(JNIEnv *env, jobject instance, jint action, jfloat x, jfloat y
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SetVelocity(JNIEnv *env, jobject instance, jfloat x, jfloat y) {
+native_SetVelocity(JNIEnv *env, jobject instance, jlong javaUIApp, jfloat x, jfloat y) {
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         auto velocity = std::make_unique<Velocity>(x, y);
         uiApp->setVelocity(velocity.get());
@@ -67,14 +72,16 @@ native_SetVelocity(JNIEnv *env, jobject instance, jfloat x, jfloat y) {
     ALOGD("native_SetVelocity %f %f", x, y)
 }
 
-extern "C" JNIEXPORT void JNICALL
+extern "C" JNIEXPORT jlong JNICALL
 native_UIInit(JNIEnv *env, jobject instance) {
-    uiApp = new SkiaUIApp();
+    auto uiApp = new SkiaUIApp();
     ALOGD("native_UIInit")
+    return reinterpret_cast<long>(uiApp);
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-native_UIDoFrame(JNIEnv *env, jobject instance, jlong time) {
+native_UIDoFrame(JNIEnv *env, jobject instance, jlong javaUIApp, jlong time) {
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         return uiApp->doFrame(time);
     }
@@ -83,7 +90,9 @@ native_UIDoFrame(JNIEnv *env, jobject instance, jlong time) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_UIChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong time) {
+native_UIChanged(JNIEnv *env, jobject instance, jlong javaUIApp, jint width, jint height,
+                 jlong time) {
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         uiApp->setWindowSize(width, height);
     }
@@ -91,18 +100,19 @@ native_UIChanged(JNIEnv *env, jobject instance, jint width, jint height, jlong t
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_Release(JNIEnv *env, jobject instance) {
+native_Release(JNIEnv *env, jobject instance, jlong javaUIApp, jlong javaGLApp) {
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     delete uiApp;
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     delete glApp;
-    uiApp = nullptr;
-    glApp = nullptr;
     ALOGD("native_Release")
     PluginManager::getInstance()->releaseJavaPluginManager(env);
 }
 
 extern "C" JNIEXPORT jboolean JNICALL
-native_BackPressed(JNIEnv *env, jobject instance) {
+native_BackPressed(JNIEnv *env, jobject instance, jlong javaUIApp) {
     ALOGD("native_BackPressed")
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         return uiApp->onBackPressed();
     }
@@ -117,18 +127,18 @@ native_SetPlugins(JNIEnv *env, jobject instance, jobject javaPlugins) {
 }
 
 static JNINativeMethod g_RenderMethods[] = {
-        {"nativeGLInit",      "(Landroid/content/res/AssetManager;)V",      (void *) native_GLInit},
-        {"nativeGLCreated",   "(Landroid/view/Surface;)V",                  (void *) native_GLCreated},
-        {"nativeGLChanged",   "(IIJ)V",                                     (void *) native_GLChanged},
-        {"nativeGLDestroyed", "()V",                                        (void *) native_GLDestroyed},
-        {"nativeGLDoFrame",   "(JJ)V",                                      (void *) native_GLDoFrame},
-        {"nativeTouchEvent",  "(IFF)Z",                                     (void *) native_TouchEvent},
-        {"nativeSetVelocity", "(FF)V",                                      (void *) native_SetVelocity},
-        {"nativeUIInit",      "()V",                                        (void *) native_UIInit},
-        {"nativeUIDoFrame",   "(J)J",                                       (void *) native_UIDoFrame},
-        {"nativeUIChanged",   "(IIJ)V",                                     (void *) native_UIChanged},
-        {"nativeRelease",     "()V",                                        (void *) native_Release},
-        {"nativeBackPressed", "()Z",                                        (void *) native_BackPressed},
+        {"nativeGLInit",      "(Landroid/content/res/AssetManager;)J",       (void *) native_GLInit},
+        {"nativeGLCreated",   "(JLandroid/view/Surface;)V",                  (void *) native_GLCreated},
+        {"nativeGLChanged",   "(JIIJ)V",                                     (void *) native_GLChanged},
+        {"nativeGLDestroyed", "(J)V",                                        (void *) native_GLDestroyed},
+        {"nativeGLDoFrame",   "(JJJ)V",                                      (void *) native_GLDoFrame},
+        {"nativeTouchEvent",  "(JIFF)Z",                                     (void *) native_TouchEvent},
+        {"nativeSetVelocity", "(JFF)V",                                      (void *) native_SetVelocity},
+        {"nativeUIInit",      "()J",                                         (void *) native_UIInit},
+        {"nativeUIDoFrame",   "(JJ)J",                                       (void *) native_UIDoFrame},
+        {"nativeUIChanged",   "(JIIJ)V",                                     (void *) native_UIChanged},
+        {"nativeRelease",     "(JJ)V",                                       (void *) native_Release},
+        {"nativeBackPressed", "(J)Z",                                        (void *) native_BackPressed},
         {"nativeSetPlugins",  "(Lcom/temple/skiaui/plugin/PluginManager;)V", (void *) native_SetPlugins},
 };
 
