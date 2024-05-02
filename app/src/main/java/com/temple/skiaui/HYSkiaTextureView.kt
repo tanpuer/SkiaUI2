@@ -38,8 +38,9 @@ class HYSkiaTextureView @JvmOverloads constructor(
 
     }
 
-    override fun dispatchTouchEvent(event: MotionEvent): Boolean {
-        return engine.dispatchHYTouchEvent(event)
+    override fun onTouchEvent(event: MotionEvent): Boolean {
+        engine.dispatchHYTouchEvent(event)
+        return true
     }
 
     override fun doFrame(frameTimeNanos: Long) {

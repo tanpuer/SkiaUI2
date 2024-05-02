@@ -107,11 +107,14 @@ class HYSkiaEngine {
     }
 
     fun dispatchHYTouchEvent(event: MotionEvent): Boolean {
+        val x = event.x
+        val y = event.y
+        val action = event.action
         skiaUIHandler.post {
-            nativeTouchEvent(event.action, event.x, event.y)
+            nativeTouchEvent(action, x, y)
         }
         velocityTracker?.addMovement(event)
-        if (event.action == MotionEvent.ACTION_UP) {
+        if (action == MotionEvent.ACTION_UP) {
             velocityTracker?.computeCurrentVelocity(1000)
             skiaUIHandler.post {
                 nativeSetVelocity(
