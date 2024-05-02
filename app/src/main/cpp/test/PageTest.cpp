@@ -23,7 +23,10 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         page->enterFromRight(Page::EnterExitInfo(width, 0));
 //        page->enterFromBottom(Page::EnterExitInfo(height, 0));
     }
-
+    if (root->getWidth() != width || root->getHeight() != height) {
+        root->setWidth(width);
+        root->setHeight(height);
+    }
     for (const auto &item: PageStackManager::getInstance()->getPages()) {
         if (!item->getVisibility()) {
             continue;
@@ -45,8 +48,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     scrollView->setAlignContent(YGAlignCenter);
     scrollView->setStyle(SkPaint::kFill_Style);
     scrollView->setBackgroundColor(SK_ColorWHITE);
-    scrollView->setWidth(width);
-    scrollView->setHeight(height);
+    scrollView->setFlex(1);
     root->addView(scrollView);
 
     {
