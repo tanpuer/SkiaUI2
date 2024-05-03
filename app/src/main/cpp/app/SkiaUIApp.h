@@ -4,6 +4,7 @@
 #include "memory"
 #include "ITestDraw.h"
 #include "Velocity.h"
+#include "PluginManager.h"
 
 /**
  * UI线程执行的逻辑入口
@@ -25,6 +26,10 @@ public:
     long doFrame(long time);
 
     bool onBackPressed();
+
+    void initJavaPluginManager(JNIEnv *env, jobject javaPlugins);
+
+    void releaseJavaPluginManager(JNIEnv *env);
 
 private:
 

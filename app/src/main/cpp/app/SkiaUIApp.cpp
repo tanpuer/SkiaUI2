@@ -74,3 +74,11 @@ bool SkiaUIApp::onBackPressed() {
     }
     return false;
 }
+
+void SkiaUIApp::initJavaPluginManager(JNIEnv *env, jobject javaPlugins) {
+    context->getPluginManager()->initJavaPluginManager(javaPlugins, env);
+}
+
+void SkiaUIApp::releaseJavaPluginManager(JNIEnv *env) {
+    context->getPluginManager()->releaseJavaPluginManager(env);
+}

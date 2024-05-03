@@ -54,7 +54,7 @@ class HYSkiaEngine {
         }
         skiaUIHandler.post {
             uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets)
-            nativeSetPlugins(pluginManager)
+            nativeSetPlugins(uiApp, pluginManager)
         }
     }
 
@@ -159,7 +159,7 @@ class HYSkiaEngine {
     private external fun nativeUIDoFrame(uiApp: Long, time: Long): Long
     private external fun nativeBackPressed(uiApp: Long): Boolean
     private external fun nativeRelease(uiApp: Long, glApp: Long)
-    private external fun nativeSetPlugins(pluginManager: PluginManager)
+    private external fun nativeSetPlugins(uiApp: Long, pluginManager: PluginManager)
 
     companion object {
         init {

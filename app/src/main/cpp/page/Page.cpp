@@ -30,7 +30,7 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
-    PluginManager::getInstance()->invokeMethod("toast", "show", "push");
+    context->getPluginManager()->invokeMethod("toast", "show", "push");
 }
 
 void Page::exitToLeft(const EnterExitInfo &info) {
@@ -44,7 +44,7 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
-    PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
+    context->getPluginManager()->invokeMethod("toast", "show", "pop");
 }
 
 void Page::enterFromBottom(const Page::EnterExitInfo &info) {
@@ -58,7 +58,7 @@ void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
-    PluginManager::getInstance()->invokeMethod("toast", "show", "push");
+    context->getPluginManager()->invokeMethod("toast", "show", "push");
 }
 
 void Page::exitToTop(const Page::EnterExitInfo &info) {
@@ -72,7 +72,7 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
-    PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
+    context->getPluginManager()->invokeMethod("toast", "show", "pop");
 }
 
 void Page::measure() {

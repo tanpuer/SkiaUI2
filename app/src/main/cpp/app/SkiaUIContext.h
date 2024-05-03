@@ -4,6 +4,7 @@
 #include "AssetManager.h"
 #include "memory"
 #include "PageStackManager.h"
+#include "PluginManager.h"
 
 class SkiaUIContext {
 
@@ -37,6 +38,10 @@ public:
         return pageStackManager;
     }
 
+    const std::shared_ptr<PluginManager> getPluginManager() {
+        return pluginManager;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
@@ -46,5 +51,7 @@ private:
     YGConfigRef config;
 
     std::shared_ptr<PageStackManager> pageStackManager = std::make_shared<PageStackManager>();
+
+    std::shared_ptr<PluginManager> pluginManager = std::make_shared<PluginManager>();
 
 };

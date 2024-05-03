@@ -15,7 +15,6 @@ std::string PluginManager::invokeMethod(const std::string &pluginName,
                                         const std::string &methodName,
                                         const std::string &methodParam) {
     if (globalJavaPlugins != nullptr && this->env != nullptr) {
-        env->NewStringUTF(pluginName.c_str());
         auto result = (jstring) env->CallObjectMethod(globalJavaPlugins, javaInvokeMethod,
                                                       env->NewStringUTF(pluginName.c_str()),
                                                       env->NewStringUTF(methodName.c_str()),

@@ -6,26 +6,15 @@
 
 class PluginManager {
 
-private:
-
-    PluginManager();
-
 public:
 
-    PluginManager(const PluginManager &manager) = delete;
-
-    void operator=(PluginManager &manager) = delete;
+    PluginManager();
 
     ~PluginManager();
 
     std::string invokeMethod(const std::string &pluginName,
                              const std::string &methodName,
                              const std::string &methodParam);
-
-    static PluginManager *getInstance() {
-        static PluginManager manager;
-        return &manager;
-    }
 
     void initJavaPluginManager(jobject javaPlugins, JNIEnv *env);
 
