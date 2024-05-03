@@ -8,11 +8,6 @@ class SkiaUIContext {
 
 public:
 
-    static SkiaUIContext *getInstance() {
-        static SkiaUIContext context;
-        return &context;
-    }
-
     void setJavaAssetManager(JNIEnv *env, jobject javaAssetManager) {
         assetManager = std::make_shared<AssetManager>(env, javaAssetManager);
     }

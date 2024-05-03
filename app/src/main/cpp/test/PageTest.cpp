@@ -40,7 +40,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
 void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int height) {
     auto scrollView = new ScrollView();
     config = YGConfigNew();
-    scrollView->setConfig(config);
+    scrollView->setContext(this->context);
     scrollView->setFlexWrap(YGWrapNoWrap);
     scrollView->setFlexDirection(YGFlexDirectionColumn);
     scrollView->setJustifyContent(YGJustifyFlexStart);
@@ -53,7 +53,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto view = new View();
-        view->setConfig(scrollView->config);
+        view->setContext(this->context);
         auto colors = std::vector<SkColor>();
         colors.push_back(SK_ColorYELLOW);
         colors.push_back(SK_ColorBLUE);
@@ -72,7 +72,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto view = new View();
-        view->setConfig(scrollView->config);
+        view->setContext(this->context);
         auto colors = std::vector<SkColor>();
         colors.push_back(SK_ColorCYAN);
         colors.push_back(SK_ColorMAGENTA);
@@ -98,7 +98,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto shaderView = new ShaderView();
-        shaderView->setConfig(scrollView->config);
+        shaderView->setContext(this->context);
         shaderView->setShaderPath("sincos.glsl");
         shaderView->setWidth(1080);
         shaderView->setHeight(520);
@@ -107,7 +107,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto shaderView = new ShaderView();
-        shaderView->setConfig(scrollView->config);
+        shaderView->setContext(this->context);
         shaderView->setShaderPath("raining.glsl", {"raining.png"});
         shaderView->setWidth(1080);
         shaderView->setHeight(520);
@@ -117,7 +117,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto shaderView = new ShaderView();
-        shaderView->setConfig(scrollView->config);
+        shaderView->setContext(this->context);
         shaderView->setShaderPath("gl_transition_window_slice.glsl",
                                   {"transition1.png", "transition2.png"});
         shaderView->setCustomUniforms("count", 10.0);
@@ -130,7 +130,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto shaderView = new ShaderView();
-        shaderView->setConfig(scrollView->config);
+        shaderView->setContext(this->context);
         shaderView->setShaderPath("gl_transition_cross_zoom.glsl",
                                   {"transition1.png", "transition2.png"});
         shaderView->setCustomUniforms("strength", 0.4);
@@ -142,7 +142,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto imageView = new ImageView();
-        imageView->setConfig(scrollView->config);
+        imageView->setContext(this->context);
         imageView->setSource("bird.gif");
         imageView->setScaleType(ImageView::ScaleType::FitCenter);
         imageView->setStyle(SkPaint::kStroke_Style);
@@ -156,7 +156,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto svgView = new SVGView();
-        svgView->setConfig(scrollView->config);
+        svgView->setContext(this->context);
         svgView->setSource("tiger.svg");
         svgView->setStyle(SkPaint::kStroke_Style);
         svgView->setBackgroundColor(SK_ColorRED);
@@ -170,7 +170,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto canvasTest = new CanvasTest();
-        canvasTest->setConfig(scrollView->config);
+        canvasTest->setContext(this->context);
         canvasTest->setCircleSize(200);
         canvasTest->setStyle(SkPaint::kStroke_Style);
         canvasTest->setBackgroundColor(SK_ColorRED);
@@ -183,7 +183,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto canvasTest = new ClockView();
-        canvasTest->setConfig(scrollView->config);
+        canvasTest->setContext(this->context);
         canvasTest->setWidth(600);
         canvasTest->setHeight(600);
         canvasTest->setMargin({0, 50, 0, 50});
@@ -192,7 +192,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto progressBar = new ProgressBar();
-        progressBar->setConfig(scrollView->config);
+        progressBar->setContext(this->context);
         progressBar->setBarColor(SK_ColorRED);
         progressBar->setBackgroundColor(SK_ColorGRAY);
         progressBar->setStrokeWidth(10.0);
@@ -211,7 +211,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto view = new MovingView();
-        view->setConfig(scrollView->config);
+        view->setContext(this->context);
         view->setBackgroundColor(SK_ColorBLUE);
         view->setStyle(SkPaint::kFill_Style);
         view->setCornerRadius(30);
@@ -223,7 +223,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto button = new Button();
-        button->setConfig(scrollView->config);
+        button->setContext(this->context);
         button->setText(SkString("Button"));
         button->setTextSize(60);
         button->setCornerRadius(20);
@@ -241,7 +241,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto textView = new TextView();
-        textView->setConfig(scrollView->config);
+        textView->setContext(this->context);
         textView->setText(SkString("horizontal test"));
         textView->setTextColor(SK_ColorBLACK);
         textView->setTextSize(60);
@@ -253,7 +253,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto textView = new TextView();
-        textView->setConfig(scrollView->config);
+        textView->setContext(this->context);
         textView->setText(SkString("abcdefghijklmnopqrstuvw"));
         textView->setTextColor(SK_ColorGREEN);
         textView->setTextSize(100);
@@ -265,7 +265,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto textView = new TextView();
-        textView->setConfig(scrollView->config);
+        textView->setContext(this->context);
         textView->setTextColor(SK_ColorGREEN);
         textView->setTextSize(60);
         textView->setBackgroundColor(SK_ColorRED);
@@ -296,7 +296,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 
     {
         auto imageView = new ImageView();
-        imageView->setConfig(scrollView->config);
+        imageView->setContext(this->context);
         imageView->setSource("raining.png");
         imageView->setCornerRadius(200);
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
@@ -314,7 +314,8 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
 Page *PageTest::initPage(int width, int height) {
     auto page = new Page();
     config = YGConfigNew();
-    page->setConfig(config);
+    this->context->setConfigRef(config);
+    page->setContext(this->context);
     page->setWidth(width);
     page->setHeight(height);
     page->setFlexWrap(YGWrapWrap);

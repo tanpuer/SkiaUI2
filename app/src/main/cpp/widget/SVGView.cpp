@@ -12,7 +12,7 @@ SVGView::~SVGView() {
 }
 
 void SVGView::setSource(const char *path) {
-    auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
+    auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
     auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);

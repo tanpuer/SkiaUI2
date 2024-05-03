@@ -20,7 +20,7 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
         return;
     }
     runtimeEffect = effect;
-    auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
+    auto assetManager = getContext()->getAssetManager();
     for (int i = 0; i < images.size(); ++i) {
         auto image = images[i];
         auto imageData = assetManager->readImage(image.c_str());
@@ -40,7 +40,7 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
 }
 
 void ShaderView::setShaderPath(const char *path, std::vector<std::string> images) {
-    auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
+    auto assetManager = getContext()->getAssetManager();
     auto data = assetManager->readFile(path);
     setShaderSource(data, images);
     isDirty = true;
@@ -56,7 +56,7 @@ void ShaderView::draw(SkCanvas *canvas) {
         uniforms.height = height;
         SkRuntimeShaderBuilder builder(runtimeEffect);
         builder.uniform("iResolution") = uniforms;
-        auto time = SkiaUIContext::getInstance()->getCurrentTimeMills();
+        auto time = getContext()->getCurrentTimeMills();
         builder.uniform("iTime") = (float) time / 1000;
         for (const auto &item: uniformVector) {
             builder.uniform(item.first) = item.second;

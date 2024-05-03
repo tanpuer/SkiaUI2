@@ -16,9 +16,11 @@
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager) {
     SkGraphics::Init();
-    SkiaUIContext::getInstance()->setJavaAssetManager(env, javaAssetManager);
+    context = std::make_shared<SkiaUIContext>();
+    context->setJavaAssetManager(env, javaAssetManager);
     testDraw = std::make_unique<PageTest>();
 //    testDraw = std::make_unique<FlexboxLayoutTest>();
+    testDraw->setContext(context);
 }
 
 SkiaUIApp::~SkiaUIApp() {
@@ -26,7 +28,7 @@ SkiaUIApp::~SkiaUIApp() {
 }
 
 long SkiaUIApp::doFrame(long time) {
-    SkiaUIContext::getInstance()->setTimeMills(time);
+    context->setTimeMills(time);
     drawCount++;
     IAnimator::currTime = time;
     SkPictureRecorder recorder;

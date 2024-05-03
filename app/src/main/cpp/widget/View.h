@@ -12,6 +12,7 @@
 #include "TouchEventDispatcher.h"
 #include "IAnimator.h"
 #include "core/SkBlurTypes.h"
+#include "SkiaUIContext.h"
 
 static int64_t VIEW_ID = 0;
 
@@ -50,7 +51,9 @@ public:
 
     virtual bool isViewGroup();
 
-    virtual void setConfig(YGConfigRef config);
+    const std::shared_ptr<SkiaUIContext> getContext();
+
+    virtual void setContext(std::shared_ptr<SkiaUIContext> context);
 
     /**
      * 在AlignItems的基础上自定义每个子视图的对齐方式
@@ -215,5 +218,7 @@ protected:
     std::function<void(int, int, int, int)> viewLayoutCallback = nullptr;
 
     std::function<void(View *)> viewClickListener = nullptr;
+
+    std::shared_ptr<SkiaUIContext> context = nullptr;
 
 };

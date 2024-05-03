@@ -42,7 +42,7 @@ public:
      * @param view
      */
     virtual void attachChild(View *view) {
-        view->setConfig(config);
+        view->setContext(context);
         adapter->attachView(view);
     }
 

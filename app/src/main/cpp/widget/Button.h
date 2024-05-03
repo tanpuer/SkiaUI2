@@ -10,7 +10,7 @@ public:
 
     ~Button();
 
-    void setConfig(YGConfigRef config) override;
+    void setContext(std::shared_ptr<SkiaUIContext> context) override;
 
     void setMeasuredDimension(int _measuredWidth, int _measuredHeight) override;
 

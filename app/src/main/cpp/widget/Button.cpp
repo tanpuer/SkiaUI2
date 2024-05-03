@@ -9,8 +9,8 @@ Button::~Button() {
     delete ripplePaint;
 }
 
-void Button::setConfig(YGConfigRef config) {
-    View::setConfig(config);
+void Button::setContext(std::shared_ptr<SkiaUIContext> context) {
+    View::setContext(context);
     setPadding({defaultPadding, defaultPadding, defaultPadding});
 }
 

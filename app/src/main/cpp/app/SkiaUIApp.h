@@ -36,4 +36,6 @@ private:
 
     int drawCount = 0;
 
+    std::shared_ptr<SkiaUIContext> context = nullptr;
+
 };

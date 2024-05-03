@@ -31,11 +31,17 @@ public:
         return root;
     };
 
+    virtual void setContext(std::shared_ptr<SkiaUIContext> context) {
+        this->context = context;
+    }
+
 protected:
 
     ViewGroup *root = nullptr;
 
     YGConfigRef config;
+
+    std::shared_ptr<SkiaUIContext> context;
 
 };
 

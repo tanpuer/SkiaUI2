@@ -27,7 +27,7 @@ void ImageView::setAlpha(float alpha) {
 
 void ImageView::setSource(const char *path) {
     //todo 异步处理
-    auto assetManager = SkiaUIContext::getInstance()->getAssetManager();
+    auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
     auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
@@ -38,7 +38,7 @@ void ImageView::setSource(const char *path) {
           skAnimatedImage->getRepetitionCount(), skAnimatedImage->currentFrameDuration())
     auto frame = skAnimatedImage->getCurrentFrame();
     skImage = frame;
-    lastTimeMills = SkiaUIContext::getInstance()->getCurrentTimeMills();
+    lastTimeMills = getContext()->getCurrentTimeMills();
     if (skAnimatedImage->currentFrameDuration() > 0) {
         currentFrameDuration = skAnimatedImage->currentFrameDuration();
     }
@@ -107,7 +107,7 @@ void ImageView::draw(SkCanvas *canvas) {
         return;
     }
     if (frameCount > 1 && skAnimatedImage != nullptr) {
-        auto currentTimeMills = SkiaUIContext::getInstance()->getCurrentTimeMills();
+        auto currentTimeMills = getContext()->getCurrentTimeMills();
         if ((currentTimeMills - lastTimeMills) > currentFrameDuration) {
             currentFrameIndex++;
             if (currentFrameIndex >= skImages.size()) {

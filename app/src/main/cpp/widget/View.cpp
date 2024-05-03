@@ -174,7 +174,7 @@ void View::setSwiperGradient(std::vector<SkColor> colors) {
 }
 
 void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
-    auto filter =SkMaskFilter::MakeBlur(style, sigma);
+    auto filter = SkMaskFilter::MakeBlur(style, sigma);
     paint->setMaskFilter(filter);
     isDirty = true;
 }
@@ -207,16 +207,6 @@ void View::setHeightAuto() {
     }
     YGNodeStyleSetHeightAuto(node);
     isDirty = true;
-}
-
-void View::setConfig(YGConfigRef config) {
-    if (this->config != nullptr) {
-        ALOGD("multi set config error, pls check")
-        return;
-    }
-    this->config = config;
-    //todo setConfig之后才会进行node的创建
-    node = YGNodeNewWithConfig(config);
 }
 
 bool View::onInterceptTouchEvent(TouchEvent *touchEvent) {
@@ -377,4 +367,19 @@ void View::setAspectRatio(float ratio) {
     }
     YGNodeStyleSetAspectRatio(node, ratio);
     isDirty = true;
+}
+
+const std::shared_ptr<SkiaUIContext> View::getContext() {
+    return context;
+}
+
+void View::setContext(std::shared_ptr<SkiaUIContext> context) {
+    this->context = context;
+    if (this->config != nullptr) {
+        ALOGD("multi set config error, pls check")
+        return;
+    }
+    this->config = context->getConfig();
+    //todo setConfig之后才会进行node的创建
+    node = YGNodeNewWithConfig(config);
 }
