@@ -9,10 +9,10 @@ void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, i
         auto page = initPage(width, height);
         root = page;
         testNested(drawCount, root, width, height);
-        PageStackManager::getInstance()->push(page);
+        context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
-    for (const auto &item: PageStackManager::getInstance()->getPages()) {
+    for (const auto &item: context->getPageStackManager()->getPages()) {
         if (!item->getVisibility()) {
             continue;
         }
@@ -384,7 +384,7 @@ Page *FlexboxLayoutTest::initPage(int width, int height) {
 }
 
 View *FlexboxLayoutTest::getRootView() {
-    auto page = PageStackManager::getInstance()->back();
+    auto page = context->getPageStackManager()->back();
     SkASSERT(page != nullptr && page->children.size() == 1);
     return page->children[0];
 }

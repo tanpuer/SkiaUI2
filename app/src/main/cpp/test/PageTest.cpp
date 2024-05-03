@@ -19,7 +19,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         auto page = initPage(width, height);
         root = page;
         initChildren(drawCount, root, width, height);
-        PageStackManager::getInstance()->push(page);
+        context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
 //        page->enterFromBottom(Page::EnterExitInfo(height, 0));
     }
@@ -27,7 +27,7 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         root->setWidth(width);
         root->setHeight(height);
     }
-    for (const auto &item: PageStackManager::getInstance()->getPages()) {
+    for (const auto &item: context->getPageStackManager()->getPages()) {
         if (!item->getVisibility()) {
             continue;
         }
@@ -64,7 +64,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         view->setOnClickListener([this, width, height, drawCount](View *view) {
             auto page = initPage(width, height);
             initChildren(drawCount, page, width, height);
-            PageStackManager::getInstance()->push(page);
+            context->getPageStackManager()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
 //            page->enterFromBottom(Page::EnterExitInfo(height, 0));
         });
@@ -86,7 +86,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         view->setMargin({0, 50, 0, 50});
         scrollView->addView(view);
         view->setOnClickListener([this, width, height](View *view) {
-            auto page = PageStackManager::getInstance()->back();
+            auto page = context->getPageStackManager()->back();
             if (page == nullptr) {
                 ALOGE("pop failed due to empty pages")
                 return;
@@ -334,7 +334,7 @@ Page *PageTest::initPage(int width, int height) {
 }
 
 View *PageTest::getRootView() {
-    auto page = PageStackManager::getInstance()->back();
+    auto page = context->getPageStackManager()->back();
     SkASSERT(page != nullptr && page->children.size() == 1);
     return page->children[0];
 }

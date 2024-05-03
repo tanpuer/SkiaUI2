@@ -6,17 +6,17 @@
 #define SKIAUI_PAGESTACKMANAGER_H
 
 
-#include "Page.h"
 #include "vector"
+
+class Page;
 
 class PageStackManager {
 
 public:
 
-    static PageStackManager *getInstance() {
-        static PageStackManager stackManager;
-        return &stackManager;
-    }
+    PageStackManager();
+
+    ~PageStackManager();
 
     void push(Page *page);
 
@@ -31,12 +31,6 @@ public:
 private:
 
     std::vector<Page *> pages;
-
-private:
-
-    PageStackManager() = default;
-
-    PageStackManager(PageStackManager &pageStackManager) = delete;
 
 };
 

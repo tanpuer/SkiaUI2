@@ -15,8 +15,6 @@ public:
 
     void measureChild(View *child);
 
-    int getChildMeasureSpec(View *child);
-
     void setMeasuredDimension(int _measuredWidth, int _measuredHeight) override;
 
     /**

@@ -25,11 +25,11 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     ALOGD("enterFromRight %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
-    animator->addListener([]() {
-        PageStackManager::getInstance()->updateVisibility(true);
+    animator->addListener([this]() {
+        context->getPageStackManager()->updateVisibility(true);
     });
     animator->start();
-    PageStackManager::getInstance()->updateVisibility(false);
+    context->getPageStackManager()->updateVisibility(false);
     PluginManager::getInstance()->invokeMethod("toast", "show", "push");
 }
 
@@ -37,13 +37,13 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     ALOGD("exitToLeft %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
-    animator->addListener([]() {
-        auto page = PageStackManager::getInstance()->pop();
-        PageStackManager::getInstance()->updateVisibility(true);
+    animator->addListener([this]() {
+        auto page = context->getPageStackManager()->pop();
+        context->getPageStackManager()->updateVisibility(true);
         delete page;
     });
     animator->start();
-    PageStackManager::getInstance()->updateVisibility(false);
+    context->getPageStackManager()->updateVisibility(false);
     PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
 }
 
@@ -51,13 +51,13 @@ void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     ALOGD("enterFromBottom %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
-    animator->addListener([]() {
-        auto page = PageStackManager::getInstance()->pop();
-        PageStackManager::getInstance()->updateVisibility(true);
+    animator->addListener([this]() {
+        auto page = context->getPageStackManager()->pop();
+        context->getPageStackManager()->updateVisibility(true);
         delete page;
     });
     animator->start();
-    PageStackManager::getInstance()->updateVisibility(false);
+    context->getPageStackManager()->updateVisibility(false);
     PluginManager::getInstance()->invokeMethod("toast", "show", "push");
 }
 
@@ -65,13 +65,13 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     ALOGD("exitToTop %d %d %d", info.from, info.to, info.duration)
     animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
-    animator->addListener([]() {
-        auto page = PageStackManager::getInstance()->pop();
-        PageStackManager::getInstance()->updateVisibility(true);
+    animator->addListener([this]() {
+        auto page = context->getPageStackManager()->pop();
+        context->getPageStackManager()->updateVisibility(true);
         delete page;
     });
     animator->start();
-    PageStackManager::getInstance()->updateVisibility(false);
+    context->getPageStackManager()->updateVisibility(false);
     PluginManager::getInstance()->invokeMethod("toast", "show", "pop");
 }
 

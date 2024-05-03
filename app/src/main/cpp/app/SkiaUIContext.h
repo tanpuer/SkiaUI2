@@ -3,6 +3,7 @@
 #include "jni.h"
 #include "AssetManager.h"
 #include "memory"
+#include "PageStackManager.h"
 
 class SkiaUIContext {
 
@@ -32,6 +33,10 @@ public:
         return config;
     }
 
+    const std::shared_ptr<PageStackManager> getPageStackManager() {
+        return pageStackManager;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
@@ -39,5 +44,7 @@ private:
     long currentTimeMills = 0L;
 
     YGConfigRef config;
+
+    std::shared_ptr<PageStackManager> pageStackManager = std::make_shared<PageStackManager>();
 
 };

@@ -3,6 +3,15 @@
 //
 
 #include "PageStackManager.h"
+#include "Page.h"
+
+PageStackManager::PageStackManager() {
+
+}
+
+PageStackManager::~PageStackManager() {
+
+}
 
 void PageStackManager::push(Page *page) {
     pages.emplace_back(page);
