@@ -50,10 +50,10 @@ class HYSkiaEngine {
 
     init {
         skiaGLHandler.post {
-            glApp = nativeGLInit(HYSkiaUIApp.getInstance().assets)
+            glApp = nativeGLInit()
         }
         skiaUIHandler.post {
-            uiApp = nativeUIInit()
+            uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets)
             nativeSetPlugins(pluginManager)
         }
     }
@@ -147,12 +147,12 @@ class HYSkiaEngine {
         }
     }
 
-    private external fun nativeGLInit(assets: AssetManager): Long
+    private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
     private external fun nativeGLDestroyed(glApp: Long)
     private external fun nativeGLDoFrame(glApp: Long, pic: Long, time: Long)
-    private external fun nativeUIInit(): Long
+    private external fun nativeUIInit(assets: AssetManager): Long
     private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(uiApp: Long, xVelocity: Float, yVelocity: Float)
     private external fun nativeUIChanged(uiApp: Long, width: Int, height: Int, time: Long)

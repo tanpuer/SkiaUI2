@@ -14,7 +14,7 @@ class SkiaGLApp {
 
 public:
 
-    SkiaGLApp(JNIEnv *env, jobject javaAssetManager);
+    SkiaGLApp(JNIEnv *env);
 
     ~SkiaGLApp();
 

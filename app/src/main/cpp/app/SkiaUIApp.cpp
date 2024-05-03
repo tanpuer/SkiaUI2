@@ -14,8 +14,9 @@
 #include "PageStackManager.h"
 #include "FlexboxLayoutTest.h"
 
-SkiaUIApp::SkiaUIApp() {
+SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager) {
     SkGraphics::Init();
+    SkiaUIContext::getInstance()->setJavaAssetManager(env, javaAssetManager);
     testDraw = std::make_unique<PageTest>();
 //    testDraw = std::make_unique<FlexboxLayoutTest>();
 }

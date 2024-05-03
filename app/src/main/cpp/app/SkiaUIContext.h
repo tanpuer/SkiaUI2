@@ -29,10 +29,20 @@ public:
         return currentTimeMills;
     }
 
+    void setConfigRef(YGConfigRef config) {
+        this->config = config;
+    }
+
+    const YGConfigRef getConfig() {
+        return config;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
 
     long currentTimeMills = 0L;
+
+    YGConfigRef config;
 
 };

@@ -9,10 +9,9 @@
 const char *HYSkiaEngine = "com/temple/skiaui/HYSkiaEngine";
 
 extern "C" JNIEXPORT jlong JNICALL
-native_GLInit(JNIEnv *env, jobject instance, jobject javaAssetManager) {
+native_GLInit(JNIEnv *env, jobject instance) {
     ALOGD("native_init")
-    auto globalAssets = env->NewGlobalRef(javaAssetManager);
-    auto glApp = new SkiaGLApp(env, globalAssets);
+    auto glApp = new SkiaGLApp(env);
     return reinterpret_cast<long>(glApp);
 }
 
@@ -73,8 +72,9 @@ native_SetVelocity(JNIEnv *env, jobject instance, jlong javaUIApp, jfloat x, jfl
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-native_UIInit(JNIEnv *env, jobject instance) {
-    auto uiApp = new SkiaUIApp();
+native_UIInit(JNIEnv *env, jobject instance, jobject javaAssetManager) {
+    auto globalAssets = env->NewGlobalRef(javaAssetManager);
+    auto uiApp = new SkiaUIApp(env, globalAssets);
     ALOGD("native_UIInit")
     return reinterpret_cast<long>(uiApp);
 }
@@ -127,14 +127,14 @@ native_SetPlugins(JNIEnv *env, jobject instance, jobject javaPlugins) {
 }
 
 static JNINativeMethod g_RenderMethods[] = {
-        {"nativeGLInit",      "(Landroid/content/res/AssetManager;)J",       (void *) native_GLInit},
+        {"nativeGLInit",      "()J",                                         (void *) native_GLInit},
         {"nativeGLCreated",   "(JLandroid/view/Surface;)V",                  (void *) native_GLCreated},
         {"nativeGLChanged",   "(JIIJ)V",                                     (void *) native_GLChanged},
         {"nativeGLDestroyed", "(J)V",                                        (void *) native_GLDestroyed},
         {"nativeGLDoFrame",   "(JJJ)V",                                      (void *) native_GLDoFrame},
         {"nativeTouchEvent",  "(JIFF)Z",                                     (void *) native_TouchEvent},
         {"nativeSetVelocity", "(JFF)V",                                      (void *) native_SetVelocity},
-        {"nativeUIInit",      "()J",                                         (void *) native_UIInit},
+        {"nativeUIInit",      "(Landroid/content/res/AssetManager;)J",       (void *) native_UIInit},
         {"nativeUIDoFrame",   "(JJ)J",                                       (void *) native_UIDoFrame},
         {"nativeUIChanged",   "(JIIJ)V",                                     (void *) native_UIChanged},
         {"nativeRelease",     "(JJ)V",                                       (void *) native_Release},

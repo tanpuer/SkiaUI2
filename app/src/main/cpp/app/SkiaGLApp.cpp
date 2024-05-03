@@ -4,10 +4,8 @@
 
 #include "SkiaGLApp.h"
 #include "SkiaFilter.h"
-#include "SkiaUIContext.h"
 
-SkiaGLApp::SkiaGLApp(JNIEnv *env, jobject javaAssetManager) {
-    SkiaUIContext::getInstance()->setJavaAssetManager(env, javaAssetManager);
+SkiaGLApp::SkiaGLApp(JNIEnv *env) {
 }
 
 SkiaGLApp::~SkiaGLApp() {

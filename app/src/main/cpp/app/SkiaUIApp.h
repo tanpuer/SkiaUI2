@@ -12,7 +12,7 @@ class SkiaUIApp {
 
 public:
 
-    SkiaUIApp();
+    SkiaUIApp(JNIEnv *env, jobject javaAssetManager);
 
     ~SkiaUIApp();
 
