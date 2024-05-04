@@ -325,7 +325,6 @@ Page *PageTest::initPage(int width, int height) {
     page->setAlignContent(YGAlignCenter);
     page->setStyle(SkPaint::kFill_Style);
     page->setBackgroundColor(SK_ColorTRANSPARENT);
-    static bool blackWhiteMode = false;
     if (blackWhiteMode) {
         page->setBlackWhiteMode();
     }

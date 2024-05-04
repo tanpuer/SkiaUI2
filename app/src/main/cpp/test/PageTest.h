@@ -27,6 +27,8 @@ private:
 
     void initChildren(int drawCount, ViewGroup *root, int width, int height);
 
+    bool blackWhiteMode = false;
+
 };
 
 
