@@ -13,6 +13,9 @@ TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     auto fontMgr = SkFontMgr_New_Android(nullptr);
     fontCollection->setDefaultFontManager(fontMgr);
     stringBuilders = std::vector<StringBuilder>();
+    SkString familyName;
+    fontMgr->getFamilyName(0, &familyName);
+    font = std::make_unique<SkFont>(fontMgr->legacyMakeTypeface(familyName.c_str(), SkFontStyle::Normal()));
 }
 
 TextView::~TextView() {
@@ -85,8 +88,8 @@ void TextView::measure() {
             width = paragraph->getMaxIntrinsicWidth() + 1;
             paragraph->layout(width);
         }
-        auto spacing = font.getSpacing();
-        if (this->height > 0) {
+        auto spacing = font->getSpacing();
+        if (this->height > 0 && spacing > 0) {
             // Parent has told us how big to be. So be it.
             height = static_cast<float >(this->height);
             if (paragraph->getHeight() > this->height) {
@@ -112,7 +115,7 @@ void TextView::draw(SkCanvas *canvas) {
 }
 
 void TextView::setTextSize(SkScalar textSize) {
-    font.setSize(textSize);
+    font->setSize(textSize);
     defaultStyle->setFontSize(textSize);
     isDirty = true;
 }

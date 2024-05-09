@@ -255,6 +255,8 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         auto textView = new TextView();
         textView->setContext(this->context);
         textView->setText(SkString("abcdefghijklmnopqrstuvw"));
+        textView->setWidth(700);
+        textView->setHeight(200);
         textView->setTextColor(SK_ColorGREEN);
         textView->setTextSize(100);
         textView->setBackgroundColor(SK_ColorRED);
