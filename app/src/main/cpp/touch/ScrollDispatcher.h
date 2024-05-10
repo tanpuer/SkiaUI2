@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2022/7/26.
-//
-
-#ifndef SKIAUI_SCROLLDISPATCHER_H
-#define SKIAUI_SCROLLDISPATCHER_H
+#pragma once
 
 #include <ScrollView.h>
 #include "TouchEventDispatcher.h"
@@ -43,6 +38,3 @@ protected:
     ScrollView *scrollView;
 
 };
-
-
-#endif //SKIAUI_SCROLLDISPATCHER_H

@@ -1,9 +1,4 @@
-//
-// Created by cw on 2022/6/4.
-//
-
-#ifndef SKIAUI_TOUCHEVENTDISPATCHER_H
-#define SKIAUI_TOUCHEVENTDISPATCHER_H
+#pragma once
 
 #include "TouchEvent.h"
 #include "memory"
@@ -53,6 +48,3 @@ protected:
     float targetViewTop = 0.0f;
 
 };
-
-
-#endif //SKIAUI_TOUCHEVENTDISPATCHER_H

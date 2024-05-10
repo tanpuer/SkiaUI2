@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/7/28.
-//
-
-#ifndef SKIAUI_VELOCITY_H
-#define SKIAUI_VELOCITY_H
-
+#pragma once
 
 class Velocity {
 
@@ -17,6 +11,3 @@ public:
     float yVelocity;
 
 };
-
-
-#endif //SKIAUI_VELOCITY_H

@@ -1,7 +1,3 @@
-//
-// Created by cw on 2022/6/4.
-//
-
 #include "TouchEventDispatcher.h"
 #include <yoga/Yoga.h>
 #include "ViewGroup.h"

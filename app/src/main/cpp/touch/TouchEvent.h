@@ -1,9 +1,4 @@
-//
-// Created by cw on 2022/6/4.
-//
-
-#ifndef SKIAUI_TOUCHEVENT_H
-#define SKIAUI_TOUCHEVENT_H
+#pragma once
 
 #include "native_log.h"
 
@@ -31,5 +26,3 @@ public:
     float x, y;
 
 };
-
-#endif //SKIAUI_TOUCHEVENT_H

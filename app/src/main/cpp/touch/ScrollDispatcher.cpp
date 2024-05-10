@@ -1,7 +1,3 @@
-//
-// Created by ByteDance on 2022/7/26.
-//
-
 #include "ScrollDispatcher.h"
 
 ScrollDispatcher::ScrollDispatcher(ScrollView *view) : TouchEventDispatcher(view) {
@@ -79,16 +75,6 @@ void ScrollDispatcher::fling() {
 
 View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent,
                                                 float tempLeft, float tempTop) {
-    //和不可滑动的页面相比多个偏移计算
-    auto diffX = 0.0f;
-    auto diffY = 0.0f;
-    if (scrollView != nullptr) {
-        if (scrollView->_direction == YGFlexDirectionRow) {
-            diffX = scrollView->translateX;
-        } else {
-            diffY = scrollView->translateY;
-        }
-    }
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
         auto left = child->left;
