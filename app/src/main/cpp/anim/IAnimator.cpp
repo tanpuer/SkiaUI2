@@ -1,7 +1,3 @@
-//
-// Created by cw on 2022/6/23.
-//
-
 #include "IAnimator.h"
 
 long IAnimator::currTime = 0L;

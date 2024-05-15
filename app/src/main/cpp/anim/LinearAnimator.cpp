@@ -1,7 +1,3 @@
-//
-// Created by ByteDance on 2022/6/23.
-//
-
 #include "LinearAnimator.h"
 #include "native_log.h"
 #include "core/SkMatrix.h"

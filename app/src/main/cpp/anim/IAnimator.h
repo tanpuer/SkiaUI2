@@ -1,9 +1,4 @@
-//
-// Created by ByteDance on 2022/6/23.
-//
-
-#ifndef SKIAUI_IANIMATOR_H
-#define SKIAUI_IANIMATOR_H
+#pragma once
 
 #include "functional"
 #include "core/SkRect.h"
@@ -46,6 +41,3 @@ protected:
     std::function<void()> finishCallback = nullptr;
 
 };
-
-
-#endif //SKIAUI_IANIMATOR_H

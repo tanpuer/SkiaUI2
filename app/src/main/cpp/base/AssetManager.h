@@ -1,11 +1,3 @@
-//
-// Created by cw404021@alibaba-inc.com on 2023/11/27.
-//
-
-#ifndef SKIAUI_ASSETMANAGER_H
-#define SKIAUI_ASSETMANAGER_H
-
-
 #include <android/asset_manager_jni.h>
 
 struct ImageData {
@@ -29,6 +21,3 @@ private:
     AAssetManager *asset_manager = nullptr;
 
 };
-
-
-#endif //SKIAUI_ASSETMANAGER_H

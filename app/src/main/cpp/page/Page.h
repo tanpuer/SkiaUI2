@@ -1,10 +1,4 @@
-//
-// Created by banma-3412 on 2024/3/20.
-//
-
-#ifndef SKIAUI_PAGE_H
-#define SKIAUI_PAGE_H
-
+#pragma once
 
 #include "ViewGroup.h"
 #include "memory"
@@ -75,6 +69,3 @@ private:
     std::unique_ptr<SkPaint> pagePaint;
 
 };
-
-
-#endif //SKIAUI_PAGE_H

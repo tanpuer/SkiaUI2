@@ -1,7 +1,3 @@
-//
-// Created by banma-3412 on 2024/3/21.
-//
-
 #include "PageStackManager.h"
 #include "Page.h"
 

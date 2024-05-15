@@ -1,9 +1,4 @@
-//
-// Created by cw on 2022/6/24.
-//
-
-#ifndef SKIAUI_ANIMATORSET_H
-#define SKIAUI_ANIMATORSET_H
+#pragma once
 
 class AnimatorSet {
 
@@ -18,6 +13,3 @@ private:
     bool canScale, canRotate, canTranslate;
 
 };
-
-
-#endif //SKIAUI_ANIMATORSET_H

@@ -1,7 +1,3 @@
-//
-// Created by banma-3412 on 2024/3/20.
-//
-
 #include "Page.h"
 #include "core/SkPictureRecorder.h"
 #include "core/SkPicture.h"

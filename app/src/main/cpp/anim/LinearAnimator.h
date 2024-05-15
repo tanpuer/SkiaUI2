@@ -1,10 +1,4 @@
-//
-// Created by ByteDance on 2022/6/23.
-//
-
-#ifndef SKIAUI_LINEARANIMATOR_H
-#define SKIAUI_LINEARANIMATOR_H
-
+#pragma once
 
 #include "IAnimator.h"
 #include "core/SkMatrix.h"
@@ -40,6 +34,3 @@ private:
     SkMatrix m, translateMatrix, rotateMatrix, scaleMatrix;
 
 };
-
-
-#endif //SKIAUI_LINEARANIMATOR_H
