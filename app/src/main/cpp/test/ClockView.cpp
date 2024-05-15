@@ -1,5 +1,10 @@
 #include "ClockView.h"
 #include "core/SkPath.h"
+#include "ports/SkFontMgr_android.h"
+#include "core/SkFontMgr.h"
+#include "core/SkFontStyle.h"
+#include "core/SkTypeface.h"
+#include "core/SkFont.h"
 
 ClockView::ClockView() {
 
@@ -91,5 +96,19 @@ void ClockView::drawBackground(SkCanvas *canvas) {
         auto y1 = skRect.top() + skRect.height() / 2 + radius * 0.9 * sin(radians - M_PI / 2);
         path.lineTo(x1, y1);
         canvas->drawPath(path, detailPaint);
+    }
+    SkPaint numberPaint;
+    numberPaint.setAntiAlias(true);
+    numberPaint.setColor(SK_ColorBLACK);
+    auto fontMgr = SkFontMgr_New_Android(nullptr);
+    SkString familyName;
+    fontMgr->getFamilyName(0, &familyName);
+    auto font = SkFont(fontMgr->legacyMakeTypeface(familyName.c_str(), SkFontStyle::Bold()));
+    font.setSize(60);
+    for (int i = 0; i < 12; ++i) {
+        float radians = (i * 30) * M_PI / 180;
+        auto x = skRect.left() + skRect.width() / 2 + radius * 0.6 * cos(radians - M_PI / 2) - 20;
+        auto y = skRect.top() + skRect.height() / 2 + radius * 0.6 * sin(radians - M_PI / 2) + 20;
+        canvas->drawString(SkString(std::to_string(i)), x, y, font, numberPaint);
     }
 }
