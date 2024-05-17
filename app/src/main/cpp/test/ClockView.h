@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "View.h"
 
 class ClockView : public View {

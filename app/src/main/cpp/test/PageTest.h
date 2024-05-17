@@ -1,10 +1,4 @@
-//
-// Created by banma-3412 on 2024/3/21.
-//
-
-#ifndef SKIAUI_PAGETEST_H
-#define SKIAUI_PAGETEST_H
-
+#pragma once
 
 #include "ITestDraw.h"
 #include "Page.h"
@@ -30,6 +24,3 @@ private:
     bool blackWhiteMode = false;
 
 };
-
-
-#endif //SKIAUI_PAGETEST_H

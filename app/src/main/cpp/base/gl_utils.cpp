@@ -1,7 +1,3 @@
-//
-// Created by Administrator on 2018/2/2.
-//
-
 #include "gl_utils.h"
 
 #ifdef __cplusplus

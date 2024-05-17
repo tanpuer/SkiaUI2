@@ -1,7 +1,3 @@
-//
-// Created by cw on 2024/3/16.
-//
-
 #include "CanvasTest.h"
 #include "core/SkPath.h"
 #include "effects/SkGradientShader.h"

@@ -1,9 +1,4 @@
-//
-// Created by Administrator on 2018/2/7.
-//
-
-#ifndef CAINCAMERA_GLUTILS_H
-#define CAINCAMERA_GLUTILS_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {
@@ -42,5 +37,3 @@ GLuint createShaderProgram(GLuint vertexShader, GLuint fragmentShader);
 #ifdef __cplusplus
 }
 #endif
-
-#endif //CAINCAMERA_GLUTILS_H

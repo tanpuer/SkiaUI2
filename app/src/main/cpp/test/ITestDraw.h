@@ -1,9 +1,4 @@
-//
-// Created by cw on 2022/5/24.
-//
-
-#ifndef SKIAUI_ITESTDRAW_H
-#define SKIAUI_ITESTDRAW_H
+#pragma once
 
 #include "core/SkCanvas.h"
 #include "FlexboxLayout.h"
@@ -44,6 +39,3 @@ protected:
     std::shared_ptr<SkiaUIContext> context;
 
 };
-
-
-#endif //SKIAUI_ITESTDRAW_H

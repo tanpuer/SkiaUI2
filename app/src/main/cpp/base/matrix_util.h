@@ -1,11 +1,5 @@
-//
-// Created by templechen on 2019/3/29.
-//
+#pragma once
 
-#ifndef VIDEOSHADERDEMO_MATRIX_UTIL_H
-#define VIDEOSHADERDEMO_MATRIX_UTIL_H
-
-// -------------------------------------------- matrix部分 -----------------------------------------
 #include <GLES3/gl3.h>
 #include <cmath>
 #include <cstring>
@@ -457,5 +451,3 @@ static void setIdentityM(ESMatrix *result) {
         result->m[i] = 1.0f;
     }
 }
-
-#endif //VIDEOSHADERDEMO_MATRIX_UTIL_H

@@ -1,9 +1,4 @@
-//
-// Created by templechen on 2019/2/24.
-//
-
-#ifndef AUDIOEFFECTDEMO_NATIVE_LOG_H
-#define AUDIOEFFECTDEMO_NATIVE_LOG_H
+#pragma once
 
 #include <android/log.h>
 
@@ -19,5 +14,3 @@
 #else
 
 #endif
-
-#endif //AUDIOEFFECTDEMO_NATIVE_LOG_H

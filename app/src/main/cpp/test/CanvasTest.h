@@ -1,10 +1,4 @@
-//
-// Created by cw on 2024/3/16.
-//
-
-#ifndef SKIAUI_CANVASTEST_H
-#define SKIAUI_CANVASTEST_H
-
+#pragma once
 
 #include "View.h"
 #include "memory"
@@ -30,6 +24,3 @@ private:
 
     long testIndex = 0;
 };
-
-
-#endif //SKIAUI_CANVASTEST_H

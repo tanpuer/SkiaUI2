@@ -1,9 +1,4 @@
-//
-// Created by cw on 2021/6/2.
-//
-
-#ifndef HYEDITOR_EGLCORE_H
-#define HYEDITOR_EGLCORE_H
+#pragma once
 
 #include "EGL/egl.h"
 #include "GLES3/gl3.h"
@@ -45,6 +40,3 @@ private:
     EGLDisplay mEGLDisplay;
 
 };
-
-
-#endif //HYEDITOR_EGLCORE_H
