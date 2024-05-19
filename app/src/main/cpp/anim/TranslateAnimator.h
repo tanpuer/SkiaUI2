@@ -1,10 +1,4 @@
-//
-// Created by banma-3412 on 2024/3/22.
-//
-
-#ifndef SKIAUI_TRANSLATEANIMATOR_H
-#define SKIAUI_TRANSLATEANIMATOR_H
-
+#pragma once
 
 #include "IAnimator.h"
 #include "View.h"
@@ -34,6 +28,3 @@ private:
     View *targetView = nullptr;
 
 };
-
-
-#endif //SKIAUI_TRANSLATEANIMATOR_H

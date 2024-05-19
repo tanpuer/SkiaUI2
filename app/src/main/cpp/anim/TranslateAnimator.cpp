@@ -1,7 +1,3 @@
-//
-// Created by banma-3412 on 2024/3/22.
-//
-
 #include "TranslateAnimator.h"
 
 TranslateAnimator::TranslateAnimator(View *view,
