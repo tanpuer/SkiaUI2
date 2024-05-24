@@ -1,19 +1,20 @@
 package com.temple.skiaui.video
 
-import android.content.Context
 import android.graphics.ImageFormat
 import android.hardware.HardwareBuffer
 import android.media.ImageReader
 import android.media.MediaCodec
 import android.media.MediaExtractor
 import android.media.MediaFormat
-import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.HandlerThread
+import android.os.Looper
 import android.view.Surface
+import com.temple.skiaui.HYSkiaUIApp
 import java.io.IOException
 
-class HYSkVideo internal constructor(private val context: Context, localUri: String) {
-    private val uri: Uri = Uri.parse(localUri)
+class HYSkVideo internal constructor(private val assetsPath: String) {
 
     private lateinit var extractor: MediaExtractor
     private lateinit var decoder: MediaCodec
@@ -26,17 +27,44 @@ class HYSkVideo internal constructor(private val context: Context, localUri: Str
     var frameRate: Double = 0.0
         private set
 
+    private val skiaUIHandler = Handler(Looper.myLooper()!!)
+
+    private val decodeThread = HandlerThread("video-decoder${INDEX++}").apply {
+        start()
+    }
+
+    private val decodeHandler = Handler(decodeThread.looper)
+
+    /**
+     * must set in skia-ui-thread
+     */
+    private var uiThreadHardwareBuffer: HardwareBuffer? = null
+
     init {
-        this.initializeReader()
+        decodeHandler.post {
+            this.initializeReader()
+        }
+        decodeHandler.post {
+            nextImage()?.let {
+                skiaUIHandler.post {
+                    uiThreadHardwareBuffer = it
+                }
+            }
+        }
+    }
+
+    fun getCurrentHardwareBuffer(): HardwareBuffer? {
+        return uiThreadHardwareBuffer
     }
 
     private fun initializeReader() {
         extractor = MediaExtractor()
         try {
-            extractor.setDataSource(context, this.uri, null)
+            val afd = HYSkiaUIApp.getInstance().assets.openFd(this.assetsPath);
+            extractor.setDataSource(afd)
             val trackIndex = selectVideoTrack(extractor)
             if (trackIndex < 0) {
-                throw RuntimeException("No video track found in " + this.uri)
+                throw RuntimeException("No video track found in " + this.assetsPath)
             }
             extractor.selectTrack(trackIndex)
             val format = extractor.getTrackFormat(trackIndex)
@@ -86,7 +114,7 @@ class HYSkVideo internal constructor(private val context: Context, localUri: Str
         return null
     }
 
-    fun seek(timestamp: Long) {
+    private fun seek(timestamp: Long) {
         // Seek to the closest sync frame at or before the specified time
         extractor.seekTo(timestamp * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
         // Flush the codec to reset internal state and buffers
@@ -133,6 +161,7 @@ class HYSkVideo internal constructor(private val context: Context, localUri: Str
                     inputBufferId, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM
                 )
                 isEOS = true
+                seek(0)
             } else {
                 val presentationTimeUs = extractor.sampleTime
                 decoder.queueInputBuffer(inputBufferId, 0, sampleSize, presentationTimeUs, 0)
@@ -159,5 +188,9 @@ class HYSkVideo internal constructor(private val context: Context, localUri: Str
         if (this::extractor::isInitialized.get()) {
             extractor.release()
         }
+    }
+
+    companion object {
+        private var INDEX = 1
     }
 }

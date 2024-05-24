@@ -11,6 +11,7 @@ class SkiaUIContext {
 public:
 
     void setJavaAssetManager(JNIEnv *env, jobject javaAssetManager) {
+        this->jniEnv = env;
         assetManager = std::make_shared<AssetManager>(env, javaAssetManager);
     }
 
@@ -42,6 +43,10 @@ public:
         return pluginManager;
     }
 
+    JNIEnv *getJniEnv() {
+        return jniEnv;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
@@ -53,5 +58,7 @@ private:
     std::shared_ptr<PageStackManager> pageStackManager = std::make_shared<PageStackManager>();
 
     std::shared_ptr<PluginManager> pluginManager = std::make_shared<PluginManager>();
+
+    JNIEnv *jniEnv = nullptr;
 
 };
