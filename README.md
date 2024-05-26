@@ -16,8 +16,8 @@ steps：
    TextView: SkParagraph.  
    ProgressBar: circle and linear style，also can be dragged.  
    SVGView: svg file.  
-   ShaderView: render simple fragment-shader. 
-   Lottie: render lottie.json.
+   ShaderView: render simple fragment-shader.  
+   Lottie: render lottie.json.  
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
