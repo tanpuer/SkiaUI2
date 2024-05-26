@@ -51,6 +51,15 @@ native_GLDoFrame(JNIEnv *env, jobject instance, jlong javaGLApp, jlong pic, jlon
     }
 }
 
+extern "C" JNIEXPORT jlong JNICALL
+native_GLMakeHardwareBufferToSkImage(JNIEnv *env, jobject instance, jlong javaGLApp, jobject hardwareBuffer) {
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
+    if (glApp != nullptr) {
+        return glApp->MakeHardwareBufferToSkImage(env, hardwareBuffer);
+    }
+    return 0L;
+}
+
 extern "C" JNIEXPORT void JNICALL
 native_TouchEvent(JNIEnv *env, jobject instance, jlong javaUIApp, jint action, jfloat x, jfloat y) {
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
@@ -130,19 +139,20 @@ native_SetPlugins(JNIEnv *env, jobject instance, jlong javaUIApp, jobject javaPl
 }
 
 static JNINativeMethod g_RenderMethods[] = {
-        {"nativeGLInit",      "()J",                                          (void *) native_GLInit},
-        {"nativeGLCreated",   "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
-        {"nativeGLChanged",   "(JIIJ)V",                                      (void *) native_GLChanged},
-        {"nativeGLDestroyed", "(J)V",                                         (void *) native_GLDestroyed},
-        {"nativeGLDoFrame",   "(JJJ)V",                                       (void *) native_GLDoFrame},
-        {"nativeTouchEvent",  "(JIFF)Z",                                      (void *) native_TouchEvent},
-        {"nativeSetVelocity", "(JFF)V",                                       (void *) native_SetVelocity},
-        {"nativeUIInit",      "(Landroid/content/res/AssetManager;)J",        (void *) native_UIInit},
-        {"nativeUIDoFrame",   "(JJ)J",                                        (void *) native_UIDoFrame},
-        {"nativeUIChanged",   "(JIIJ)V",                                      (void *) native_UIChanged},
-        {"nativeRelease",     "(JJ)V",                                        (void *) native_Release},
-        {"nativeBackPressed", "(J)Z",                                         (void *) native_BackPressed},
-        {"nativeSetPlugins",  "(JLcom/temple/skiaui/plugin/PluginManager;)V", (void *) native_SetPlugins},
+        {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
+        {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
+        {"nativeGLChanged",                     "(JIIJ)V",                                      (void *) native_GLChanged},
+        {"nativeGLDestroyed",                   "(J)V",                                         (void *) native_GLDestroyed},
+        {"nativeGLDoFrame",                     "(JJJ)V",                                       (void *) native_GLDoFrame},
+        {"nativeGLMakeHardwareBufferToSkImage", "(JLandroid/hardware/HardwareBuffer;)J",        (void *) native_GLMakeHardwareBufferToSkImage},
+        {"nativeTouchEvent",                    "(JIFF)Z",                                      (void *) native_TouchEvent},
+        {"nativeSetVelocity",                   "(JFF)V",                                       (void *) native_SetVelocity},
+        {"nativeUIInit",                        "(Landroid/content/res/AssetManager;)J",        (void *) native_UIInit},
+        {"nativeUIDoFrame",                     "(JJ)J",                                        (void *) native_UIDoFrame},
+        {"nativeUIChanged",                     "(JIIJ)V",                                      (void *) native_UIChanged},
+        {"nativeRelease",                       "(JJ)V",                                        (void *) native_Release},
+        {"nativeBackPressed",                   "(J)Z",                                         (void *) native_BackPressed},
+        {"nativeSetPlugins",                    "(JLcom/temple/skiaui/plugin/PluginManager;)V", (void *) native_SetPlugins},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

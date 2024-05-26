@@ -16,6 +16,8 @@ public:
 
     virtual void render(SkPicture *picture) = 0;
 
+    virtual long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer) = 0;
+
 protected:
 
     int width = 0;

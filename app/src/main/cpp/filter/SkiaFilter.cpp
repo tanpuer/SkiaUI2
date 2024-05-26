@@ -61,3 +61,7 @@ void SkiaFilter::render(SkPicture *picture) {
     picture->unref();
     skiaContext->flush();
 }
+
+long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer) {
+    return 0;
+}

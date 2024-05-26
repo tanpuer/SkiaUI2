@@ -46,3 +46,10 @@ void SkiaGLApp::doFrame(long pic, long time) {
     mFilter->render(skPicture);
     mEGLCore->swapBuffer();
 }
+
+long SkiaGLApp::MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer) {
+    if (mFilter != nullptr) {
+        return mFilter->MakeHardwareBufferToSkImage(env, hardwareBuffer);
+    }
+    return 0;
+}

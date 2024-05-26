@@ -26,6 +26,8 @@ public:
 
     void doFrame(long pic, long time);
 
+    long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer);
+
 private:
 
     std::unique_ptr<EGLCore> mEGLCore;

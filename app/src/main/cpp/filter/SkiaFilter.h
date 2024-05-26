@@ -20,6 +20,8 @@ public:
 
     virtual void render(SkPicture *picture) override;
 
+    long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer) override;
+
 private:
 
     sk_sp<SkSurface> skiaSurface;

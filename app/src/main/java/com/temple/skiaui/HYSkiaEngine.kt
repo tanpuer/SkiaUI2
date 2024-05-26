@@ -1,6 +1,7 @@
 package com.temple.skiaui
 
 import android.content.res.AssetManager
+import android.hardware.HardwareBuffer
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
@@ -152,6 +153,7 @@ class HYSkiaEngine {
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
     private external fun nativeGLDestroyed(glApp: Long)
     private external fun nativeGLDoFrame(glApp: Long, pic: Long, time: Long)
+    private external fun nativeGLMakeHardwareBufferToSkImage(glApp: Long, hardwareBuffer: HardwareBuffer): Long
     private external fun nativeUIInit(assets: AssetManager): Long
     private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(uiApp: Long, xVelocity: Float, yVelocity: Float)
