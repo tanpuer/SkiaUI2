@@ -111,7 +111,7 @@ class HYSkVideo internal constructor(private val assetsPath: String) {
             image.close() // Make sure to close the Image to free up the buffer
             return hardwareBuffer
         }
-        return null
+        return nextImage()
     }
 
     private fun seek(timestamp: Long) {

@@ -20,7 +20,7 @@ public:
 
     virtual void render(SkPicture *picture) override;
 
-    long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer) override;
+    long MakeHardwareBufferToSkImage(JNIEnv* env, jobject javaHardwareBuffer) override;
 
 private:
 

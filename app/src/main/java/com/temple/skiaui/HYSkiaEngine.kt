@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
 import com.temple.skiaui.plugin.PluginManager
+import com.temple.skiaui.video.HYSkVideo
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -57,6 +58,7 @@ class HYSkiaEngine {
             uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets)
             nativeSetPlugins(uiApp, pluginManager)
         }
+//        testHardwareBuffer()
     }
 
     fun createSurface(surface: Surface) {
@@ -148,12 +150,26 @@ class HYSkiaEngine {
         }
     }
 
+    fun testHardwareBuffer() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            val videoView = HYSkVideo("BigBuckBunny.mp4")
+            videoView.nextImage()?.let {
+                skiaGLHandler
+                nativeGLMakeHardwareBufferToSkImage(glApp, it)
+            }
+        }, 3000);
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
     private external fun nativeGLDestroyed(glApp: Long)
     private external fun nativeGLDoFrame(glApp: Long, pic: Long, time: Long)
-    private external fun nativeGLMakeHardwareBufferToSkImage(glApp: Long, hardwareBuffer: HardwareBuffer): Long
+    private external fun nativeGLMakeHardwareBufferToSkImage(
+        glApp: Long,
+        hardwareBuffer: HardwareBuffer
+    ): Long
+
     private external fun nativeUIInit(assets: AssetManager): Long
     private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(uiApp: Long, xVelocity: Float, yVelocity: Float)
