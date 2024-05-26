@@ -15,7 +15,7 @@ void LottieView::setSource(const char *path) {
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
     lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content), length);
-    start = (getContext()->getCurrentTimeMills()) / 1000.0;
+    startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
 }
 
 void LottieView::draw(SkCanvas *canvas) {
@@ -23,18 +23,38 @@ void LottieView::draw(SkCanvas *canvas) {
     if (lottieAnimation == nullptr) {
         return;
     }
-    auto current = (getContext()->getCurrentTimeMills()) / 1000.0;
-    if ((current - start) > lottieAnimation->duration()) {
-        start = current;
+    if (autoPlay) {
+        auto currentTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+        int totalFrames = lottieAnimation->duration() * lottieAnimation->fps();
+        if ((currentTime - startTime) > lottieAnimation->duration()) {
+            if (repeat) {
+                startTime = currentTime;
+                lottieAnimation->seekFrame(0);
+            } else {
+                lottieAnimation->seekFrame(totalFrames);
+            }
+        } else {
+            auto frame = (currentTime - startTime) / lottieAnimation->duration() * totalFrames;
+            lottieAnimation->seekFrame(frame);
+        }
     }
-    int totalFrames = lottieAnimation->duration() * lottieAnimation->fps();
-    auto frame = (current - start) / lottieAnimation->duration() * totalFrames;
-//    ALOGD("LottieView seek Frame: %f %f", frame, current - start)
-    lottieAnimation->seekFrame(frame);
     lottieAnimation->render(canvas, &lottieRect, Animation::RenderFlag::kDisableTopLevelClipping);
 }
 
 void LottieView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
     lottieRect.setLTRB(l, t, r, b);
+}
+
+void LottieView::start() {
+    autoPlay = true;
+    startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+}
+
+void LottieView::pause() {
+    autoPlay = false;
+}
+
+void LottieView::setRepeat(bool repeat) {
+    this->repeat = repeat;
 }

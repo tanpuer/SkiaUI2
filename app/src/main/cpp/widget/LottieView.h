@@ -19,13 +19,23 @@ public:
 
     void layout(int l, int t, int r, int b) override;
 
+    void start();
+
+    void pause();
+
+    void setRepeat(bool repeat);
+
 private:
 
     sk_sp<Animation> lottieAnimation = nullptr;
 
     SkRect lottieRect;
 
-    double start = 0.;
+    double startTime = 0.;
+
+    bool autoPlay = true;
+
+    bool repeat = true;
 
 };
 
