@@ -8,6 +8,7 @@
 #include "Button.h"
 #include "PageStackManager.h"
 #include "ClockView.h"
+#include "LottieView.h"
 
 void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
@@ -46,6 +47,19 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
+
+    {
+        auto lottieView = new LottieView();
+        lottieView->setContext(this->context);
+        lottieView->setWidth(375);
+        lottieView->setHeight(240);
+        lottieView->setSource("WorkspacePlanet.json");
+        lottieView->setStyle(SkPaint::kStroke_Style);
+        lottieView->setBackgroundColor(SK_ColorRED);
+        lottieView->setStrokeWidth(2);
+        lottieView->setMargin({0, 0, 0, 50});
+        scrollView->addView(lottieView);
+    }
 
     {
         auto view = new View();
