@@ -66,9 +66,11 @@ public:
     GLTextureHelper(GrGLuint texID, EGLImageKHR image, EGLDisplay display,
                     GrGLuint texTarget)
             : fTexID(texID), fImage(image), fDisplay(display), fTexTarget(texTarget) {
+        ALOGD("textureId is %d", texID)
     }
 
     ~GLTextureHelper() {
+        ALOGD("textureId is delete %d", fTexID)
         glDeleteTextures(1, &fTexID);
         // eglDestroyImageKHR will remove a ref from the AHardwareBuffer
         eglDestroyImageKHR(fDisplay, fImage);

@@ -106,11 +106,11 @@ class HYSkiaEngine {
             if (pic.get() != 0L) {
                 nativeGLDoFrame(glApp, pic.get(), time)
                 pic.set(0L)
+                skImageList.forEach {
+                    nativeDeleteSkImage(glApp, it)
+                }
+                skImageList.clear()
             }
-            skImageList.forEach {
-                nativeDeleteSkImage(glApp, it)
-            }
-            skImageList.clear()
         }
     }
 
