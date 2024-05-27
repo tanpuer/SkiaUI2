@@ -18,6 +18,7 @@ steps：
    SVGView: svg file.  
    ShaderView: render simple fragment-shader.  
    Lottie: render lottie.json.  
+   VideoView: render local video by MediaCodec/HardwareBuffer/SkImage.  
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.

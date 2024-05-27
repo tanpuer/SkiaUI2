@@ -29,7 +29,7 @@ class HYSkiaVideo internal constructor(
     var duration: Double = 0.0
         private set
 
-    var frameRate: Double = 0.0
+    var frameRate: Double = 25.0
         private set
 
     private val skiaUIHandler = Handler(Looper.myLooper()!!)
@@ -46,21 +46,33 @@ class HYSkiaVideo internal constructor(
         decodeHandler.post {
             this.initializeReader()
         }
-        decodeHandler.post {
-            nextImage()?.let { hardwareBuffer->
-                val start = System.currentTimeMillis();
-                skiaUIHandler.post {
-                    engine.makeHardwareBufferToSkImage(hardwareBuffer) {
-                        skImagePtr = it
-                        Log.d(TAG, "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}")
-                    }
-                }
-            }
-        }
+        makeHardwareBufferToSkImage();
     }
 
     fun getCurrentSkImage(): Long {
         return skImagePtr
+    }
+
+    private fun makeHardwareBufferToSkImage() {
+        decodeHandler.post {
+            nextImage()?.let { hardwareBuffer ->
+                val start = System.currentTimeMillis();
+                skiaUIHandler.post {
+                    engine.makeHardwareBufferToSkImage(hardwareBuffer) {
+                        if (skImagePtr != it) {
+                            skImagePtr = it
+                            Log.d(
+                                TAG,
+                                "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}"
+                            )
+                        }
+                    }
+                }
+            }
+        }
+        decodeHandler.postDelayed({
+            this.makeHardwareBufferToSkImage();
+        }, (1000 / frameRate).toLong())
     }
 
     private fun initializeReader() {
@@ -124,9 +136,7 @@ class HYSkiaVideo internal constructor(
         // Seek to the closest sync frame at or before the specified time
         extractor.seekTo(timestamp * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
         // Flush the codec to reset internal state and buffers
-        if (this::decoder::isInitialized.get()) {
-            decoder.flush()
-        }
+        decoder.flush()
     }
 
     private fun selectVideoTrack(extractor: MediaExtractor): Int {
@@ -187,13 +197,9 @@ class HYSkiaVideo internal constructor(
     }
 
     fun release() {
-        if (this::decoder::isInitialized.get()) {
-            decoder.stop()
-            decoder.release()
-        }
-        if (this::extractor::isInitialized.get()) {
-            extractor.release()
-        }
+        decoder.stop()
+        decoder.release()
+        extractor.release()
     }
 
     companion object {
