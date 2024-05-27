@@ -151,11 +151,12 @@ class HYSkiaEngine {
     }
 
     fun testHardwareBuffer() {
+        val videoView = HYSkVideo("BigBuckBunny.mp4")
         Handler(Looper.getMainLooper()).postDelayed({
-            val videoView = HYSkVideo("BigBuckBunny.mp4")
             videoView.nextImage()?.let {
-                skiaGLHandler
-                nativeGLMakeHardwareBufferToSkImage(glApp, it)
+                skiaGLHandler.post {
+                    nativeGLMakeHardwareBufferToSkImage(glApp, it)
+                }
             }
         }, 3000);
     }

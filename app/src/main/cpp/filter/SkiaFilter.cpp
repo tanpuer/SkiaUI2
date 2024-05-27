@@ -14,8 +14,9 @@
 #include "gpu/ganesh/SkImageGanesh.h"
 #include "gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "gpu/GrBackendSurface.h"
-#include "android/GrAHardwareBufferUtils.h"
+#include "GrAHardwareBufferUtils.h"
 #include "gpu/ganesh/gl/GrGLDefines.h"
+#include "android/GrAHardwareBufferUtils.h"
 
 SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
     SkGraphics::Init();
@@ -94,21 +95,21 @@ long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBu
     format = GrBackendFormats::MakeGL(GR_GL_R8, GR_GL_TEXTURE_EXTERNAL);
 #endif
         default:
-            format = GrBackendFormats::MakeGL(GR_GL_RGB8, GR_GL_TEXTURE_EXTERNAL);
+            format = GrBackendFormats::MakeGL(GR_GL_RGBA8, GR_GL_TEXTURE_EXTERNAL);
     }
-    return 0L;
-//    auto backendTex = GrAHardwareBufferUtils::MakeGLBackendTexture(
-//            skiaContext.get(),
-//            const_cast<AHardwareBuffer *>(hardwareBuffer), description.width,
-//            description.height, &deleteImageProc, &updateImageProc, &deleteImageCtx,
-//            false, format, false);
-//    if (!backendTex.isValid()) {
-//        ALOGE("Failed to convert HardwareBuffer to OpenGL Texture!")
-//    }
-//    sk_sp<SkImage> image = SkImages::BorrowTextureFrom(
-//            skiaContext.get(),
-//            backendTex, kTopLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
-//            kOpaque_SkAlphaType, nullptr, deleteImageProc, deleteImageCtx);
-//    image->ref();
-//    return reinterpret_cast<long >(image.get());
+    auto backendTex = MakeGLBackendTexture(
+            skiaContext.get(),
+            const_cast<AHardwareBuffer *>(hardwareBuffer), description.width,
+            description.height, &deleteImageProc, &updateImageProc, &deleteImageCtx,
+            false, format, false);
+    if (!backendTex.isValid()) {
+        ALOGE("Failed to convert HardwareBuffer to OpenGL Texture!")
+        return 0L;
+    }
+    sk_sp<SkImage> image = SkImages::BorrowTextureFrom(
+            skiaContext.get(),
+            backendTex, kTopLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
+            kOpaque_SkAlphaType, nullptr, deleteImageProc, deleteImageCtx);
+    image->ref();
+    return reinterpret_cast<long >(image.get());
 }
