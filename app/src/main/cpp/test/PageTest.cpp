@@ -52,8 +52,8 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     {
         auto videoView = new VideoView();
         videoView->setContext(this->context);
-        videoView->setWidth(640);
-        videoView->setHeight(360);
+        videoView->setWidth(1080);
+        videoView->setHeight(360 * 1080 / 720);
         videoView->setSource("BigBuckBunny.mp4");
         videoView->setStyle(SkPaint::kStroke_Style);
         videoView->setBackgroundColor(SK_ColorRED);
