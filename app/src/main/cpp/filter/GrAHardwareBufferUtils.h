@@ -12,7 +12,9 @@ typedef struct AHardwareBuffer AHardwareBuffer;
 }
 
 typedef void *TexImageCtx;
+
 typedef void (*DeleteImageProc)(TexImageCtx);
+
 typedef void (*UpdateImageProc)(TexImageCtx, GrDirectContext *);
 
 GrBackendTexture
@@ -21,3 +23,7 @@ MakeGLBackendTexture(GrDirectContext *dContext, AHardwareBuffer *hardwareBuffer,
                      UpdateImageProc *updateProc, TexImageCtx *imageCtx,
                      bool isProtectedContent,
                      const GrBackendFormat &backendFormat, bool isRenderable);
+
+GrBackendFormat GetGLBackendFormat(GrDirectContext *dContext,
+                                   uint32_t bufferFormat,
+                                   bool requireKnownFormat);
