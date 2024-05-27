@@ -10,11 +10,16 @@ import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import android.util.Log
 import android.view.Surface
+import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
 import java.io.IOException
 
-class HYSkVideo internal constructor(private val assetsPath: String) {
+class HYSkiaVideo internal constructor(
+    private val assetsPath: String,
+    private val engine: HYSkiaEngine
+) {
 
     private lateinit var extractor: MediaExtractor
     private lateinit var decoder: MediaCodec
@@ -35,26 +40,27 @@ class HYSkVideo internal constructor(private val assetsPath: String) {
 
     private val decodeHandler = Handler(decodeThread.looper)
 
-    /**
-     * must set in skia-ui-thread
-     */
-    private var uiThreadHardwareBuffer: HardwareBuffer? = null
+    private var skImagePtr = 0L
 
     init {
         decodeHandler.post {
             this.initializeReader()
         }
         decodeHandler.post {
-            nextImage()?.let {
+            nextImage()?.let { hardwareBuffer->
+                val start = System.currentTimeMillis();
                 skiaUIHandler.post {
-                    uiThreadHardwareBuffer = it
+                    engine.makeHardwareBufferToSkImage(hardwareBuffer) {
+                        skImagePtr = it
+                        Log.d(TAG, "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}")
+                    }
                 }
             }
         }
     }
 
-    fun getCurrentHardwareBuffer(): HardwareBuffer? {
-        return uiThreadHardwareBuffer
+    fun getCurrentSkImage(): Long {
+        return skImagePtr
     }
 
     private fun initializeReader() {
@@ -192,5 +198,6 @@ class HYSkVideo internal constructor(private val assetsPath: String) {
 
     companion object {
         private var INDEX = 1
+        private const val TAG = "HYSkiaVideo"
     }
 }

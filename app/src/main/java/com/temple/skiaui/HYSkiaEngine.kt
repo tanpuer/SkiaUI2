@@ -10,7 +10,6 @@ import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
 import com.temple.skiaui.plugin.PluginManager
-import com.temple.skiaui.video.HYSkVideo
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -58,7 +57,6 @@ class HYSkiaEngine {
             uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets)
             nativeSetPlugins(uiApp, pluginManager)
         }
-//        testHardwareBuffer()
     }
 
     fun createSurface(surface: Surface) {
@@ -150,15 +148,16 @@ class HYSkiaEngine {
         }
     }
 
-    fun testHardwareBuffer() {
-        val videoView = HYSkVideo("BigBuckBunny.mp4")
-        Handler(Looper.getMainLooper()).postDelayed({
-            videoView.nextImage()?.let {
-                skiaGLHandler.post {
-                    nativeGLMakeHardwareBufferToSkImage(glApp, it)
-                }
+    fun makeHardwareBufferToSkImage(
+        hardwareBuffer: HardwareBuffer,
+        callback: (skImagePtr: Long) -> Unit
+    ) {
+        skiaGLHandler.post {
+            val skImagePtr = nativeGLMakeHardwareBufferToSkImage(glApp, hardwareBuffer)
+            skiaUIHandler.post {
+                callback.invoke(skImagePtr);
             }
-        }, 3000);
+        }
     }
 
     private external fun nativeGLInit(): Long

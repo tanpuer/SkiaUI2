@@ -10,6 +10,14 @@ class SkiaUIContext {
 
 public:
 
+    SkiaUIContext() {
+
+    }
+
+    ~SkiaUIContext() {
+        jniEnv->DeleteGlobalRef(javaSkiaEngine);
+    }
+
     void setJavaAssetManager(JNIEnv *env, jobject javaAssetManager) {
         this->jniEnv = env;
         assetManager = std::make_shared<AssetManager>(env, javaAssetManager);
@@ -47,6 +55,14 @@ public:
         return jniEnv;
     }
 
+    void setJavaSkiaEngine(jobject instance) {
+        javaSkiaEngine = jniEnv->NewGlobalRef(instance);
+    }
+
+    const jobject getJavaSkiaEngine() {
+        return javaSkiaEngine;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
@@ -60,5 +76,7 @@ private:
     std::shared_ptr<PluginManager> pluginManager = std::make_shared<PluginManager>();
 
     JNIEnv *jniEnv = nullptr;
+
+    jobject javaSkiaEngine = nullptr;
 
 };

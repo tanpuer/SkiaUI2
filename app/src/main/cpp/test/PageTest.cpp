@@ -9,6 +9,7 @@
 #include "PageStackManager.h"
 #include "ClockView.h"
 #include "LottieView.h"
+#include "VideoView.h"
 
 void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
@@ -47,6 +48,19 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
+
+    {
+        auto videoView = new VideoView();
+        videoView->setContext(this->context);
+        videoView->setWidth(640);
+        videoView->setHeight(360);
+        videoView->setSource("BigBuckBunny.mp4");
+        videoView->setStyle(SkPaint::kStroke_Style);
+        videoView->setBackgroundColor(SK_ColorRED);
+        videoView->setStrokeWidth(2);
+        videoView->setMargin({0, 0, 0, 50});
+        scrollView->addView(videoView);
+    }
 
     {
         auto lottieView = new LottieView();

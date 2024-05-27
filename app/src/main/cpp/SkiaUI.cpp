@@ -83,7 +83,7 @@ native_SetVelocity(JNIEnv *env, jobject instance, jlong javaUIApp, jfloat x, jfl
 extern "C" JNIEXPORT jlong JNICALL
 native_UIInit(JNIEnv *env, jobject instance, jobject javaAssetManager) {
     auto globalAssets = env->NewGlobalRef(javaAssetManager);
-    auto uiApp = new SkiaUIApp(env, globalAssets);
+    auto uiApp = new SkiaUIApp(env, globalAssets, instance);
     ALOGD("native_UIInit")
     return reinterpret_cast<long>(uiApp);
 }
