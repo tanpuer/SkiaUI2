@@ -26,7 +26,9 @@ public:
 
     void doFrame(long pic, long time);
 
-    long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer);
+    long MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer);
+
+    void deleteSkImage(JNIEnv *env, long skImagePtr);
 
 private:
 

@@ -52,12 +52,21 @@ native_GLDoFrame(JNIEnv *env, jobject instance, jlong javaGLApp, jlong pic, jlon
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-native_GLMakeHardwareBufferToSkImage(JNIEnv *env, jobject instance, jlong javaGLApp, jobject hardwareBuffer) {
+native_GLMakeHardwareBufferToSkImage(JNIEnv *env, jobject instance, jlong javaGLApp,
+                                     jobject hardwareBuffer) {
     auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
         return glApp->MakeHardwareBufferToSkImage(env, hardwareBuffer);
     }
     return 0L;
+}
+
+extern "C" JNIEXPORT void JNICALL
+native_DeleteSkImage(JNIEnv *env, jobject instance, jlong javaGLApp, jlong skImagePtr) {
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
+    if (glApp != nullptr) {
+        return glApp->deleteSkImage(env, skImagePtr);
+    }
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -145,6 +154,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLDestroyed",                   "(J)V",                                         (void *) native_GLDestroyed},
         {"nativeGLDoFrame",                     "(JJJ)V",                                       (void *) native_GLDoFrame},
         {"nativeGLMakeHardwareBufferToSkImage", "(JLandroid/hardware/HardwareBuffer;)J",        (void *) native_GLMakeHardwareBufferToSkImage},
+        {"nativeDeleteSkImage",                 "(JJ)V",                                        (void *) native_DeleteSkImage},
         {"nativeTouchEvent",                    "(JIFF)Z",                                      (void *) native_TouchEvent},
         {"nativeSetVelocity",                   "(JFF)V",                                       (void *) native_SetVelocity},
         {"nativeUIInit",                        "(Landroid/content/res/AssetManager;)J",        (void *) native_UIInit},

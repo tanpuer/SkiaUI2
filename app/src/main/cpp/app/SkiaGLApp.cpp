@@ -53,3 +53,9 @@ long SkiaGLApp::MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer)
     }
     return 0;
 }
+
+void SkiaGLApp::deleteSkImage(JNIEnv *env, long skImagePtr) {
+    if (mFilter != nullptr) {
+        mFilter->deleteSkImage(env, skImagePtr);
+    }
+}

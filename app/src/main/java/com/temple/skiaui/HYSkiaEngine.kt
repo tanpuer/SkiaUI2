@@ -48,6 +48,7 @@ class HYSkiaEngine {
     private val pluginManager = PluginManager()
     private var glApp = 0L
     private var uiApp = 0L
+    private val skImageList = mutableListOf<Long>()
 
     init {
         skiaGLHandler.post {
@@ -106,6 +107,10 @@ class HYSkiaEngine {
                 nativeGLDoFrame(glApp, pic.get(), time)
                 pic.set(0L)
             }
+            skImageList.forEach {
+                nativeDeleteSkImage(glApp, it)
+            }
+            skImageList.clear()
         }
     }
 
@@ -160,6 +165,12 @@ class HYSkiaEngine {
         }
     }
 
+    fun deleteSkImage(skImagePtr: Long) {
+        skiaGLHandler.post {
+            skImageList.add(skImagePtr)
+        }
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -169,6 +180,7 @@ class HYSkiaEngine {
         glApp: Long,
         hardwareBuffer: HardwareBuffer
     ): Long
+    private external fun nativeDeleteSkImage(glApp: Long, skImagePtr: Long)
 
     private external fun nativeUIInit(assets: AssetManager): Long
     private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean

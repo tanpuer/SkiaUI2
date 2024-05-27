@@ -18,6 +18,8 @@ public:
 
     virtual long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer) = 0;
 
+    virtual void deleteSkImage(JNIEnv *env, long skImagePtr) = 0;
+
 protected:
 
     int width = 0;

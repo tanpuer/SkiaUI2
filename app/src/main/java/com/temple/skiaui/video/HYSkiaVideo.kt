@@ -53,6 +53,10 @@ class HYSkiaVideo internal constructor(
         return skImagePtr
     }
 
+    fun deleteSkImage(skImagePtr: Long) {
+        engine.deleteSkImage(skImagePtr)
+    }
+
     private fun makeHardwareBufferToSkImage() {
         decodeHandler.post {
             nextImage()?.let { hardwareBuffer ->
@@ -60,12 +64,13 @@ class HYSkiaVideo internal constructor(
                 skiaUIHandler.post {
                     engine.makeHardwareBufferToSkImage(hardwareBuffer) {
                         if (skImagePtr != it) {
-                            skImagePtr = it
-                            Log.d(
-                                TAG,
-                                "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}"
-                            )
+                            engine.deleteSkImage(skImagePtr)
                         }
+                        skImagePtr = it
+                        Log.d(
+                            TAG,
+                            "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}"
+                        )
                     }
                 }
             }

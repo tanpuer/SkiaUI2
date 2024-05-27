@@ -39,4 +39,6 @@ private:
 
     std::unique_ptr<SkPaint> videoPaint;
 
+    long lastSkImagePtr = 0L;
+
 };

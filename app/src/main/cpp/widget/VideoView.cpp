@@ -31,12 +31,11 @@ void VideoView::layout(int l, int t, int r, int b) {
 void VideoView::draw(SkCanvas *canvas) {
     auto jniEnv = getContext()->getJniEnv();
     auto skImagePtr = jniEnv->CallLongMethod(javaVideo, getCurrentSkImage);
-    if (skImagePtr == 0L) {
-        ALOGE("getCurrentSkImage is nullptr")
-        return;
+    if (skImagePtr != lastSkImagePtr) {
+        auto image = reinterpret_cast<SkImage *>(skImagePtr);
+        skImage = sk_sp<SkImage>(SkSafeRef(image));
+        lastSkImagePtr = skImagePtr;
     }
-    auto image = reinterpret_cast<SkImage *>(skImagePtr);
-    skImage = sk_sp<SkImage>(SkSafeRef(image));
     canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), videoPaint.get());
 }
 
