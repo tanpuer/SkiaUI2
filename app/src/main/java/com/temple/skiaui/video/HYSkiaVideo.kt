@@ -46,7 +46,9 @@ class HYSkiaVideo internal constructor(
         decodeHandler.post {
             this.initializeReader()
         }
-        makeHardwareBufferToSkImage();
+        decodeHandler.postDelayed({
+            makeHardwareBufferToSkImage()
+        }, 100)
     }
 
     fun getCurrentSkImage(): Long {
