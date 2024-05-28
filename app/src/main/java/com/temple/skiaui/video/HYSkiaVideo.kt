@@ -59,29 +59,21 @@ class HYSkiaVideo internal constructor(
     }
 
     private fun makeHardwareBufferToSkImage() {
-        decodeHandler.post {
-            nextImage()?.let { hardwareBuffer ->
-                val start = System.currentTimeMillis();
-                skiaUIHandler.post {
-                    engine.makeHardwareBufferToSkImage(hardwareBuffer) {
-                        if (skImagePtr != it) {
-                            engine.deleteSkImage(skImagePtr)
-                        }
-                        skImagePtr = it
-                        Log.d(
-                            TAG,
-                            "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}"
-                        )
-                    }
-                }
-            }
+        if (released) {
+            return
         }
         decodeHandler.postDelayed({
-            if (released) {
-                return@postDelayed
-            }
             this.makeHardwareBufferToSkImage();
         }, (1000 / frameRate).toLong())
+        val hardwareBuffer = nextImage() ?: return
+        val start = System.currentTimeMillis();
+        engine.makeHardwareBufferToSkImage(hardwareBuffer) {
+            if (skImagePtr != it) {
+                engine.deleteSkImage(skImagePtr)
+            }
+            skImagePtr = it
+            Log.d(TAG, "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}")
+        }
     }
 
     private fun initializeReader() {
