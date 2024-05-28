@@ -42,6 +42,9 @@ class HYSkiaVideo internal constructor(
 
     private var skImagePtr = 0L
 
+    @Volatile
+    private var released = false
+
     init {
         decodeHandler.post {
             this.initializeReader()
@@ -53,10 +56,6 @@ class HYSkiaVideo internal constructor(
 
     fun getCurrentSkImage(): Long {
         return skImagePtr
-    }
-
-    fun deleteSkImage(skImagePtr: Long) {
-        engine.deleteSkImage(skImagePtr)
     }
 
     private fun makeHardwareBufferToSkImage() {
@@ -78,6 +77,9 @@ class HYSkiaVideo internal constructor(
             }
         }
         decodeHandler.postDelayed({
+            if (released) {
+                return@postDelayed
+            }
             this.makeHardwareBufferToSkImage();
         }, (1000 / frameRate).toLong())
     }
@@ -85,7 +87,7 @@ class HYSkiaVideo internal constructor(
     private fun initializeReader() {
         extractor = MediaExtractor()
         try {
-            val afd = HYSkiaUIApp.getInstance().assets.openFd(this.assetsPath);
+            val afd = HYSkiaUIApp.getInstance().assets.openFd(this.assetsPath)
             extractor.setDataSource(afd)
             val trackIndex = selectVideoTrack(extractor)
             if (trackIndex < 0) {
@@ -204,9 +206,11 @@ class HYSkiaVideo internal constructor(
     }
 
     fun release() {
+        released = true
         decoder.stop()
         decoder.release()
         extractor.release()
+        decodeThread.quitSafely()
     }
 
     companion object {

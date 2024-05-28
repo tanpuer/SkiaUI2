@@ -8,6 +8,7 @@ VideoView::VideoView() {
 
 VideoView::~VideoView() {
     auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaVideo, release);
     jniEnv->DeleteGlobalRef(javaVideo);
 }
 
@@ -17,6 +18,7 @@ void VideoView::setSource(const char *path) {
     javaVideoConstructor = jniEnv->GetMethodID(javaVideoClass, "<init>",
                                                "(Ljava/lang/String;Lcom/temple/skiaui/HYSkiaEngine;)V");
     getCurrentSkImage = jniEnv->GetMethodID(javaVideoClass, "getCurrentSkImage", "()J");
+    release = jniEnv->GetMethodID(javaVideoClass, "release", "()V");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
     javaVideo = jniEnv->NewGlobalRef(jniEnv->NewObject(javaVideoClass, javaVideoConstructor,
                                                        jniEnv->NewStringUTF(path), javaSkiaEngine));

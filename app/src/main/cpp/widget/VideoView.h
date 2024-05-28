@@ -31,6 +31,8 @@ private:
 
     jmethodID getCurrentSkImage = nullptr;
 
+    jmethodID release = nullptr;
+
     jobject javaVideo = nullptr;
 
     sk_sp<SkImage> skImage = nullptr;
