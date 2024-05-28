@@ -9,7 +9,6 @@ import android.media.MediaFormat
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.util.Log
 import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine
@@ -26,13 +25,9 @@ class HYSkiaVideo internal constructor(
     private var imageReader: ImageReader? = null
     private var outputSurface: Surface? = null
 
-    var duration: Double = 0.0
-        private set
+    private var duration: Double = 0.0
 
-    var frameRate: Double = 25.0
-        private set
-
-    private val skiaUIHandler = Handler(Looper.myLooper()!!)
+    private var frameRate: Double = 25.0
 
     private val decodeThread = HandlerThread("video-decoder${INDEX++}").apply {
         start()
@@ -66,7 +61,7 @@ class HYSkiaVideo internal constructor(
             this.makeHardwareBufferToSkImage();
         }, (1000 / frameRate).toLong())
         val hardwareBuffer = nextImage() ?: return
-        val start = System.currentTimeMillis();
+        val start = System.currentTimeMillis()
         engine.makeHardwareBufferToSkImage(hardwareBuffer) {
             if (skImagePtr != it) {
                 engine.deleteSkImage(skImagePtr)
