@@ -40,6 +40,8 @@ class HYSkiaVideo internal constructor(
     @Volatile
     private var released = false
 
+    private var renderFlag = true
+
     init {
         decodeHandler.post {
             this.initializeReader()
@@ -47,6 +49,11 @@ class HYSkiaVideo internal constructor(
         decodeHandler.postDelayed({
             makeHardwareBufferToSkImage()
         }, 100)
+        engine.createListeners.add {
+            decodeHandler.post {
+                renderFlag = it
+            }
+        }
     }
 
     fun getCurrentSkImage(): Long {
@@ -60,6 +67,9 @@ class HYSkiaVideo internal constructor(
         decodeHandler.postDelayed({
             this.makeHardwareBufferToSkImage();
         }, (1000 / frameRate).toLong())
+        if (!renderFlag) {
+            return
+        }
         val hardwareBuffer = nextImage() ?: return
         val start = System.currentTimeMillis()
         engine.makeHardwareBufferToSkImage(hardwareBuffer) {
@@ -114,7 +124,7 @@ class HYSkiaVideo internal constructor(
         }
     }
 
-    fun nextImage(): HardwareBuffer? {
+    private fun nextImage(): HardwareBuffer? {
         if (!decoderOutputAvailable()) {
             decodeFrame()
         }
@@ -194,9 +204,11 @@ class HYSkiaVideo internal constructor(
 
     fun release() {
         released = true
-        decoder.stop()
-        decoder.release()
-        extractor.release()
+        decodeHandler.post {
+            decoder.stop()
+            decoder.release()
+            extractor.release()
+        }
         decodeThread.quitSafely()
     }
 

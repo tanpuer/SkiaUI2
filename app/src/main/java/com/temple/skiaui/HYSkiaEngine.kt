@@ -49,6 +49,7 @@ class HYSkiaEngine {
     private var glApp = 0L
     private var uiApp = 0L
     private val skImageList = mutableListOf<Long>()
+    val createListeners = mutableListOf<(enable: Boolean) -> Unit>()
 
     init {
         skiaGLHandler.post {
@@ -65,6 +66,9 @@ class HYSkiaEngine {
             nativeGLCreated(glApp, surface)
         }
         velocityTracker = VelocityTracker.obtain()
+        createListeners.forEach {
+            it.invoke(true)
+        }
     }
 
     fun changeSurfaceSize(width: Int, height: Int) {
@@ -83,6 +87,9 @@ class HYSkiaEngine {
         }
         velocityTracker?.recycle()
         velocityTracker = null
+        createListeners.forEach {
+            it.invoke(false)
+        }
     }
 
     fun doFrame(time: Long) {
