@@ -17,7 +17,7 @@ V8Runtime::V8Runtime() {
     v8::HandleScope scopedHandle(mIsolate);
     mContext.Reset(mIsolate, CreateGlobalContext(mIsolate));
     v8::Context::Scope scopedContext(mContext.Get(mIsolate));
-    ALOGD("AgilV8Runtime init success")
+    ALOGD("V8Runtime init success")
 }
 
 V8Runtime::~V8Runtime() {
