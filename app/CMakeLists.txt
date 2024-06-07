@@ -22,6 +22,7 @@ include_directories(
         src/main/cpp/app
         src/main/cpp/plugin
         src/main/cpp/page
+        src/main/cpp/js
 )
 
 link_directories(
@@ -51,6 +52,34 @@ set_property(TARGET skottie PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROI
 add_library(sksg STATIC IMPORTED)
 set_property(TARGET sksg PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libsksg.a")
 
+##v8-start
+add_library(v8_libbase SHARED IMPORTED)
+set_target_properties(v8_libbase
+        PROPERTIES IMPORTED_LOCATION
+        ${JNI_LIBS_DIR}/${ANDROID_ABI}/libv8_libbase.cr.so)
+add_library(v8_libplatform SHARED IMPORTED)
+set_target_properties(v8_libplatform
+        PROPERTIES IMPORTED_LOCATION
+        ${JNI_LIBS_DIR}/${ANDROID_ABI}/libv8_libplatform.cr.so)
+add_library(v8 SHARED IMPORTED)
+set_target_properties(v8
+        PROPERTIES IMPORTED_LOCATION
+        ${JNI_LIBS_DIR}/${ANDROID_ABI}/libv8.cr.so)
+add_library(icui18n SHARED IMPORTED)
+set_target_properties(icui18n
+        PROPERTIES IMPORTED_LOCATION
+        ${JNI_LIBS_DIR}/${ANDROID_ABI}/libicui18n.cr.so)
+add_library(icuuc SHARED IMPORTED)
+set_target_properties(icuuc
+        PROPERTIES IMPORTED_LOCATION
+        ${JNI_LIBS_DIR}/${ANDROID_ABI}/libicuuc.cr.so)
+add_library(chrome_zlib SHARED IMPORTED)
+set_target_properties(chrome_zlib
+        PROPERTIES IMPORTED_LOCATION
+        ${JNI_LIBS_DIR}/${ANDROID_ABI}/libchrome_zlib.cr.so)
+include_directories(${JNI_LIBS_DIR}/v8/include)
+##v8-end
+
 aux_source_directory(src/main/cpp srcs)
 aux_source_directory(src/main/cpp/base srcs)
 aux_source_directory(src/main/cpp/filter srcs)
@@ -63,6 +92,7 @@ aux_source_directory(src/main/cpp/anim srcs)
 aux_source_directory(src/main/cpp/app srcs)
 aux_source_directory(src/main/cpp/plugin srcs)
 aux_source_directory(src/main/cpp/page srcs)
+aux_source_directory(src/main/cpp/js srcs)
 
 add_library(skiaui SHARED ${srcs})
 
@@ -79,6 +109,8 @@ target_link_libraries(skiaui
         skunicode
         skottie
         sksg
+
+        v8_libbase v8_libplatform icui18n icuuc chrome_zlib v8
 
         android EGL GLESv3 jnigraphics
         ${LINK_LIB_LIST} ${log-lib} ${z-lib} ${android-lib})
