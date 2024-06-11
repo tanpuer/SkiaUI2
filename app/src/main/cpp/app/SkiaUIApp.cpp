@@ -83,3 +83,7 @@ void SkiaUIApp::initJavaPluginManager(JNIEnv *env, jobject javaPlugins) {
 void SkiaUIApp::releaseJavaPluginManager(JNIEnv *env) {
     context->getPluginManager()->releaseJavaPluginManager(env);
 }
+
+SkiaUIContext *SkiaUIApp::getContext() {
+    return context.get();
+}

@@ -31,6 +31,8 @@ public:
 
     void releaseJavaPluginManager(JNIEnv *env);
 
+    SkiaUIContext* getContext();
+
 private:
 
     std::unique_ptr<TouchEvent> mTouchEvent;

@@ -5,6 +5,7 @@
 #include "memory"
 #include "PageStackManager.h"
 #include "PluginManager.h"
+#include "YGConfig.h"
 
 class SkiaUIContext {
 
