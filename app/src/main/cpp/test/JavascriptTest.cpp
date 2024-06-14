@@ -11,3 +11,24 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
 View *JavascriptTest::getRootView() {
     return ITestDraw::getRootView();
 }
+
+void JavascriptTest::injectConsole() {
+    std::map<std::string, v8::FunctionCallback> consoleMap(
+            {
+                    {"log",   logCallback},
+                    {"error", errorCallback},
+                    {"info",  infoCallback},
+                    {"warn",  warnCallback},
+            }
+    );
+    v8Runtime->injectObject(v8Runtime->global(), "console", consoleMap,
+                            std::map<std::string, std::string>());
+}
+
+void JavascriptTest::injectViews() {
+
+}
+
+void JavascriptTest::injectFrameCallback() {
+
+}

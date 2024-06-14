@@ -100,6 +100,41 @@ void V8Runtime::ReportException(v8::TryCatch *tryCatch) const {
     ALOGD("AgilV8Runtime::ReportException %s", error.c_str())
 }
 
+
+v8::Local<v8::Object> V8Runtime::global() {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    return mContext.Get(mIsolate)->Global();
+}
+
+v8::Local<v8::Object> V8Runtime::injectObject(v8::Local<v8::Object> host, const char *name,
+                                              std::map<std::string, v8::FunctionCallback> functionMap,
+                                              std::map<std::string, std::string> constMap,
+                                              void *any) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    v8::Local<v8::Object> object = v8::Object::New(mIsolate);
+    for (std::pair<std::string, v8::FunctionCallback> pair: functionMap) {
+        v8::Local<v8::External> external_context_data = v8::External::New(mIsolate, any);
+        auto function = v8::FunctionTemplate::New(mIsolate, pair.second,
+                                                  external_context_data)->GetFunction();
+        auto result = object->Set(v8::String::NewFromUtf8(mIsolate, pair.first.c_str()), function);
+        ALOGD("%s set %s result: %d", name, pair.first.c_str(), result)
+    }
+    for (std::pair<std::string, std::string> pair: constMap) {
+        object->Set(v8::String::NewFromUtf8(mIsolate, pair.first.c_str()),
+                    v8::String::NewFromUtf8(mIsolate, pair.second.c_str()));
+    }
+    auto global = mContext.Get(mIsolate)->Global();
+    auto result = global->Set(v8::String::NewFromUtf8(mIsolate, name), object);
+    ALOGD("global set object: %s result: %d", name, result)
+    return object;
+}
+
 void
 V8Runtime::injectClass(const char *className, v8::FunctionCallback constructorFunc, int fieldCount,
                        std::map<const char *, v8::FunctionCallback> methods, void *any,

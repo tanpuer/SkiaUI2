@@ -23,9 +23,16 @@ public:
 
     bool evaluateJavaScript(const std::string &buffer, const std::string &sourceURL);
 
+    v8::Local<v8::Object> global();
+
     void injectClass(const char *className, v8::FunctionCallback constructorFunc, int fieldCount,
                      std::map<const char *, v8::FunctionCallback> methods, void *any,
                      bool globalTarget = false);
+
+    v8::Local<v8::Object> injectObject(v8::Local<v8::Object> host, const char *name,
+                                       std::map<std::string, v8::FunctionCallback> functionMap,
+                                       std::map<std::string, std::string> constMap,
+                                       void *any = nullptr);
 
 private:
 
