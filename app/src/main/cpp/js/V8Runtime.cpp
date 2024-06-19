@@ -1,6 +1,8 @@
 #include "V8Runtime.h"
 #include "native_log.h"
 #include "SkiaUIContext.h"
+#include <ostream>
+#include <sstream>
 
 V8Runtime::V8Runtime(std::shared_ptr<SkiaUIContext> context) {
     this->skiaUiContext = context;
@@ -92,12 +94,48 @@ bool V8Runtime::executeScript(const v8::Local<v8::String> &script, const std::st
     return true;
 }
 
-void V8Runtime::ReportException(v8::TryCatch *tryCatch) const {
+void V8Runtime::ReportException(v8::TryCatch *tryCatch) {
     v8::HandleScope scopedHandle(mIsolate);
+    std::string exception = toStdString(tryCatch->Message()->Get());
     v8::Local<v8::Message> message = tryCatch->Message();
-    v8::String::Utf8Value utf8(mIsolate, message->Get());
-    auto error = std::string(*utf8, utf8.length());
-    ALOGD("AgilV8Runtime::ReportException %s", error.c_str())
+    if (message.IsEmpty()) {
+        // V8 didn't provide any extra information about this error; just
+        // print the exception.
+        ALOGE("JSError: %s", exception.c_str())
+        return;
+    } else {
+        std::ostringstream ss;
+        v8::Local<v8::Context> context(mIsolate->GetCurrentContext());
+
+        // Print (filename):(line number): (message).
+        ss << toStdString(message->GetScriptOrigin().ResourceName())
+           << ":" << message->GetLineNumber(context).FromJust() << ": " << exception
+           << std::endl;
+
+        // Print line of source code.
+        ss << toStdString(message->GetSourceLine(context).ToLocalChecked())
+           << std::endl;
+
+        // // Print wavy underline (GetUnderline is deprecated).
+        int start = message->GetStartColumn(context).FromJust();
+        for (int i = 0; i < start; i++) {
+            ss << " ";
+        }
+        int end = message->GetEndColumn(context).FromJust();
+        for (int i = start; i < end; i++) {
+            ss << "^";
+        }
+        ss << std::endl;
+
+        v8::Local<v8::Value> stackTraceString;
+        if (tryCatch->StackTrace(context).ToLocal(&stackTraceString) &&
+            stackTraceString->IsString() &&
+            v8::Local<v8::String>::Cast(stackTraceString)->Length() > 0) {
+            v8::String::Utf8Value stackTrace(mIsolate, stackTraceString);
+            ss << std::string(*stackTrace, stackTrace.length()) << std::endl;
+        }
+        ALOGE("JSError: %s", ss.str().c_str())
+    }
 }
 
 
@@ -158,4 +196,14 @@ V8Runtime::injectClass(const char *className, v8::FunctionCallback constructorFu
     v8::Local<v8::Function> constructor = tpl->GetFunction();
     auto target = globalTarget ? mContext.Get(mIsolate)->Global() : skiaUI;
     target->Set(v8::String::NewFromUtf8(mIsolate, className), constructor);
+}
+
+std::string V8Runtime::toStdString(const v8::Local<v8::Value> &string) {
+    v8::HandleScope scopedHandle(mIsolate);
+    assert(string->IsString());
+    v8::String::Utf8Value utf8(mIsolate, string);
+    if (*utf8) {
+        return std::string(*utf8, utf8.length());
+    }
+    return {};
 }

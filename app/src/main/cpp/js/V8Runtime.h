@@ -13,7 +13,7 @@ public:
 
     V8Runtime() = delete;
 
-    V8Runtime(std::shared_ptr<SkiaUIContext> context);
+    explicit V8Runtime(std::shared_ptr<SkiaUIContext> context);
 
     V8Runtime(V8Runtime &other) = delete;
 
@@ -34,6 +34,8 @@ public:
                                        std::map<std::string, std::string> constMap,
                                        void *any = nullptr);
 
+    std::string toStdString(const v8::Local<v8::Value> &string);
+
 private:
 
     v8::Local<v8::Context> CreateGlobalContext(v8::Isolate *isolate);
@@ -42,7 +44,7 @@ private:
 
     bool executeScript(const v8::Local<v8::String> &script, const std::string &sourceURL);
 
-    void ReportException(v8::TryCatch *tryCatch) const;
+    void ReportException(v8::TryCatch *tryCatch);
 
 private:
 
