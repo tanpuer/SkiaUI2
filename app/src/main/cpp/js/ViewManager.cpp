@@ -6,6 +6,7 @@
 #include "private/base/SkAssert.h"
 #include "base/color_util.h"
 #include "LottieView.h"
+#include "ShaderView.h"
 
 ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
                          std::shared_ptr<V8Runtime> &runtime) {
@@ -135,6 +136,41 @@ void ViewManager::registerHYView() {
                                                  v8::FunctionTemplate::New(isolate,
                                                                            lottieSetSource));
         skiaUI->Set(v8::String::NewFromUtf8(isolate, "LottieView"), lottieTemplate->GetFunction());
+        /**
+         * ShaderView start
+         */
+        auto shaderViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            ViewManager::createView(args, 5);
+        };
+        auto shaderTemplate = v8::FunctionTemplate::New(isolate, shaderViewConstructor, external);
+        shaderTemplate->Inherit(viewTemplate);
+        shaderTemplate->InstanceTemplate()->SetInternalFieldCount(1);
+        shaderTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "ShaderView"));
+        auto shaderSetPath = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 2 && args[0]->IsString() && args[1]->IsArray());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto shaderView = static_cast<ShaderView *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto path = std::string(*utf8, utf8.length());
+            v8::Local<v8::Array> inputArray = v8::Local<v8::Array>::Cast(args[1]);
+            uint32_t arrayLength = inputArray->Length();
+            std::vector<std::string> images;
+            images.reserve(arrayLength);
+            for (uint32_t i = 0; i < arrayLength; ++i) {
+                auto jsElement = inputArray->Get(isolate->GetCurrentContext(), i).ToLocalChecked();
+                if (jsElement->IsString()) {
+                    v8::String::Utf8Value utf8String(isolate, jsElement);
+                    images.emplace_back(*utf8String, utf8String.length());
+                } else {
+                    ALOGE("setShaderPath images must be string")
+                }
+            }
+            shaderView->setShaderPath(path.c_str(), images);
+        };
+        shaderTemplate->PrototypeTemplate()->Set(isolate, "setShaderPath",
+                                                 v8::FunctionTemplate::New(isolate, shaderSetPath));
+        skiaUI->Set(v8::String::NewFromUtf8(isolate, "ShaderView"), shaderTemplate->GetFunction());
     });
 }
 
@@ -164,6 +200,10 @@ ViewManager::createView(const v8::FunctionCallbackInfo<v8::Value> &args, int typ
         }
         case 4: {
             view = new LottieView();
+            break;
+        }
+        case 5: {
+            view = new ShaderView();
             break;
         }
         default: {

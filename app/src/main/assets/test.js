@@ -1,7 +1,7 @@
 let scrollView = null;
 
 function createRoot() {
-    const { View, ScrollView, LottieView } = SkiaUI;
+    const { View, ScrollView, LottieView, ShaderView} = SkiaUI;
     scrollView = new ScrollView();
     scrollView.setWidth(1080);
     scrollView.setHeight(1080);
@@ -13,11 +13,17 @@ function createRoot() {
     view.setBackgroundColor("#ff0000");
     scrollView.addView(view);
 
-    lottieView = new LottieView();
+    let lottieView = new LottieView();
     lottieView.setWidth(375);
     lottieView.setHeight(240);
     lottieView.setSource("WorkspacePlanet.json");
     scrollView.addView(lottieView);
+
+    let shaderView = new ShaderView();
+    shaderView.setShaderPath("raining.glsl", ["raining.png"]);
+    shaderView.setWidth(1080);
+    shaderView.setHeight(520);
+    scrollView.addView(shaderView);
 
     return scrollView;
 }
