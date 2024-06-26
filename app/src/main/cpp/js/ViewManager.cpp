@@ -5,6 +5,7 @@
 #include "ScrollView.h"
 #include "private/base/SkAssert.h"
 #include "base/color_util.h"
+#include "LottieView.h"
 
 ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
                          std::shared_ptr<V8Runtime> &runtime) {
@@ -111,6 +112,29 @@ void ViewManager::registerHYView() {
         scrollTemplate->InstanceTemplate()->SetInternalFieldCount(1);
         scrollTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "ScrollView"));
         skiaUI->Set(v8::String::NewFromUtf8(isolate, "ScrollView"), scrollTemplate->GetFunction());
+        /**
+         * LottieVew start
+         */
+        auto lottieViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            ViewManager::createView(args, 4);
+        };
+        auto lottieTemplate = v8::FunctionTemplate::New(isolate, lottieViewConstructor, external);
+        lottieTemplate->Inherit(viewTemplate);
+        lottieTemplate->InstanceTemplate()->SetInternalFieldCount(1);
+        lottieTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "LottieView"));
+        auto lottieSetSource = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 1 && args[0]->IsString());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto lottieView = static_cast<LottieView *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto path = std::string(*utf8, utf8.length()).c_str();
+            lottieView->setSource(path);
+        };
+        lottieTemplate->PrototypeTemplate()->Set(isolate, "setSource",
+                                                 v8::FunctionTemplate::New(isolate,
+                                                                           lottieSetSource));
+        skiaUI->Set(v8::String::NewFromUtf8(isolate, "LottieView"), lottieTemplate->GetFunction());
     });
 }
 
@@ -136,6 +160,10 @@ ViewManager::createView(const v8::FunctionCallbackInfo<v8::Value> &args, int typ
         }
         case 3: {
             view = new ScrollView();
+            break;
+        }
+        case 4: {
+            view = new LottieView();
             break;
         }
         default: {
