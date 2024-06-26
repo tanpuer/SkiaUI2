@@ -7,6 +7,7 @@
 #include "base/color_util.h"
 #include "LottieView.h"
 #include "ShaderView.h"
+#include "w3c_util.h"
 
 ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
                          std::shared_ptr<V8Runtime> &runtime) {
@@ -18,7 +19,7 @@ ViewManager::~ViewManager() {
 
 }
 
-void ViewManager::registerHYView() {
+void ViewManager::registerHYViews() {
     this->runtime->enterContext([this](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
         auto external = v8::External::New(isolate, this);
         auto viewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
@@ -82,12 +83,37 @@ void ViewManager::registerHYView() {
             auto child = static_cast<View *>(childWrap->Value());
             parent->addView(child);
         };
+        auto setFlexWrap = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 1 && args[0]->IsString());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto viewGroup = static_cast<ViewGroup *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto flexWrap = W3CToYGWrap(std::string(*utf8, utf8.length()));
+            viewGroup->setFlexWrap(flexWrap);
+        };
+        auto setFlexDirection = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 1 && args[0]->IsString());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto viewGroup = static_cast<ViewGroup *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto flexDirection = W3CToYGFlexDirection(std::string(*utf8, utf8.length()));
+            viewGroup->setFlexDirection(flexDirection);
+        };
         auto viewGroupTemplate = v8::FunctionTemplate::New(isolate, viewGroupConstructor, external);
         viewGroupTemplate->InstanceTemplate()->SetInternalFieldCount(1);
         viewGroupTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "ViewGroup"));
         viewGroupTemplate->Inherit(viewTemplate);
-        viewGroupTemplate->PrototypeTemplate()->Set(isolate, "addView",
-                                                    v8::FunctionTemplate::New(isolate, addView));
+        viewGroupTemplate->PrototypeTemplate()->Set(
+                isolate, "addView",
+                v8::FunctionTemplate::New(isolate, addView));
+        viewGroupTemplate->PrototypeTemplate()->Set(
+                isolate, "setFlexWrap",
+                v8::FunctionTemplate::New(isolate, setFlexWrap));
+        viewGroupTemplate->PrototypeTemplate()->Set(
+                isolate, "setFlexDirection",
+                v8::FunctionTemplate::New(isolate, setFlexDirection));
         skiaUI->Set(v8::String::NewFromUtf8(isolate, "ViewGroup"),
                     viewGroupTemplate->GetFunction());
         /**
@@ -100,6 +126,18 @@ void ViewManager::registerHYView() {
         flexboxTemplate->InstanceTemplate()->SetInternalFieldCount(1);
         flexboxTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "FlexboxLayout"));
         flexboxTemplate->Inherit(viewGroupTemplate);
+        auto setFlexboxFlexDirection = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 1 && args[0]->IsString());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto flexboxLayout = static_cast<FlexboxLayout *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto flexDirection = W3CToYGFlexDirection(std::string(*utf8, utf8.length()));
+            flexboxLayout->setFlexDirection(flexDirection);
+        };
+        flexboxTemplate->InstanceTemplate()->Set(
+                isolate, "setFlexDirection",
+                v8::FunctionTemplate::New(isolate, setFlexboxFlexDirection));
         skiaUI->Set(v8::String::NewFromUtf8(isolate, "FlexboxLayout"),
                     flexboxTemplate->GetFunction());
         /**
@@ -112,6 +150,30 @@ void ViewManager::registerHYView() {
         scrollTemplate->Inherit(flexboxTemplate);
         scrollTemplate->InstanceTemplate()->SetInternalFieldCount(1);
         scrollTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "ScrollView"));
+        auto setScrollViewFlexWrap = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 1 && args[0]->IsString());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto scrollView = static_cast<ScrollView *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto flexWrap = W3CToYGWrap(std::string(*utf8, utf8.length()));
+            scrollView->setFlexWrap(flexWrap);
+        };
+        scrollTemplate->InstanceTemplate()->Set(
+                isolate, "setFlexWrap",
+                v8::FunctionTemplate::New(isolate, setScrollViewFlexWrap));
+        auto setScrollViewFlexDirection = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+            auto isolate = args.GetIsolate();
+            assert(args.Length() == 1 && args[0]->IsString());
+            auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+            auto flexboxLayout = static_cast<FlexboxLayout *>(wrap->Value());
+            v8::String::Utf8Value utf8(isolate, args[0]);
+            auto flexDirection = W3CToYGFlexDirection(std::string(*utf8, utf8.length()));
+            flexboxLayout->setFlexDirection(flexDirection);
+        };
+        scrollTemplate->InstanceTemplate()->Set(
+                isolate, "setFlexDirection",
+                v8::FunctionTemplate::New(isolate, setScrollViewFlexDirection));
         skiaUI->Set(v8::String::NewFromUtf8(isolate, "ScrollView"), scrollTemplate->GetFunction());
         /**
          * LottieVew start

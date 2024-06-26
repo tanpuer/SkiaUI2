@@ -52,7 +52,7 @@ void JavascriptTest::injectConsole() {
 
 void JavascriptTest::injectViews() {
     viewManager = std::make_unique<ViewManager>(context, v8Runtime);
-    viewManager->registerHYView();
+    viewManager->registerHYViews();
 }
 
 void JavascriptTest::injectFrameCallback() {

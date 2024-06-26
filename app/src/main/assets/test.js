@@ -6,6 +6,7 @@ function createRoot() {
     scrollView.setWidth(1080);
     scrollView.setHeight(1080);
     scrollView.setBackgroundColor("#ffff00");
+    scrollView.setFlexDirection("column");
 
     let view = new View();
     view.setWidth(200);

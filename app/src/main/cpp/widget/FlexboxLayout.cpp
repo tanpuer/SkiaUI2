@@ -53,15 +53,3 @@ void FlexboxLayout::layoutHorizontal(int l, int t, int r, int b) {
         child->layout(left + l, top + t, left + l + width, top + t + height);
     }
 }
-
-void FlexboxLayout::setFlexWrap(YGWrap wrap) {
-    ViewGroup::setFlexWrap(wrap);
-}
-
-bool FlexboxLayout::addView(View *view) {
-    return ViewGroup::addView(view);
-}
-
-bool FlexboxLayout::removeView(View *view) {
-    return ViewGroup::removeView(view);
-}

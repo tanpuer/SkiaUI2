@@ -14,7 +14,7 @@ public:
 
     ~ViewManager();
 
-    void registerHYView();
+    void registerHYViews();
 
 private:
 
