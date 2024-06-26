@@ -20,7 +20,7 @@ public:
     /**
      * 子类ViewGroup必须复写
      */
-    virtual void layout(int l, int t, int r, int b) override = 0;
+    virtual void layout(int l, int t, int r, int b) override;
 
     virtual void draw(SkCanvas *canvas) override;
 

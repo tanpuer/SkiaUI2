@@ -21,13 +21,10 @@ public:
 
     ~V8Runtime();
 
-    bool evaluateJavaScript(const std::string &buffer, const std::string &sourceURL);
+    v8::Local<v8::Value>
+    evaluateJavaScript(const std::string &buffer, const std::string &sourceURL);
 
     v8::Local<v8::Object> global();
-
-    void injectClass(const char *className, v8::FunctionCallback constructorFunc, int fieldCount,
-                     std::map<const char *, v8::FunctionCallback> methods, void *any,
-                     bool globalTarget = false);
 
     v8::Local<v8::Object> injectObject(v8::Local<v8::Object> host, const char *name,
                                        std::map<std::string, v8::FunctionCallback> functionMap,
@@ -36,13 +33,19 @@ public:
 
     std::string toStdString(const v8::Local<v8::Value> &string);
 
+    void enterContext(const std::function<void(v8::Isolate *isolate,
+                                               v8::Local<v8::Object> skiaUI)> &callback);
+
+    v8::Local<v8::Value> callFunction(const char *func, int argc, v8::Local<v8::Value> *argv);
+
+    v8::Local<v8::External> createExternal(void *any);
+
 private:
 
     v8::Local<v8::Context> CreateGlobalContext(v8::Isolate *isolate);
 
-    void createGlobalSkiaUIObject();
-
-    bool executeScript(const v8::Local<v8::String> &script, const std::string &sourceURL);
+    v8::Local<v8::Value>
+    executeScript(const v8::Local<v8::String> &script, const std::string &sourceURL);
 
     void ReportException(v8::TryCatch *tryCatch);
 
@@ -53,5 +56,5 @@ private:
     std::unique_ptr<v8::ArrayBuffer::Allocator> arrayBufferAllocator_;
     v8::Global<v8::Context> mContext;
     std::unique_ptr<v8::Platform> mPlatform;
-    v8::Local<v8::Object> skiaUI;
+    v8::Global<v8::Object> skiaUI;
 };

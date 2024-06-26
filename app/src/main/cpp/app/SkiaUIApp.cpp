@@ -1,7 +1,3 @@
-//
-// Created by banma-3412 on 2024/2/12.
-//
-
 #include "SkiaUIApp.h"
 #include "core/SkPictureRecorder.h"
 #include "core/SkPicture.h"
@@ -13,6 +9,7 @@
 #include "PageTest.h"
 #include "PageStackManager.h"
 #include "FlexboxLayoutTest.h"
+#include "JavascriptTest.h"
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine) {
     SkGraphics::Init();
@@ -21,6 +18,7 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context->setJavaSkiaEngine(javaSkiaEngine);
     testDraw = std::make_unique<PageTest>();
 //    testDraw = std::make_unique<FlexboxLayoutTest>();
+//    testDraw = std::make_unique<JavascriptTest>();
     testDraw->setContext(context);
 }
 

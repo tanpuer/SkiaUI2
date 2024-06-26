@@ -220,3 +220,7 @@ bool ViewGroup::hasPercent() {
     return false;
 }
 
+void ViewGroup::layout(int l, int t, int r, int b) {
+    assert(false);
+}
+

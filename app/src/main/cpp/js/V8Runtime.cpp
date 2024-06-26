@@ -19,9 +19,13 @@ V8Runtime::V8Runtime(std::shared_ptr<SkiaUIContext> context) {
     v8::Locker locker(mIsolate);
     v8::Isolate::Scope scopedIsolate(mIsolate);
     v8::HandleScope scopedHandle(mIsolate);
-    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
     mContext.Reset(mIsolate, CreateGlobalContext(mIsolate));
-    createGlobalSkiaUIObject();
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    v8::Local<v8::Object> skiaUIObj = v8::Object::New(mIsolate);
+    skiaUIObj->Set(v8::String::NewFromUtf8(mIsolate, "version"), v8::Number::New(mIsolate, 0.01));
+    auto global = mContext.Get(mIsolate)->Global();
+    auto result = global->Set(v8::String::NewFromUtf8(mIsolate, "SkiaUI"), skiaUIObj);
+    skiaUI.Reset(mIsolate, skiaUIObj);
     ALOGD("V8Runtime init success")
 }
 
@@ -39,19 +43,8 @@ v8::Local<v8::Context> V8Runtime::CreateGlobalContext(v8::Isolate *isolate) {
     return scopedHandle.Escape(v8::Context::New(isolate, nullptr, global));
 }
 
-void V8Runtime::createGlobalSkiaUIObject() {
-    v8::Locker locker(mIsolate);
-    v8::Isolate::Scope scopedIsolate(mIsolate);
-    v8::HandleScope scopedHandle(mIsolate);
-    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
-    auto global = mContext.Get(mIsolate)->Global();
-    skiaUI = v8::Object::New(mIsolate);
-    assert(global->Set(mContext.Get(mIsolate),
-                       v8::String::NewFromUtf8(mIsolate, "skiaui"),
-                       skiaUI).ToChecked());
-}
-
-bool V8Runtime::evaluateJavaScript(const std::string &buffer, const std::string &sourceURL) {
+v8::Local<v8::Value>
+V8Runtime::evaluateJavaScript(const std::string &buffer, const std::string &sourceURL) {
     v8::Locker locker(mIsolate);
     v8::Isolate::Scope scopedIsolate(mIsolate);
     v8::HandleScope scopedHandle(mIsolate);
@@ -64,7 +57,8 @@ bool V8Runtime::evaluateJavaScript(const std::string &buffer, const std::string 
     return executeScript(string, sourceURL);
 }
 
-bool V8Runtime::executeScript(const v8::Local<v8::String> &script, const std::string &sourceURL) {
+v8::Local<v8::Value>
+V8Runtime::executeScript(const v8::Local<v8::String> &script, const std::string &sourceURL) {
     v8::HandleScope scopedHandle(mIsolate);
     v8::TryCatch tryCatch(mIsolate);
     v8::MaybeLocal<v8::String> sourceURLValue = v8::String::NewFromUtf8(
@@ -83,15 +77,15 @@ bool V8Runtime::executeScript(const v8::Local<v8::String> &script, const std::st
             v8::ScriptCompiler::kNoCompileOptions)
             .ToLocal(&compiledScript)) {
         ReportException(&tryCatch);
-        return false;
+        return v8::Undefined(mIsolate);
     }
     v8::Local<v8::Value> result;
     if (!compiledScript->Run(context).ToLocal(&result)) {
         ReportException(&tryCatch);
-        return false;
+        return result;
     }
     ALOGD("AgilV8Runtime::executeScript success")
-    return true;
+    return v8::Undefined(mIsolate);
 }
 
 void V8Runtime::ReportException(v8::TryCatch *tryCatch) {
@@ -173,31 +167,6 @@ v8::Local<v8::Object> V8Runtime::injectObject(v8::Local<v8::Object> host, const 
     return object;
 }
 
-void
-V8Runtime::injectClass(const char *className, v8::FunctionCallback constructorFunc, int fieldCount,
-                       std::map<const char *, v8::FunctionCallback> methods, void *any,
-                       bool globalTarget) {
-    v8::Locker locker(mIsolate);
-    v8::Isolate::Scope scopedIsolate(mIsolate);
-    v8::HandleScope scopedHandle(mIsolate);
-    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
-    // 准备构造函数模板
-    v8::Local<v8::External> external_context_data = v8::External::New(mIsolate, any);
-    v8::Local<v8::FunctionTemplate> tpl = v8::FunctionTemplate::New(mIsolate, constructorFunc,
-                                                                    external_context_data);
-    tpl->InstanceTemplate()->SetInternalFieldCount(fieldCount);
-    tpl->SetClassName(v8::String::NewFromUtf8(mIsolate, className));
-    // 添加方法
-    for (const auto &item: methods) {
-        v8::Local<v8::FunctionTemplate> readTpl = v8::FunctionTemplate::New(mIsolate, item.second);
-        tpl->PrototypeTemplate()->Set(mIsolate, item.first, readTpl);
-    }
-    // 注册构造函数
-    v8::Local<v8::Function> constructor = tpl->GetFunction();
-    auto target = globalTarget ? mContext.Get(mIsolate)->Global() : skiaUI;
-    target->Set(v8::String::NewFromUtf8(mIsolate, className), constructor);
-}
-
 std::string V8Runtime::toStdString(const v8::Local<v8::Value> &string) {
     v8::HandleScope scopedHandle(mIsolate);
     assert(string->IsString());
@@ -206,4 +175,41 @@ std::string V8Runtime::toStdString(const v8::Local<v8::Value> &string) {
         return std::string(*utf8, utf8.length());
     }
     return {};
+}
+
+void V8Runtime::enterContext(
+        const std::function<void(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI)> &callback) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    callback(mIsolate, skiaUI.Get(mIsolate));
+}
+
+v8::Local<v8::Value>
+V8Runtime::callFunction(const char *func, int argc, v8::Local<v8::Value> *argv) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    auto global = mContext.Get(mIsolate)->Global();
+    v8::Local<v8::Value> func_val = global->Get(v8::String::NewFromUtf8(mIsolate, func));
+    assert(func_val->IsFunction());
+    auto callback = func_val.As<v8::Function>();
+    v8::TryCatch try_catch(mIsolate);
+    auto result = callback->Call(mIsolate->GetCurrentContext(), global, argc, argv);
+    if (try_catch.HasCaught()) {
+        v8::String::Utf8Value exception(mIsolate, try_catch.Exception());
+        auto info = std::string(*exception, exception.length());
+        ALOGD("callFunction error %s", info.c_str())
+    }
+    return result.ToLocalChecked();
+}
+
+v8::Local<v8::External> V8Runtime::createExternal(void *any) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    return v8::External::New(mIsolate, any);
 }
