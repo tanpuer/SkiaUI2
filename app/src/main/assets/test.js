@@ -1,10 +1,10 @@
 let scrollView = null;
 
 function createRoot() {
-    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView } = SkiaUI;
+    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button} = SkiaUI;
     scrollView = new ScrollView();
     scrollView.width = 1080;
-    scrollView.height = 1080;
+    scrollView.height = 1700;
     scrollView.setBackgroundColor("#ffff00");
     scrollView.setFlexDirection("column");
 
@@ -38,6 +38,26 @@ function createRoot() {
     imageView.src = "bird.gif";
     imageView.setBackgroundColor("#ffffff");
     scrollView.addView(imageView);
+
+    let videoView = new VideoView();
+    videoView.width = 1080;
+    videoView.height = 360 * 1080 / 720;
+    videoView.src = "BigBuckBunny.mp4";
+    scrollView.addView(videoView);
+
+    let svgView = new SVGView();
+    svgView.src = "tiger.svg";
+    svgView.width = 800;
+    svgView.height = 800;
+    scrollView.addView(svgView);
+
+    let button = new Button();
+    button.text = "Button";
+    button.setBackgroundColor("#ff0000");
+    button.textSize = 30;
+    button.width = 260;
+    button.height = 100;
+    scrollView.addView(button);
 
     return scrollView;
 }

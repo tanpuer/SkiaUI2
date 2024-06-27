@@ -12,6 +12,9 @@
 #include "JSShaderViewBinding.h"
 #include "JSTextViewBinding.h"
 #include "JSImageViewBinding.h"
+#include "JSVideoViewBinding.h"
+#include "JSSVGViewBinding.h"
+#include "JSButtonBinding.h"
 
 class ViewManager {
 
@@ -39,5 +42,8 @@ private:
     std::unique_ptr<JSShaderViewBinding> jsShaderViewBinding;
     std::unique_ptr<JSTextViewBinding> jsTextViewBinding;
     std::unique_ptr<JSImageViewBinding> jsImageViewBinding;
+    std::unique_ptr<JSVideoViewBinding> jsVideoViewBinding;
+    std::unique_ptr<JSSVGViewBinding> jsSVGViewBinding;
+    std::unique_ptr<JSButtonBinding> jsButtonBinding;
 
 };

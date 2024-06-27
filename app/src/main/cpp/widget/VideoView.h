@@ -15,6 +15,8 @@ public:
 
     void setSource(const char *path);
 
+    const char* getSource();
+
     void start();
 
     void pause();
@@ -42,5 +44,7 @@ private:
     std::unique_ptr<SkPaint> videoPaint;
 
     long lastSkImagePtr = 0L;
+
+    std::string src;
 
 };

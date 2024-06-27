@@ -201,7 +201,7 @@ V8Runtime::callFunction(const char *func, int argc, v8::Local<v8::Value> *argv) 
     if (try_catch.HasCaught()) {
         v8::String::Utf8Value exception(mIsolate, try_catch.Exception());
         auto info = std::string(*exception, exception.length());
-        ALOGD("callFunction error %s", info.c_str())
+        ALOGE("callFunction error %s", info.c_str())
     }
     return result.ToLocalChecked();
 }

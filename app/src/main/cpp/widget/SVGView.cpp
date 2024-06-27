@@ -12,6 +12,7 @@ SVGView::~SVGView() {
 }
 
 void SVGView::setSource(const char *path) {
+    src = path;
     auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
@@ -46,4 +47,8 @@ void SVGView::setXY(int x, int y) {
     this->x = x;
     this->y = y;
     isDirty = true;
+}
+
+const char *SVGView::getSource() {
+    return src.c_str();
 }

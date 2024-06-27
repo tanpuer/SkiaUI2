@@ -12,6 +12,9 @@ ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
     jsShaderViewBinding = std::make_unique<JSShaderViewBinding>(context);
     jsTextViewBinding = std::make_unique<JSTextViewBinding>(context);
     jsImageViewBinding = std::make_unique<JSImageViewBinding>(context);
+    jsVideoViewBinding = std::make_unique<JSVideoViewBinding>(context);
+    jsSVGViewBinding = std::make_unique<JSSVGViewBinding>(context);
+    jsButtonBinding = std::make_unique<JSButtonBinding>(context);
 }
 
 ViewManager::~ViewManager() {
@@ -44,5 +47,14 @@ void ViewManager::registerHYViews() {
         auto imageTemplate = jsImageViewBinding->registerJSView(
                 isolate, skiaUI, viewTemplate,
                 v8::External::New(isolate, jsImageViewBinding.get()));
+        auto videoTemplate = jsVideoViewBinding->registerJSView(
+                isolate, skiaUI, viewTemplate,
+                v8::External::New(isolate, jsVideoViewBinding.get()));
+        auto svgTemplate = jsSVGViewBinding->registerJSView(
+                isolate, skiaUI, viewTemplate,
+                v8::External::New(isolate, jsSVGViewBinding.get()));
+        auto buttonTemplate = jsButtonBinding->registerJSView(
+                isolate, skiaUI, textTemplate,
+                v8::External::New(isolate, jsButtonBinding.get()));
     });
 }

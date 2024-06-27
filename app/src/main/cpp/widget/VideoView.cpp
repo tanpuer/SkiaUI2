@@ -13,6 +13,7 @@ VideoView::~VideoView() {
 }
 
 void VideoView::setSource(const char *path) {
+    src = std::string(path);
     auto jniEnv = getContext()->getJniEnv();
     javaVideoClass = jniEnv->FindClass("com/temple/skiaui/video/HYSkiaVideo");
     javaVideoConstructor = jniEnv->GetMethodID(javaVideoClass, "<init>",
@@ -22,6 +23,10 @@ void VideoView::setSource(const char *path) {
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
     javaVideo = jniEnv->NewGlobalRef(jniEnv->NewObject(javaVideoClass, javaVideoConstructor,
                                                        jniEnv->NewStringUTF(path), javaSkiaEngine));
+}
+
+const char *VideoView::getSource() {
+    return src.c_str();
 }
 
 void VideoView::layout(int l, int t, int r, int b) {
