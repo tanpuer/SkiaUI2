@@ -4,7 +4,14 @@
 #include "memory"
 #include "SkiaUIContext.h"
 #include "V8Runtime.h"
-
+#include "JSViewBinding.h"
+#include "JSViewGroupBinding.h"
+#include "JSFlexboxLayoutBinding.h"
+#include "JSScrollViewBinding.h"
+#include "JSLottieViewBinding.h"
+#include "JSShaderViewBinding.h"
+#include "JSTextViewBinding.h"
+#include "JSImageViewBinding.h"
 
 class ViewManager {
 
@@ -22,35 +29,15 @@ private:
 
     std::shared_ptr<V8Runtime> runtime;
 
-    static inline void createView(const v8::FunctionCallbackInfo<v8::Value> &args, int type);
+private:
 
-    v8::Local<v8::FunctionTemplate>
-    registerHYView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                   v8::Local<v8::External> external);
-
-    v8::Local<v8::FunctionTemplate>
-    registerHYViewGroup(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                        v8::Local<v8::FunctionTemplate> inherit,
-                        v8::Local<v8::External> external);
-
-    v8::Local<v8::FunctionTemplate>
-    registerHYFlexboxLayout(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                            v8::Local<v8::FunctionTemplate> inherit,
-                            v8::Local<v8::External> external);
-
-    v8::Local<v8::FunctionTemplate>
-    registerScrollView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                       v8::Local<v8::FunctionTemplate> inherit,
-                       v8::Local<v8::External> external);
-
-    v8::Local<v8::FunctionTemplate>
-    registerHYLottieView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                         v8::Local<v8::FunctionTemplate> inherit,
-                         v8::Local<v8::External> external);
-
-    v8::Local<v8::FunctionTemplate>
-    registerHYShaderView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                         v8::Local<v8::FunctionTemplate> inherit,
-                         v8::Local<v8::External> external);
+    std::unique_ptr<JSViewBinding> jsViewBinding;
+    std::unique_ptr<JSViewGroupBinding> jsViewGroupBinding;
+    std::unique_ptr<JSFlexboxLayoutBinding> jsFlexboxLayoutBinding;
+    std::unique_ptr<JSScrollViewBinding> jsScrollViewBinding;
+    std::unique_ptr<JSLottieViewBinding> jsLottieViewBinding;
+    std::unique_ptr<JSShaderViewBinding> jsShaderViewBinding;
+    std::unique_ptr<JSTextViewBinding> jsTextViewBinding;
+    std::unique_ptr<JSImageViewBinding> jsImageViewBinding;
 
 };

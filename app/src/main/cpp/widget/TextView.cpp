@@ -155,3 +155,7 @@ void TextView::pushText(const TextView::StringBuilder &stringBuilder) {
     stringBuilders.emplace_back(stringBuilder);
     isDirty = true;
 }
+
+SkScalar TextView::getTextSize() {
+    return font->getSize();
+}

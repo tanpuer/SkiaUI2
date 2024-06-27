@@ -36,6 +36,8 @@ public:
 
     virtual void setSource(const char *path);
 
+    virtual const char *getSource();
+
     virtual void setScaleType(ScaleType scaleType);
 
     virtual void blur(float blur);
@@ -72,5 +74,7 @@ private:
     float radius;
 
     ScaleType scaleType;
+
+    std::string source;
 
 };

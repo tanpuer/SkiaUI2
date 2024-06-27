@@ -56,6 +56,8 @@ public:
 
     virtual void setTextSize(SkScalar textSize);
 
+    virtual SkScalar getTextSize();
+
     virtual void setAlpha(float alpha) override;
 
     void setMaxLines(int maxLine);

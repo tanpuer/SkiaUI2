@@ -26,6 +26,7 @@ void ImageView::setAlpha(float alpha) {
 }
 
 void ImageView::setSource(const char *path) {
+    this->source = std::string(path);
     //todo 异步处理
     auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);
@@ -106,6 +107,7 @@ void ImageView::draw(SkCanvas *canvas) {
         ALOGE("ignore ImageView draw, pls check width and height %d %d", width, height)
         return;
     }
+    View::draw(canvas);
     if (frameCount > 1 && skAnimatedImage != nullptr) {
         auto currentTimeMills = getContext()->getCurrentTimeMills();
         if ((currentTimeMills - lastTimeMills) > currentFrameDuration) {
@@ -123,7 +125,6 @@ void ImageView::draw(SkCanvas *canvas) {
     canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
                           SkCanvas::kFast_SrcRectConstraint);
     canvas->restore();
-    View::draw(canvas);
 }
 
 const char *ImageView::name() {
@@ -145,6 +146,10 @@ void ImageView::blur(float blur) {
     auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
     imagePaint->setImageFilter(filter);
     isDirty = true;
+}
+
+const char *ImageView::getSource() {
+    return source.c_str();
 }
 
 
