@@ -5,6 +5,8 @@ function createRoot() {
     scrollView = new ScrollView();
     scrollView.width = 1080;
     scrollView.height = 1700;
+    scrollView.flexWrap = "nowrap";
+    scrollView.justifyContent = "center";
     scrollView.setBackgroundColor("#ffff00");
     scrollView.setFlexDirection("column");
 

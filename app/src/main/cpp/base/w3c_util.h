@@ -29,3 +29,21 @@ static YGFlexDirection W3CToYGFlexDirection(const std::string &value) {
         assert(false && "Invalid flex-direction value provided");
     }
 }
+
+static YGJustify W3CToYGJustify(const std::string &value) {
+    if (value == "flex-start") {
+        return YGJustifyFlexStart;
+    } else if (value == "flex-end") {
+        return YGJustifyFlexEnd;
+    } else if (value == "center") {
+        return YGJustifyCenter;
+    } else if (value == "space-between") {
+        return YGJustifySpaceBetween;
+    } else if (value == "space-around") {
+        return YGJustifySpaceBetween;
+    } else if (value == "space-evenly") {
+        return YGJustifySpaceEvenly;
+    } else {
+        assert(false && "Invalid justify-content value provided");
+    }
+}

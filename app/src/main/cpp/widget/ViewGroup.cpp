@@ -224,3 +224,15 @@ void ViewGroup::layout(int l, int t, int r, int b) {
     assert(false);
 }
 
+const char *ViewGroup::getFLexWrap() {
+    assert(node);
+    auto flexWrap = YGNodeStyleGetFlexWrap(node);
+    return YGWrapToString(flexWrap);
+}
+
+const char *ViewGroup::getJustifyContent() {
+    assert(node);
+    auto justifyContent = YGNodeStyleGetJustifyContent(node);
+    return YGJustifyToString(justifyContent);
+}
+

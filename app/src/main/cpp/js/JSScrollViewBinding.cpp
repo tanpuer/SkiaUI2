@@ -20,18 +20,6 @@ JSScrollViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
     scrollTemplate->Inherit(inherit);
     scrollTemplate->InstanceTemplate()->SetInternalFieldCount(1);
     scrollTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "ScrollView"));
-    auto setScrollViewFlexWrap = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
-        assert(args.Length() == 1 && args[0]->IsString());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto scrollView = static_cast<ScrollView *>(wrap->Value());
-        v8::String::Utf8Value utf8(isolate, args[0]);
-        auto flexWrap = W3CToYGWrap(std::string(*utf8, utf8.length()));
-        scrollView->setFlexWrap(flexWrap);
-    };
-    scrollTemplate->InstanceTemplate()->Set(
-            isolate, "setFlexWrap",
-            v8::FunctionTemplate::New(isolate, setScrollViewFlexWrap));
     auto setScrollViewFlexDirection = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsString());

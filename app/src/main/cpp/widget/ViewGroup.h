@@ -58,6 +58,8 @@ public:
      */
     virtual void setJustifyContent(YGJustify justify);
 
+    virtual const char* getJustifyContent();
+
     /**
      * 子视图在侧轴上的排列方式
      * @param align
@@ -77,6 +79,8 @@ public:
      * wrap_reverse 从左到右，从下到上进行排列
      */
     virtual void setFlexWrap(YGWrap wrap);
+
+    const char* getFLexWrap();
 
     /**
      * flex的方向

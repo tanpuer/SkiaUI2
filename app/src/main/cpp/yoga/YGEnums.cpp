@@ -250,7 +250,7 @@ const char* YGUnitToString(const YGUnit value) {
 const char* YGWrapToString(const YGWrap value) {
   switch (value) {
     case YGWrapNoWrap:
-      return "no-wrap";
+      return "nowrap";
     case YGWrapWrap:
       return "wrap";
     case YGWrapWrapReverse:
