@@ -128,6 +128,12 @@ void ViewGroup::setFlexDirection(YGFlexDirection direction) {
     YGNodeStyleSetFlexDirection(node, direction);
 }
 
+const char* ViewGroup::getFlexDirection() {
+    SkASSERT(node);
+    auto direction = YGNodeStyleGetFlexDirection(node);
+    return YGFlexDirectionToString(direction);
+}
+
 int ViewGroup::getWidth() {
     if (YGNodeStyleGetWidth(node).unit == YGUnitAuto) {
         return getMaxWidthInChildren();

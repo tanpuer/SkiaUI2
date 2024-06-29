@@ -26,15 +26,6 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
         auto child = static_cast<View *>(childWrap->Value());
         parent->addView(child);
     };
-    auto setFlexDirection = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
-        assert(args.Length() == 1 && args[0]->IsString());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto viewGroup = static_cast<ViewGroup *>(wrap->Value());
-        v8::String::Utf8Value utf8(isolate, args[0]);
-        auto flexDirection = W3CToYGFlexDirection(std::string(*utf8, utf8.length()));
-        viewGroup->setFlexDirection(flexDirection);
-    };
     auto viewGroupTemplate = v8::FunctionTemplate::New(isolate, viewGroupConstructor, external);
     viewGroupTemplate->InstanceTemplate()->SetInternalFieldCount(1);
     viewGroupTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "ViewGroup"));
@@ -42,9 +33,6 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     viewGroupTemplate->PrototypeTemplate()->Set(
             isolate, "addView",
             v8::FunctionTemplate::New(isolate, addView));
-    viewGroupTemplate->PrototypeTemplate()->Set(
-            isolate, "setFlexDirection",
-            v8::FunctionTemplate::New(isolate, setFlexDirection));
     auto flexWrapSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
@@ -148,6 +136,42 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     viewGroupTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "alignItems"), alignItemsGetter,
             alignItemsSetter);
+
+    auto flexDirectionSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                                  const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsString()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for flexDirection; expected a String");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (viewGroup) {
+            v8::String::Utf8Value utf8(info.GetIsolate(), value);
+            auto direction = std::string(*utf8, utf8.length());
+            viewGroup->setFlexDirection(W3CToYGFlexDirection(direction));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto flexDirectionGetter = [](v8::Local<v8::String> property,
+                                  const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (viewGroup) {
+            info.GetReturnValue().Set(
+                    v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getFlexDirection()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewGroupTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "flexDirection"),
+            flexDirectionGetter,
+            flexDirectionSetter);
 
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ViewGroup"), viewGroupTemplate->GetFunction());
     return viewGroupTemplate;

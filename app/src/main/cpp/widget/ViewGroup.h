@@ -90,6 +90,8 @@ public:
      */
     virtual void setFlexDirection(YGFlexDirection direction);
 
+    virtual const char* getFlexDirection();
+
     std::vector<View *> children;
 
     float maxChildWidth, maxChildHeight;

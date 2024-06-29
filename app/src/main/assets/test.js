@@ -10,7 +10,7 @@ function createRoot() {
     scrollView.justifyContent = "flex-start";
     scrollView.alignItems = "center";
     scrollView.backgroundColor = "#ffff00";
-    scrollView.setFlexDirection("column");
+    scrollView.flexDirection = "column";
 
     let view = new View();
     view.width = 200;
