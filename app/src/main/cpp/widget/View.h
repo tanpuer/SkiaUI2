@@ -99,6 +99,10 @@ public:
 
     virtual void setBackgroundColor(SkColor color);
 
+    virtual void setBackgroundColor(const std::string& hexColor);
+
+    virtual const char* getBackgroundColor();
+
     virtual void setAntiAlias(bool antiAlias);
 
     virtual void setStyle(SkPaint::Style style);
@@ -196,6 +200,8 @@ public:
 protected:
 
     bool isDirty;
+
+    std::string backgroundColor;
 
 #pragma mark cakllbacks
 

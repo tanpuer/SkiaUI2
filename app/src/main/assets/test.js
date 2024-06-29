@@ -8,14 +8,14 @@ function createRoot() {
     scrollView.flexWrap = "nowrap";
     scrollView.justifyContent = "center";
     scrollView.alignItems = "center";
-    scrollView.setBackgroundColor("#ffff00");
+    scrollView.backgroundColor = "#ffff00";
     scrollView.setFlexDirection("column");
 
     let view = new View();
     view.width;
     view.width = 200;
     view.height = 200;
-    view.setBackgroundColor("#ff0000");
+    view.backgroundColor = "#ff0000";
     scrollView.addView(view);
 
     let lottieView = new LottieView();
@@ -39,7 +39,7 @@ function createRoot() {
     imageView.width = 800;
     imageView.height = 500;
     imageView.src = "bird.gif";
-    imageView.setBackgroundColor("#ffffff");
+    imageView.backgroundColor = "#ffffff";
     scrollView.addView(imageView);
 
     let videoView = new VideoView();
@@ -56,7 +56,7 @@ function createRoot() {
 
     let button = new Button();
     button.text = "Button";
-    button.setBackgroundColor("#ff0000");
+    button.backgroundColor = "#ff0000";
     button.textSize = 30;
     button.width = 260;
     button.height = 100;

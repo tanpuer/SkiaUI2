@@ -7,6 +7,7 @@
 #include "effects/SkGradientShader.h"
 #include "core/SkMaskFilter.h"
 #include "core/SkBlurTypes.h"
+#include "color_util.h"
 
 View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadius(0),
                skRectWithBorder(SkRect::MakeEmpty()),
@@ -382,4 +383,14 @@ void View::setContext(std::shared_ptr<SkiaUIContext> context) {
     this->config = context->getConfig();
     //todo setConfig之后才会进行node的创建
     node = YGNodeNewWithConfig(config);
+}
+
+void View::setBackgroundColor(const std::string &hexColor) {
+    int r, g, b, a;
+    hexToRGBA(hexColor, r, g, b, a);
+    setBackgroundColor(SkColorSetARGB(a, r, g, b));
+}
+
+const char *View::getBackgroundColor() {
+    return backgroundColor.c_str();
 }
