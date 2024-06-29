@@ -114,6 +114,38 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             v8::String::NewFromUtf8(isolate, "backgroundColor"),
             viewBackgroundColorGetter,
             viewBackgroundColorSetter);
+    auto viewFlexSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                             const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsNumber()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for flex; expected a number");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            view->setFlex(value->Int32Value());
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto viewFlexGetter = [](v8::Local<v8::String> property,
+                             const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->getFlex()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "flex"),
+            viewFlexGetter,
+            viewFlexSetter);
     v8::Local<v8::Function> constructor = viewTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "View"), constructor);
     return viewTemplate;

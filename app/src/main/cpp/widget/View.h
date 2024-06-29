@@ -71,6 +71,8 @@ public:
 
     virtual void setFlex(float flex);
 
+    virtual float getFlex();
+
     virtual void setWidth(int width);
 
     virtual void setHeight(int height);

@@ -311,6 +311,14 @@ void View::setFlex(float flex) {
     isDirty = true;
 }
 
+float View::getFlex() {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return 0;
+    }
+    return YGNodeStyleGetFlex(node);
+}
+
 void View::setWidth(int width) {
     YGAssert(node, "view is null, pls check");
     if (node == nullptr) {

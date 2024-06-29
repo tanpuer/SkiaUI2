@@ -3,8 +3,9 @@ let scrollView = null;
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button} = SkiaUI;
     scrollView = new ScrollView();
-    scrollView.width = 1080;
-    scrollView.height = 1700;
+//    scrollView.width = 1080;
+//    scrollView.height = 1700;
+    scrollView.flex = 1;
     scrollView.flexWrap = "nowrap";
     scrollView.justifyContent = "flex-start";
     scrollView.alignItems = "center";
