@@ -47,3 +47,25 @@ static YGJustify W3CToYGJustify(const std::string &value) {
         assert(false && "Invalid justify-content value provided");
     }
 }
+
+static YGAlign W3CToYGAlign(const std::string &value) {
+    if (value == "flex-start") {
+        return YGAlignFlexStart;
+    } else if (value == "center") {
+        return YGAlignCenter;
+    } else if (value == "flex-end") {
+        return YGAlignFlexEnd;
+    } else if (value == "stretch") {
+        return YGAlignStretch;
+    } else if (value == "baseline") {
+        return YGAlignBaseline;
+    } else if (value == "space-between") {
+        return YGAlignSpaceBetween;
+    } else if (value == "space-around") {
+        return YGAlignSpaceAround;
+    } else if (value == "auto") {
+        return YGAlignAuto;
+    } else {
+        assert(false && "Invalid align- value provided");
+    }
+}

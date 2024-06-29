@@ -236,3 +236,9 @@ const char *ViewGroup::getJustifyContent() {
     return YGJustifyToString(justifyContent);
 }
 
+const char *ViewGroup::getAlignItems() {
+    assert(node);
+    auto alignItems = YGNodeStyleGetAlignItems(node);
+    return YGAlignToString(alignItems);
+}
+

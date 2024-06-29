@@ -66,6 +66,8 @@ public:
      */
     virtual void setAlignItems(YGAlign align);
 
+    virtual const char* getAlignItems();
+
     /**
      * 子视图行与行之间在侧轴上的对齐方式
      * @param align
