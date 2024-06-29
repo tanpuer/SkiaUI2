@@ -23,7 +23,7 @@ steps：
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
 10. Page: act as the same role as Activity.
-11. Todo: Import v8 to evaluate javascript.
+11. Javascript: Import v8 to evaluate javascript. Look at test.js in assets.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example2.png)
