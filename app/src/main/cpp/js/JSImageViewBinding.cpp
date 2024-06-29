@@ -1,5 +1,6 @@
 #include "JSImageViewBinding.h"
 #include "ImageView.h"
+#include "w3c_util.h"
 
 v8::Local<v8::FunctionTemplate>
 JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
@@ -51,6 +52,40 @@ JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     };
     imageTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "src"),
                                                    sourceGetter, sourceSetter);
+    auto objectFitSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                              const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsString()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for objectFit; expected a string");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto imageView = static_cast<ImageView *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (imageView) {
+            v8::String::Utf8Value utf8(value);
+            auto scaleType = W3CToScaleType(std::string(*utf8, utf8.length()).c_str());
+            imageView->setScaleType(scaleType);
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto objectFitGetter = [](v8::Local<v8::String> property,
+                              const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto imageView = static_cast<ImageView *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (imageView) {
+            auto scaleType = imageView->getScaleType();
+            auto objectFit = scaleTypeToW3c(scaleType);
+            info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), objectFit));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    imageTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "objectFill"),
+                                                   objectFitGetter, objectFitSetter);
     v8::Local<v8::Function> constructor = imageTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ImageView"), constructor);
     return imageTemplate;

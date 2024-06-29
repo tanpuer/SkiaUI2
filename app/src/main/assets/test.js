@@ -40,6 +40,7 @@ function createRoot() {
     imageView.width = 800;
     imageView.height = 500;
     imageView.src = "bird.gif";
+    imageView.objectFill = "contain";
     imageView.backgroundColor = "#ffffff";
     scrollView.addView(imageView);
 

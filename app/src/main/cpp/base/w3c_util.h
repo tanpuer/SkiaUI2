@@ -2,6 +2,7 @@
 
 #include "YGEnums.h"
 #include "string"
+#include "ImageView.h"
 #include <cassert>
 
 static YGWrap W3CToYGWrap(const std::string &value) {
@@ -66,6 +67,30 @@ static YGAlign W3CToYGAlign(const std::string &value) {
     } else if (value == "auto") {
         return YGAlignAuto;
     } else {
-        assert(false && "Invalid align- value provided");
+        assert(false && "Invalid align-items value provided");
+    }
+}
+
+static ImageView::ScaleType W3CToScaleType(const std::string &value) {
+    if (value == "fill") {
+        return ImageView::ScaleType::FitXY;
+    } else if (value == "cover") {
+        return ImageView::ScaleType::CenterCrop;
+    } else if (value == "contain") {
+        return ImageView::ScaleType::FitCenter;
+    } else {
+        assert(false && "Invalid object-fit value provided");
+    }
+}
+
+static const char *scaleTypeToW3c(const ImageView::ScaleType scaleType) {
+    if (scaleType == ImageView::ScaleType::FitXY) {
+        return "fill";
+    } else if (scaleType == ImageView::ScaleType::CenterCrop) {
+        return "cover";
+    } else if (scaleType == ImageView::ScaleType::FitCenter) {
+        return "contain";
+    } else {
+        return "";
     }
 }

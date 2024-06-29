@@ -40,6 +40,8 @@ public:
 
     virtual void setScaleType(ScaleType scaleType);
 
+    virtual const ScaleType getScaleType();
+
     virtual void blur(float blur);
 
 private:

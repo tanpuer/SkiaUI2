@@ -152,4 +152,8 @@ const char *ImageView::getSource() {
     return source.c_str();
 }
 
+const ImageView::ScaleType ImageView::getScaleType() {
+    return scaleType;
+}
+
 
