@@ -6,14 +6,14 @@ function createRoot() {
     scrollView.width = 1080;
     scrollView.height = 1700;
     scrollView.flexWrap = "nowrap";
-    scrollView.justifyContent = "center";
+    scrollView.justifyContent = "flex-start";
     scrollView.alignItems = "center";
     scrollView.backgroundColor = "#ffff00";
     scrollView.setFlexDirection("column");
 
     let view = new View();
-    view.width;
     view.width = 200;
+    console.log("View width is", view.width);
     view.height = 200;
     view.backgroundColor = "#ff0000";
     scrollView.addView(view);
@@ -21,7 +21,7 @@ function createRoot() {
     let lottieView = new LottieView();
     lottieView.width = 375;
     lottieView.height = 240;
-    lottieView.setSource("WorkspacePlanet.json");
+    lottieView.src = "WorkspacePlanet.json";
     scrollView.addView(lottieView);
 
     let shaderView = new ShaderView();

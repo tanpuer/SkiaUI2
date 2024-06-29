@@ -15,6 +15,8 @@ public:
 
     void setSource(const char *path);
 
+    const char* getSource();
+
     void draw(SkCanvas *canvas) override;
 
     void layout(int l, int t, int r, int b) override;
@@ -36,6 +38,8 @@ private:
     bool autoPlay = true;
 
     bool repeat = true;
+
+    std::string source;
 
 };
 

@@ -11,11 +11,16 @@ LottieView::~LottieView() {
 }
 
 void LottieView::setSource(const char *path) {
+    source = path;
     auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);
     auto length = imageData->length;
     lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content), length);
     startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+}
+
+const char* LottieView::getSource() {
+    return source.c_str();
 }
 
 void LottieView::draw(SkCanvas *canvas) {
