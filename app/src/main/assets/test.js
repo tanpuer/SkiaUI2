@@ -65,6 +65,9 @@ function createRoot() {
     button.textSize = 30;
     button.width = 260;
     button.height = 100;
+    button.setOnClickListener((view) => {
+        console.log("button is clicked!");
+    });
     scrollView.addView(button);
 
     let progressBar = new ProgressBar();

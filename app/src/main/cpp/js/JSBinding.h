@@ -3,13 +3,15 @@
 #include "v8.h"
 #include "View.h"
 #include "SkiaUIContext.h"
+#include "V8Runtime.h"
 
 class JSBinding {
 
 public:
 
-    JSBinding(std::shared_ptr<SkiaUIContext> &context) {
+    JSBinding(std::shared_ptr<SkiaUIContext> &context, std::shared_ptr<V8Runtime> &runtime) {
         this->context = context;
+        this->runtime = runtime;
     };
 
     virtual ~JSBinding() {};
@@ -22,5 +24,6 @@ public:
 protected:
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
+    std::shared_ptr<V8Runtime> runtime = nullptr;
 
 };

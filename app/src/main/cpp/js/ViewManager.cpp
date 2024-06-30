@@ -4,18 +4,18 @@ ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
                          std::shared_ptr<V8Runtime> &runtime) {
     this->context = context;
     this->runtime = runtime;
-    jsViewBinding = std::make_unique<JSViewBinding>(context);
-    jsViewGroupBinding = std::make_unique<JSViewGroupBinding>(context);
-    jsFlexboxLayoutBinding = std::make_unique<JSFlexboxLayoutBinding>(context);
-    jsScrollViewBinding = std::make_unique<JSScrollViewBinding>(context);
-    jsLottieViewBinding = std::make_unique<JSLottieViewBinding>(context);
-    jsShaderViewBinding = std::make_unique<JSShaderViewBinding>(context);
-    jsTextViewBinding = std::make_unique<JSTextViewBinding>(context);
-    jsImageViewBinding = std::make_unique<JSImageViewBinding>(context);
-    jsVideoViewBinding = std::make_unique<JSVideoViewBinding>(context);
-    jsSVGViewBinding = std::make_unique<JSSVGViewBinding>(context);
-    jsButtonBinding = std::make_unique<JSButtonBinding>(context);
-    jsProgressBarBinding = std::make_unique<JSProgressBarBinding>(context);
+    jsViewBinding = std::make_unique<JSViewBinding>(context, runtime);
+    jsViewGroupBinding = std::make_unique<JSViewGroupBinding>(context, runtime);
+    jsFlexboxLayoutBinding = std::make_unique<JSFlexboxLayoutBinding>(context, runtime);
+    jsScrollViewBinding = std::make_unique<JSScrollViewBinding>(context, runtime);
+    jsLottieViewBinding = std::make_unique<JSLottieViewBinding>(context, runtime);
+    jsShaderViewBinding = std::make_unique<JSShaderViewBinding>(context, runtime);
+    jsTextViewBinding = std::make_unique<JSTextViewBinding>(context, runtime);
+    jsImageViewBinding = std::make_unique<JSImageViewBinding>(context, runtime);
+    jsVideoViewBinding = std::make_unique<JSVideoViewBinding>(context, runtime);
+    jsSVGViewBinding = std::make_unique<JSSVGViewBinding>(context, runtime);
+    jsButtonBinding = std::make_unique<JSButtonBinding>(context, runtime);
+    jsProgressBarBinding = std::make_unique<JSProgressBarBinding>(context, runtime);
 }
 
 ViewManager::~ViewManager() {

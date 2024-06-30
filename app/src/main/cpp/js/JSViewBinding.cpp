@@ -146,6 +146,41 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             v8::String::NewFromUtf8(isolate, "flex"),
             viewFlexGetter,
             viewFlexSetter);
+
+    auto onClick = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 1 && (args[0]->IsFunction() || args[0]->IsNullOrUndefined()));
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<View *>(wrap->Value());
+        auto function = v8::Local<v8::Function>::Cast(args[0]);
+        auto data = v8::Local<v8::External>::Cast(args.Data());
+        auto binding = static_cast<JSViewBinding *>(data->Value());
+        if (args[0]->IsNullOrUndefined()) {
+            binding->clickFunction.Reset();
+            targetView->setOnClickListener(nullptr);
+            return;
+        }
+        auto newCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
+                isolate, function);
+        binding->clickFunction.Reset(isolate, newCallback);
+        assert(binding);
+        targetView->setOnClickListener([binding](View *view) {
+            binding->runtime->enterContext(
+                    [binding, view](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
+                        auto external = v8::External::New(isolate, view);
+                        v8::Local<v8::Value> argv[1] = {external};
+                        auto callback = binding->clickFunction.Get(isolate);
+                        if (!callback.IsEmpty()) {
+                            callback->Call(isolate->GetCurrentContext()->Global(), 1, argv);
+                        } else {
+                            ALOGE("error: miss js callback for View");
+                        }
+                    });
+        });
+    };
+    viewTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "setOnClickListener"),
+            v8::FunctionTemplate::New(isolate, onClick, v8::External::New(isolate, this)));
     v8::Local<v8::Function> constructor = viewTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "View"), constructor);
     return viewTemplate;
