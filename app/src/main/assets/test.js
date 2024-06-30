@@ -62,7 +62,7 @@ function createRoot() {
     let button = new Button();
     button.text = "Button";
     button.backgroundColor = "#ff0000";
-    button.textSize = 30;
+    button.textSize = 60;
     button.width = 260;
     button.height = 100;
     button.setOnClickListener((view) => {
