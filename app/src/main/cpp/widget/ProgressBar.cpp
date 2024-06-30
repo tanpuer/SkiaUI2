@@ -1,6 +1,7 @@
 #include <core/SkPath.h>
 #include "ProgressBar.h"
 #include "effects/SkGradientShader.h"
+#include "color_util.h"
 
 ProgressBar::ProgressBar()
         : View(), progressRect(SkRect::MakeEmpty()), autoMode(true), progress(0), index(0),
@@ -106,9 +107,17 @@ void ProgressBar::setAutoMode(bool autoMode) {
     isDirty = true;
 }
 
+bool ProgressBar::getAutoMode() {
+    return autoMode;
+}
+
 void ProgressBar::setType(ProgressBar::ProgressBarType type) {
     this->type = type;
     isDirty = true;
+}
+
+ProgressBar::ProgressBarType ProgressBar::getType() {
+    return this->type;
 }
 
 bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
@@ -152,4 +161,14 @@ void ProgressBar::setStrokeWidth(SkScalar _width) {
 
 bool ProgressBar::forceRequestTouchMove() {
     return true;
+}
+
+void ProgressBar::setBarColor(const std::string &hexColor) {
+    int r, g, b, a;
+    hexToRGBA(hexColor, r, g, b, a);
+    setBackgroundColor(SkColorSetARGB(a, r, g, b));
+}
+
+const char *ProgressBar::getBarColor() {
+    return barColor.c_str();
 }

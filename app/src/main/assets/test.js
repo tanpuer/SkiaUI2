@@ -1,7 +1,10 @@
 let scrollView = null;
 
 function createRoot() {
-    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button} = SkiaUI;
+    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
+        ProgressBar
+    } = SkiaUI;
+
     scrollView = new ScrollView();
 //    scrollView.width = 1080;
 //    scrollView.height = 1700;
@@ -63,6 +66,15 @@ function createRoot() {
     button.width = 260;
     button.height = 100;
     scrollView.addView(button);
+
+    let progressBar = new ProgressBar();
+    progressBar.width = 800
+    progressBar.height = 60;
+    progressBar.backgroundColor = "#ffffff66";
+    progressBar.barType = "linear";
+    progressBar.barColor = "#ff0000";
+    progressBar.autoMode = false;
+    scrollView.addView(progressBar);
 
     return scrollView;
 }

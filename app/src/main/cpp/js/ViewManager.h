@@ -15,6 +15,7 @@
 #include "JSVideoViewBinding.h"
 #include "JSSVGViewBinding.h"
 #include "JSButtonBinding.h"
+#include "JSProgressBarBinding.h"
 
 class ViewManager {
 
@@ -45,5 +46,6 @@ private:
     std::unique_ptr<JSVideoViewBinding> jsVideoViewBinding;
     std::unique_ptr<JSSVGViewBinding> jsSVGViewBinding;
     std::unique_ptr<JSButtonBinding> jsButtonBinding;
+    std::unique_ptr<JSProgressBarBinding> jsProgressBarBinding;
 
 };

@@ -23,6 +23,10 @@ public:
 
     virtual void setBarColor(SkColor color);
 
+    virtual void setBarColor(const std::string& hexColor);
+
+    virtual const char* getBarColor();
+
     virtual void setGradientBarColor(SkColor colors[], int size);
 
     virtual void setBackgroundColor(SkColor color) override;
@@ -40,7 +44,11 @@ public:
 
     virtual void setAutoMode(bool autoMode);
 
+    virtual bool getAutoMode();
+
     virtual void setType(ProgressBarType type);
+
+    virtual ProgressBarType getType();
 
     virtual bool onTouchEvent(TouchEvent *touchEvent) override;
 
@@ -73,5 +81,7 @@ private:
     bool setShader;
 
     SkPaint *backgroundPaint;
+
+    std::string barColor;
 
 };
