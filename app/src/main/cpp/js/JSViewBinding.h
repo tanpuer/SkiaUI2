@@ -9,7 +9,7 @@ public:
     JSViewBinding(std::shared_ptr<SkiaUIContext> &context, std::shared_ptr<V8Runtime> &runtime)
             : JSBinding(context, runtime) {}
 
-    virtual JSViewBinding() {
+    virtual ~JSViewBinding() {
         clickFunction.Reset();
     }
 
