@@ -16,6 +16,7 @@ ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
     jsSVGViewBinding = std::make_unique<JSSVGViewBinding>(context, runtime);
     jsButtonBinding = std::make_unique<JSButtonBinding>(context, runtime);
     jsProgressBarBinding = std::make_unique<JSProgressBarBinding>(context, runtime);
+    jsPageBinding = std::make_unique<JSPageBinding>(context, runtime);
 }
 
 ViewManager::~ViewManager() {
@@ -60,5 +61,8 @@ void ViewManager::registerHYViews() {
         auto progressTemplate = jsProgressBarBinding->registerJSView(
                 isolate, skiaUI, viewTemplate,
                 v8::External::New(isolate, jsProgressBarBinding.get()));
+        auto pageTemplate = jsPageBinding->registerJSView(
+                isolate, skiaUI, viewGroupTemplate,
+                v8::External::New(isolate, jsPageBinding.get()));
     });
 }

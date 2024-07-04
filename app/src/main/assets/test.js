@@ -1,17 +1,22 @@
-let scrollView = null;
+let page = null;
 
 requestAnimationFrame(() => {
-//    console.log("doFrame");
+    if (page != null) {
+        page.measure();
+        page.layout(0, 0, SkiaUI.innerWidth, SkiaUI.innerHeight);
+    }
 });
 
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
-        ProgressBar
+        ProgressBar, Page
     } = SkiaUI;
+    page = new Page();
+    page.backgroundColor = "#ffffff";
+    page.width = SkiaUI.innerWidth;
+    page.height = SkiaUI.innerHeight;
 
-    scrollView = new ScrollView();
-//    scrollView.width = 1080;
-//    scrollView.height = 1700;
+    let scrollView = new ScrollView();
     scrollView.flex = 1;
     scrollView.flexWrap = "nowrap";
     scrollView.justifyContent = "flex-start";
@@ -83,5 +88,6 @@ function createRoot() {
     progressBar.autoMode = false;
     scrollView.addView(progressBar);
 
-    return scrollView;
+    page.addView(scrollView);
+    return page;
 }

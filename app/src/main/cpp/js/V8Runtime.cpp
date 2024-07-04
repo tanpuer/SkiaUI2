@@ -249,3 +249,12 @@ v8::Local<v8::Value> V8Runtime::performFunction(
     }
     return result.ToLocalChecked();
 }
+
+void V8Runtime::injectNumber(const char *name, int number) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    auto result = skiaUI.Get(mIsolate)->Set(v8::String::NewFromUtf8(mIsolate, name),
+                                            v8::Number::New(mIsolate, number));
+}

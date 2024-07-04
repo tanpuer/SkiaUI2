@@ -27,13 +27,13 @@ public:
 
 private:
 
-    Page *initPage(int width, int height);
-
     void injectConsole();
 
     void injectViews();
 
     void injectFrameCallback();
+
+    void injectSize(int width, int height);
 
 private:
 

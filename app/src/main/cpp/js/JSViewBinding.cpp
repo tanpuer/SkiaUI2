@@ -181,6 +181,32 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     viewTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "setOnClickListener"),
             v8::FunctionTemplate::New(isolate, onClick, v8::External::New(isolate, this)));
+    auto measure = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<View *>(wrap->Value());
+        if (targetView != nullptr) {
+            targetView->measure();
+        }
+    };
+    viewTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "measure"),
+            v8::FunctionTemplate::New(isolate, measure, v8::External::New(isolate, this)));
+    auto layout = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 4 && args[0]->IsNumber() && args[1]->IsNumber() &&
+               args[2]->IsNumber() && args[3]->IsNumber());
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<View *>(wrap->Value());
+        if (targetView != nullptr) {
+            targetView->layout(args[0]->Int32Value(), args[1]->Int32Value(), args[2]->Int32Value(),
+                               args[3]->Int32Value());
+        }
+    };
+    viewTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "layout"),
+            v8::FunctionTemplate::New(isolate, layout, v8::External::New(isolate, this)));
     v8::Local<v8::Function> constructor = viewTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "View"), constructor);
     return viewTemplate;

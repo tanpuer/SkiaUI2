@@ -8,22 +8,22 @@ void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
     injectConsole();
     injectFrameCallback();
     injectViews();
+    config = YGConfigNew();
+    this->context->setConfigRef(config);
 }
 
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
-        config = YGConfigNew();
-        this->context->setConfigRef(config);
+        injectSize(width, height);
         auto jsBuffer = context->getAssetManager()->readFile("test.js");
         v8Runtime->evaluateJavaScript(jsBuffer, "test.js");
         auto result = v8Runtime->callFunction("createRoot", 0, nullptr);
         assert(result->IsObject());
         v8Runtime->enterContext(
                 [this, &result, width, height](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
-                    auto page = this->initPage(width, height);
                     auto rootView = v8::Local<v8::External>::Cast(
                             result->ToObject()->GetInternalField(0));
-                    page->addView(static_cast<ViewGroup *>(rootView->Value()));
+                    auto page = static_cast<Page *>(rootView->Value());
                     root = page;
                     context->getPageStackManager()->push(page);
                     page->enterFromRight(Page::EnterExitInfo(width, 0));
@@ -34,8 +34,8 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         v8::Local<v8::Value> argv[argc] = {};
         v8Runtime->performFunction(item.second, argc, argv);
     }
-    root->measure();
-    root->layout(0, 0, width, height);
+//    root->measure();
+//    root->layout(0, 0, width, height);
     root->draw(canvas);
 }
 
@@ -66,14 +66,7 @@ void JavascriptTest::injectFrameCallback() {
     v8Runtime->injectFunction("cancelAnimationFrame", cancelAnimationFrameCallback, this);
 }
 
-Page *JavascriptTest::initPage(int width, int height) {
-    auto page = new Page();
-    config = YGConfigNew();
-    context->setConfigRef(config);
-    page->setContext(context);
-    page->setWidth(width);
-    page->setHeight(height);
-    page->setStyle(SkPaint::kFill_Style);
-    page->setBackgroundColor(SK_ColorTRANSPARENT);
-    return page;
+void JavascriptTest::injectSize(int width, int height) {
+    v8Runtime->injectNumber("innerWidth", width);
+    v8Runtime->injectNumber("innerHeight", height);
 }

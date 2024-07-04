@@ -47,6 +47,8 @@ public:
             v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> function,
             int argc, v8::Local<v8::Value> argv[]);
 
+    void injectNumber(const char* name, int number);
+
 private:
 
     v8::Local<v8::Context> CreateGlobalContext(v8::Isolate *isolate);
