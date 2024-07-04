@@ -1,5 +1,6 @@
 #include "JavascriptTest.h"
 #include "Page.h"
+#include "animationFrame.h"
 
 void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
     ITestDraw::setContext(context);
@@ -27,6 +28,11 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
                     context->getPageStackManager()->push(page);
                     page->enterFromRight(Page::EnterExitInfo(width, 0));
                 });
+    }
+    for (const auto &item: frameCallbackMap) {
+        const int argc = 0;
+        v8::Local<v8::Value> argv[argc] = {};
+        v8Runtime->performFunction(item.second, argc, argv);
     }
     root->measure();
     root->layout(0, 0, width, height);
@@ -56,7 +62,8 @@ void JavascriptTest::injectViews() {
 }
 
 void JavascriptTest::injectFrameCallback() {
-
+    v8Runtime->injectFunction("requestAnimationFrame", requestAnimationFrameCallback, this);
+    v8Runtime->injectFunction("cancelAnimationFrame", cancelAnimationFrameCallback, this);
 }
 
 Page *JavascriptTest::initPage(int width, int height) {

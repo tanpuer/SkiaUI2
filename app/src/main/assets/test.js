@@ -1,5 +1,9 @@
 let scrollView = null;
 
+requestAnimationFrame(() => {
+//    console.log("doFrame");
+});
+
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
         ProgressBar

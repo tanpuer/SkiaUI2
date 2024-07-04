@@ -213,3 +213,39 @@ v8::Local<v8::External> V8Runtime::createExternal(void *any) {
     v8::Context::Scope scopedContext(mContext.Get(mIsolate));
     return v8::External::New(mIsolate, any);
 }
+
+void V8Runtime::injectFunction(const char *name, v8::FunctionCallback callback, void *any) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    v8::Local<v8::External> external_context_data = v8::External::New(mIsolate, any);
+    v8::Local<v8::FunctionTemplate> funcTemplate = v8::FunctionTemplate::New(mIsolate, callback,
+                                                                             external_context_data);
+    v8::Local<v8::Function> function = funcTemplate->GetFunction();
+    v8::Local<v8::String> funcName = v8::String::NewFromUtf8(mIsolate, name);
+    auto global = mContext.Get(mIsolate)->Global();
+    auto result = global->Set(funcName, function);
+    ALOGD("global set function: %s result: %d", name, result)
+}
+
+v8::Local<v8::Value> V8Runtime::performFunction(
+        v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> function, int argc,
+        v8::Local<v8::Value> *argv) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+
+    v8::Local<v8::Function> callback = v8::Local<v8::Function>::New(mIsolate, function);
+    v8::TryCatch try_catch(mIsolate);
+    auto result = callback->Call(mIsolate->GetCurrentContext(),
+                                 mIsolate->GetCurrentContext()->Global(), argc,
+                                 argv);
+    if (try_catch.HasCaught()) {
+        v8::String::Utf8Value exception(mIsolate, try_catch.Exception());
+        auto info = std::string(*exception, exception.length());
+        ALOGD("performFunction error %s", info.c_str())
+    }
+    return result.ToLocalChecked();
+}
