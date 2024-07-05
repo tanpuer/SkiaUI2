@@ -35,6 +35,10 @@ private:
 
     void injectSize(int width, int height);
 
+    void invokeFrameCallback();
+
+    void createRoot(int width, int height);
+
 private:
 
     std::shared_ptr<V8Runtime> v8Runtime;

@@ -17,6 +17,8 @@ public:
         int to;
         int duration = 1000;
 
+        EnterExitInfo() = delete;
+
         EnterExitInfo(int from, int to, int duration) {
             this->from = from;
             this->to = to;

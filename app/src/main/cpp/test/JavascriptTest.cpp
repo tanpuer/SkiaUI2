@@ -13,27 +13,8 @@ void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
 }
 
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
-    if (root == nullptr) {
-        injectSize(width, height);
-        auto jsBuffer = context->getAssetManager()->readFile("test.js");
-        v8Runtime->evaluateJavaScript(jsBuffer, "test.js");
-        auto result = v8Runtime->callFunction("createRoot", 0, nullptr);
-        assert(result->IsObject());
-        v8Runtime->enterContext(
-                [this, &result, width, height](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
-                    auto rootView = v8::Local<v8::External>::Cast(
-                            result->ToObject()->GetInternalField(0));
-                    auto page = static_cast<Page *>(rootView->Value());
-                    root = page;
-                    context->getPageStackManager()->push(page);
-                    page->enterFromRight(Page::EnterExitInfo(width, 0));
-                });
-    }
-    for (const auto &item: frameCallbackMap) {
-        const int argc = 0;
-        v8::Local<v8::Value> argv[argc] = {};
-        v8Runtime->performFunction(item.second, argc, argv);
-    }
+    createRoot(width, height);
+    invokeFrameCallback();
 //    root->measure();
 //    root->layout(0, 0, width, height);
     root->draw(canvas);
@@ -69,4 +50,29 @@ void JavascriptTest::injectFrameCallback() {
 void JavascriptTest::injectSize(int width, int height) {
     v8Runtime->injectNumber("innerWidth", width);
     v8Runtime->injectNumber("innerHeight", height);
+}
+
+void JavascriptTest::invokeFrameCallback() {
+    for (const auto &item: frameCallbackMap) {
+        const int argc = 0;
+        v8::Local<v8::Value> argv[argc] = {};
+        v8Runtime->performFunction(item.second, argc, argv);
+    }
+}
+
+void JavascriptTest::createRoot(int width, int height) {
+    if (root == nullptr) {
+        injectSize(width, height);
+        auto jsBuffer = context->getAssetManager()->readFile("test.js");
+        v8Runtime->evaluateJavaScript(jsBuffer, "test.js");
+        auto result = v8Runtime->callFunction("createRoot", 0, nullptr);
+        assert(result->IsObject());
+        v8Runtime->enterContext(
+                [this, &result, width, height](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
+                    auto rootView = v8::Local<v8::External>::Cast(
+                            result->ToObject()->GetInternalField(0));
+                    auto page = static_cast<Page *>(rootView->Value());
+                    root = page;
+                });
+    }
 }

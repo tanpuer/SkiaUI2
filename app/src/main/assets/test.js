@@ -9,7 +9,7 @@ requestAnimationFrame(() => {
 
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
-        ProgressBar, Page
+        ProgressBar, Page, EnterExitInfo
     } = SkiaUI;
     page = new Page();
     page.backgroundColor = "#ffffff";
@@ -89,5 +89,7 @@ function createRoot() {
     scrollView.addView(progressBar);
 
     page.addView(scrollView);
+
+    page.push(new EnterExitInfo(SkiaUI.innerWidth, 0));
     return page;
 }
