@@ -258,3 +258,7 @@ void V8Runtime::injectNumber(const char *name, int number) {
     auto result = skiaUI.Get(mIsolate)->Set(v8::String::NewFromUtf8(mIsolate, name),
                                             v8::Number::New(mIsolate, number));
 }
+
+v8::Platform *V8Runtime::getPlatform() {
+    return mPlatform.get();
+}

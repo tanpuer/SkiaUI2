@@ -49,6 +49,8 @@ public:
 
     void injectNumber(const char* name, int number);
 
+    v8::Platform* getPlatform();
+
 private:
 
     v8::Local<v8::Context> CreateGlobalContext(v8::Isolate *isolate);
