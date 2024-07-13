@@ -10,6 +10,7 @@
 #include "ClockView.h"
 #include "LottieView.h"
 #include "VideoView.h"
+#include "MeasureTime.h"
 
 void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
@@ -86,6 +87,7 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         view->setHeight(200);
         scrollView->addView(view);
         view->setOnClickListener([this, width, height, drawCount](View *view) {
+            MeasureTime measureTime("pushPage");
             auto page = initPage(width, height);
             initChildren(drawCount, page, width, height);
             context->getPageStackManager()->push(page);

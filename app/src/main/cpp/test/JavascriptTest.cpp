@@ -4,7 +4,7 @@
 #include "MeasureTime.h"
 
 void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
-    MeasureTime("Javascript init");
+    MeasureTime measureTime("Javascript init");
     ITestDraw::setContext(context);
     v8Runtime = std::make_shared<V8Runtime>(context);
     injectConsole();
@@ -15,6 +15,7 @@ void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
 }
 
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
+    MeasureTime measureTime("Javascript draw");
     createRoot(width, height);
     invokeFrameCallback();
 }
