@@ -32,7 +32,9 @@ long SkiaUIApp::doFrame(long time) {
     IAnimator::currTime = time;
     SkPictureRecorder recorder;
     auto recordingCanvas = recorder.beginRecording(mWidth, mHeight);
+    context->setCanvas(recordingCanvas);
     testDraw->doDrawTest(drawCount, recordingCanvas, mWidth, mHeight);
+    context->setCanvas(nullptr);
     auto picture = recorder.finishRecordingAsPicture();
     picture->ref();
     return reinterpret_cast<long >(picture.get());

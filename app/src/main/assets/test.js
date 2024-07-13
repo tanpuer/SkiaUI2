@@ -4,6 +4,7 @@ requestAnimationFrame(() => {
     if (page != null) {
         page.measure();
         page.layout(0, 0, SkiaUI.innerWidth, SkiaUI.innerHeight);
+        page.draw();
     }
 });
 

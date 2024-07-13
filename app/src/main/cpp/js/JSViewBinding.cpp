@@ -207,6 +207,23 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     viewTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "layout"),
             v8::FunctionTemplate::New(isolate, layout, v8::External::New(isolate, this)));
+    auto draw = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<View *>(wrap->Value());
+        auto data = v8::Local<v8::External>::Cast(args.Data());
+        auto binding = static_cast<JSViewBinding *>(data->Value());
+        auto canvas = binding->context->getCanvas();
+        if (targetView != nullptr && canvas != nullptr) {
+            targetView->draw(canvas);
+        } else {
+            ALOGD("View draw failed because view/canvas is nullptr");
+        }
+    };
+    viewTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "draw"),
+            v8::FunctionTemplate::New(isolate, draw, v8::External::New(isolate, this)));
     v8::Local<v8::Function> constructor = viewTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "View"), constructor);
     return viewTemplate;

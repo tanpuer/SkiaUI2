@@ -17,9 +17,6 @@ void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     createRoot(width, height);
     invokeFrameCallback();
-//    root->measure();
-//    root->layout(0, 0, width, height);
-    root->draw(canvas);
 }
 
 View *JavascriptTest::getRootView() {

@@ -6,6 +6,7 @@
 #include "PageStackManager.h"
 #include "PluginManager.h"
 #include "YGConfig.h"
+#include "core/SkCanvas.h"
 
 class SkiaUIContext {
 
@@ -64,6 +65,14 @@ public:
         return javaSkiaEngine;
     }
 
+    void setCanvas(SkCanvas *canvas) {
+        this->canvas = canvas;
+    }
+
+    SkCanvas *getCanvas() const{
+        return canvas;
+    }
+
 private:
 
     std::shared_ptr<AssetManager> assetManager;
@@ -79,5 +88,7 @@ private:
     JNIEnv *jniEnv = nullptr;
 
     jobject javaSkiaEngine = nullptr;
+
+    SkCanvas *canvas;
 
 };
