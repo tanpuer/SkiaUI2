@@ -31,4 +31,6 @@ private:
 
     std::string src;
 
+    int containerWidth, containerHeight = 0;
+
 };

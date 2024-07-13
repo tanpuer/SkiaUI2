@@ -37,8 +37,10 @@ void SVGView::draw(SkCanvas *canvas) {
 }
 
 void SVGView::layout(int l, int t, int r, int b) {
-    if (skSVGDom != nullptr && (width != (r - l) || height != (t - b))) {
-        skSVGDom->setContainerSize(SkSize::Make(r - l, t - b));
+    if (skSVGDom != nullptr && (containerWidth != (r - l) || containerHeight != (b - t))) {
+        containerWidth = r - l;
+        containerHeight = b - t;
+        skSVGDom->setContainerSize(SkSize::Make(containerWidth, containerHeight));
     }
     View::layout(l, t, r, b);
 }
