@@ -1,8 +1,10 @@
 #include "JavascriptTest.h"
 #include "Page.h"
 #include "animationFrame.h"
+#include "MeasureTime.h"
 
 void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
+    MeasureTime("Javascript init");
     ITestDraw::setContext(context);
     v8Runtime = std::make_shared<V8Runtime>(context);
     injectConsole();
