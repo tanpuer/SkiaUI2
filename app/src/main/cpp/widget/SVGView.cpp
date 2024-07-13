@@ -12,6 +12,7 @@ SVGView::~SVGView() {
 }
 
 void SVGView::setSource(const char *path) {
+    MeasureTime measureTime("SVG setSource");
     src = path;
     auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);

@@ -11,6 +11,7 @@ LottieView::~LottieView() {
 }
 
 void LottieView::setSource(const char *path) {
+    MeasureTime measureTime("LottieView setSource");
     source = path;
     auto assetManager = getContext()->getAssetManager();
     auto imageData = assetManager->readImage(path);

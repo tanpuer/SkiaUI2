@@ -15,7 +15,7 @@ public:
     ~MeasureTime() {
         auto stop = std::chrono::high_resolution_clock::now();
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - _start).count();
-        ALOGD("%s: %lld ms\n", _name.c_str(), duration)
+        ALOGD("MeasureTime %s: %lld ms\n", _name.c_str(), duration)
     }
 
 private:

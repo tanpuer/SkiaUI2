@@ -13,6 +13,7 @@
 #include "IAnimator.h"
 #include "core/SkBlurTypes.h"
 #include "SkiaUIContext.h"
+#include "MeasureTime.h"
 
 static int64_t VIEW_ID = 0;
 

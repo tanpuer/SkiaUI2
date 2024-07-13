@@ -26,6 +26,7 @@ void ImageView::setAlpha(float alpha) {
 }
 
 void ImageView::setSource(const char *path) {
+    MeasureTime measureTime("ImageView setSource");
     this->source = std::string(path);
     //todo 异步处理
     auto assetManager = getContext()->getAssetManager();

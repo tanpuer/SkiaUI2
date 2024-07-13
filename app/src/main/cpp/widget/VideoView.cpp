@@ -13,6 +13,7 @@ VideoView::~VideoView() {
 }
 
 void VideoView::setSource(const char *path) {
+    MeasureTime measureTime("VideoView setSource");
     src = std::string(path);
     auto jniEnv = getContext()->getJniEnv();
     javaVideoClass = jniEnv->FindClass("com/temple/skiaui/video/HYSkiaVideo");
