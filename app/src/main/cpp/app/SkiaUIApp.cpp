@@ -87,3 +87,15 @@ void SkiaUIApp::releaseJavaPluginManager(JNIEnv *env) {
 SkiaUIContext *SkiaUIApp::getContext() {
     return context.get();
 }
+
+void SkiaUIApp::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
+    if (context->resourcesLoader) {
+        context->resourcesLoader->executeTask(env, taskId, javaAssets);
+    }
+}
+
+void SkiaUIApp::postTask(JNIEnv *env, int taskId) {
+    if (context->resourcesLoader) {
+        context->resourcesLoader->postTask(env, taskId);
+    }
+}

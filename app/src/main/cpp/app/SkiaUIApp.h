@@ -31,7 +31,11 @@ public:
 
     void releaseJavaPluginManager(JNIEnv *env);
 
-    SkiaUIContext* getContext();
+    SkiaUIContext *getContext();
+
+    void executeTask(JNIEnv *env, int taskId, jobject javaAssets);
+
+    void postTask(JNIEnv *env, int taskId);
 
 private:
 

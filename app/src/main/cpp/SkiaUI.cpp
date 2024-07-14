@@ -147,6 +147,24 @@ native_SetPlugins(JNIEnv *env, jobject instance, jlong javaUIApp, jobject javaPl
     return false;
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_ExecuteTask(JNIEnv *env, jobject instance, jlong javaUIApp, jint taskId, jobject javaAssets) {
+    ALOGD("native_ExecuteTask: %d", taskId)
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp != nullptr) {
+        uiApp->executeTask(env, taskId, javaAssets);
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
+native_PostTask(JNIEnv *env, jobject instance, jlong javaUIApp, jint taskId) {
+    ALOGD("native_PostTask: %d", taskId)
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp != nullptr) {
+        uiApp->postTask(env, taskId);
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -163,6 +181,8 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeRelease",                       "(JJ)V",                                        (void *) native_Release},
         {"nativeBackPressed",                   "(J)Z",                                         (void *) native_BackPressed},
         {"nativeSetPlugins",                    "(JLcom/temple/skiaui/plugin/PluginManager;)V", (void *) native_SetPlugins},
+        {"nativeExecuteTask",                   "(JILandroid/content/res/AssetManager;)V",      (void *) native_ExecuteTask},
+        {"nativePostTask",                      "(JI)V",                                        (void *) native_PostTask},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

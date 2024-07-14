@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
 import com.temple.skiaui.plugin.PluginManager
+import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -50,6 +51,7 @@ class HYSkiaEngine {
     private var uiApp = 0L
     private val skImageList = mutableListOf<Long>()
     val createListeners = mutableListOf<(enable: Boolean) -> Unit>()
+    private val executors = Executors.newFixedThreadPool(2)
 
     init {
         skiaGLHandler.post {
@@ -178,6 +180,18 @@ class HYSkiaEngine {
         }
     }
 
+    fun executeTask(taskId: Int) {
+        executors.submit {
+            nativeExecuteTask(uiApp, taskId, HYSkiaUIApp.getInstance().assets)
+        }
+    }
+
+    fun postTask(taskId: Int) {
+        skiaUIHandler.post {
+            nativePostTask(uiApp, taskId)
+        }
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -187,6 +201,7 @@ class HYSkiaEngine {
         glApp: Long,
         hardwareBuffer: HardwareBuffer
     ): Long
+
     private external fun nativeDeleteSkImage(glApp: Long, skImagePtr: Long)
 
     private external fun nativeUIInit(assets: AssetManager): Long
@@ -197,6 +212,8 @@ class HYSkiaEngine {
     private external fun nativeBackPressed(uiApp: Long): Boolean
     private external fun nativeRelease(uiApp: Long, glApp: Long)
     private external fun nativeSetPlugins(uiApp: Long, pluginManager: PluginManager)
+    private external fun nativeExecuteTask(uiApp: Long, taskId: Int, assets: AssetManager)
+    private external fun nativePostTask(uiApp: Long, taskId: Int)
 
     companion object {
         init {

@@ -1,7 +1,3 @@
-//
-// Created by cw404021@alibaba-inc.com on 2023/11/27.
-//
-
 #include "AssetManager.h"
 
 char *AssetManager::readFile(const char *path) {

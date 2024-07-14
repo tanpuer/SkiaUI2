@@ -7,6 +7,7 @@
 #include "PluginManager.h"
 #include "YGConfig.h"
 #include "core/SkCanvas.h"
+#include "ResourcesLoader.h"
 
 class SkiaUIContext {
 
@@ -59,6 +60,7 @@ public:
 
     void setJavaSkiaEngine(jobject instance) {
         javaSkiaEngine = jniEnv->NewGlobalRef(instance);
+        resourcesLoader = std::make_shared<ResourcesLoader>(jniEnv, javaSkiaEngine);
     }
 
     const jobject getJavaSkiaEngine() {
@@ -69,9 +71,12 @@ public:
         this->canvas = canvas;
     }
 
-    SkCanvas *getCanvas() const{
+    SkCanvas *getCanvas() const {
         return canvas;
     }
+
+public:
+    std::shared_ptr<ResourcesLoader> resourcesLoader;
 
 private:
 

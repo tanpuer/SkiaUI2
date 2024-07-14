@@ -1,4 +1,6 @@
 #include <base/native_log.h>
+
+#include <utility>
 #include "core/SkColorFilter.h"
 #include "ImageView.h"
 #include "core/SkData.h"
@@ -28,34 +30,19 @@ void ImageView::setAlpha(float alpha) {
 void ImageView::setSource(const char *path) {
     MeasureTime measureTime("ImageView setSource");
     this->source = std::string(path);
-    //todo 异步处理
-    auto assetManager = getContext()->getAssetManager();
-    auto imageData = assetManager->readImage(path);
-    auto length = imageData->length;
-    auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
-    auto androidCodec = SkAndroidCodec::MakeFromData(skData);
-    skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
-    frameCount = skAnimatedImage->getFrameCount();
-    ALOGD("animated info : %d %d %d", skAnimatedImage->getFrameCount(),
-          skAnimatedImage->getRepetitionCount(), skAnimatedImage->currentFrameDuration())
-    auto frame = skAnimatedImage->getCurrentFrame();
-    skImage = frame;
-    lastTimeMills = getContext()->getCurrentTimeMills();
-    if (skAnimatedImage->currentFrameDuration() > 0) {
-        currentFrameDuration = skAnimatedImage->currentFrameDuration();
-    }
-    if (skImage == nullptr) {
-        ALOGE("skImage is null, pls check %s", path)
-        return;
-    }
-    skImages.push_back(skImage);
-    for (int i = 1; i < frameCount; ++i) {
-        skAnimatedImage->decodeNextFrame();
-        skImages.push_back(skAnimatedImage->getCurrentFrame());
-    }
-    srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
-    ALOGD("decode image success %s %d %d", path, skImage->width(), skImage->height())
-    isDirty = true;
+    auto resourcesLoader = getContext()->resourcesLoader;
+    resourcesLoader->decodeImage(source, [this](const std::vector<sk_sp<SkImage>> &images,
+                                                sk_sp<SkAnimatedImage> animatedImage) {
+        skImage = images[0];
+        srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
+        ALOGD("decode image success %s %d %d", source.c_str(), skImage->width(), skImage->height())
+        lastTimeMills = getContext()->getCurrentTimeMills();
+        this->skImages = images;
+        this->skAnimatedImage = std::move(animatedImage);
+        this->currentFrameDuration = skAnimatedImage->currentFrameDuration();
+        this->frameCount = images.size();
+        isDirty = true;
+    });
 }
 
 void ImageView::measure() {
@@ -104,8 +91,7 @@ void ImageView::layout(int l, int t, int r, int b) {
 }
 
 void ImageView::draw(SkCanvas *canvas) {
-    if (width == 0 || height == 0) {
-        ALOGE("ignore ImageView draw, pls check width and height %d %d", width, height)
+    if (skImage == nullptr) {
         return;
     }
     View::draw(canvas);

@@ -14,12 +14,9 @@ SVGView::~SVGView() {
 void SVGView::setSource(const char *path) {
     MeasureTime measureTime("SVG setSource");
     src = path;
-    auto assetManager = getContext()->getAssetManager();
-    auto imageData = assetManager->readImage(path);
-    auto length = imageData->length;
-    auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
-    auto stream = SkMemoryStream::Make(skData);
-    skSVGDom = SkSVGDOM::Builder().make(*stream);
+    context->resourcesLoader->decodeSVG(src, [this](sk_sp<SkSVGDOM> svg) {
+        this->skSVGDom = svg;
+    });
 }
 
 void SVGView::setText(const std::string &text) {

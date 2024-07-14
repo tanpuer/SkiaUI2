@@ -13,11 +13,13 @@ LottieView::~LottieView() {
 void LottieView::setSource(const char *path) {
     MeasureTime measureTime("LottieView setSource");
     source = path;
-    auto assetManager = getContext()->getAssetManager();
-    auto imageData = assetManager->readImage(path);
-    auto length = imageData->length;
-    lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content), length);
-    startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+    context->resourcesLoader->decodeLottie(source, [this](sk_sp<skottie::Animation>) {
+        auto assetManager = getContext()->getAssetManager();
+        auto imageData = assetManager->readImage(source.c_str());
+        auto length = imageData->length;
+        lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content), length);
+        startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+    });
 }
 
 const char* LottieView::getSource() {

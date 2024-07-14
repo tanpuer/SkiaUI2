@@ -14,32 +14,43 @@ ShaderView::~ShaderView() {
 }
 
 void ShaderView::setShaderSource(const char *data, std::vector<std::string> images) {
-    auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(data));
-    if (!effect) {
-        ALOGD("set shader source failed %s", error.data())
+    auto createEffect = [this, data]() {
+        auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(data));
+        if (!effect) {
+            ALOGD("set shader source failed %s", error.data())
+            return;
+        }
+        runtimeEffect = effect;
+        isDirty = true;
+    };
+    auto size = images.size();
+    if (size == 0) {
+        createEffect();
         return;
     }
-    runtimeEffect = effect;
-    auto assetManager = getContext()->getAssetManager();
     for (int i = 0; i < images.size(); ++i) {
         auto image = images[i];
-        auto imageData = assetManager->readImage(image.c_str());
-        auto length = imageData->length;
-        auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
-        auto androidCodec = SkAndroidCodec::MakeFromData(skData);
-        auto skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
-        auto skImage = skAnimatedImage->getCurrentFrame();
-        auto shader = skImage->makeShader(SkSamplingOptions());
-        skShaders["iChannel" + std::to_string(i)] = std::move(shader);
-        ResolutionUniforms resolutionUniforms;
-        resolutionUniforms.width = skImage->width();
-        resolutionUniforms.height = skImage->height();
-        imageResolutions["iChannel" + std::to_string(i) + "Resolution"] = resolutionUniforms;
+        context->resourcesLoader->decodeImage(
+                image,
+                [this, i](const std::vector<sk_sp<SkImage>> &images,
+                          sk_sp<SkAnimatedImage> animatedImage) {
+                    auto skImage = animatedImage->getCurrentFrame();
+                    auto shader = skImage->makeShader(SkSamplingOptions());
+                    skShaders["iChannel" + std::to_string(i)] = std::move(shader);
+                    ResolutionUniforms resolutionUniforms;
+                    resolutionUniforms.width = skImage->width();
+                    resolutionUniforms.height = skImage->height();
+                    imageResolutions["iChannel" + std::to_string(i) +"Resolution"] = resolutionUniforms;
+                });
+        size--;
+        if (size == 0) {
+            createEffect();
+        }
     }
-    isDirty = true;
 }
 
 void ShaderView::setShaderPath(const char *path, std::vector<std::string> images) {
+    MeasureTime measureTime("setShaderPath");
     auto assetManager = getContext()->getAssetManager();
     auto data = assetManager->readFile(path);
     setShaderSource(data, images);
