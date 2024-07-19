@@ -208,6 +208,9 @@ class HYSkiaVideo internal constructor(
             decoder.stop()
             decoder.release()
             extractor.release()
+            if (skImagePtr != 0L) {
+                engine.deleteSkImage(skImagePtr)
+            }
         }
         decodeThread.quitSafely()
     }
