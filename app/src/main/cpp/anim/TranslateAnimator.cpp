@@ -11,6 +11,9 @@ TranslateAnimator::TranslateAnimator(View *view,
 }
 
 TranslateAnimator::~TranslateAnimator() {
+    if (finishCallback != nullptr) {
+        finishCallback();
+    }
     this->targetView = nullptr;
 }
 
@@ -18,9 +21,6 @@ void TranslateAnimator::update(SkIRect &rect) {
     if (currTime > endTime || targetView == nullptr) {
         targetView->animTranslateX = animEndX;
         targetView->animTranslateY = animEndY;
-        if (finishCallback != nullptr) {
-            finishCallback();
-        }
         end = true;
         return;
     }

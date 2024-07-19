@@ -18,14 +18,13 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
                isDirty(false),
                widthPercent(0.0f), hwRatio(0.0f) {
     viewId = VIEW_ID++;
-    paint = new SkPaint();
+    paint = std::make_unique<SkPaint>();
     paint->setAntiAlias(true);
     touchEventDispatcher = std::make_unique<TouchEventDispatcher>(this);
     animator = std::unique_ptr<IAnimator>(nullptr);
 }
 
 View::~View() {
-    delete paint;
     if (node != nullptr) {
         YGNodeFree(node);
     }

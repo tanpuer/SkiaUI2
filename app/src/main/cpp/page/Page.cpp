@@ -78,7 +78,7 @@ void Page::measure() {
     SkASSERT(children.size() == 1);
     auto root = children[0];
     measureChild(root);
-    YGNodeCalculateLayout(node, this->width, this->height,YGDirectionLTR);
+    YGNodeCalculateLayout(node, this->width, this->height, YGDirectionLTR);
 }
 
 void Page::layout(int l, int t, int r, int b) {
@@ -92,13 +92,9 @@ void Page::layout(int l, int t, int r, int b) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(root->node));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(root->node));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(root->node));
-    if (animator != nullptr) {
-        if (animator->isEnd()) {
-            animator.reset();
-        } else {
-            animator->update(skRect);
-            ALOGD("page animator update %f %f", animTranslateX, animTranslateY)
-        }
+    if (animator != nullptr && !animator->isEnd()) {
+        animator->update(skRect);
+        ALOGD("page animator update %f %f", animTranslateX, animTranslateY)
     }
     root->layout(left + animTranslateX,
                  top + animTranslateY,
@@ -121,6 +117,9 @@ void Page::draw(SkCanvas *canvas) {
     canvas->translate(left, top);
     canvas->drawPicture(picture, nullptr, pagePaint.get());
     canvas->restore();
+    if (animator != nullptr && animator->isEnd()) {
+        animator.reset();
+    }
 }
 
 bool Page::dispatchTouchEvent(TouchEvent *touchEvent) {

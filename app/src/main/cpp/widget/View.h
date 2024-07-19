@@ -120,7 +120,7 @@ public:
 
     virtual void setPadding(std::vector<int> paddings);
 
-    SkPaint *paint;
+    std::unique_ptr<SkPaint> paint;
 
     int marginLeft, marginTop, marginRight, marginBottom;
 
