@@ -37,7 +37,7 @@ private:
 
     jobject javaVideo = nullptr;
 
-    sk_sp<SkImage> skImage = nullptr;
+    SkImage* skImage = nullptr;
 
     SkRect dstRect;
 
