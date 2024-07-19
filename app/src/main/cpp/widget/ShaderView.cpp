@@ -51,10 +51,10 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
 
 void ShaderView::setShaderPath(const char *path, std::vector<std::string> images) {
     MeasureTime measureTime("setShaderPath");
-    auto assetManager = getContext()->getAssetManager();
-    auto data = assetManager->readFile(path);
-    setShaderSource(data, images);
-    isDirty = true;
+    context->resourcesLoader->readFile(path, [this, images](const char* data) {
+        setShaderSource(data, images);
+        isDirty = true;
+    });
 }
 
 void ShaderView::draw(SkCanvas *canvas) {

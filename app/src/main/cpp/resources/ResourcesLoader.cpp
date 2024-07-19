@@ -32,6 +32,16 @@ void ResourcesLoader::decodeSVG(
     jniEnv->CallVoidMethod(javaSkiaEngine, executeTaskMethod, taskId);
 }
 
+
+void ResourcesLoader::readFile(
+        const std::string &path,
+        std::function<void(const char *)> &&callback) {
+    auto taskId = TASK_ID++;
+    fileCallback[taskId] = std::move(callback);
+    pathMap[taskId] = path;
+    jniEnv->CallVoidMethod(javaSkiaEngine, executeTaskMethod, taskId);
+}
+
 void ResourcesLoader::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
     if (imagesCallback.find(taskId) != imagesCallback.end()) {
         auto path = pathMap[taskId];
@@ -80,6 +90,12 @@ void ResourcesLoader::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
         auto skSVGDom = SkSVGDOM::Builder().make(*stream);
         svgMap[taskId] = skSVGDom;
         env->CallVoidMethod(javaSkiaEngine, postTaskMethod, taskId);
+    } else if (fileCallback.find(taskId) != fileCallback.end()) {
+        auto path = pathMap[taskId];
+        auto assetManager = AssetManager(env, javaAssets);
+        auto data = assetManager.readFile(path.c_str());
+        fileMap[taskId] = data;
+        env->CallVoidMethod(javaSkiaEngine, postTaskMethod, taskId);
     }
 }
 
@@ -106,6 +122,13 @@ void ResourcesLoader::postTask(JNIEnv *env, int taskId) {
         callback.operator()(svg);
         svgCallback.erase(taskId);
         svgMap.erase(taskId);
+        pathMap.erase(taskId);
+    } else if (fileMap.find(taskId) != fileMap.end()) {
+        auto callback = fileCallback[taskId];
+        auto data = fileMap[taskId];
+        callback.operator()(data);
+        fileCallback.erase(taskId);
+        fileMap.erase(taskId);
         pathMap.erase(taskId);
     }
 }

@@ -22,6 +22,9 @@ static std::unordered_map<int, sk_sp<skottie::Animation>> lottieMap;
 static std::unordered_map<int, std::function<void(sk_sp<SkSVGDOM>)>> svgCallback;
 static std::unordered_map<int, sk_sp<SkSVGDOM>> svgMap;
 
+static std::unordered_map<int, std::function<void(const char *)>> fileCallback;
+static std::unordered_map<int, const char *> fileMap;
+
 class ResourcesLoader {
 
 public:
@@ -42,6 +45,8 @@ public:
                       std::function<void(sk_sp<skottie::Animation>)> &&callback);
 
     void decodeSVG(const std::string &path, std::function<void(sk_sp<SkSVGDOM>)> &&callback);
+
+    void readFile(const std::string &path, std::function<void(const char *)> &&callback);
 
     void executeTask(JNIEnv *env, int taskId, jobject javaAssets);
 
