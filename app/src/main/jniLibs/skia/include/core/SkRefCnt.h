@@ -79,6 +79,10 @@ public:
         }
     }
 
+    int32_t getRefCnt2() const {
+        return fRefCnt.load(std::memory_order_relaxed);
+    }
+
 private:
 
 #ifdef SK_DEBUG
