@@ -72,9 +72,6 @@ class HYSkiaVideo internal constructor(
         }
         val hardwareBuffer = nextImage() ?: return
         engine.makeHardwareBufferToSkImage(hardwareBuffer) {
-            if (skImagePtr != it) {
-                engine.deleteSkImage(skImagePtr)
-            }
             skImagePtr = it
         }
     }
@@ -206,9 +203,6 @@ class HYSkiaVideo internal constructor(
             decoder.stop()
             decoder.release()
             extractor.release()
-            if (skImagePtr != 0L) {
-                engine.deleteSkImage(skImagePtr)
-            }
         }
         decodeThread.quitSafely()
     }
@@ -223,6 +217,10 @@ class HYSkiaVideo internal constructor(
         decodeHandler.post {
             renderFlag = false
         }
+    }
+
+    fun deleteSkImage(ptr: Long) {
+        engine.deleteSkImage(ptr)
     }
 
     companion object {

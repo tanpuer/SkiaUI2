@@ -43,6 +43,8 @@ private:
 
     jmethodID releaseMethod = nullptr;
 
+    jmethodID deleteSkImageMethod = nullptr;
+
     jobject javaVideo = nullptr;
 
     SkImage* skImage = nullptr;
