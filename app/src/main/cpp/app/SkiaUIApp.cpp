@@ -99,3 +99,11 @@ void SkiaUIApp::postTask(JNIEnv *env, int taskId) {
         context->resourcesLoader->postTask(env, taskId);
     }
 }
+
+void SkiaUIApp::onShow() {
+    testDraw->onShow();
+}
+
+void SkiaUIApp::onHide() {
+    testDraw->onHide();
+}

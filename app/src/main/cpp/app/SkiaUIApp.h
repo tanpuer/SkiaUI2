@@ -37,6 +37,10 @@ public:
 
     void postTask(JNIEnv *env, int taskId);
 
+    void onShow();
+
+    void onHide();
+
 private:
 
     std::unique_ptr<TouchEvent> mTouchEvent;

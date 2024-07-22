@@ -148,7 +148,8 @@ native_SetPlugins(JNIEnv *env, jobject instance, jlong javaUIApp, jobject javaPl
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_ExecuteTask(JNIEnv *env, jobject instance, jlong javaUIApp, jint taskId, jobject javaAssets) {
+native_ExecuteTask(JNIEnv *env, jobject instance, jlong javaUIApp, jint taskId,
+                   jobject javaAssets) {
     ALOGD("native_ExecuteTask: %d", taskId)
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
@@ -162,6 +163,24 @@ native_PostTask(JNIEnv *env, jobject instance, jlong javaUIApp, jint taskId) {
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         uiApp->postTask(env, taskId);
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
+native_UIShow(JNIEnv *env, jobject instance, jlong javaUIApp) {
+    ALOGD("native_UIShow")
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp != nullptr) {
+        uiApp->onShow();
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
+native_UIHide(JNIEnv *env, jobject instance, jlong javaUIApp) {
+    ALOGD("native_UIShow")
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp != nullptr) {
+        uiApp->onHide();
     }
 }
 
@@ -183,6 +202,8 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeSetPlugins",                    "(JLcom/temple/skiaui/plugin/PluginManager;)V", (void *) native_SetPlugins},
         {"nativeExecuteTask",                   "(JILandroid/content/res/AssetManager;)V",      (void *) native_ExecuteTask},
         {"nativePostTask",                      "(JI)V",                                        (void *) native_PostTask},
+        {"nativeUIShow",                        "(J)V",                                         (void *) native_UIShow},
+        {"nativeUIHide",                        "(J)V",                                         (void *) native_UIHide},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

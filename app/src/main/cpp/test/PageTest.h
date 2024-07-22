@@ -15,6 +15,10 @@ public:
 
     virtual View *getRootView() override;
 
+    void onShow() override;
+
+    void onHide() override;
+
 private:
 
     Page *initPage(int width, int height);

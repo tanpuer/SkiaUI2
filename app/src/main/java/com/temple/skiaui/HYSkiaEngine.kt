@@ -64,6 +64,9 @@ class HYSkiaEngine {
     }
 
     fun createSurface(surface: Surface) {
+        skiaUIHandler.post {
+            nativeUIShow(uiApp)
+        }
         skiaGLHandler.post {
             nativeGLCreated(glApp, surface)
         }
@@ -84,6 +87,9 @@ class HYSkiaEngine {
     }
 
     fun destroySurface() {
+        skiaUIHandler.post {
+            nativeUIHide(uiApp)
+        }
         skiaGLHandler.post {
             nativeGLDestroyed(glApp)
         }
@@ -214,6 +220,8 @@ class HYSkiaEngine {
     private external fun nativeSetPlugins(uiApp: Long, pluginManager: PluginManager)
     private external fun nativeExecuteTask(uiApp: Long, taskId: Int, assets: AssetManager)
     private external fun nativePostTask(uiApp: Long, taskId: Int)
+    private external fun nativeUIShow(uiApp: Long)
+    private external fun nativeUIHide(uiApp: Long)
 
     companion object {
         init {

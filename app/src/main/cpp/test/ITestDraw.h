@@ -30,6 +30,10 @@ public:
         this->context = context;
     }
 
+    virtual void onShow() {}
+
+    virtual void onHide() {}
+
 protected:
 
     ViewGroup *root = nullptr;
