@@ -64,6 +64,7 @@ void SkiaFilter::render(SkPicture *picture) {
 }
 
 long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBuffer) {
+    MeasureTime measureTime("MakeHardwareBufferToSkImage");
     AHardwareBuffer *buffer = AHardwareBuffer_fromHardwareBuffer(env, javaHardwareBuffer);
     // Setup OpenGL and Skia:
     const AHardwareBuffer *hardwareBuffer = static_cast<AHardwareBuffer *>(buffer);

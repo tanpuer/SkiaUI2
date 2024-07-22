@@ -401,3 +401,11 @@ void View::setBackgroundColor(const std::string &hexColor) {
 const char *View::getBackgroundColor() {
     return backgroundColor.c_str();
 }
+
+void View::onShow() {
+
+}
+
+void View::onHide() {
+
+}

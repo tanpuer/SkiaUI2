@@ -25,6 +25,10 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
+    void onShow() override;
+
+    void onHide() override;
+
 private:
 
     jclass javaVideoClass = nullptr;
@@ -33,7 +37,11 @@ private:
 
     jmethodID getCurrentSkImage = nullptr;
 
-    jmethodID release = nullptr;
+    jmethodID startMethod = nullptr;
+
+    jmethodID pauseMethod = nullptr;
+
+    jmethodID releaseMethod = nullptr;
 
     jobject javaVideo = nullptr;
 

@@ -40,6 +40,10 @@ public:
 
     virtual YGConfigRef getConfig();
 
+    virtual void onShow() override;
+
+    virtual void onHide() override;
+
 #pragma mark ViewGroup api
 
     virtual bool addView(View *view);
@@ -58,7 +62,7 @@ public:
      */
     virtual void setJustifyContent(YGJustify justify);
 
-    virtual const char* getJustifyContent();
+    virtual const char *getJustifyContent();
 
     /**
      * 子视图在侧轴上的排列方式
@@ -66,7 +70,7 @@ public:
      */
     virtual void setAlignItems(YGAlign align);
 
-    virtual const char* getAlignItems();
+    virtual const char *getAlignItems();
 
     /**
      * 子视图行与行之间在侧轴上的对齐方式
@@ -82,7 +86,7 @@ public:
      */
     virtual void setFlexWrap(YGWrap wrap);
 
-    const char* getFLexWrap();
+    const char *getFLexWrap();
 
     /**
      * flex的方向
@@ -90,7 +94,7 @@ public:
      */
     virtual void setFlexDirection(YGFlexDirection direction);
 
-    virtual const char* getFlexDirection();
+    virtual const char *getFlexDirection();
 
     std::vector<View *> children;
 

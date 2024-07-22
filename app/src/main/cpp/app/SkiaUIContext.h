@@ -8,6 +8,7 @@
 #include "YGConfig.h"
 #include "core/SkCanvas.h"
 #include "ResourcesLoader.h"
+#include "V8Runtime.h"
 
 class SkiaUIContext {
 
@@ -75,6 +76,14 @@ public:
         return canvas;
     }
 
+    void setV8Runtime(std::shared_ptr<V8Runtime> runtime) {
+        this->v8Runtime = runtime;
+    }
+
+    std::shared_ptr<V8Runtime> &getRuntime() {
+        return v8Runtime;
+    }
+
 public:
     std::shared_ptr<ResourcesLoader> resourcesLoader;
 
@@ -95,5 +104,7 @@ private:
     jobject javaSkiaEngine = nullptr;
 
     SkCanvas *canvas;
+
+    std::shared_ptr<V8Runtime> v8Runtime = nullptr;
 
 };

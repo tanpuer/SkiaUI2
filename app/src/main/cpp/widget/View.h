@@ -102,9 +102,9 @@ public:
 
     virtual void setBackgroundColor(SkColor color);
 
-    virtual void setBackgroundColor(const std::string& hexColor);
+    virtual void setBackgroundColor(const std::string &hexColor);
 
-    virtual const char* getBackgroundColor();
+    virtual const char *getBackgroundColor();
 
     virtual void setAntiAlias(bool antiAlias);
 
@@ -229,5 +229,11 @@ protected:
     std::function<void(View *)> viewClickListener = nullptr;
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
+
+#pragma mark LifeCycle
+public:
+    virtual void onShow();
+
+    virtual void onHide();
 
 };

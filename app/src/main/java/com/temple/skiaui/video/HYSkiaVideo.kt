@@ -71,13 +71,11 @@ class HYSkiaVideo internal constructor(
             return
         }
         val hardwareBuffer = nextImage() ?: return
-        val start = System.currentTimeMillis()
         engine.makeHardwareBufferToSkImage(hardwareBuffer) {
             if (skImagePtr != it) {
                 engine.deleteSkImage(skImagePtr)
             }
             skImagePtr = it
-            Log.d(TAG, "makeHardwareBufferToSkImage cost :${System.currentTimeMillis() - start}")
         }
     }
 
@@ -213,6 +211,18 @@ class HYSkiaVideo internal constructor(
             }
         }
         decodeThread.quitSafely()
+    }
+
+    fun start() {
+        decodeHandler.post {
+            renderFlag = true
+        }
+    }
+
+    fun pause() {
+        decodeHandler.post {
+            renderFlag = false
+        }
     }
 
     companion object {

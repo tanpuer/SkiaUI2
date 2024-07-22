@@ -1,11 +1,9 @@
 #include "V8Runtime.h"
 #include "native_log.h"
-#include "SkiaUIContext.h"
 #include <ostream>
 #include <sstream>
 
-V8Runtime::V8Runtime(std::shared_ptr<SkiaUIContext> context) {
-    this->skiaUiContext = context;
+V8Runtime::V8Runtime() {
     v8::V8::SetFlagsFromString("--nolazy");
     v8::V8::Initialize();
     arrayBufferAllocator_.reset(

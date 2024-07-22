@@ -128,7 +128,7 @@ void ViewGroup::setFlexDirection(YGFlexDirection direction) {
     YGNodeStyleSetFlexDirection(node, direction);
 }
 
-const char* ViewGroup::getFlexDirection() {
+const char *ViewGroup::getFlexDirection() {
     SkASSERT(node);
     auto direction = YGNodeStyleGetFlexDirection(node);
     return YGFlexDirectionToString(direction);
@@ -246,5 +246,19 @@ const char *ViewGroup::getAlignItems() {
     assert(node);
     auto alignItems = YGNodeStyleGetAlignItems(node);
     return YGAlignToString(alignItems);
+}
+
+void ViewGroup::onShow() {
+    View::onShow();
+    for (const auto &item: children) {
+        item->onShow();
+    }
+}
+
+void ViewGroup::onHide() {
+    View::onHide();
+    for (const auto &item: children) {
+        item->onHide();
+    }
 }
 

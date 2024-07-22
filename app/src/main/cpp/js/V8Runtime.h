@@ -3,17 +3,13 @@
 #include "v8.h"
 #include "v8-platform.h"
 #include "libplatform/libplatform.h"
-#include "SkiaUIContext.h"
 #include "YGConfig.h"
 #include "map"
 
 class V8Runtime {
 
 public:
-
-    V8Runtime() = delete;
-
-    explicit V8Runtime(std::shared_ptr<SkiaUIContext> context);
+    V8Runtime();
 
     V8Runtime(V8Runtime &other) = delete;
 
@@ -47,9 +43,9 @@ public:
             v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> function,
             int argc, v8::Local<v8::Value> argv[]);
 
-    void injectNumber(const char* name, int number);
+    void injectNumber(const char *name, int number);
 
-    v8::Platform* getPlatform();
+    v8::Platform *getPlatform();
 
 private:
 
@@ -61,8 +57,6 @@ private:
     void ReportException(v8::TryCatch *tryCatch);
 
 private:
-
-    std::shared_ptr<SkiaUIContext> skiaUiContext;
     v8::Isolate *mIsolate = nullptr;
     std::unique_ptr<v8::ArrayBuffer::Allocator> arrayBufferAllocator_;
     v8::Global<v8::Context> mContext;

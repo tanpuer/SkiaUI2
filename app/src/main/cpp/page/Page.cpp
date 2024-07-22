@@ -148,3 +148,23 @@ void Page::setBlackWhiteMode() {
     auto colorFilter = SkColorFilters::Matrix(data(rowMajor));
     pagePaint->setColorFilter(colorFilter);
 }
+
+#pragma mark LifeCycle Callback start
+
+void Page::onShow() {
+    auto runtime = context->getRuntime();
+    if (runtime != nullptr && !showCallback.IsEmpty()) {
+        runtime->performFunction(showCallback, 0, {});
+    }
+    ViewGroup::onShow();
+}
+
+void Page::onHide() {
+    auto runtime = context->getRuntime();
+    if (runtime != nullptr && !hideCallback.IsEmpty()) {
+        runtime->performFunction(hideCallback, 0, {});
+    }
+    ViewGroup::onHide();
+}
+
+#pragma mark LifeCycle Callback end

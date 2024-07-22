@@ -8,7 +8,7 @@ VideoView::VideoView() {
 
 VideoView::~VideoView() {
     auto jniEnv = getContext()->getJniEnv();
-    jniEnv->CallVoidMethod(javaVideo, release);
+    jniEnv->CallVoidMethod(javaVideo, releaseMethod);
     jniEnv->DeleteGlobalRef(javaVideo);
 }
 
@@ -20,7 +20,9 @@ void VideoView::setSource(const char *path) {
     javaVideoConstructor = jniEnv->GetMethodID(javaVideoClass, "<init>",
                                                "(Ljava/lang/String;Lcom/temple/skiaui/HYSkiaEngine;)V");
     getCurrentSkImage = jniEnv->GetMethodID(javaVideoClass, "getCurrentSkImage", "()J");
-    release = jniEnv->GetMethodID(javaVideoClass, "release", "()V");
+    startMethod = jniEnv->GetMethodID(javaVideoClass, "start", "()V");
+    pauseMethod = jniEnv->GetMethodID(javaVideoClass, "pause", "()V");
+    releaseMethod = jniEnv->GetMethodID(javaVideoClass, "release", "()V");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
     javaVideo = jniEnv->NewGlobalRef(jniEnv->NewObject(javaVideoClass, javaVideoConstructor,
                                                        jniEnv->NewStringUTF(path), javaSkiaEngine));
@@ -53,4 +55,14 @@ void VideoView::start() {
 
 void VideoView::pause() {
 
+}
+
+void VideoView::onShow() {
+    auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaVideo, startMethod);
+}
+
+void VideoView::onHide() {
+    auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaVideo, pauseMethod);
 }

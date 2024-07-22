@@ -2,6 +2,8 @@
 
 #include "ViewGroup.h"
 #include "memory"
+#include "v8.h"
+#include "V8Runtime.h"
 
 static int64_t PAGE_ID = 0;
 
@@ -70,4 +72,12 @@ private:
 
     std::unique_ptr<SkPaint> pagePaint;
 
+public:
+    void onShow() override;
+
+    void onHide() override;
+
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> showCallback;
+
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> hideCallback;
 };
