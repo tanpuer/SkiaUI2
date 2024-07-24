@@ -68,6 +68,10 @@ void SkiaUIApp::setWindowSize(int width, int height) {
 }
 
 bool SkiaUIApp::onBackPressed() {
+    if (context->getPageStackManager()->getPages().size() <=1) {
+        context->getPluginManager()->invokeMethod("toast", "show", "back error");
+        return false;
+    }
     auto page = context->getPageStackManager()->back();
     if (page != nullptr) {
         page->exitToLeft(Page::EnterExitInfo(0, mWidth));
