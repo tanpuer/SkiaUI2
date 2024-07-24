@@ -46,9 +46,13 @@ void VideoView::draw(SkCanvas *canvas) {
     auto jniEnv = getContext()->getJniEnv();
     auto skImagePtr = jniEnv->CallLongMethod(javaVideo, getCurrentSkImage);
     if (skImagePtr != lastSkImagePtr) {
-        jniEnv->CallVoidMethod(javaVideo, deleteSkImageMethod, lastSkImagePtr);
-        auto image = reinterpret_cast<SkImage *>(skImagePtr);
-        skImage = SkSafeRef(image);
+//        jniEnv->CallVoidMethod(javaVideo, deleteSkImageMethod, lastSkImagePtr);
+        if (skImagePtr != 0L) {
+            auto image = reinterpret_cast<SkImage *>(skImagePtr);
+            skImage = SkSafeRef(image);
+        } else {
+            skImage = nullptr;
+        }
         lastSkImagePtr = skImagePtr;
     }
     canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), videoPaint.get());

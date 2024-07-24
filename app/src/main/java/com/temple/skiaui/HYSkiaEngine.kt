@@ -64,6 +64,9 @@ class HYSkiaEngine {
     }
 
     fun createSurface(surface: Surface) {
+        pic.set(0L)
+        finishDraw.set(true)
+        drawCount.set(0)
         skiaUIHandler.post {
             nativeUIShow(uiApp)
         }

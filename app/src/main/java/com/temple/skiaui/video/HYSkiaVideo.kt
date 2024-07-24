@@ -9,7 +9,6 @@ import android.media.MediaFormat
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
-import android.util.Log
 import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
@@ -42,38 +41,46 @@ class HYSkiaVideo internal constructor(
 
     private var renderFlag = true
 
+    private var hardwareBuffer: HardwareBuffer? = null
+
+    @Volatile
+    private var playing = true
+
+    private val decodeOneFrameRunnable = object : Runnable {
+        override fun run() {
+            if (released || !renderFlag) {
+                return
+            }
+            decodeHandler.postDelayed(this, (1000 / frameRate).toLong())
+            val hardwareBuffer = nextImage() ?: return
+            this@HYSkiaVideo.hardwareBuffer = hardwareBuffer
+            engine.makeHardwareBufferToSkImage(hardwareBuffer) {
+                skImagePtr = it
+            }
+        }
+    }
+
     init {
         decodeHandler.post {
             this.initializeReader()
         }
-        decodeHandler.postDelayed({
-            makeHardwareBufferToSkImage()
-        }, 100)
+        decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
         engine.createListeners.add {
-            decodeHandler.post {
-                renderFlag = it
+            if (it && playing) {
+                decodeHandler.post(decodeOneFrameRunnable)
+            } else {
+                decodeHandler.removeCallbacks(decodeOneFrameRunnable)
+                decodeHandler.post {
+                    skImagePtr = 0L
+                    hardwareBuffer?.close()
+                    hardwareBuffer = null
+                }
             }
         }
     }
 
     fun getCurrentSkImage(): Long {
         return skImagePtr
-    }
-
-    private fun makeHardwareBufferToSkImage() {
-        if (released) {
-            return
-        }
-        decodeHandler.postDelayed({
-            this.makeHardwareBufferToSkImage();
-        }, (1000 / frameRate).toLong())
-        if (!renderFlag) {
-            return
-        }
-        val hardwareBuffer = nextImage() ?: return
-        engine.makeHardwareBufferToSkImage(hardwareBuffer) {
-            skImagePtr = it
-        }
     }
 
     private fun initializeReader() {
@@ -126,17 +133,19 @@ class HYSkiaVideo internal constructor(
 
         val image = imageReader?.acquireLatestImage()
         if (image != null) {
+            if (hardwareBuffer != null) {
+                image.close()
+                return null
+            }
             val hardwareBuffer = image.hardwareBuffer
-            image.close() // Make sure to close the Image to free up the buffer
+            image.close()
             return hardwareBuffer
         }
         return nextImage()
     }
 
     private fun seek(timestamp: Long) {
-        // Seek to the closest sync frame at or before the specified time
         extractor.seekTo(timestamp * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
-        // Flush the codec to reset internal state and buffers
         decoder.flush()
     }
 
@@ -208,15 +217,14 @@ class HYSkiaVideo internal constructor(
     }
 
     fun start() {
-        decodeHandler.post {
-            renderFlag = true
-        }
+        playing = true
+        decodeHandler.removeCallbacks(decodeOneFrameRunnable)
+        decodeHandler.post(decodeOneFrameRunnable)
     }
 
     fun pause() {
-        decodeHandler.post {
-            renderFlag = false
-        }
+        playing = false
+        decodeHandler.removeCallbacks(decodeOneFrameRunnable)
     }
 
     fun deleteSkImage(ptr: Long) {
