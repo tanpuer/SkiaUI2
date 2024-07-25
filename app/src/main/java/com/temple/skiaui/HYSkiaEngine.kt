@@ -50,7 +50,7 @@ class HYSkiaEngine {
     private var glApp = 0L
     private var uiApp = 0L
     private val skImageList = mutableListOf<Long>()
-    val createListeners = mutableListOf<(enable: Boolean) -> Unit>()
+    val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val executors = Executors.newFixedThreadPool(2)
 
     init {
@@ -75,7 +75,7 @@ class HYSkiaEngine {
         }
         velocityTracker = VelocityTracker.obtain()
         createListeners.forEach {
-            it.invoke(true)
+            it.value.invoke(true)
         }
     }
 
@@ -99,7 +99,7 @@ class HYSkiaEngine {
         velocityTracker?.recycle()
         velocityTracker = null
         createListeners.forEach {
-            it.invoke(false)
+            it.value.invoke(false)
         }
     }
 

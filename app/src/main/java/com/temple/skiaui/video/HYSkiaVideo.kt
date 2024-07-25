@@ -28,7 +28,9 @@ class HYSkiaVideo internal constructor(
 
     private var frameRate: Double = 25.0
 
-    private val decodeThread = HandlerThread("video-decoder${INDEX++}").apply {
+    private val threadName = "video-decoder${INDEX++}"
+
+    private val decodeThread = HandlerThread(threadName).apply {
         start()
     }
 
@@ -60,23 +62,25 @@ class HYSkiaVideo internal constructor(
         }
     }
 
+    private val createListener = fun(it: Boolean) {
+        if (it && playing) {
+            decodeHandler.post(decodeOneFrameRunnable)
+        } else {
+            decodeHandler.removeCallbacks(decodeOneFrameRunnable)
+            decodeHandler.post {
+                skImagePtr = 0L
+                hardwareBuffer?.close()
+                hardwareBuffer = null
+            }
+        }
+    }
+
     init {
         decodeHandler.post {
             this.initializeReader()
         }
         decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
-        engine.createListeners.add {
-            if (it && playing) {
-                decodeHandler.post(decodeOneFrameRunnable)
-            } else {
-                decodeHandler.removeCallbacks(decodeOneFrameRunnable)
-                decodeHandler.post {
-                    skImagePtr = 0L
-                    hardwareBuffer?.close()
-                    hardwareBuffer = null
-                }
-            }
-        }
+        engine.createListeners[threadName] = createListener
     }
 
     fun getCurrentSkImage(): Long {
@@ -214,6 +218,7 @@ class HYSkiaVideo internal constructor(
             extractor.release()
         }
         decodeThread.quitSafely()
+        engine.createListeners.remove(threadName)
     }
 
     fun start() {
