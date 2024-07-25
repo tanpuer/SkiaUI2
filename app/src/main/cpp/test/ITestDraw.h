@@ -5,6 +5,7 @@
 #include "TextView.h"
 #include "ImageView.h"
 #include "MovingView.h"
+#include "Page.h"
 
 /**
  * 各种布局测试用例
@@ -30,9 +31,19 @@ public:
         this->context = context;
     }
 
-    virtual void onShow() {}
+    virtual void onShow() {
+        auto page = context->getPageStackManager()->back();
+        if (page != nullptr) {
+            page->onShow();
+        }
+    }
 
-    virtual void onHide() {}
+    virtual void onHide() {
+        auto page = context->getPageStackManager()->back();
+        if (page != nullptr) {
+            page->onHide();
+        }
+    }
 
 protected:
 

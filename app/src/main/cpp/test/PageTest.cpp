@@ -365,17 +365,3 @@ View *PageTest::getRootView() {
     SkASSERT(page != nullptr && page->children.size() == 1);
     return page->children[0];
 }
-
-void PageTest::onShow() {
-    auto page = dynamic_cast<Page *>(root);
-    if (page != nullptr) {
-        page->onShow();
-    }
-}
-
-void PageTest::onHide() {
-    auto page = dynamic_cast<Page *>(root);
-    if (page != nullptr) {
-        page->onHide();
-    }
-}
