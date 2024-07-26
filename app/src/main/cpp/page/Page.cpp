@@ -13,7 +13,24 @@ Page::Page() {
     pagePaint = std::make_unique<SkPaint>();
 }
 
+
+void Page::setContext(std::shared_ptr<SkiaUIContext> context) {
+    View::setContext(context);
+    auto runtime = context->getRuntime();
+    if (runtime != nullptr && !createCallback.IsEmpty()) {
+        runtime->performFunction(createCallback, 0, {});
+    }
+}
+
 Page::~Page() {
+    auto runtime = context->getRuntime();
+    if (runtime != nullptr && !hideCallback.IsEmpty()) {
+        runtime->performFunction(hideCallback, 0, {});
+    }
+    createCallback.Reset();
+    destroyCallback.Reset();
+    showCallback.Reset();
+    hideCallback.Reset();
     ALOGD("page destroy %d", pageId)
 }
 

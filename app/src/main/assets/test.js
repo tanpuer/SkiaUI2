@@ -13,12 +13,19 @@ function createRoot() {
         ProgressBar, Page, EnterExitInfo
     } = SkiaUI;
     page = new Page();
+    page.onCreate(() => {
+        console.log("page onCreate!");
+    });
+    page.onDestroy(() => {
+        console.log("page onDestroy!");
+    });
     page.onShow(() => {
         console.log("page onShow!");
     });
     page.onHide(() => {
         console.log("page onHide!");
     });
+
     page.backgroundColor = "#ffffff";
     page.width = SkiaUI.innerWidth;
     page.height = SkiaUI.innerHeight;

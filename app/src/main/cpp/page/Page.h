@@ -40,6 +40,8 @@ public:
 
     ~Page();
 
+    void setContext(std::shared_ptr<SkiaUIContext> context) override;
+
     void measure() override;
 
     void layout(int l, int t, int r, int b) override;
@@ -76,6 +78,10 @@ public:
     void onShow() override;
 
     void onHide() override;
+
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> createCallback;
+
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> destroyCallback;
 
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> showCallback;
 

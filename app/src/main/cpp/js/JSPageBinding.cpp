@@ -84,6 +84,28 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     };
     pageTemplate->PrototypeTemplate()->Set(isolate, "onHide",
                                            v8::FunctionTemplate::New(isolate, onHide));
+    auto onCreate = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 1 && args[0]->IsFunction());
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto page = static_cast<Page *>(wrap->Value());
+        auto callback = args[0].As<v8::Function>();
+        page->createCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
+                isolate, callback);
+    };
+    pageTemplate->PrototypeTemplate()->Set(isolate, "onCreate",
+                                           v8::FunctionTemplate::New(isolate, onCreate));
+    auto onDestroy = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 1 && args[0]->IsFunction());
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto page = static_cast<Page *>(wrap->Value());
+        auto callback = args[0].As<v8::Function>();
+        page->destroyCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
+                isolate, callback);
+    };
+    pageTemplate->PrototypeTemplate()->Set(isolate, "onDestroy",
+                                           v8::FunctionTemplate::New(isolate, onDestroy));
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "Page"), pageTemplate->GetFunction());
     return pageTemplate;
 }
