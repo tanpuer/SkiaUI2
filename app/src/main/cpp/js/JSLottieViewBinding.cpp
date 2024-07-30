@@ -53,6 +53,26 @@ JSLottieViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
             v8::String::NewFromUtf8(isolate, "src"),
             srcGetter,
             srcSetter);
+    auto start = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<LottieView *>(wrap->Value());
+        targetView->start();
+    };
+    lottieTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "start"),
+            v8::FunctionTemplate::New(isolate, start, v8::External::New(isolate, this)));
+    auto pause = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<LottieView *>(wrap->Value());
+        targetView->pause();
+    };
+    lottieTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "pause"),
+            v8::FunctionTemplate::New(isolate, pause, v8::External::New(isolate, this)));
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "LottieView"), lottieTemplate->GetFunction());
     return lottieTemplate;
 }

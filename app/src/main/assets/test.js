@@ -43,12 +43,30 @@ function createRoot() {
     console.log("View width is", view.width);
     view.height = 200;
     view.backgroundColor = "#ff0000";
+    view.setOnClickListener((_view) => {
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+        const redHex = (red < 16 ? '0' : '') + red.toString(16);
+        const greenHex = (green < 16 ? '0' : '') + green.toString(16);
+        const blueHex = (blue < 16 ? '0' : '') + blue.toString(16);
+        view.backgroundColor = `#${redHex}${greenHex}${blueHex}`;
+    });
     scrollView.addView(view);
 
     let lottieView = new LottieView();
     lottieView.width = 375;
     lottieView.height = 240;
     lottieView.src = "WorkspacePlanet.json";
+    let lottieFlag = true;
+    lottieView.setOnClickListener((_view) => {
+        if (lottieFlag) {
+            lottieView.pause();
+        } else {
+            lottieView.start();
+        }
+        lottieFlag = !lottieFlag;
+    });
     scrollView.addView(lottieView);
 
     let shaderView = new ShaderView();
