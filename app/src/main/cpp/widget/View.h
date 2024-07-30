@@ -14,6 +14,7 @@
 #include "core/SkBlurTypes.h"
 #include "SkiaUIContext.h"
 #include "MeasureTime.h"
+#include "v8.h"
 
 static int64_t VIEW_ID = 0;
 
@@ -235,5 +236,9 @@ public:
     virtual void onShow();
 
     virtual void onHide();
+
+#pragma mark ClickEvent
+public:
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> clickFunction;
 
 };

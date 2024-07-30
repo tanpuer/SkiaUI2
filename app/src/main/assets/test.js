@@ -56,6 +56,16 @@ function createRoot() {
     shaderView.width = 1080;
     shaderView.height = 520;
     scrollView.addView(shaderView);
+    let flag = true;
+    shaderView.setOnClickListener((view) => {
+        console.log("shaderView is clicked");
+        if (flag) {
+            view.setShaderPath("sincos.glsl", []);
+        } else {
+            view.setShaderPath("raining.glsl", ["raining.png"]);
+        }
+        flag = !flag;
+    });
 
     let textView = new TextView();
     textView.text = "Hello World";

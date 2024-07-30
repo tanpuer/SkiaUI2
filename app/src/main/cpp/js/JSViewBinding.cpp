@@ -156,20 +156,20 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
         auto data = v8::Local<v8::External>::Cast(args.Data());
         auto binding = static_cast<JSViewBinding *>(data->Value());
         if (args[0]->IsNullOrUndefined()) {
-            binding->clickFunction.Reset();
+            targetView->clickFunction.Reset();
             targetView->setOnClickListener(nullptr);
             return;
         }
         auto newCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
                 isolate, function);
-        binding->clickFunction.Reset(isolate, newCallback);
+        targetView->clickFunction.Reset(isolate, newCallback);
         assert(binding);
         targetView->setOnClickListener([binding](View *view) {
             binding->runtime->enterContext(
                     [binding, view](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
                         auto external = v8::External::New(isolate, view);
                         v8::Local<v8::Value> argv[1] = {external};
-                        auto callback = binding->clickFunction.Get(isolate);
+                        auto callback = view->clickFunction.Get(isolate);
                         if (!callback.IsEmpty()) {
                             callback->Call(isolate->GetCurrentContext()->Global(), 1, argv);
                         } else {
