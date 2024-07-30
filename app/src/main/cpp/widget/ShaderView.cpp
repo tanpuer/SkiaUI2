@@ -14,6 +14,10 @@ ShaderView::~ShaderView() {
 }
 
 void ShaderView::setShaderSource(const char *data, std::vector<std::string> images) {
+    skShaders.clear();
+    imageResolutions.clear();
+    uniformVector.clear();
+    runtimeEffect = nullptr;
     auto createEffect = [this, data]() {
         auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(data));
         if (!effect) {

@@ -60,9 +60,9 @@ function createRoot() {
     shaderView.setOnClickListener((view) => {
         console.log("shaderView is clicked");
         if (flag) {
-            view.setShaderPath("sincos.glsl", []);
+            shaderView.setShaderPath("sincos.glsl", []);
         } else {
-            view.setShaderPath("raining.glsl", ["raining.png"]);
+            shaderView.setShaderPath("raining.glsl", ["raining.png"]);
         }
         flag = !flag;
     });
