@@ -25,6 +25,8 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
+    const char *name() override;
+
     void onShow() override;
 
     void onHide() override;

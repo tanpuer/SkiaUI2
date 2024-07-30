@@ -172,3 +172,7 @@ void ProgressBar::setBarColor(const std::string &hexColor) {
 const char *ProgressBar::getBarColor() {
     return barColor.c_str();
 }
+
+const char *ProgressBar::name() {
+    return "ProgressBar";
+}

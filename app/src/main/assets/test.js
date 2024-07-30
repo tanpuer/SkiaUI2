@@ -35,7 +35,7 @@ function createRoot() {
     scrollView.flexWrap = "nowrap";
     scrollView.justifyContent = "flex-start";
     scrollView.alignItems = "center";
-    scrollView.backgroundColor = "#ffff00";
+    scrollView.backgroundColor = "#00000033";
     scrollView.flexDirection = "column";
 
     let view = new View();
@@ -75,8 +75,8 @@ function createRoot() {
     shaderView.height = 520;
     scrollView.addView(shaderView);
     let flag = true;
-    shaderView.setOnClickListener((view) => {
-        console.log("shaderView is clicked");
+    shaderView.setOnClickListener((_view) => {
+        console.log("shaderView is clicked: ", shaderView.name, _view);
         if (flag) {
             shaderView.setShaderPath("sincos.glsl", []);
         } else {

@@ -107,3 +107,7 @@ void ShaderView::setPictures(std::vector<sk_sp<SkPicture>> otherPictures) {
 void ShaderView::setCustomUniforms(std::string key, float value) {
     uniformVector[key] = value;
 }
+
+const char *ShaderView::name() {
+    return "ShaderView";
+}

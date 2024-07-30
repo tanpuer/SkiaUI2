@@ -52,3 +52,7 @@ void SVGView::setXY(int x, int y) {
 const char *SVGView::getSource() {
     return src.c_str();
 }
+
+const char *SVGView::name() {
+    return "SVG";
+}

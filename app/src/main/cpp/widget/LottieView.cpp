@@ -66,3 +66,7 @@ void LottieView::pause() {
 void LottieView::setRepeat(bool repeat) {
     this->repeat = repeat;
 }
+
+const char *LottieView::name() {
+    return "LottieView";
+}

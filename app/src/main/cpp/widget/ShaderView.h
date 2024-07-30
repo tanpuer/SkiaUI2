@@ -14,6 +14,8 @@ public:
 
     virtual ~ShaderView();
 
+    const char *name() override;
+
     virtual void setShaderSource(const char *data, std::vector<std::string> images = {});
 
     virtual void setShaderPath(const char *path, std::vector<std::string> images = {});

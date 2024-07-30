@@ -21,6 +21,8 @@ public:
 
 #pragma mark progressbar api
 
+    const char *name() override;
+
     virtual void setBarColor(SkColor color);
 
     virtual void setBarColor(const std::string& hexColor);

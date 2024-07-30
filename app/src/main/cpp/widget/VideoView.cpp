@@ -75,3 +75,7 @@ void VideoView::onHide() {
     auto jniEnv = getContext()->getJniEnv();
     jniEnv->CallVoidMethod(javaVideo, pauseMethod);
 }
+
+const char *VideoView::name() {
+    return "VideoView";
+}

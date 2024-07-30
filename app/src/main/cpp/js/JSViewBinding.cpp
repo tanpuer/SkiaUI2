@@ -146,6 +146,22 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             v8::String::NewFromUtf8(isolate, "flex"),
             viewFlexGetter,
             viewFlexSetter);
+    auto viewNameGetter = [](v8::Local<v8::String> property,
+                             const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), view->name()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "name"),
+            viewNameGetter,
+            nullptr
+    );
 
     auto onClick = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
@@ -166,12 +182,12 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
         assert(binding);
         targetView->setOnClickListener([binding](View *view) {
             binding->runtime->enterContext(
-                    [binding, view](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
+                    [view](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
                         auto external = v8::External::New(isolate, view);
                         v8::Local<v8::Value> argv[1] = {external};
                         auto callback = view->clickFunction.Get(isolate);
                         if (!callback.IsEmpty()) {
-                            callback->Call(isolate->GetCurrentContext()->Global(), 1, argv);
+                            callback->Call(isolate->GetCurrentContext(), isolate->GetCurrentContext()->Global(), 1, argv);
                         } else {
                             ALOGE("error: miss js callback for View");
                         }

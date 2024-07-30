@@ -23,6 +23,8 @@ public:
 
     void setXY(int x, int y);
 
+    const char *name() override;
+
 private:
 
     sk_sp<SkSVGDOM> skSVGDom;

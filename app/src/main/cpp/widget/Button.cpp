@@ -26,3 +26,7 @@ void Button::draw(SkCanvas *canvas) {
     SkASSERT(paragraph);
     paragraph->paint(canvas, skRect.left(), skRect.top() + defaultPadding);
 }
+
+const char *Button::name() {
+    return "Button";
+}

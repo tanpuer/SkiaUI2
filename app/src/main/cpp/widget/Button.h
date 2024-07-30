@@ -12,6 +12,8 @@ public:
 
     void setContext(std::shared_ptr<SkiaUIContext> context) override;
 
+    const char *name() override;
+
     void setMeasuredDimension(int _measuredWidth, int _measuredHeight) override;
 
     void draw(SkCanvas *canvas) override;
