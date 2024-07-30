@@ -123,6 +123,7 @@ void View::setBackgroundColor(SkColor color) {
     SkASSERT(paint);
     paint->setColor(color);
     isDirty = true;
+    backgroundColor = SkColorToString(color);
 }
 
 void View::setAntiAlias(bool antiAlias) {
@@ -394,6 +395,7 @@ void View::setContext(std::shared_ptr<SkiaUIContext> context) {
 }
 
 void View::setBackgroundColor(const std::string &hexColor) {
+    backgroundColor = hexColor;
     int r, g, b, a;
     hexToRGBA(hexColor, r, g, b, a);
     setBackgroundColor(SkColorSetARGB(a, r, g, b));
