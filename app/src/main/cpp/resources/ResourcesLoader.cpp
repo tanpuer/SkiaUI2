@@ -104,7 +104,7 @@ void ResourcesLoader::postTask(JNIEnv *env, int taskId) {
         auto callback = imagesCallback[taskId];
         auto images = imagesMap[taskId];
         auto animatedImage = animatedImagesMap[taskId];
-        callback.operator()(images, animatedImage);
+        callback(images, animatedImage);
         imagesCallback.erase(taskId);
         imagesMap.erase(taskId);
         animatedImagesMap.erase(taskId);
@@ -112,21 +112,21 @@ void ResourcesLoader::postTask(JNIEnv *env, int taskId) {
     } else if (lottieCallback.find(taskId) != lottieCallback.end()) {
         auto callback = lottieCallback[taskId];
         auto lottie = lottieMap[taskId];
-        callback.operator()(lottie);
+        callback(lottie);
         lottieCallback.erase(taskId);
         lottieMap.erase(taskId);
         pathMap.erase(taskId);
     } else if (svgMap.find(taskId) != svgMap.end()) {
         auto callback = svgCallback[taskId];
         auto svg = svgMap[taskId];
-        callback.operator()(svg);
+        callback(svg);
         svgCallback.erase(taskId);
         svgMap.erase(taskId);
         pathMap.erase(taskId);
     } else if (fileMap.find(taskId) != fileMap.end()) {
         auto callback = fileCallback[taskId];
         auto data = fileMap[taskId];
-        callback.operator()(data);
+        callback(data);
         fileCallback.erase(taskId);
         fileMap.erase(taskId);
         pathMap.erase(taskId);
