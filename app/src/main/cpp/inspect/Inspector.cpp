@@ -8,12 +8,12 @@ Inspector::Inspector(std::shared_ptr<V8Runtime> &runtime, const int webSocketPor
                 this->context = isolate->GetCurrentContext();
                 websocketServer = std::make_unique<WebSocketServer>(
                         webSocketPort,
-                        std::bind(&Inspector::onMessage, this, std::placeholders::_1)
+                        [this](auto && PH1) { onMessage(std::forward<decltype(PH1)>(PH1)); }
                 );
                 inspectorClient = std::make_unique<V8InspectorClientImpl>(
                         this->runtime,
-                        std::bind(&Inspector::sendMessage, this, std::placeholders::_1),
-                        std::bind(&Inspector::waitForFrontendMessage, this)
+                        [this](auto && PH1) { sendMessage(std::forward<decltype(PH1)>(PH1)); },
+                        [this] { return waitForFrontendMessage(); }
                 );
             });
 }
