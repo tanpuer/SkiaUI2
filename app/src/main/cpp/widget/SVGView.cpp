@@ -1,4 +1,6 @@
 #include "SVGView.h"
+
+#include <utility>
 #include "core/SkStream.h"
 #include "svg/include/SkSVGDOM.h"
 #include "SkiaUIContext.h"
@@ -15,7 +17,7 @@ void SVGView::setSource(const char *path) {
     MeasureTime measureTime("SVG setSource");
     src = path;
     context->resourcesLoader->decodeSVG(src, [this](sk_sp<SkSVGDOM> svg) {
-        this->skSVGDom = svg;
+        this->skSVGDom = std::move(svg);
     });
 }
 

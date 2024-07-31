@@ -27,7 +27,7 @@ public:
 
 private:
 
-    sk_sp<SkSVGDOM> skSVGDom;
+    sk_sp<SkSVGDOM> skSVGDom = nullptr;
 
     int x, y = 0;
 
