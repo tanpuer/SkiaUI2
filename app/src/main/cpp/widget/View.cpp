@@ -165,6 +165,11 @@ void View::setAlpha(float alpha) {
     isDirty = true;
 }
 
+float View::getAlpha() {
+    SkASSERT(paint);
+    return paint->getAlphaf();
+}
+
 void View::setLinearGradient(std::vector<SkColor> colors) {
     linearGradientColors = std::move(colors);
     isDirty = true;

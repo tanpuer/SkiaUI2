@@ -117,6 +117,8 @@ public:
 
     virtual void setAlpha(float alpha);
 
+    virtual float getAlpha();
+
     virtual void setMargin(std::vector<int> margins);
 
     virtual void setPadding(std::vector<int> paddings);

@@ -47,4 +47,6 @@ protected:
     float targetViewLeft = 0.0f;
     float targetViewTop = 0.0f;
 
+    float lastAlpha = 1.0f;
+
 };
