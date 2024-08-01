@@ -48,9 +48,14 @@ void View::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
 
 void View::layout(int l, int t, int r, int b) {
     //todo 默认设置boarder位置 Android layout默认啥都不做
+    if (left != l || top != t || right != r || bottom != b) {
+        isDirty = true;
+    }
     skRect.setLTRB(l, t, r, b);
     left = l;
     top = t;
+    right = r;
+    bottom = b;
     width = r - l;
     height = b - t;
 //    ALOGD("%s layout %d %d", name(), width, height)

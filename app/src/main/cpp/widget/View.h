@@ -83,7 +83,7 @@ public:
 
     YGConfigRef config = nullptr;
 
-    int left, top = 0;
+    int left, top, right, bottom = 0;
 
 protected:
 

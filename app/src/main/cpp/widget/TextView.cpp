@@ -3,8 +3,8 @@
 #include <utility>
 #include <base/native_log.h>
 #include "core/SkFont.h"
-#include "math.h"
 #include "ports/SkFontMgr_android.h"
+#include "effects/SkGradientShader.h"
 
 TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     textRect = SkRect::MakeEmpty();
@@ -15,7 +15,8 @@ TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     stringBuilders = std::vector<StringBuilder>();
     SkString familyName;
     fontMgr->getFamilyName(0, &familyName);
-    font = std::make_unique<SkFont>(fontMgr->legacyMakeTypeface(familyName.c_str(), SkFontStyle::Normal()));
+    font = std::make_unique<SkFont>(
+            fontMgr->legacyMakeTypeface(familyName.c_str(), SkFontStyle::Normal()));
 }
 
 TextView::~TextView() {
@@ -78,6 +79,27 @@ void TextView::measure() {
                 paragraphBuilder->addText(iterator.text.c_str());
             }
         } else {
+            TextStyle textStyle;
+            textStyle.setColor(skColor);
+            textStyle.setFontStyle(defaultStyle->getFontStyle());
+            textStyle.setFontSize(getTextSize());
+            textStyle.setColor(skColor);
+            if (!textGradientColors.empty()) {
+                SkPaint foregroundPaint;
+                SkPoint points[2]{
+                        SkPoint::Make(left, top), SkPoint::Make(right, top)
+                };
+                auto gradientShader = SkGradientShader::MakeLinear(
+                        points,
+                        textGradientColors.data(),
+                        textGradientPos.data(),
+                        textGradientColors.size(),
+                        SkTileMode::kClamp
+                );
+                foregroundPaint.setShader(std::move(gradientShader));
+                textStyle.setForegroundPaint(foregroundPaint);
+            }
+            paragraphBuilder->pushStyle(textStyle);
             paragraphBuilder->addText(text.c_str());
         }
         paragraph = paragraphBuilder->Build();
@@ -162,4 +184,9 @@ void TextView::pushText(const TextView::StringBuilder &stringBuilder) {
 
 SkScalar TextView::getTextSize() {
     return font->getSize();
+}
+
+void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> pos) {
+    textGradientColors = std::move(colors);
+    textGradientPos = std::move(pos);
 }

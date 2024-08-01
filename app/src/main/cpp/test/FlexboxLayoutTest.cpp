@@ -408,5 +408,8 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     textView->setTextSize(80);
     textView->setTextColor(SK_ColorBLACK);
     textView->setBackgroundColor("#ffffff");
+    textView->setStrokeWidth(1);
+    textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
+                              {0.0, 0.5, 0.5, 1.0});
     flexboxLayout->addView(textView);
 }

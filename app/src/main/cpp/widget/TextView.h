@@ -48,7 +48,7 @@ public:
 
 #pragma mark TextView api
 
-    virtual void setText(const char* text);
+    virtual void setText(const char *text);
 
     virtual void setText(SkString text);
 
@@ -96,6 +96,11 @@ public:
 
     void addShadow(SkColor color, SkPoint offset, double blurSigma);
 
+    /**
+     * 设置线性渐变，比如歌词
+     */
+    void setTextGradient(std::vector<SkColor> colors, std::vector<float> pos);
+
 protected:
 
     SkString text;
@@ -119,5 +124,9 @@ protected:
     SkColor skColor;
 
     std::vector<StringBuilder> stringBuilders;
+
+    std::vector<SkColor> textGradientColors;
+
+    std::vector<float> textGradientPos;
 
 };
