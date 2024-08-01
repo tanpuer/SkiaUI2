@@ -2,6 +2,7 @@
 #include "Page.h"
 #include "animationFrame.h"
 #include "MeasureTime.h"
+#include "performance.h"
 
 void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
     MeasureTime measureTime("Javascript init");
@@ -25,27 +26,9 @@ View *JavascriptTest::getRootView() {
     return ITestDraw::getRootView();
 }
 
-void JavascriptTest::injectConsole() {
-    std::map<std::string, v8::FunctionCallback> consoleMap(
-            {
-                    {"log",   logCallback},
-                    {"error", errorCallback},
-                    {"info",  infoCallback},
-                    {"warn",  warnCallback},
-            }
-    );
-    v8Runtime->injectObject(v8Runtime->global(), "console", consoleMap,
-                            std::map<std::string, std::string>());
-}
-
 void JavascriptTest::injectViews() {
     viewManager = std::make_unique<ViewManager>(context, v8Runtime);
     viewManager->registerHYViews();
-}
-
-void JavascriptTest::injectFrameCallback() {
-    v8Runtime->injectFunction("requestAnimationFrame", requestAnimationFrameCallback, this);
-    v8Runtime->injectFunction("cancelAnimationFrame", cancelAnimationFrameCallback, this);
 }
 
 void JavascriptTest::injectSize(int width, int height) {
@@ -76,4 +59,37 @@ void JavascriptTest::createRoot(int width, int height) {
                     root = page;
                 });
     }
+}
+
+void JavascriptTest::injectNodeApi() {
+    injectConsole();
+    injectFrameCallback();
+    injectPerformance();
+}
+
+void JavascriptTest::injectConsole() {
+    std::map<std::string, v8::FunctionCallback> consoleMap(
+            {
+                    {"log",   logCallback},
+                    {"error", errorCallback},
+                    {"info",  infoCallback},
+                    {"warn",  warnCallback},
+            }
+    );
+    v8Runtime->injectObject(v8Runtime->global(), "console", consoleMap, {});
+}
+
+
+void JavascriptTest::injectFrameCallback() {
+    v8Runtime->injectFunction("requestAnimationFrame", requestAnimationFrameCallback, this);
+    v8Runtime->injectFunction("cancelAnimationFrame", cancelAnimationFrameCallback, this);
+}
+
+void JavascriptTest::injectPerformance() {
+    std::map<std::string, v8::FunctionCallback> performanceMap(
+            {
+                    {"now", nowCallback}
+            }
+    );
+    v8Runtime->injectObject(v8Runtime->global(), "performance", performanceMap, {});
 }

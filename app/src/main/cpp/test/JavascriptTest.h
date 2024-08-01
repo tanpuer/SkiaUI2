@@ -27,11 +27,17 @@ public:
 
 private:
 
+    void injectNodeApi();
+
     void injectConsole();
 
-    void injectViews();
-
     void injectFrameCallback();
+
+    void injectPerformance();
+
+private:
+
+    void injectViews();
 
     void injectSize(int width, int height);
 
