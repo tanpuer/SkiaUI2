@@ -105,6 +105,8 @@ protected:
 
     SkString text;
 
+    sk_sp<SkFontMgr> fontMgr;
+
     std::unique_ptr<SkFont> font;
 
     SkRect textRect;

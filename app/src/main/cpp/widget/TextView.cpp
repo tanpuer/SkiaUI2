@@ -10,7 +10,7 @@ TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     textRect = SkRect::MakeEmpty();
     defaultStyle = std::make_unique<TextStyle>();
     fontCollection = sk_make_sp<FontCollection>();
-    auto fontMgr = SkFontMgr_New_Android(nullptr);
+    fontMgr = SkFontMgr_New_Android(nullptr);
     fontCollection->setDefaultFontManager(fontMgr);
     stringBuilders = std::vector<StringBuilder>();
     SkString familyName;
@@ -83,7 +83,6 @@ void TextView::measure() {
             textStyle.setColor(skColor);
             textStyle.setFontStyle(defaultStyle->getFontStyle());
             textStyle.setFontSize(getTextSize());
-            textStyle.setColor(skColor);
             if (!textGradientColors.empty()) {
                 SkPaint foregroundPaint;
                 SkPoint points[2]{

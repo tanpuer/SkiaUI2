@@ -26,3 +26,10 @@ ImageData *AssetManager::readImage(const char *path) {
     imageData->content = fileContent;
     return imageData;
 }
+
+bool AssetManager::exist(const char *path) {
+    AAsset *asset = AAssetManager_open(asset_manager, path, AASSET_MODE_BUFFER);
+    auto result = asset != nullptr;
+    AAsset_close(asset);
+    return result;
+}

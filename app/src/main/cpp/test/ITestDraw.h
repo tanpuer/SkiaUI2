@@ -31,6 +31,10 @@ public:
         this->context = context;
     }
 
+    virtual std::shared_ptr<SkiaUIContext> &getContext() {
+        return context;
+    }
+
     virtual void onShow() {
         auto page = context->getPageStackManager()->back();
         if (page != nullptr) {

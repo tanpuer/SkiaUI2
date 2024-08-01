@@ -18,6 +18,8 @@ public:
 
     ImageData *readImage(const char *path);
 
+    bool exist(const char *path);
+
 private:
 
     AAssetManager *asset_manager = nullptr;
