@@ -26,6 +26,10 @@ const char *TextView::name() {
     return "TextView";
 }
 
+void TextView::setText(const char *text) {
+    setText(SkString(text));
+}
+
 void TextView::setText(SkString text) {
     this->text = std::move(text);
     stringBuilders.clear();

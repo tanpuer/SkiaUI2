@@ -36,5 +36,7 @@ private:
 
     void testNested(int drawCount, ViewGroup *root, int width, int height);
 
+    void testLyric(int drawCount, ViewGroup *root, int width, int height);
+
 };
 

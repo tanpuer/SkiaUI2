@@ -8,7 +8,7 @@ void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, i
         ALOGD("doDrawTest %d %d", width, height)
         auto page = initPage(width, height);
         root = page;
-        testNested(drawCount, root, width, height);
+        testLyric(drawCount, root, width, height);
         context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
@@ -387,4 +387,26 @@ View *FlexboxLayoutTest::getRootView() {
     auto page = context->getPageStackManager()->back();
     SkASSERT(page != nullptr && page->children.size() == 1);
     return page->children[0];
+}
+
+void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int height) {
+    auto flexboxLayout = new FlexboxLayout();
+    flexboxLayout->setContext(this->context);
+    flexboxLayout->setFlexWrap(YGWrapWrap);
+    flexboxLayout->setFlexDirection(YGFlexDirectionColumn);
+    flexboxLayout->setStyle(SkPaint::kFill_Style);
+    flexboxLayout->setBackgroundColor(SK_ColorWHITE);
+    flexboxLayout->setAlignItems(YGAlignCenter);
+    flexboxLayout->setJustifyContent(YGJustifyCenter);
+    flexboxLayout->setWidth(width);
+    flexboxLayout->setHeight(height);
+    root->addView(flexboxLayout);
+
+    auto textView = new TextView();
+    textView->setContext(this->context);
+    textView->setText("乌云在我们心里搁下一块阴影");
+    textView->setTextSize(80);
+    textView->setTextColor(SK_ColorBLACK);
+    textView->setBackgroundColor("#ffffff");
+    flexboxLayout->addView(textView);
 }

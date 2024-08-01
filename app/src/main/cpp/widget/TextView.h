@@ -48,6 +48,8 @@ public:
 
 #pragma mark TextView api
 
+    virtual void setText(const char* text);
+
     virtual void setText(SkString text);
 
     virtual SkString getText();
