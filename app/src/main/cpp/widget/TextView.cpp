@@ -108,7 +108,7 @@ void TextView::measure() {
         auto width = 0.0f;
         auto height = 0.0f;
         //为了方便计算大小，最好强制制定TextView的宽度，否则默认用maxIntrinsicWidth
-        if (this->width > 0) {
+        if (originHeight > 0 && this->width > 0) {
             width = this->width;
             paragraph->layout(this->width);
         } else {

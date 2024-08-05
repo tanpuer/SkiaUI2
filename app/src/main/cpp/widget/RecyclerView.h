@@ -43,7 +43,7 @@ public:
             ViewGroup::setMeasuredDimension(width, height);
             return;
         }
-        adapter->setConfig(getConfig());
+        assert(width > 0 && height > 0);
         if (_direction == YGFlexDirectionColumn) {
             int childHeightSum = 0;
             for (auto &child: children) {
@@ -93,9 +93,8 @@ public:
             }
             auto addedHeight = 0;
             //todo
-            //虽然child add进去了，但是只经过measure过程，还没layout，所以没法得知新加进去child的top或者bottom
             while ((children.empty() && adapter->getSize() > 0) ||
-                   (height == 0 && childHeightSum < YGNodeLayoutGetHeight(node)) ||
+                   (height == 0 && childHeightSum < height) ||
                    (firstChild != nullptr && height > 0 && !lastScrollDown &&
                     adapter->startIndex > 0 &&
                     firstChild->skRect.top() - addedHeight > skRect.top() - 50) ||
@@ -110,7 +109,6 @@ public:
                 }
                 View *child = vh->getItemView();
                 child->setWidth(YGNodeLayoutGetWidth(node));
-                assert(child->node->getOwner() == nullptr);
                 if (lastScrollDown) {
                     addView(child);
                 } else {
@@ -123,26 +121,7 @@ public:
                 childHeightSum += child->getHeight();
                 addedHeight += child->getHeight();
             }
-        } else {
-            //todo 横向滑动暂时忽略
         }
-//        ViewGroup::setMeasuredDimension(layoutParams->_width, layoutParams->_height);
-        YGNodeCalculateLayout(node, YGNodeStyleGetWidth(node).value,
-                              YGNodeStyleGetHeight(node).value,
-                              YGDirectionLTR);
-    }
-
-    virtual void layout(int l, int t, int r, int b) override {
-        ScrollView::layout(l, t, r, b);
-    }
-
-    virtual void draw(SkCanvas *canvas) override {
-//        ALOGD("RecyclerView draw, child count: %d", children.size())
-        for (auto child: children) {
-            //不同于ScrollView，RecyclerView不需要判断不可见的child不绘制
-            child->draw(canvas);
-        }
-        View::draw(canvas);
     }
 
     virtual bool canScroll() override {
@@ -170,6 +149,6 @@ public:
 
 protected:
 
-    RecyclerViewAdapter<T> *adapter;
+    RecyclerViewAdapter<T> *adapter = nullptr;
 
 };

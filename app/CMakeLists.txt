@@ -25,6 +25,7 @@ include_directories(
         src/main/cpp/js
         src/main/cpp/inspect
         src/main/cpp/resources
+        src/main/cpp/custom
 )
 
 link_directories(
@@ -97,6 +98,7 @@ aux_source_directory(src/main/cpp/page srcs)
 aux_source_directory(src/main/cpp/js srcs)
 aux_source_directory(src/main/cpp/inspect srcs)
 aux_source_directory(src/main/cpp/resources srcs)
+aux_source_directory(src/main/cpp/custom srcs)
 
 add_library(skiaui SHARED ${srcs})
 

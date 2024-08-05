@@ -38,5 +38,7 @@ private:
 
     void testLyric(int drawCount, ViewGroup *root, int width, int height);
 
+    void testLyric2(int drawCount, ViewGroup *root, int width, int height);
+
 };
 

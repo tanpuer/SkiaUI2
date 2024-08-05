@@ -20,6 +20,7 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
     viewId = VIEW_ID++;
     paint = std::make_unique<SkPaint>();
     paint->setAntiAlias(true);
+    paint->setColor(SK_ColorWHITE);
     touchEventDispatcher = std::make_unique<TouchEventDispatcher>(this);
     animator = std::unique_ptr<IAnimator>(nullptr);
 }

@@ -3,13 +3,17 @@
 #include "Button.h"
 #include "ClockView.h"
 #include "ProgressBar.h"
+#include "LyricView.h"
+#include "sstream"
+#include "regex"
+#include "random"
 
 void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
         ALOGD("doDrawTest %d %d", width, height)
         auto page = initPage(width, height);
         root = page;
-        testLyric(drawCount, root, width, height);
+        testLyric2(drawCount, root, width, height);
         context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
@@ -453,4 +457,67 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
         textView->setBackgroundColor("#ffffff");
         flexboxLayout->addView(textView);
     }
+}
+
+void FlexboxLayoutTest::testLyric2(int drawCount, ViewGroup *root, int width, int height) {
+    auto lyricView = new LyricView();
+    lyricView->setContext(this->context);
+    lyricView->setBackgroundColor(SK_ColorWHITE);
+    lyricView->setHeight(height);
+    lyricView->setWidth(width);
+    lyricView->setSource("feng.lrc");
+    root->addView(lyricView);
+
+//    auto scrollView = new ScrollView();
+//    scrollView->setContext(this->context);
+//    scrollView->setFlexWrap(YGWrapNoWrap);
+//    scrollView->setFlexDirection(YGFlexDirectionColumn);
+//    scrollView->setJustifyContent(YGJustifyFlexStart);
+//    scrollView->setAlignItems(YGAlignCenter);
+//    scrollView->setAlignContent(YGAlignCenter);
+//    scrollView->setStyle(SkPaint::kFill_Style);
+//    scrollView->setBackgroundColor(SK_ColorWHITE);
+//    scrollView->setFlex(1);
+//    root->addView(scrollView);
+//
+//    const std::string content = getContext()->getAssetManager()->readFile("feng.lrc");
+//    std::vector<LyricLRC> result;
+//    std::stringstream ss(content);
+//    std::string token;
+//
+//    std::regex timestampRegex(R"(\[(\d{2}):(\d{2})\.(\d{2})\](.*))");
+//    std::smatch match;
+//    while (std::getline(ss, token, '\n')) {
+//        auto lyric = LyricLRC();
+//        if (std::regex_search(token, match, timestampRegex)) {
+//            int minutes = std::stoi(match[1].str());
+//            int seconds = std::stoi(match[2].str());
+//            int milliseconds = std::stoi(match[3].str());
+//            std::string content = match[4];
+//            if (content.empty()) {
+//                continue;
+//            }
+//            lyric.content = std::move(content);
+//            lyric.timeMills = (minutes * 60 + seconds) * 1000 + milliseconds * 10;
+//            result.push_back(lyric);
+//        } else {
+//            ALOGD("invalid time %s", token.c_str())
+//        }
+//    }
+//
+//    for (auto &lrc: result) {
+//        auto textView = new TextView();
+//        textView->setContext(this->context);
+//        textView->setTextSize(50);
+//        textView->setBackgroundColor(SK_ColorWHITE);
+//        textView->setTextColor(SK_ColorBLACK);
+//        textView->setText(lrc.content.c_str());
+//        scrollView->addView(textView);
+//        std::random_device rd;
+//        std::default_random_engine gen(rd());
+//        std::uniform_real_distribution<float> dis(0.0, 1.0);
+//        float random = dis(gen);
+//        textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
+//                                  {0.0, random, random, 1.0});
+//    }
 }

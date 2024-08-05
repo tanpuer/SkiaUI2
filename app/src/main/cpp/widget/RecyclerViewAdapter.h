@@ -10,7 +10,7 @@ class RecyclerViewAdapter {
 
 public:
 
-    RecyclerViewAdapter() {
+    RecyclerViewAdapter(View *recyclerView) {
 
     }
 
@@ -28,7 +28,7 @@ public:
     }
 
     virtual void setData(std::vector<T> data) {
-        this->data = data;
+        this->data = std::move(data);
     }
 
     virtual T getItem(int pos) {
@@ -164,19 +164,11 @@ public:
         this->itemClickListener = itemClickListener;
     }
 
-    virtual void setConfig(YGConfigRef config) {
-        if (this->config == nullptr) {
-            this->config = config;
-        }
-    }
-
 protected:
 
     std::vector<T> data;
 
     std::function<void(T, View *)> itemClickListener = nullptr;
-
-    YGConfigRef config;
 
 private:
 
