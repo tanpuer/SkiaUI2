@@ -101,11 +101,17 @@ public:
      */
     void setTextGradient(std::vector<SkColor> colors, std::vector<float> pos);
 
+    void setHeight(int height) override;
+
+protected:
+
+    static sk_sp<SkFontMgr> fontMgr;
+
+    SkString familyName;
+
 protected:
 
     SkString text;
-
-    sk_sp<SkFontMgr> fontMgr;
 
     std::unique_ptr<SkFont> font;
 
@@ -130,5 +136,7 @@ protected:
     std::vector<SkColor> textGradientColors;
 
     std::vector<float> textGradientPos;
+
+    int originHeight = 0;
 
 };

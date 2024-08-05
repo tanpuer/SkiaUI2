@@ -6,15 +6,18 @@
 #include "ports/SkFontMgr_android.h"
 #include "effects/SkGradientShader.h"
 
+sk_sp<SkFontMgr> TextView::fontMgr = nullptr;
+
 TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     textRect = SkRect::MakeEmpty();
     defaultStyle = std::make_unique<TextStyle>();
     fontCollection = sk_make_sp<FontCollection>();
-    fontMgr = SkFontMgr_New_Android(nullptr);
+    if (fontMgr == nullptr) {
+        fontMgr = SkFontMgr_New_Android(nullptr);
+        fontMgr->getFamilyName(0, &familyName);
+    }
     fontCollection->setDefaultFontManager(fontMgr);
     stringBuilders = std::vector<StringBuilder>();
-    SkString familyName;
-    fontMgr->getFamilyName(0, &familyName);
     font = std::make_unique<SkFont>(
             fontMgr->legacyMakeTypeface(familyName.c_str(), SkFontStyle::Normal()));
 }
@@ -114,7 +117,7 @@ void TextView::measure() {
             paragraph->layout(width);
         }
         auto spacing = font->getSpacing();
-        if (this->height > 0 && spacing > 0) {
+        if (originHeight > 0 && spacing > 0) {
             // Parent has told us how big to be. So be it.
             height = static_cast<float >(this->height);
             if (paragraph->getHeight() > this->height) {
@@ -189,4 +192,9 @@ void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> p
     textGradientColors = std::move(colors);
     textGradientPos = std::move(pos);
     isDirty = true;
+}
+
+void TextView::setHeight(int height) {
+    View::setHeight(height);
+    originHeight = height;
 }
