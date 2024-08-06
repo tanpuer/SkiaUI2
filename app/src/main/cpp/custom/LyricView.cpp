@@ -84,6 +84,10 @@ void LyricView::setSourceSRT(const char *source) {
             std::regex_iterator<std::string::iterator> rend2;
             while (rit2 != rend2) {
                 auto charContent = rit2->str(1);
+                if (charContent == "\r") {
+                    ++rit2;
+                    continue;
+                }
                 lyric.contentList.emplace_back(charContent);
                 lyric.content += charContent;
                 ++rit2;
@@ -136,13 +140,13 @@ void LyricView::drawLyricSRT() {
         if (i == index) {
             auto jIndex = 0;
             for (int j = 0; j < item.timeMills.size(); ++j) {
-                if (item.timeMills[j] > duration) {
+                if (item.timeMills[j] >= duration) {
                     jIndex = j;
                     break;
                 }
             }
             auto totalLength = item.content.length();
-            auto gradientLength = 0;
+            auto gradientLength = 0.0f;
             for (int z = 0; z < jIndex - 1; ++z) {
                 gradientLength += item.contentList[z].length();
             }
