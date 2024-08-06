@@ -19,6 +19,7 @@ steps：
    ShaderView: render simple fragment-shader.  
    Lottie: render lottie.json.  
    VideoView: render local video by MediaCodec/HardwareBuffer/SkImage.  
+   LyricView: parse .lrc/.srt files, use RecyclerView to render lyric.  
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
