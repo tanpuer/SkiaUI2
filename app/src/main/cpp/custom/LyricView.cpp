@@ -142,13 +142,14 @@ void LyricView::drawLyricSRT() {
                 }
             }
             auto totalLength = item.content.length();
-            auto percent = 0.0f;
-            for (int z = 0; z < jIndex; ++z) {
-                percent += item.contentList[z].length() * 1.0f / totalLength;
+            auto gradientLength = 0;
+            for (int z = 0; z < jIndex - 1; ++z) {
+                gradientLength += item.contentList[z].length();
             }
-            percent += (duration - item.timeMills[jIndex - 1]) * 1.0f /
-                       (item.timeMills[jIndex] - item.timeMills[jIndex - 1]) *
-                       item.contentList[jIndex - 1].length() * 1.0f / totalLength;
+            gradientLength += (duration - item.timeMills[jIndex - 1]) * 1.0f /
+                              (item.timeMills[jIndex] - item.timeMills[jIndex - 1]) *
+                              item.contentList[jIndex - 1].length();
+            auto percent = gradientLength * 1.0f / totalLength;
             textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
                                       {0.0, percent, percent, 1.0});
         } else {
