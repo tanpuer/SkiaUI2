@@ -82,7 +82,8 @@ public:
 #pragma mark notify
 
     virtual void notifyDataSetChanged() {
-
+        for(auto &item: currVHList) {
+        }
     }
 
     virtual void notifyItemChanged(int index) {

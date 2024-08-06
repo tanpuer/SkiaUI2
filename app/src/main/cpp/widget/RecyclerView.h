@@ -121,6 +121,9 @@ public:
                 childHeightSum += child->getHeight();
                 addedHeight += child->getHeight();
             }
+            for (auto &child: children) {
+                child->measure();
+            }
         }
     }
 

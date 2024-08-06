@@ -75,9 +75,9 @@ void TextView::measure() {
         if (!stringBuilders.empty()) {
             for (const auto &iterator: stringBuilders) {
                 TextStyle textStyle;
-                textStyle.setColor(iterator.color);
                 textStyle.setFontStyle(iterator.fontStyle);
                 textStyle.setFontSize(iterator.textSize);
+                textStyle.setForegroundPaint(iterator.foregroundPaint);
                 paragraphBuilder->pushStyle(textStyle);
                 paragraphBuilder->addText(iterator.text.c_str());
             }

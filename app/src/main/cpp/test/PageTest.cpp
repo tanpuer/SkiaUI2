@@ -298,26 +298,38 @@ void PageTest::initChildren(int drawCount, ViewGroup *root, int width, int heigh
         textView->setTextSize(60);
         textView->setBackgroundColor(SK_ColorRED);
         textView->setStyle(SkPaint::kStroke_Style);
-        textView->pushText(TextView::StringBuilder(SkString("这是"), SK_ColorCYAN,
+        auto paint1 = SkPaint();
+        paint1.setAntiAlias(true);
+        paint1.setColor(SK_ColorCYAN);
+        textView->pushText(TextView::StringBuilder(SkString("这是"),
                                                    SkFontStyle(SkFontStyle::kThin_Weight,
                                                                SkFontStyle::kNormal_Width,
                                                                SkFontStyle::kUpright_Slant),
-                                                   40));
-        textView->pushText(TextView::StringBuilder(SkString("StringBuilder"), SK_ColorGREEN,
+                                                   40, paint1));
+        auto paint2 = SkPaint();
+        paint2.setAntiAlias(true);
+        paint2.setColor(SK_ColorGREEN);
+        textView->pushText(TextView::StringBuilder(SkString("StringBuilder"),
                                                    SkFontStyle(SkFontStyle::kThin_Weight,
                                                                SkFontStyle::kNormal_Width,
                                                                SkFontStyle::kUpright_Slant),
-                                                   100));
-        textView->pushText(TextView::StringBuilder(SkString("测试"), SK_ColorYELLOW,
+                                                   100, paint2));
+        auto paint3 = SkPaint();
+        paint3.setAntiAlias(true);
+        paint3.setColor(SK_ColorYELLOW);
+        textView->pushText(TextView::StringBuilder(SkString("测试"),
                                                    SkFontStyle(SkFontStyle::kThin_Weight,
                                                                SkFontStyle::kNormal_Width,
                                                                SkFontStyle::kUpright_Slant),
-                                                   40));
-        textView->pushText(TextView::StringBuilder(SkString("demo"), SK_ColorRED,
+                                                   40, paint3));
+        auto paint4 = SkPaint();
+        paint4.setAntiAlias(true);
+        paint4.setColor(SK_ColorRED);
+        textView->pushText(TextView::StringBuilder(SkString("demo"),
                                                    SkFontStyle(SkFontStyle::kThin_Weight,
                                                                SkFontStyle::kNormal_Width,
                                                                SkFontStyle::kUpright_Slant),
-                                                   100));
+                                                   100, paint4));
         textView->setMargin({50, 50, 50, 50});
         scrollView->addView(textView);
     }

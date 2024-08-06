@@ -16,16 +16,16 @@ public:
 
     struct StringBuilder {
         SkString text;
-        SkColor color;
         SkFontStyle fontStyle;
         SkScalar textSize;
+        SkPaint foregroundPaint;
 
-        StringBuilder(SkString text, SkColor color, SkFontStyle fontStyle,
-                      SkScalar textSize) noexcept {
+        StringBuilder(SkString text, SkFontStyle fontStyle,
+                      SkScalar textSize, SkPaint foregroundPaint) noexcept {
             this->text = std::move(text);
-            this->color = color;
             this->fontStyle = std::move(fontStyle);
             this->textSize = textSize;
+            this->foregroundPaint = std::move(foregroundPaint);
         }
 
         ~StringBuilder() {
