@@ -423,3 +423,7 @@ void View::onShow() {
 void View::onHide() {
 
 }
+
+void View::markDirty() {
+    isDirty = true;
+}

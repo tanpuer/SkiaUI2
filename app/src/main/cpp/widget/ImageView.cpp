@@ -50,6 +50,7 @@ void ImageView::measure() {
         return;
     }
     if (isDirty) {
+        isDirty = false;
         if (this->width > 0 && this->height > 0) {
             return;
         }

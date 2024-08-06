@@ -79,6 +79,8 @@ public:
 
     virtual void setHeight(int height);
 
+    virtual void markDirty();
+
     YGNodeRef node;
 
     YGConfigRef config = nullptr;
