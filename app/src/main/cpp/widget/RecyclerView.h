@@ -22,7 +22,7 @@ public:
     }
 
     bool addView(View *view) override {
-        ALOGD("RecyclerView addView at %d %ld", YGNodeGetChildCount(node), children.size())
+        ALOGD("RecyclerView addView %ld", children.size())
         return ScrollView::addView(view);
     }
 
@@ -108,7 +108,7 @@ public:
                     vh = adapter->handleStartVH();
                 }
                 View *child = vh->getItemView();
-                child->setWidth(YGNodeLayoutGetWidth(node));
+                child->setWidth(getWidth());
                 if (lastScrollDown) {
                     addView(child);
                 } else {
@@ -126,11 +126,7 @@ public:
 
     virtual bool canScroll() override {
         //todo 先写死无限滑动
-        if (_direction == YGFlexDirectionColumn) {
-            return true;
-        } else {
-            return true;
-        }
+        return true;
     }
 
     void updateTranslateY(float diffY) override {

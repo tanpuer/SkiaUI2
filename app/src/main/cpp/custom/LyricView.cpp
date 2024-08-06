@@ -46,6 +46,7 @@ RecyclerViewHolder<LyricLRC> *LyricAdapter::onCreateViewHolder(int viewType) {
     flexLayout->setContext(this->context);
     flexLayout->setAlignItems(YGAlignCenter);
     flexLayout->setJustifyContent(YGJustifyCenter);
+    flexLayout->setBackgroundColor(SK_ColorTRANSPARENT);
     flexLayout->setWidth(getRecyclerView()->getWidth());
     auto textView = new TextView();
     textView->setContext(this->context);

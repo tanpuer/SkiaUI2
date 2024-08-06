@@ -462,7 +462,7 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
 void FlexboxLayoutTest::testLyric2(int drawCount, ViewGroup *root, int width, int height) {
     auto lyricView = new LyricView();
     lyricView->setContext(this->context);
-    lyricView->setBackgroundColor(SK_ColorWHITE);
+    lyricView->setBackgroundColor("#00000033");
     lyricView->setHeight(height);
     lyricView->setWidth(width);
     lyricView->setSource("feng.lrc");
