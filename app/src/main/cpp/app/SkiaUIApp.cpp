@@ -3,7 +3,6 @@
 #include "core/SkPicture.h"
 #include "ViewGroup.h"
 #include "ScrollView.h"
-#include "BaseListView.h"
 #include "core/SkGraphics.h"
 #include "SkiaUIContext.h"
 #include "PageTest.h"
@@ -55,10 +54,6 @@ void SkiaUIApp::setVelocity(Velocity *velocity) {
     if (scrollView != nullptr) {
         scrollView->setVelocity(velocity->xVelocity, velocity->yVelocity);
         return;
-    }
-    auto listView = dynamic_cast<BaseListView<void *> *>(root);
-    if (listView != nullptr) {
-        listView->setVelocity(velocity->xVelocity, velocity->yVelocity);
     }
 }
 
