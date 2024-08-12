@@ -21,6 +21,8 @@ void AudioFFTView::setSource(const char *path) {
     audioPlayer = jniEnv->NewGlobalRef(
             jniEnv->NewObject(javaAudioPlayerClass, javaAudioPlayerConstructor,
                               jniEnv->NewStringUTF(path), javaSkiaEngine));
+    startMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "start", "()V");
+    pauseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "pause", "()V");
 }
 
 void AudioFFTView::draw(SkCanvas *canvas) {
@@ -44,4 +46,20 @@ void AudioFFTView::draw(SkCanvas *canvas) {
         }
         jni->ReleaseFloatArrayElements(fft, floatArray, 0);
     }
+}
+
+void AudioFFTView::onShow() {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, startMethodID);
+}
+
+void AudioFFTView::onHide() {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, pauseMethodID);
 }

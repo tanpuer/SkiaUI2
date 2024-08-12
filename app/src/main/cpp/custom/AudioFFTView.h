@@ -15,6 +15,10 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
+    void onShow() override;
+
+    void onHide() override;
+
 private:
 
     jclass javaAudioPlayerClass = nullptr;
@@ -22,6 +26,10 @@ private:
     jmethodID javaAudioPlayerConstructor = nullptr;
 
     jmethodID getFFTDataMethodID = nullptr;
+
+    jmethodID startMethodID = nullptr;
+
+    jmethodID pauseMethodID = nullptr;
 
     jobject audioPlayer = nullptr;
 

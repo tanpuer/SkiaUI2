@@ -79,6 +79,14 @@ class HYSkiaAudioPlayer
         visualizer?.release()
     }
 
+    fun start() {
+        exoPlayer.playWhenReady = true
+    }
+
+    fun pause() {
+        exoPlayer.playWhenReady = false
+    }
+
     private fun createVisualizer(audioSessionId: Int) {
         if (sessionId == audioSessionId) {
             return
