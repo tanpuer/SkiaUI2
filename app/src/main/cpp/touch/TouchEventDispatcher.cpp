@@ -2,6 +2,7 @@
 #include <yoga/Yoga.h>
 #include "ViewGroup.h"
 #include "MovingView.h"
+#include "ScrollView.h"
 
 TouchEventDispatcher::TouchEventDispatcher(View *view) {
     this->view = view;
@@ -124,7 +125,7 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
               touchEvent->y)
         if (touchEvent->x >= left && touchEvent->x <= left + width &&
             touchEvent->y >= top && touchEvent->y <= top + height) {
-            if (child->isViewGroup()) {
+            if (child->isViewGroup() && reinterpret_cast<ScrollView *>(child) == nullptr) {
                 ALOGD("findTargetViewTraversal in ViewGroup %s %lld", child->name(), child->viewId)
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent, left,
                                                top);
@@ -151,4 +152,13 @@ bool TouchEventDispatcher::checkTouchInTargetView(TouchEvent *touchEvent) {
     auto height = YGNodeLayoutGetHeight(weakTargetView->node);
     return touchEvent->x >= targetViewLeft && touchEvent->x <= targetViewLeft + width
            && touchEvent->y >= targetViewTop && touchEvent->y <= targetViewTop + height;
+}
+
+bool TouchEventDispatcher::dispatchVelocity(Velocity *velocity) {
+    auto scrollView = dynamic_cast<ScrollView *>(weakTargetView);
+    if (scrollView != nullptr) {
+        scrollView->setVelocity(velocity->xVelocity, velocity->yVelocity);
+        return true;
+    }
+    return false;
 }

@@ -2,6 +2,7 @@
 
 #include "View.h"
 #include "vector"
+#include "Velocity.h"
 
 class ViewGroup : public View {
 
@@ -111,5 +112,7 @@ public:
     virtual bool onTouchEvent(TouchEvent *touchEvent) override;
 
     void requestDisallowInterceptTouchEvent(bool disallowIntercept) override;
+
+    virtual bool dispatchVelocity(Velocity *velocity);
 
 };

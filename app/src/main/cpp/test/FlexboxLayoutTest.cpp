@@ -7,13 +7,14 @@
 #include "sstream"
 #include "regex"
 #include "random"
+#include "AudioFFTView.h"
 
 void FlexboxLayoutTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
         ALOGD("doDrawTest %d %d", width, height)
         auto page = initPage(width, height);
         root = page;
-        testLyric2(drawCount, root, width, height);
+        testLyric(drawCount, root, width, height);
         context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
@@ -407,65 +408,20 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     flexboxLayout->setHeight(height);
     root->addView(flexboxLayout);
 
-    {
-        auto textView = new TextView();
-        textView->setContext(this->context);
-        textView->setText("乌云在我们心里搁下一块阴影");
-        textView->setTextSize(80);
-        textView->setTextColor(SK_ColorBLACK);
-        textView->setBackgroundColor("#ffffff");
-        textView->setStrokeWidth(1);
-        textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
-                                  {0.0, 0.5, 0.5, 1.0});
-        flexboxLayout->addView(textView);
-
-        auto progressBar = new ProgressBar();
-        progressBar->setContext(this->context);
-        progressBar->setBarColor(SK_ColorRED);
-        progressBar->setBackgroundColor(SK_ColorGRAY);
-        progressBar->setStrokeWidth(10.0);
-        progressBar->setAutoMode(false);
-        progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
-        progressBar->setProgress(50);
-        progressBar->setStyle(SkPaint::kStroke_Style);
-        progressBar->setWidth(width);
-        progressBar->setHeight(60);
-        progressBar->setMargin({50, 50, 50, 50});
-        flexboxLayout->addView(progressBar);
-        progressBar->setProgressCallback([textView](int progress) {
-            ALOGD("ProgressBar progress: %d", progress)
-            auto value = static_cast<float>(progress) / 100;
-            textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
-                                      {0.0, value, value, 1.0});
-        });
-    }
-    {
-        auto textView = new TextView();
-        textView->setContext(this->context);
-        textView->setText("缓缓飘落的枫叶像思念");
-        textView->setTextSize(80);
-        textView->setTextColor(SK_ColorBLACK);
-        textView->setBackgroundColor("#ffffff");
-        flexboxLayout->addView(textView);
-    }
-    {
-        auto textView = new TextView();
-        textView->setContext(this->context);
-        textView->setText("为何挽回要改在冬天之前");
-        textView->setTextSize(80);
-        textView->setTextColor(SK_ColorBLACK);
-        textView->setBackgroundColor("#ffffff");
-        flexboxLayout->addView(textView);
-    }
-}
-
-void FlexboxLayoutTest::testLyric2(int drawCount, ViewGroup *root, int width, int height) {
     auto lyricView = new LyricView();
     lyricView->setContext(this->context);
     lyricView->setBackgroundColor("#00000033");
-    lyricView->setHeight(height);
     lyricView->setWidth(width);
+    lyricView->setHeight(height - 400);
 //    lyricView->setSourceLRC("feng.lrc");
     lyricView->setSourceSRT("feng.srt");
-    root->addView(lyricView);
+    flexboxLayout->addView(lyricView);
+
+    auto fftView = new AudioFFTView();
+    fftView->setContext(this->context);
+    fftView->setWidth(width);
+    fftView->setFlex(1);
+    fftView->setBackgroundColor("#ffffff");
+    fftView->setSource("feng.mp4");
+    flexboxLayout->addView(fftView);
 }

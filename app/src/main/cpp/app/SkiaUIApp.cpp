@@ -50,10 +50,9 @@ void SkiaUIApp::dispatchTouchEvent(TouchEvent *touchEvent) {
 
 void SkiaUIApp::setVelocity(Velocity *velocity) {
     auto root = testDraw->getRootView();
-    auto scrollView = dynamic_cast<ScrollView *>(root);
-    if (scrollView != nullptr) {
-        scrollView->setVelocity(velocity->xVelocity, velocity->yVelocity);
-        return;
+    auto viewGroup = dynamic_cast<ViewGroup *>(root);
+    if (viewGroup != nullptr) {
+        viewGroup->dispatchVelocity(velocity);
     }
 }
 

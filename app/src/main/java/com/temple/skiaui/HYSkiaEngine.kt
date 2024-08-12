@@ -136,9 +136,6 @@ class HYSkiaEngine {
         val x = event.x
         val y = event.y
         val action = event.action
-        skiaUIHandler.post {
-            nativeTouchEvent(uiApp, action, x, y)
-        }
         velocityTracker?.addMovement(event)
         if (action == MotionEvent.ACTION_UP) {
             velocityTracker?.computeCurrentVelocity(1000)
@@ -149,6 +146,9 @@ class HYSkiaEngine {
                     velocityTracker?.yVelocity ?: 0f
                 )
             }
+        }
+        skiaUIHandler.post {
+            nativeTouchEvent(uiApp, action, x, y)
         }
         return true
     }
@@ -199,6 +199,10 @@ class HYSkiaEngine {
         skiaUIHandler.post {
             nativePostTask(uiApp, taskId)
         }
+    }
+
+    fun postToSkiaUI(runnable: Runnable) {
+        skiaUIHandler.post(runnable)
     }
 
     private external fun nativeGLInit(): Long

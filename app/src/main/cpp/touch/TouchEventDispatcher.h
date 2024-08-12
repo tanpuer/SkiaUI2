@@ -2,6 +2,7 @@
 
 #include "TouchEvent.h"
 #include "memory"
+#include "Velocity.h"
 
 class View;
 
@@ -36,6 +37,8 @@ public:
                             float tempTop);
 
     bool checkTouchInTargetView(TouchEvent *touchEvent);
+
+    virtual bool dispatchVelocity(Velocity *velocity);
 
 protected:
 

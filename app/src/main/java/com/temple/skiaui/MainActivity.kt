@@ -20,6 +20,7 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         surfaceView = findViewById(R.id.surfaceView)
         surfaceView.setRenderCallback(this)
         fpsView = findViewById(R.id.tvFps)
+        requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO), 101)
     }
 
     override fun onBackPressed() {

@@ -214,6 +214,10 @@ void ViewGroup::requestDisallowInterceptTouchEvent(bool disallowIntercept) {
     touchEventDispatcher->requestDisallowInterceptTouchEvent(disallowIntercept);
 }
 
+bool ViewGroup::dispatchVelocity(Velocity *velocity) {
+    return touchEventDispatcher->dispatchVelocity(velocity);
+}
+
 bool ViewGroup::hasPercent() {
     if (View::hasPercent()) {
         return true;
