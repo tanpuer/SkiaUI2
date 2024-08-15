@@ -7,8 +7,8 @@ import kotlin.math.abs
 import kotlin.math.hypot
 
 abstract class IAudioPlayer(
-    private val assetsPath: String,
-    private val engine: HYSkiaEngine
+    protected val assetsPath: String,
+    protected val engine: HYSkiaEngine
 ) {
 
     protected val count = 60
