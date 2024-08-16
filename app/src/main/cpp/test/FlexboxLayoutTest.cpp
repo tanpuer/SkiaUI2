@@ -446,7 +446,7 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
         imageView->setAlignSelf(YGAlignCenter);
         imageView->setStyle(SkPaint::kStroke_Style);
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
-        imageView->setMargin({0, 100, 0, 0});
+        imageView->setMargin({0, 300, 0, 0});
         flexboxLayout->addView(imageView);
     }
 
@@ -462,7 +462,22 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
         imageView->setAlignSelf(YGAlignCenter);
         imageView->setStyle(SkPaint::kStroke_Style);
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
-        imageView->setMargin({0, 400, 0, 0});
+        imageView->setMargin({0, 620, 0, 0});
+        flexboxLayout->addView(imageView);
+    }
+
+    {
+        auto imageView = new ImageView();
+        imageView->setContext(this->context);
+        imageView->setWidth(130 * 1.5);
+        imageView->setHeight(600 * 1.5);
+        imageView->setSource("music/record_player_dark_arm.png");
+        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+        imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        imageView->setAlignSelf(YGAlignFlexStart);
+        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+        imageView->setMargin({700, 350, 0, 0});
         flexboxLayout->addView(imageView);
     }
 

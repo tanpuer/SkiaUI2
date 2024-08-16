@@ -253,4 +253,5 @@ void LyricViewHolder::updateView(Lyric item) {
     textView->setTextGradient({}, {});
     textView->setMaxLines(1);
     textView->setText(item.content.c_str());
+    textView->setTextSize(60);
 }
