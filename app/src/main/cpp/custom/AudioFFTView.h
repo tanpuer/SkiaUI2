@@ -35,6 +35,8 @@ private:
 
     jmethodID currentPositionMethodID = nullptr;
 
+    jmethodID releaseMethodId = nullptr;
+
     jobject audioPlayer = nullptr;
 
     std::unique_ptr<SkPaint> fftPaint;

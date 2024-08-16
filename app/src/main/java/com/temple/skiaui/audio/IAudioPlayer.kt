@@ -28,6 +28,9 @@ abstract class IAudioPlayer(
     @Volatile
     protected var released = false
 
+    @Volatile
+    protected var paused = false
+
     fun getFFTData(): FloatArray {
         return fftData
     }

@@ -8,7 +8,11 @@ AudioFFTView::AudioFFTView() {
 }
 
 AudioFFTView::~AudioFFTView() {
-    context->getJniEnv()->DeleteGlobalRef(audioPlayer);
+    if (audioPlayer != nullptr) {
+        auto jniEnv = context->getJniEnv();
+        jniEnv->CallVoidMethod(audioPlayer, releaseMethodId);
+        context->getJniEnv()->DeleteGlobalRef(audioPlayer);
+    }
 }
 
 void AudioFFTView::setSource(const char *path) {
@@ -25,6 +29,7 @@ void AudioFFTView::setSource(const char *path) {
     startMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "start", "()V");
     pauseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "pause", "()V");
     currentPositionMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getCurrentPosition", "()J");
+    releaseMethodId = jniEnv->GetMethodID(javaAudioPlayerClass, "release", "()V");
 }
 
 void AudioFFTView::draw(SkCanvas *canvas) {

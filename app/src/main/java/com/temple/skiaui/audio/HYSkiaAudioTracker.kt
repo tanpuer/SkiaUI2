@@ -37,9 +37,7 @@ class HYSkiaAudioTracker(
         decodeHandler.post {
             initializeReader()
             initAudioTracker()
-            while (!released) {
-                startDecode()
-            }
+            runDecode()
         }
     }
 
@@ -56,10 +54,15 @@ class HYSkiaAudioTracker(
     }
 
     override fun start() {
+        paused = false
         audioTracker?.play()
+        decodeHandler.post {
+            runDecode()
+        }
     }
 
     override fun pause() {
+        paused = true
         audioTracker?.pause()
     }
 
@@ -127,6 +130,12 @@ class HYSkiaAudioTracker(
             Handler(Looper.getMainLooper()).post {
                 createVisualizer(it)
             }
+        }
+    }
+
+    private fun runDecode() {
+        while (!released && !paused) {
+            startDecode()
         }
     }
 
