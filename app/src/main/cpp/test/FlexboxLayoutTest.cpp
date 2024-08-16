@@ -403,7 +403,7 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
     flexboxLayout->setAlignItems(YGAlignCenter);
-    flexboxLayout->setJustifyContent(YGJustifyCenter);
+//    flexboxLayout->setJustifyContent(YGJustifyCenter);
     flexboxLayout->setWidth(width);
     flexboxLayout->setHeight(height);
     root->addView(flexboxLayout);
@@ -417,6 +417,52 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->blur(10.0f);
+        flexboxLayout->addView(imageView);
+    }
+
+    {
+        auto imageView = new ImageView();
+        imageView->setContext(this->context);
+        imageView->setWidth(170 * 2);
+        imageView->setHeight(46 * 2);
+        imageView->setSource("music/logo.png");
+        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+        imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        imageView->setAlignSelf(YGAlignFlexStart);
+        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+        imageView->setStrokeWidth(1);
+        flexboxLayout->addView(imageView);
+    }
+
+    {
+        auto imageView = new ImageView();
+        imageView->setContext(this->context);
+        imageView->setWidth(480 * 2);
+        imageView->setHeight(480 * 2);
+        imageView->setSource("music/record_player_verydark_highlight.png");
+        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+        imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        imageView->setAlignSelf(YGAlignCenter);
+        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+        imageView->setMargin({0, 100, 0, 0});
+        flexboxLayout->addView(imageView);
+    }
+
+    {
+        auto imageView = new ImageView();
+        imageView->setContext(this->context);
+        imageView->setWidth(160 * 2);
+        imageView->setHeight(160 * 2);
+        imageView->setCornerRadius(160);
+        imageView->setSource("music/bg.png");
+        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+        imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        imageView->setAlignSelf(YGAlignCenter);
+        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+        imageView->setMargin({0, 400, 0, 0});
         flexboxLayout->addView(imageView);
     }
 
