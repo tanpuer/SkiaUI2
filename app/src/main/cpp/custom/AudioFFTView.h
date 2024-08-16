@@ -19,6 +19,8 @@ public:
 
     void onHide() override;
 
+    long getCurrPosition();
+
 private:
 
     jclass javaAudioPlayerClass = nullptr;
@@ -30,6 +32,8 @@ private:
     jmethodID startMethodID = nullptr;
 
     jmethodID pauseMethodID = nullptr;
+
+    jmethodID currentPositionMethodID = nullptr;
 
     jobject audioPlayer = nullptr;
 

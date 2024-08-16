@@ -76,11 +76,13 @@ void LyricView::setSourceSRT(const char *source) {
                 int hours, minutes, seconds, milliseconds;
                 ssTime >> hours >> delimiter >> minutes >> delimiter >> seconds >> delimiter
                        >> milliseconds;
-                long totalMilliseconds = hours * 3600000 + minutes * 60000 + seconds * 1000 + milliseconds;
+                long totalMilliseconds =
+                        hours * 3600000 + minutes * 60000 + seconds * 1000 + milliseconds;
                 lyric.timeMills.emplace_back(totalMilliseconds);
                 ++rit;
             }
-            std::regex_iterator<std::string::iterator> rit2(token.begin(), token.end(), patternChar);
+            std::regex_iterator<std::string::iterator> rit2(token.begin(), token.end(),
+                                                            patternChar);
             std::regex_iterator<std::string::iterator> rend2;
             while (rit2 != rend2) {
                 auto charContent = rit2->str(1);
@@ -115,6 +117,11 @@ void LyricView::draw(SkCanvas *canvas) {
 void LyricView::drawLyricSRT() {
     auto currentTimeMills = getContext()->getCurrentTimeMills();
     auto duration = currentTimeMills - startTimeMills;
+    if (currentPositionFunc != nullptr) {
+        auto positionFromPlayer = currentPositionFunc();
+        ALOGD("drawLyricSRT currentPos: %ld %ld", duration, positionFromPlayer)
+        duration = positionFromPlayer;
+    }
     auto start = 0L;
     auto end = 0L;
     auto index = -1;
@@ -201,6 +208,10 @@ void LyricView::drawLyricLRC() {
             textView->setTextGradient({}, {});
         }
     }
+}
+
+void LyricView::setCurrPositionFunc(std::function<long()> &&func) {
+    this->currentPositionFunc = std::move(func);
 }
 
 RecyclerViewHolder<Lyric> *LyricAdapter::onCreateViewHolder(int viewType) {

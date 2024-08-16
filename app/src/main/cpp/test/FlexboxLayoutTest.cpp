@@ -424,4 +424,7 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     fftView->setBackgroundColor("#ffffff");
     fftView->setSource("feng.mp4");
     flexboxLayout->addView(fftView);
+    lyricView->setCurrPositionFunc([fftView]()->long {
+        return fftView->getCurrPosition();
+    });
 }

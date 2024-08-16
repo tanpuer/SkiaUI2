@@ -1,5 +1,6 @@
 package com.temple.skiaui.audio
 
+import android.media.AudioAttributes
 import android.media.AudioFormat
 import android.media.AudioTrack
 import android.media.MediaCodec
@@ -7,6 +8,7 @@ import android.media.MediaExtractor
 import android.media.MediaFormat
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
 import java.io.IOException
@@ -26,25 +28,46 @@ class HYSkiaAudioTracker(
     private val decodeHandler = Handler(decodeThread.looper)
 
     private var duration = 0L
-    private var sampleRate = 0
+    private var sampleRate = 44100
     private var channelCount = 1
-    private var encoding = 0
+    private var encoding = -1
     private var audioTracker: AudioTrack? = null
 
     init {
         decodeHandler.post {
             initializeReader()
+            initAudioTracker()
+            while (!released) {
+                startDecode()
+            }
         }
     }
 
     override fun release() {
-
+        super.release()
+        audioTracker?.stop()
+        audioTracker?.release()
+        audioTracker = null
+        decodeHandler.post {
+            decoder.stop()
+            decoder.release()
+            extractor.release()
+        }
     }
 
     override fun start() {
+        audioTracker?.play()
     }
 
     override fun pause() {
+        audioTracker?.pause()
+    }
+
+    /**
+     * 相对准确，Exoplayer的getCurrentPosition不准而且不实时
+     */
+    override fun getCurrentPosition(): Long {
+        return ((audioTracker?.playbackHeadPosition ?: 0) * 1000L) / sampleRate
     }
 
     private fun initializeReader() {
@@ -80,22 +103,66 @@ class HYSkiaAudioTracker(
     }
 
     private fun initAudioTracker() {
-        val bufferSize = AudioTrack.getMinBufferSize(
-            sampleRate,
-            if (channelCount == 2) AudioFormat.CHANNEL_OUT_STEREO else AudioFormat.CHANNEL_OUT_MONO,
-            1
-        )
+        val channelConfig = if (channelCount == 2) AudioFormat.CHANNEL_OUT_STEREO else AudioFormat.CHANNEL_OUT_MONO
+        val encoding = AudioFormat.ENCODING_PCM_16BIT
+        val bufferSize = AudioTrack.getMinBufferSize(sampleRate, channelConfig, encoding)
         val audioFormat = AudioFormat.Builder()
             .setEncoding(encoding)
             .setSampleRate(sampleRate)
+            .setChannelMask(channelConfig)
+            .build()
+        val attributes = AudioAttributes.Builder()
+            .setUsage(AudioAttributes.USAGE_MEDIA)
+            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
             .build()
         audioTracker = AudioTrack.Builder()
+            .setAudioAttributes(attributes)
             .setAudioFormat(audioFormat)
+            .setTransferMode(AudioTrack.MODE_STREAM)
             .setBufferSizeInBytes(bufferSize)
             .setTransferMode(AudioTrack.MODE_STREAM)
             .build()
-//        audioTracker?.write()
         audioTracker?.play()
+        audioTracker?.audioSessionId?.let {
+            Handler(Looper.getMainLooper()).post {
+                createVisualizer(it)
+            }
+        }
+    }
+
+    private fun startDecode() {
+        val info = MediaCodec.BufferInfo()
+        val timeoutUs: Long = 10000
+        var isEOS = false
+
+        val inputBufferId = decoder.dequeueInputBuffer(timeoutUs)
+        if (inputBufferId >= 0) {
+            val inputBuffer = decoder.getInputBuffer(inputBufferId) ?: return
+            val sampleSize = extractor.readSampleData(inputBuffer, 0)
+            if (sampleSize < 0) {
+                decoder.queueInputBuffer(
+                    inputBufferId, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM
+                )
+                isEOS = true
+                seek(0)
+            } else {
+                val presentationTimeUs = extractor.sampleTime
+                decoder.queueInputBuffer(inputBufferId, 0, sampleSize, presentationTimeUs, 0)
+                extractor.advance()
+            }
+        }
+
+        val outputBufferId = decoder.dequeueOutputBuffer(info, timeoutUs)
+        if (outputBufferId >= 0) {
+            decoder.getOutputBuffer(outputBufferId)?.let {
+                it.position(0)
+                audioTracker?.write(it, it.remaining(), AudioTrack.WRITE_BLOCKING)
+            }
+            decoder.releaseOutputBuffer(outputBufferId, false)
+            if ((info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
+                isEOS = true
+            }
+        }
     }
 
     private fun selectAudioTrack(extractor: MediaExtractor): Int {
@@ -108,6 +175,11 @@ class HYSkiaAudioTracker(
             }
         }
         return -1
+    }
+
+    private fun seek(timestamp: Long) {
+        extractor.seekTo(timestamp * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
+        decoder.flush()
     }
 
     companion object {

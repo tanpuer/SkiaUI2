@@ -72,10 +72,14 @@ public:
 
     void drawLyricSRT();
 
+    void setCurrPositionFunc(std::function<long()>&& func);
+
 private:
 
     long startTimeMills = 0L;
 
     LyricType type = LyricType::Lrc;
+
+    std::function<long()> currentPositionFunc = nullptr;
 
 };

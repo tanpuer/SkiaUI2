@@ -58,10 +58,9 @@ class HYSkiaAudioPlayer
     }
 
     override fun release() {
+        super.release()
         exoPlayer.stop();
         exoPlayer.release();
-        visualizer?.setEnabled(false)
-        visualizer?.release()
     }
 
     override fun start() {
@@ -70,6 +69,10 @@ class HYSkiaAudioPlayer
 
     override fun pause() {
         exoPlayer.playWhenReady = false
+    }
+
+    override fun getCurrentPosition(): Long {
+        return exoPlayer.currentPosition
     }
 
 }

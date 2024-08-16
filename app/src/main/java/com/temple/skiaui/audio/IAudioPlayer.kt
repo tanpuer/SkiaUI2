@@ -6,6 +6,9 @@ import com.temple.skiaui.HYSkiaEngine
 import kotlin.math.abs
 import kotlin.math.hypot
 
+/**
+ * for exoplayer, for AudioTracker, for OpenSLES, for AAudio
+ */
 abstract class IAudioPlayer(
     protected val assetsPath: String,
     protected val engine: HYSkiaEngine
@@ -22,15 +25,24 @@ abstract class IAudioPlayer(
 
     protected var visualizer: Visualizer? = null
 
+    @Volatile
+    protected var released = false
+
     fun getFFTData(): FloatArray {
         return fftData
     }
 
-    abstract fun release()
+    open fun release() {
+        released = true
+        visualizer?.setEnabled(false)
+        visualizer?.release()
+    }
 
     abstract fun start()
 
     abstract fun pause()
+
+    abstract fun getCurrentPosition(): Long
 
     protected fun createVisualizer(audioSessionId: Int) {
         if (sessionId == audioSessionId) {

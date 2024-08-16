@@ -13,7 +13,8 @@ AudioFFTView::~AudioFFTView() {
 
 void AudioFFTView::setSource(const char *path) {
     auto jniEnv = context->getJniEnv();
-    javaAudioPlayerClass = jniEnv->FindClass("com/temple/skiaui/audio/HYSkiaAudioPlayer");
+//    javaAudioPlayerClass = jniEnv->FindClass("com/temple/skiaui/audio/HYSkiaAudioPlayer");
+    javaAudioPlayerClass = jniEnv->FindClass("com/temple/skiaui/audio/HYSkiaAudioTracker");
     javaAudioPlayerConstructor = jniEnv->GetMethodID(javaAudioPlayerClass, "<init>",
                                                      "(Ljava/lang/String;Lcom/temple/skiaui/HYSkiaEngine;)V");
     getFFTDataMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getFFTData", "()[F");
@@ -23,6 +24,7 @@ void AudioFFTView::setSource(const char *path) {
                               jniEnv->NewStringUTF(path), javaSkiaEngine));
     startMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "start", "()V");
     pauseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "pause", "()V");
+    currentPositionMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getCurrentPosition", "()J");
 }
 
 void AudioFFTView::draw(SkCanvas *canvas) {
@@ -62,4 +64,12 @@ void AudioFFTView::onHide() {
     }
     auto jniEnv = context->getJniEnv();
     jniEnv->CallVoidMethod(audioPlayer, pauseMethodID);
+}
+
+long AudioFFTView::getCurrPosition() {
+    if (audioPlayer == nullptr) {
+        return 0L;
+    }
+    auto jniEnv = context->getJniEnv();
+    return jniEnv->CallLongMethod(audioPlayer, currentPositionMethodID);
 }
