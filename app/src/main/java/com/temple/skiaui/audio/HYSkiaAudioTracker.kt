@@ -32,6 +32,7 @@ class HYSkiaAudioTracker(
     private var channelCount = 1
     private var encoding = -1
     private var audioTracker: AudioTrack? = null
+    private var isEOS = false
 
     init {
         decodeHandler.post {
@@ -106,7 +107,8 @@ class HYSkiaAudioTracker(
     }
 
     private fun initAudioTracker() {
-        val channelConfig = if (channelCount == 2) AudioFormat.CHANNEL_OUT_STEREO else AudioFormat.CHANNEL_OUT_MONO
+        val channelConfig =
+            if (channelCount == 2) AudioFormat.CHANNEL_OUT_STEREO else AudioFormat.CHANNEL_OUT_MONO
         val encoding = AudioFormat.ENCODING_PCM_16BIT
         val bufferSize = AudioTrack.getMinBufferSize(sampleRate, channelConfig, encoding)
         val audioFormat = AudioFormat.Builder()
@@ -131,10 +133,28 @@ class HYSkiaAudioTracker(
                 createVisualizer(it)
             }
         }
+        val markerInFrames = (duration * sampleRate / 1000).toInt()
+        audioTracker?.setNotificationMarkerPosition(markerInFrames)
+        audioTracker?.setPlaybackPositionUpdateListener(object :
+            AudioTrack.OnPlaybackPositionUpdateListener {
+            override fun onMarkerReached(track: AudioTrack?) {
+                if ((audioTracker?.playbackHeadPosition ?: 0) >= markerInFrames) {
+                    isEOS = false
+                    audioTracker?.stop()
+                    seek(0)
+                    runDecode()
+                }
+            }
+
+            override fun onPeriodicNotification(track: AudioTrack?) {
+
+            }
+
+        })
     }
 
     private fun runDecode() {
-        while (!released && !paused) {
+        while (!released && !paused && !isEOS) {
             startDecode()
         }
     }
@@ -142,7 +162,6 @@ class HYSkiaAudioTracker(
     private fun startDecode() {
         val info = MediaCodec.BufferInfo()
         val timeoutUs: Long = 10000
-        var isEOS = false
 
         val inputBufferId = decoder.dequeueInputBuffer(timeoutUs)
         if (inputBufferId >= 0) {
@@ -153,7 +172,6 @@ class HYSkiaAudioTracker(
                     inputBufferId, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM
                 )
                 isEOS = true
-                seek(0)
             } else {
                 val presentationTimeUs = extractor.sampleTime
                 decoder.queueInputBuffer(inputBufferId, 0, sampleSize, presentationTimeUs, 0)

@@ -161,10 +161,12 @@ void LyricView::drawLyricSRT() {
                               (item.timeMills[jIndex] - item.timeMills[jIndex - 1]) *
                               item.contentList[jIndex - 1].length();
             auto percent = gradientLength * 1.0f / totalLength;
-            textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
+            textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
                                       {0.0, percent, percent, 1.0});
+            textView->setTextSize(80);
         } else {
             textView->setTextGradient({}, {});
+            textView->setTextSize(60);
         }
     }
 }
@@ -202,10 +204,12 @@ void LyricView::drawLyricLRC() {
             } else {
                 percent = (duration - start) * 1.0f / (end - start);
             }
-            textView->setTextGradient({SK_ColorRED, SK_ColorRED, SK_ColorBLACK, SK_ColorBLACK},
+            textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
                                       {0.0, percent, percent, 1.0});
+            textView->setTextSize(80);
         } else {
             textView->setTextGradient({}, {});
+            textView->setTextSize(60);
         }
     }
 }
@@ -223,10 +227,10 @@ RecyclerViewHolder<Lyric> *LyricAdapter::onCreateViewHolder(int viewType) {
     flexLayout->setWidth(getRecyclerView()->getWidth());
     auto textView = new TextView();
     textView->setContext(this->context);
-    textView->setTextSize(80);
-    textView->setTextColor(SK_ColorBLACK);
-    textView->setStrokeWidth(1);
-    textView->setBackgroundColor(SK_ColorBLUE);
+    textView->setTextSize(60);
+    textView->setTextColor(SK_ColorWHITE);
+    textView->setStrokeWidth(0);
+    textView->setBackgroundColor(SK_ColorTRANSPARENT);
     textView->setStyle(SkPaint::kStroke_Style);
     textView->setMaxLines(1);
     flexLayout->addView(textView);

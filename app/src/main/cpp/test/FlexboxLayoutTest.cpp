@@ -408,9 +408,21 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     flexboxLayout->setHeight(height);
     root->addView(flexboxLayout);
 
+    {
+        auto imageView = new ImageView();
+        imageView->setContext(this->context);
+        imageView->setWidth(width);
+        imageView->setHeight(height);
+        imageView->setSource("music/bg.png");
+        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+        imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        imageView->blur(10.0f);
+        flexboxLayout->addView(imageView);
+    }
+
     auto lyricView = new LyricView();
     lyricView->setContext(this->context);
-    lyricView->setBackgroundColor("#00000033");
+    lyricView->setBackgroundColor("#00000000");
     lyricView->setWidth(width);
     lyricView->setHeight(height - 400);
 //    lyricView->setSourceLRC("feng.lrc");
@@ -421,7 +433,7 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     fftView->setContext(this->context);
     fftView->setWidth(width);
     fftView->setFlex(1);
-    fftView->setBackgroundColor("#ffffff");
+    fftView->setBackgroundColor("#00000000");
     fftView->setSource("feng.mp4");
     flexboxLayout->addView(fftView);
     lyricView->setCurrPositionFunc([fftView]()->long {
