@@ -96,8 +96,7 @@ void ProgressBar::draw(SkCanvas *canvas) {
     }
 }
 
-void ProgressBar::setProgress(int progress) {
-    SkASSERT(progress <= 100 && progress >= 0);
+void ProgressBar::setProgress(float progress) {
     this->progress = progress;
     isDirty = true;
 }

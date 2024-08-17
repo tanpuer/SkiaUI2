@@ -79,3 +79,11 @@ long AudioFFTView::getCurrPosition() {
     auto jniEnv = context->getJniEnv();
     return jniEnv->CallLongMethod(audioPlayer, currentPositionMethodID);
 }
+
+long AudioFFTView::getDuration() {
+    if (audioPlayer == nullptr) {
+        return 0L;
+    }
+    auto jniEnv = context->getJniEnv();
+    return jniEnv->CallLongMethod(audioPlayer, getDurationMethodID);
+}

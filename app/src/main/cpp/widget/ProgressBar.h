@@ -42,7 +42,7 @@ public:
     /**
      * @param progress 0 - 100
      */
-    virtual void setProgress(int progress);
+    virtual void setProgress(float progress);
 
     virtual void setAutoMode(bool autoMode);
 
@@ -68,7 +68,7 @@ private:
 
     bool autoMode;
 
-    int progress;
+    float progress;
 
     ProgressBarType type;
 

@@ -26,6 +26,7 @@ steps：
 10. Page: act as the same role as Activity.
 11. Javascript: Import v8 to evaluate javascript. Look at test.js in assets.
 
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example2.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example3.png)

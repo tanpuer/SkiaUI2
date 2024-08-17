@@ -21,6 +21,8 @@ public:
 
     long getCurrPosition();
 
+    long getDuration();
+
 private:
 
     jclass javaAudioPlayerClass = nullptr;
