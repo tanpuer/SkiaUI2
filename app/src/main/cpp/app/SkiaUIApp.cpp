@@ -7,7 +7,7 @@
 #include "SkiaUIContext.h"
 #include "PageTest.h"
 #include "PageStackManager.h"
-#include "FlexboxLayoutTest.h"
+#include "QQMusicTest.h"
 #include "JavascriptTest.h"
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine) {
@@ -16,7 +16,7 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
     testDraw = std::make_unique<PageTest>();
-//    testDraw = std::make_unique<FlexboxLayoutTest>();
+//    testDraw = std::make_unique<QQMusicTest>();
 //    testDraw = std::make_unique<JavascriptTest>();
     testDraw->setContext(context);
 }
