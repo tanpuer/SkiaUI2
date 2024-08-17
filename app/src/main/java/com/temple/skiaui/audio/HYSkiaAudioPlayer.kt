@@ -75,4 +75,8 @@ class HYSkiaAudioPlayer
         return exoPlayer.currentPosition
     }
 
+    override fun getDuration(): Long {
+        return exoPlayer.duration
+    }
+
 }

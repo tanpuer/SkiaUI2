@@ -35,7 +35,9 @@ private:
 
     jmethodID currentPositionMethodID = nullptr;
 
-    jmethodID releaseMethodId = nullptr;
+    jmethodID releaseMethodID = nullptr;
+
+    jmethodID getDurationMethodID = nullptr;
 
     jobject audioPlayer = nullptr;
 

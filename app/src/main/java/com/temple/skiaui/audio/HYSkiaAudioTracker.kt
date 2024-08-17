@@ -74,6 +74,10 @@ class HYSkiaAudioTracker(
         return ((audioTracker?.playbackHeadPosition ?: 0) * 1000L) / sampleRate
     }
 
+    override fun getDuration(): Long {
+        return duration
+    }
+
     private fun initializeReader() {
         extractor = MediaExtractor()
         try {

@@ -140,7 +140,6 @@ void LyricView::drawLyricSRT() {
     //Todo 全部markDirty
     for (int i = 0; i < children.size(); ++i) {
         auto child = children[i];
-        child->markDirty();
         auto flexboxLayout = dynamic_cast<FlexboxLayout *>(child);
         auto textView = dynamic_cast<TextView *>(flexboxLayout->children[0]);
         auto item = adapter->getItem(i + adapter->startIndex);

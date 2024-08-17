@@ -485,9 +485,10 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     lyricView->setContext(this->context);
     lyricView->setBackgroundColor("#00000000");
     lyricView->setWidth(width);
-    lyricView->setHeight(height - 400);
+    lyricView->setHeight(height - 800);
 //    lyricView->setSourceLRC("feng.lrc");
     lyricView->setSourceSRT("feng.srt");
+    lyricView->setMargin({0, 400, 0, 0});
     flexboxLayout->addView(lyricView);
 
     auto fftView = new AudioFFTView();
@@ -497,7 +498,58 @@ void FlexboxLayoutTest::testLyric(int drawCount, ViewGroup *root, int width, int
     fftView->setBackgroundColor("#00000000");
     fftView->setSource("feng.mp4");
     flexboxLayout->addView(fftView);
-    lyricView->setCurrPositionFunc([fftView]()->long {
+    lyricView->setCurrPositionFunc([fftView]() -> long {
         return fftView->getCurrPosition();
     });
+
+    {
+        auto controlView = new FlexboxLayout();
+        controlView->setContext(this->context);
+        controlView->setFlexWrap(YGWrapWrap);
+        controlView->setFlexDirection(YGFlexDirectionRow);
+        controlView->setStyle(SkPaint::kFill_Style);
+        controlView->setBackgroundColor(SK_ColorTRANSPARENT);
+        controlView->setAlignSelf(YGAlignFlexEnd);
+        controlView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        controlView->setMargin({400, 0, 0, 0});
+        flexboxLayout->addView(controlView);
+        {
+            auto imageView = new ImageView();
+            imageView->setContext(this->context);
+            imageView->setWidth(72 * 1.5);
+            imageView->setHeight(72 * 1.5);
+            imageView->setSource("music/ic_previous.png");
+            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+            imageView->setAlignSelf(YGAlignFlexStart);
+            imageView->setStyle(SkPaint::kStroke_Style);
+            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+            controlView->addView(imageView);
+        }
+        {
+            auto imageView = new ImageView();
+            imageView->setContext(this->context);
+            imageView->setWidth(72 * 1.5);
+            imageView->setHeight(72 * 1.5);
+            imageView->setSource("music/ic_play.png");
+            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+            imageView->setAlignSelf(YGAlignFlexStart);
+            imageView->setStyle(SkPaint::kStroke_Style);
+            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+            imageView->setMargin({100, 0, 0, 0});
+            controlView->addView(imageView);
+        }
+        {
+            auto imageView = new ImageView();
+            imageView->setContext(this->context);
+            imageView->setWidth(72 * 1.5);
+            imageView->setHeight(72 * 1.5);
+            imageView->setSource("music/ic_next.png");
+            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
+            imageView->setAlignSelf(YGAlignFlexStart);
+            imageView->setStyle(SkPaint::kStroke_Style);
+            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+            imageView->setMargin({100, 0, 100, 0});
+            controlView->addView(imageView);
+        }
+    }
 }
