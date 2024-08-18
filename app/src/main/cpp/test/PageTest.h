@@ -13,14 +13,4 @@ public:
 
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
-    virtual View *getRootView() override;
-
-private:
-
-    Page *initPage(int width, int height);
-
-    void initChildren(int drawCount, ViewGroup *root, int width, int height);
-
-    bool blackWhiteMode = false;
-
 };

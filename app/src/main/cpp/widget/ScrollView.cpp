@@ -48,6 +48,19 @@ void ScrollView::updateTranslateY(float diffY) {
     lastScrollDown = diffY < 0.0f;
 }
 
+void ScrollView::setTranslateY(float y) {
+    translateY = y;
+    //可滑动的上限和下限
+    auto maxTranslate = height - getChildHeightSum();
+    if (translateY <= maxTranslate) {
+        translateY = maxTranslate;
+    }
+    if (translateY >= 0) {
+        translateY = 0;
+    }
+    lastScrollDown = y < 0.0f;
+}
+
 void ScrollView::setFlexWrap(YGWrap wrap) {
     assert(wrap == YGWrapNoWrap);
     FlexboxLayout::setFlexWrap(wrap);
@@ -190,4 +203,23 @@ bool ScrollView::ignoreChildDraw(const View *child) {
 
 const char *ScrollView::name() {
     return "ScrollView";
+}
+
+void ScrollView::scrollToChild(int index, bool animated) {
+    if (index < 0 && index > children.size() - 1) {
+        ALOGE("ScrollView::scrollToChild error: %d", index)
+        return;
+    }
+    auto translate = 0;
+    if (_direction == YGFlexDirectionColumn) {
+        for (int i = 0; i < index; ++i) {
+            translate += children[i]->getHeight();
+        }
+        setTranslateY(-translate);
+    } else {
+        for (int i = 0; i < index; ++i) {
+            translate += children[i]->getWidth();
+        }
+//        updateTranslateX(-translateX + translate);
+    }
 }

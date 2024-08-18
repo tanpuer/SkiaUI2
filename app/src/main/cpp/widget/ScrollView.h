@@ -27,6 +27,8 @@ public:
 
     virtual void updateTranslateY(float diffY);
 
+    virtual void setTranslateY(float y);
+
     virtual void updateTranslateX(float diffX);
 
     virtual void setFlexWrap(YGWrap wrap) override;
@@ -55,7 +57,9 @@ public:
 
     void addScrollCallback(std::function<void(float dx, float dy)> callback);
 
-    virtual const char * name() override;
+    virtual const char *name() override;
+
+    virtual void scrollToChild(int index, bool animated);
 
 protected:
 

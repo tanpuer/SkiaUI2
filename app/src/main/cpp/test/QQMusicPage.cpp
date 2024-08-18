@@ -1,53 +1,16 @@
-#include "QQMusicTest.h"
-#include "PageStackManager.h"
-#include "Button.h"
-#include "ClockView.h"
-#include "ProgressBar.h"
+#include "QQMusicPage.h"
+#include "FlexboxLayout.h"
+#include "ImageView.h"
 #include "LyricView.h"
-#include "sstream"
-#include "regex"
-#include "random"
-#include "AudioFFTView.h"
 
-void QQMusicTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
-    if (root == nullptr) {
-        ALOGD("doDrawTest %d %d", width, height)
-        auto page = initPage(width, height);
-        root = page;
-        testLyric(drawCount, root, width, height);
-        context->getPageStackManager()->push(page);
-        page->enterFromRight(Page::EnterExitInfo(width, 0));
-    }
-    calculate();
-    for (const auto &item: context->getPageStackManager()->getPages()) {
-        if (!item->getVisibility()) {
-            continue;
-        }
-        item->measure();
-        item->layout(0, 0, width, height);
-        item->draw(canvas);
-    }
-}
+void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
+    auto config = YGConfigNew();
+    setContext(context);
+    setWidth(width);
+    setHeight(height);
+    setStyle(SkPaint::kFill_Style);
+    setBackgroundColor(SK_ColorTRANSPARENT);
 
-Page *QQMusicTest::initPage(int width, int height) {
-    auto page = new Page();
-    config = YGConfigNew();
-    context->setConfigRef(config);
-    page->setContext(context);
-    page->setWidth(width);
-    page->setHeight(height);
-    page->setStyle(SkPaint::kFill_Style);
-    page->setBackgroundColor(SK_ColorTRANSPARENT);
-    return page;
-}
-
-View *QQMusicTest::getRootView() {
-    auto page = context->getPageStackManager()->back();
-    SkASSERT(page != nullptr && page->children.size() == 1);
-    return page->children[0];
-}
-
-void QQMusicTest::testLyric(int drawCount, ViewGroup *root, int width, int height) {
     auto flexboxLayout = new FlexboxLayout();
     flexboxLayout->setContext(this->context);
     flexboxLayout->setFlexWrap(YGWrapWrap);
@@ -55,10 +18,9 @@ void QQMusicTest::testLyric(int drawCount, ViewGroup *root, int width, int heigh
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
     flexboxLayout->setAlignItems(YGAlignCenter);
-//    flexboxLayout->setJustifyContent(YGJustifyCenter);
     flexboxLayout->setWidth(width);
     flexboxLayout->setHeight(height);
-    root->addView(flexboxLayout);
+    this->addView(flexboxLayout);
 
     {
         auto imageView = new ImageView();
@@ -225,7 +187,7 @@ void QQMusicTest::testLyric(int drawCount, ViewGroup *root, int width, int heigh
     }
 }
 
-void QQMusicTest::calculate() {
+void QQMusicPage::drawOnFrame(int drawCount) {
     if (fftView != nullptr && progressBar != nullptr) {
         auto duration = fftView->getDuration();
         auto current = fftView->getCurrPosition();

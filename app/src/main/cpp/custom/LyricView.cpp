@@ -134,39 +134,46 @@ void LyricView::drawLyricSRT() {
             break;
         }
     }
-    if (index < 0 || index >= adapter->getSize()) {
+    if (index == -1) {
         return;
     }
-    //Todo 全部markDirty
-    for (int i = 0; i < children.size(); ++i) {
-        auto child = children[i];
-        auto flexboxLayout = dynamic_cast<FlexboxLayout *>(child);
-        auto textView = dynamic_cast<TextView *>(flexboxLayout->children[0]);
-        auto item = adapter->getItem(i + adapter->startIndex);
-        if (i == index) {
-            auto jIndex = 0;
-            for (int j = 0; j < item.timeMills.size(); ++j) {
-                if (item.timeMills[j] >= duration) {
-                    jIndex = j;
-                    break;
-                }
-            }
-            auto totalLength = item.content.length();
-            auto gradientLength = 0.0f;
-            for (int z = 0; z < jIndex - 1; ++z) {
-                gradientLength += item.contentList[z].length();
-            }
-            gradientLength += (duration - item.timeMills[jIndex - 1]) * 1.0f /
-                              (item.timeMills[jIndex] - item.timeMills[jIndex - 1]) *
-                              item.contentList[jIndex - 1].length();
-            auto percent = gradientLength * 1.0f / totalLength;
-            textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
-                                      {0.0, percent, percent, 1.0});
-            textView->setTextSize(80);
-        } else {
+    if (index != currentIndex) {
+        if (currentIndex >= 0 && currentIndex < adapter->getSize()) {
+            auto child = children[currentIndex];
+            auto flexboxLayout = dynamic_cast<FlexboxLayout *>(child);
+            auto textView = dynamic_cast<TextView *>(flexboxLayout->children[0]);
             textView->setTextGradient({}, {});
             textView->setTextSize(60);
         }
+        currentIndex = index;
+        //Todo
+//        scrollToChild(currentIndex, true);
+    }
+    //highlight
+    if (currentIndex >= 0 && currentIndex < adapter->getSize()) {
+        auto child = children[currentIndex];
+        auto flexboxLayout = dynamic_cast<FlexboxLayout *>(child);
+        auto textView = dynamic_cast<TextView *>(flexboxLayout->children[0]);
+        auto item = adapter->getItem(currentIndex + adapter->startIndex);
+        auto jIndex = 0;
+        for (int j = 0; j < item.timeMills.size(); ++j) {
+            if (item.timeMills[j] >= duration) {
+                jIndex = j;
+                break;
+            }
+        }
+        auto totalLength = item.content.length();
+        auto gradientLength = 0.0f;
+        for (int z = 0; z < jIndex - 1; ++z) {
+            gradientLength += item.contentList[z].length();
+        }
+        gradientLength += (duration - item.timeMills[jIndex - 1]) * 1.0f /
+                          (item.timeMills[jIndex] - item.timeMills[jIndex - 1]) *
+                          item.contentList[jIndex - 1].length();
+        auto percent = gradientLength * 1.0f / totalLength;
+        textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
+                                  {0.0, percent, percent, 1.0});
+        textView->setTextSize(80);
     }
 }
 

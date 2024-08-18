@@ -86,4 +86,11 @@ public:
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> showCallback;
 
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> hideCallback;
+
+public:
+
+    virtual void init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {}
+
+    virtual void drawOnFrame(int drawCount) {}
+
 };

@@ -82,4 +82,6 @@ private:
 
     std::function<long()> currentPositionFunc = nullptr;
 
+    int currentIndex = -1;
+
 };
