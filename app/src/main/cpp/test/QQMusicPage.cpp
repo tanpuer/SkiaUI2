@@ -4,7 +4,6 @@
 #include "LyricView.h"
 
 void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
-    auto config = YGConfigNew();
     setContext(context);
     setWidth(width);
     setHeight(height);
