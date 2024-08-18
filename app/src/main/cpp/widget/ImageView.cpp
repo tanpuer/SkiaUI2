@@ -22,9 +22,12 @@ ImageView::~ImageView() {
 }
 
 void ImageView::setAlpha(float alpha) {
-    View::setAlpha(alpha);
     SkASSERT(imagePaint);
     imagePaint->setAlphaf(alpha);
+}
+
+float ImageView::getAlpha() {
+    return imagePaint->getAlpha();
 }
 
 void ImageView::setSource(const char *path) {

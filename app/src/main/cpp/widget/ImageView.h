@@ -30,6 +30,8 @@ public:
 
     virtual void setAlpha(float alpha) override;
 
+    float getAlpha() override;
+
     virtual void setCornerRadius(int radius) override;
 
 #pragma mark ImageView api
