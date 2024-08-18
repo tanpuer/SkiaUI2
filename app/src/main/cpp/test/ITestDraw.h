@@ -23,10 +23,6 @@ public:
 
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) = 0;
 
-    virtual View *getRootView() {
-        return root;
-    };
-
     virtual void setContext(std::shared_ptr<SkiaUIContext> context) {
         this->context = context;
     }

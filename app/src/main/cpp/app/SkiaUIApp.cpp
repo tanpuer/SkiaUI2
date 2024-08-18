@@ -40,18 +40,16 @@ long SkiaUIApp::doFrame(long time) {
 
 void SkiaUIApp::dispatchTouchEvent(TouchEvent *touchEvent) {
     mTouchEvent = std::unique_ptr<TouchEvent>(touchEvent);
-    auto root = testDraw->getRootView();
-    if (root == nullptr) {
-        return;
+    auto page = context->getPageStackManager()->back();
+    if (page) {
+        page->dispatchTouchEvent(mTouchEvent.get());
     }
-    dynamic_cast<ViewGroup *>(root)->dispatchTouchEvent(mTouchEvent.get());
 }
 
 void SkiaUIApp::setVelocity(Velocity *velocity) {
-    auto root = testDraw->getRootView();
-    auto viewGroup = dynamic_cast<ViewGroup *>(root);
-    if (viewGroup != nullptr) {
-        viewGroup->dispatchVelocity(velocity);
+    auto page = context->getPageStackManager()->back();
+    if (page) {
+        page->dispatchVelocity(velocity);
     }
 }
 

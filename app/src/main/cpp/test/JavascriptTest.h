@@ -15,9 +15,7 @@ public:
 
     void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
-    View *getRootView() override;
-
-    virtual void setContext(std::shared_ptr<SkiaUIContext> context) override;
+    void setContext(std::shared_ptr<SkiaUIContext> context) override;
 
 public:
 

@@ -22,10 +22,6 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
     invokeFrameCallback();
 }
 
-View *JavascriptTest::getRootView() {
-    return ITestDraw::getRootView();
-}
-
 void JavascriptTest::injectViews() {
     viewManager = std::make_unique<ViewManager>(context, v8Runtime);
     viewManager->registerHYViews();
