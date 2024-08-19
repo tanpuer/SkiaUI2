@@ -71,12 +71,20 @@ class HYSkiaAudioPlayer
         exoPlayer.playWhenReady = false
     }
 
+    override fun seek(mills: Long) {
+        exoPlayer.seekTo(mills)
+    }
+
     override fun getCurrentPosition(): Long {
         return exoPlayer.currentPosition
     }
 
     override fun getDuration(): Long {
         return exoPlayer.duration
+    }
+
+    override fun isPlaying(): Boolean {
+        return exoPlayer.playWhenReady
     }
 
 }

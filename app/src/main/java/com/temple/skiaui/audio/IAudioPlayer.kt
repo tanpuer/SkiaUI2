@@ -45,9 +45,13 @@ abstract class IAudioPlayer(
 
     abstract fun pause()
 
+    abstract fun seek(mills: Long)
+
     abstract fun getCurrentPosition(): Long
 
     abstract fun getDuration(): Long
+
+    abstract fun isPlaying(): Boolean
 
     protected fun createVisualizer(audioSessionId: Int) {
         if (sessionId == audioSessionId) {

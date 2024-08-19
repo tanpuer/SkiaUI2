@@ -54,7 +54,7 @@ public:
 
     virtual bool onTouchEvent(TouchEvent *touchEvent) override;
 
-    virtual void setProgressCallback(std::function<void(int progress)> progressCallback);
+    virtual void setProgressCallback(std::function<void(int progress, bool finished)> progressCallback);
 
     virtual void setStrokeWidth(SkScalar _width) override;
 
@@ -74,7 +74,7 @@ private:
 
     bool pressed;
 
-    std::function<void(int progress)> progressCallback;
+    std::function<void(int progress, bool finished)> progressCallback;
 
     std::vector<SkColor> gradientColors;
 

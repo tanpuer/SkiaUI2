@@ -34,6 +34,9 @@ class HYSkiaAudioTracker(
     private var audioTracker: AudioTrack? = null
     private var isEOS = false
 
+    @Volatile
+    private var presentationTimeUs = 0L
+
     init {
         decodeHandler.post {
             initializeReader()
@@ -71,7 +74,8 @@ class HYSkiaAudioTracker(
      * 相对准确，Exoplayer的getCurrentPosition不准而且不实时
      */
     override fun getCurrentPosition(): Long {
-        return ((audioTracker?.playbackHeadPosition ?: 0) * 1000L) / sampleRate
+//        return ((audioTracker?.playbackHeadPosition ?: 0) * 1000L) / sampleRate
+        return presentationTimeUs / 1000
     }
 
     override fun getDuration(): Long {
@@ -178,7 +182,7 @@ class HYSkiaAudioTracker(
                 )
                 isEOS = true
             } else {
-                val presentationTimeUs = extractor.sampleTime
+                presentationTimeUs = extractor.sampleTime
                 decoder.queueInputBuffer(inputBufferId, 0, sampleSize, presentationTimeUs, 0)
                 extractor.advance()
             }
@@ -209,9 +213,19 @@ class HYSkiaAudioTracker(
         return -1
     }
 
-    private fun seek(timestamp: Long) {
-        extractor.seekTo(timestamp * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
-        decoder.flush()
+    override fun seek(mills: Long) {
+        paused = true
+        decodeHandler.post {
+            decoder.flush()
+            extractor.seekTo(mills * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
+            paused = false
+            audioTracker?.play()
+            runDecode()
+        }
+    }
+
+    override fun isPlaying(): Boolean {
+        return audioTracker?.playState == AudioTrack.PLAYSTATE_PLAYING
     }
 
     companion object {

@@ -28,9 +28,12 @@ void AudioFFTView::setSource(const char *path) {
                               jniEnv->NewStringUTF(path), javaSkiaEngine));
     startMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "start", "()V");
     pauseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "pause", "()V");
-    currentPositionMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getCurrentPosition", "()J");
+    currentPositionMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getCurrentPosition",
+                                                  "()J");
     releaseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "release", "()V");
     getDurationMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getDuration", "()J");
+    seekMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "seek", "(J)V");
+    isPlayingMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "isPlaying", "()Z");
 }
 
 void AudioFFTView::draw(SkCanvas *canvas) {
@@ -57,19 +60,14 @@ void AudioFFTView::draw(SkCanvas *canvas) {
 }
 
 void AudioFFTView::onShow() {
-    if (audioPlayer == nullptr) {
+    if (userPause) {
         return;
     }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(audioPlayer, startMethodID);
+    play();
 }
 
 void AudioFFTView::onHide() {
-    if (audioPlayer == nullptr) {
-        return;
-    }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(audioPlayer, pauseMethodID);
+    pause();
 }
 
 long AudioFFTView::getCurrPosition() {
@@ -86,4 +84,38 @@ long AudioFFTView::getDuration() {
     }
     auto jniEnv = context->getJniEnv();
     return jniEnv->CallLongMethod(audioPlayer, getDurationMethodID);
+}
+
+void AudioFFTView::seek(long timeMills) {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, seekMethodID, timeMills);
+}
+
+bool AudioFFTView::isPlaying() {
+    if (audioPlayer == nullptr) {
+        return false;
+    }
+    auto jniEnv = context->getJniEnv();
+    return jniEnv->CallBooleanMethod(audioPlayer, isPlayingMethodID);
+}
+
+void AudioFFTView::play() {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, startMethodID);
+    userPause = false;
+}
+
+void AudioFFTView::pause() {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, pauseMethodID);
+    userPause = true;
 }

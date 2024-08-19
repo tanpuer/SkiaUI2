@@ -97,6 +97,10 @@ void ProgressBar::draw(SkCanvas *canvas) {
 }
 
 void ProgressBar::setProgress(float progress) {
+    if (pressed) {
+        ALOGE("ProgressBar isPressed, ignore setProgress %f", progress)
+        return;
+    }
     this->progress = progress;
     isDirty = true;
 }
@@ -134,13 +138,23 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
                     progress = 0;
                 }
                 if (progressCallback != nullptr && lastProgress != progress) {
-                    progressCallback(progress);
+                    progressCallback(progress, false);
                 }
                 break;
             }
             case TouchEvent::ACTION_CANCEL:
             case TouchEvent::ACTION_UP: {
                 pressed = false;
+                progress = static_cast<int>((touchEvent->x - left - marginLeft)
+                                            * 100 / (width - marginLeft - marginRight));
+                if (progress > 100) {
+                    progress = 100;
+                } else if (progress < 0) {
+                    progress = 0;
+                }
+                if (progressCallback != nullptr) {
+                    progressCallback(progress, true);
+                }
                 break;
             }
         }
@@ -149,7 +163,7 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
     return View::onTouchEvent(touchEvent);
 }
 
-void ProgressBar::setProgressCallback(std::function<void(int)> progressCallback) {
+void ProgressBar::setProgressCallback(std::function<void(int, bool)> progressCallback) {
     this->progressCallback = progressCallback;
 }
 

@@ -3,6 +3,7 @@
 #include "Page.h"
 #include "AudioFFTView.h"
 #include "ProgressBar.h"
+#include "ImageView.h"
 
 class QQMusicPage : public Page {
 
@@ -19,5 +20,7 @@ private:
     AudioFFTView *fftView = nullptr;
 
     ProgressBar *progressBar = nullptr;
+
+    ImageView *playImage = nullptr;
 
 };

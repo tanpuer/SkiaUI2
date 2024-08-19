@@ -23,6 +23,14 @@ public:
 
     long getDuration();
 
+    void seek(long timeMills);
+
+    bool isPlaying();
+
+    void play();
+
+    void pause();
+
 private:
 
     jclass javaAudioPlayerClass = nullptr;
@@ -41,10 +49,16 @@ private:
 
     jmethodID getDurationMethodID = nullptr;
 
+    jmethodID seekMethodID = nullptr;
+
+    jmethodID isPlayingMethodID = nullptr;
+
     jobject audioPlayer = nullptr;
 
     std::unique_ptr<SkPaint> fftPaint;
 
     uint32_t count = 60;
+
+    bool userPause = false;
 
 };

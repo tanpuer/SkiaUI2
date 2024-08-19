@@ -135,22 +135,35 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setAlignSelf(YGAlignFlexStart);
             imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setBackgroundColor(SK_ColorTRANSPARENT);
-            imageView->setOnClickListener([](View *view) {});
+            imageView->setOnClickListener([this](View *view) {
+                fftView->seek(0);
+                playImage->setSource("music/ic_pause.png");
+            });
             controlView->addView(imageView);
         }
         {
-            auto imageView = new ImageView();
-            imageView->setContext(this->context);
-            imageView->setWidth(72 * 1.5);
-            imageView->setHeight(72 * 1.5);
-            imageView->setSource("music/ic_play.png");
-            imageView->setScaleType(ImageView::ScaleType::CenterCrop);
-            imageView->setAlignSelf(YGAlignFlexStart);
-            imageView->setStyle(SkPaint::kStroke_Style);
-            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
-            imageView->setMargin({100, 0, 0, 0});
-            imageView->setOnClickListener([](View *view) {});
-            controlView->addView(imageView);
+            playImage = new ImageView();
+            playImage->setContext(this->context);
+            playImage->setWidth(72 * 1.5);
+            playImage->setHeight(72 * 1.5);
+            playImage->setSource("music/ic_pause.png");
+            playImage->setScaleType(ImageView::ScaleType::CenterCrop);
+            playImage->setAlignSelf(YGAlignFlexStart);
+            playImage->setStyle(SkPaint::kStroke_Style);
+            playImage->setBackgroundColor(SK_ColorTRANSPARENT);
+            playImage->setMargin({100, 0, 0, 0});
+            playImage->setOnClickListener([this](View *view) {
+                if (fftView != nullptr) {
+                    if (fftView->isPlaying()) {
+                        playImage->setSource("music/ic_play.png");
+                        fftView->pause();
+                    } else {
+                        playImage->setSource("music/ic_pause.png");
+                        fftView->play();
+                    }
+                }
+            });
+            controlView->addView(playImage);
         }
         {
             auto imageView = new ImageView();
@@ -163,7 +176,12 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setMargin({100, 0, 100, 0});
-            imageView->setOnClickListener([](View *view) {});
+            imageView->setOnClickListener([this](View *view) {
+                if (fftView != nullptr) {
+                    fftView->seek(0);
+                    playImage->setSource("music/ic_pause.png");
+                }
+            });
             controlView->addView(imageView);
         }
     }
@@ -183,8 +201,12 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         progressBar->setMargin({50, 150, 50, 50});
         progressBar->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         flexboxLayout->addView(progressBar);
-        progressBar->setProgressCallback([](int progress) {
+        progressBar->setProgressCallback([this](int progress, bool finished) {
             ALOGD("ProgressBar progress: %d", progress)
+            if (finished && fftView != nullptr) {
+                fftView->seek(progress * fftView->getDuration() / 100);
+                playImage->setSource("music/ic_pause.png");
+            }
         });
     }
 }
