@@ -135,6 +135,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setAlignSelf(YGAlignFlexStart);
             imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setBackgroundColor(SK_ColorTRANSPARENT);
+            imageView->setOnClickListener([](View *view) {});
             controlView->addView(imageView);
         }
         {
@@ -148,6 +149,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setMargin({100, 0, 0, 0});
+            imageView->setOnClickListener([](View *view) {});
             controlView->addView(imageView);
         }
         {
@@ -161,6 +163,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setMargin({100, 0, 100, 0});
+            imageView->setOnClickListener([](View *view) {});
             controlView->addView(imageView);
         }
     }

@@ -88,7 +88,7 @@ void TouchEventDispatcher::findTargetView(TouchEvent *touchEvent) {
         ALOGE("dispatchTouchEvent weakRefView is not ViewGroup, pls check")
         return;
     }
-    weakTargetView = findTargetViewTraversal(viewGroup, touchEvent, 0.0, 0.0);
+    weakTargetView = findTargetViewTraversal(viewGroup, touchEvent);
     if (weakTargetView != nullptr) {
         lastAlpha = weakTargetView->getAlpha();
         weakTargetView->setAlpha(0.3f);
@@ -112,8 +112,7 @@ void TouchEventDispatcher::clearTargetView() {
     }
 }
 
-View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent,
-                                                    float tempLeft, float tempTop) {
+View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent) {
     ALOGD("findTargetViewTraversal %s %d", viewGroup->name(), viewGroup->children.size())
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
@@ -127,8 +126,7 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
             touchEvent->y >= top && touchEvent->y <= top + height) {
             if (child->isViewGroup() && reinterpret_cast<ScrollView *>(child) == nullptr) {
                 ALOGD("findTargetViewTraversal in ViewGroup %s %lld", child->name(), child->viewId)
-                return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent, left,
-                                               top);
+                return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {
                 ALOGD("findTargetViewTraversal result %s %lld", child->name(), child->viewId)
                 targetViewLeft = left;

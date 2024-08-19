@@ -19,9 +19,7 @@ public:
 
     virtual void dispatchToTargetView(TouchEvent *touchEvent) override;
 
-    virtual View *
-    findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent, float tempLeft,
-                            float tempTop) override;
+    virtual View *findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent) override;
 
 protected:
 

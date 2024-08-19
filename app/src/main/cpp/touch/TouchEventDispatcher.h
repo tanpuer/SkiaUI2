@@ -32,9 +32,7 @@ public:
 
     virtual void clearTargetView();
 
-    virtual View *
-    findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent, float tempLeft,
-                            float tempTop);
+    virtual View *findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent);
 
     bool checkTouchInTargetView(TouchEvent *touchEvent);
 

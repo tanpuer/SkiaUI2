@@ -147,6 +147,7 @@ class HYSkiaAudioTracker(
                     audioTracker?.stop()
                     seek(0)
                     runDecode()
+                    audioTracker?.play()
                 }
             }
 
