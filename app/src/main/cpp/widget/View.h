@@ -53,6 +53,8 @@ public:
 
     virtual bool isViewGroup();
 
+    virtual bool isScroller();
+
     const std::shared_ptr<SkiaUIContext> getContext();
 
     virtual void setContext(std::shared_ptr<SkiaUIContext> context);

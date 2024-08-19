@@ -124,7 +124,7 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
               touchEvent->y)
         if (touchEvent->x >= left && touchEvent->x <= left + width &&
             touchEvent->y >= top && touchEvent->y <= top + height) {
-            if (child->isViewGroup() && reinterpret_cast<ScrollView *>(child) == nullptr) {
+            if (child->isViewGroup() && !child->isScroller()) {
                 ALOGD("findTargetViewTraversal in ViewGroup %s %lld", child->name(), child->viewId)
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {

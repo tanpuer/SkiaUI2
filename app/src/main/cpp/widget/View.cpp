@@ -113,6 +113,10 @@ bool View::isViewGroup() {
     return false;
 }
 
+bool View::isScroller() {
+    return false;
+}
+
 #pragma mark yoga 获取相关
 
 int View::getHeight() {

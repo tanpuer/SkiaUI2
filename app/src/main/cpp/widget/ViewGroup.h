@@ -27,14 +27,6 @@ public:
 
     bool isViewGroup() override;
 
-    virtual int getWidth() override;
-
-    virtual int getHeight() override;
-
-    int getMaxHeightInChildren();
-
-    int getMaxWidthInChildren();
-
     int getChildHeightSum();
 
     int getChildWidthSum();

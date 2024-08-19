@@ -134,41 +134,6 @@ const char *ViewGroup::getFlexDirection() {
     return YGFlexDirectionToString(direction);
 }
 
-int ViewGroup::getWidth() {
-    if (YGNodeStyleGetWidth(node).unit == YGUnitAuto) {
-        return getMaxWidthInChildren();
-    } else {
-        //exactly todo percent
-        return View::getWidth();
-    }
-}
-
-int ViewGroup::getHeight() {
-    if (YGNodeStyleGetHeight(node).unit == YGUnitAuto) {
-        return getMaxHeightInChildren();
-    } else {
-        //exactly todo percent
-        return View::getHeight();
-    }
-}
-
-int ViewGroup::getMaxHeightInChildren() {
-    int maxHeight = 0;
-    for (auto &child: children) {
-        maxHeight = std::max(maxHeight,
-                             child->getHeight() + child->marginTop + child->marginBottom);
-    }
-    return maxHeight;
-}
-
-int ViewGroup::getMaxWidthInChildren() {
-    int maxWidth = 0;
-    for (auto &child: children) {
-        maxWidth = std::max(maxWidth, child->getWidth() + child->marginLeft + child->marginRight);
-    }
-    return maxWidth;
-}
-
 int ViewGroup::getChildHeightSum() {
     int sum = 0;
     for (auto &child: children) {

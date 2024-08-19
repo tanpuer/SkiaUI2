@@ -61,6 +61,8 @@ public:
 
     virtual void scrollToChild(int index, bool animated);
 
+    bool isScroller() override;
+
 protected:
 
     float xVelocity, yVelocity;

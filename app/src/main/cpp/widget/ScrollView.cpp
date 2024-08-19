@@ -223,3 +223,7 @@ void ScrollView::scrollToChild(int index, bool animated) {
 //        updateTranslateX(-translateX + translate);
     }
 }
+
+bool ScrollView::isScroller() {
+    return true;
+}
