@@ -74,8 +74,8 @@ class HYSkiaAudioTracker(
      * 相对准确，Exoplayer的getCurrentPosition不准而且不实时
      */
     override fun getCurrentPosition(): Long {
-//        return ((audioTracker?.playbackHeadPosition ?: 0) * 1000L) / sampleRate
-        return presentationTimeUs / 1000
+        return ((audioTracker?.playbackHeadPosition ?: 0) * 1000L) / sampleRate
+//        return presentationTimeUs / 1000
     }
 
     override fun getDuration(): Long {
