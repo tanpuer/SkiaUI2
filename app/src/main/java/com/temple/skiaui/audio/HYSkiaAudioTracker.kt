@@ -166,6 +166,10 @@ class HYSkiaAudioTracker(
         while (!released && !paused && !isEOS) {
             startDecode()
         }
+        if (isEOS) {
+            isEOS = false
+            seek(0)
+        }
     }
 
     private fun startDecode() {
@@ -180,7 +184,6 @@ class HYSkiaAudioTracker(
                 decoder.queueInputBuffer(
                     inputBufferId, 0, 0, 0L, MediaCodec.BUFFER_FLAG_END_OF_STREAM
                 )
-                isEOS = true
             } else {
                 presentationTimeUs = extractor.sampleTime
                 decoder.queueInputBuffer(inputBufferId, 0, sampleSize, presentationTimeUs, 0)
