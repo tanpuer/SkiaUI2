@@ -44,13 +44,6 @@ void MovingView::layout(int l, int t, int r, int b) {
         width = r - l;
         height = b - t;
     }
-    if (animator != nullptr) {
-        if (animator->isEnd()) {
-            animator.reset();
-        } else {
-            animator->update(skRect);
-        }
-    }
 }
 
 MovingView::MovingView() : View() {

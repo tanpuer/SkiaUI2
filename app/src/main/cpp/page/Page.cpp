@@ -109,10 +109,9 @@ void Page::layout(int l, int t, int r, int b) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(root->node));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(root->node));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(root->node));
-    if (animator != nullptr && !animator->isEnd()) {
-        animator->update(skRect);
-//        ALOGD("page animator update %f %f", animTranslateX, animTranslateY)
-    }
+//    if (animator != nullptr && !animator->isEnd()) {
+//        animator->update(skRect);
+//    }
     root->layout(left + animTranslateX,
                  top + animTranslateY,
                  left + animTranslateX + width,

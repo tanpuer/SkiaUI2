@@ -59,7 +59,13 @@ void View::layout(int l, int t, int r, int b) {
     bottom = b;
     width = r - l;
     height = b - t;
-//    ALOGD("%s layout %d %d", name(), width, height)
+    if (animator != nullptr) {
+        if (animator->isEnd()) {
+            animator.reset();
+        } else {
+            animator->update(skRect);
+        }
+    }
     if (viewLayoutCallback != nullptr) {
         viewLayoutCallback(l, t, r, b);
     }
@@ -430,4 +436,8 @@ void View::onHide() {
 
 void View::markDirty() {
     isDirty = true;
+}
+
+void View::setAnimator(IAnimator *animator) {
+    this->animator.reset(animator);
 }

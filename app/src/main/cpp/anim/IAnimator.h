@@ -18,7 +18,7 @@ public:
 
     virtual ~IAnimator();
 
-    virtual float getInterpolation(float factor) = 0;
+    virtual float getInterpolation(float factor);
 
     virtual void setDuration(long duration);
 
@@ -30,6 +30,8 @@ public:
 
     virtual void addListener(std::function<void()> finishCallback);
 
+    virtual void setLoopCount(int count);
+
 protected:
 
     long duration;
@@ -37,6 +39,8 @@ protected:
     long startTime, endTime;
 
     bool end;
+
+    int loopCount = 1;
 
     std::function<void()> finishCallback = nullptr;
 

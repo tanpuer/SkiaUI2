@@ -19,8 +19,6 @@ public:
 
     virtual ~LinearAnimator();
 
-    virtual float getInterpolation(float factor) override;
-
     void update(SkIRect &rect) override;
 
 private:

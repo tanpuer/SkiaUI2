@@ -17,8 +17,6 @@ public:
 
     virtual void start() override;
 
-    float getInterpolation(float factor) override;
-
 private:
 
     float animEndX, animEndY = 0.0f;

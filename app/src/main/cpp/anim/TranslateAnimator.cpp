@@ -35,7 +35,3 @@ void TranslateAnimator::start() {
     animStartX = targetView->animTranslateX;
     animStartY = targetView->animTranslateY;
 }
-
-float TranslateAnimator::getInterpolation(float factor) {
-    return static_cast<float >(currTime - startTime) / static_cast<float >(duration);
-}
