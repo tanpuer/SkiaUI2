@@ -2,7 +2,7 @@
 #include "FlexboxLayout.h"
 #include "ImageView.h"
 #include "LyricView.h"
-#include "RotateAnimator.h"
+#include "LinearAnimator.h"
 
 void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -62,7 +62,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 300, 0, 0});
         flexboxLayout->addView(imageView);
-        auto rotateAnimator = new RotateAnimator(imageView, 0.0, 360.0);
+        auto rotateAnimator = new LinearAnimator(imageView, 0.0, 360.0);
         rotateAnimator->setDuration(5000);
         rotateAnimator->setLoopCount(-1);
         rotateAnimator->setUpdateListener([imageView](View* view, float value) {
@@ -85,7 +85,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 620, 0, 0});
         flexboxLayout->addView(imageView);
-        auto rotateAnimator = new RotateAnimator(imageView, 0.0, 360.0);
+        auto rotateAnimator = new LinearAnimator(imageView, 0.0, 360.0);
         rotateAnimator->setDuration(5000);
         rotateAnimator->setLoopCount(-1);
         rotateAnimator->setUpdateListener([imageView](View* view, float value) {

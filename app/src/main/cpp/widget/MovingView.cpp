@@ -19,16 +19,18 @@ bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
             break;
         }
         case TouchEvent::ACTION_UP: {
-            //松手后做个动画回到原处
-            animator = std::make_unique<LinearAnimator>(translateX, translateY);
+            auto animator = new LinearAnimator(this, translateX, 0.0f);
             animator->setDuration(500L);
+            auto x = translateX;
+            auto y = translateY;
+            animator->setUpdateListener([x, y](View *view, float value) {
+                view->translateX = value;
+                view->translateY = value * y / x;
+            });
             animator->start();
+            break;
         }
         default: {
-            translateX = 0.0f;
-            translateY = 0.0f;
-            lastX = 0.0f;
-            lastY = 0.0f;
             break;
         }
     }
@@ -36,14 +38,17 @@ bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
 }
 
 void MovingView::layout(int l, int t, int r, int b) {
-    if (YGFloatsEqual(translateX, 0.0f) && YGFloatsEqual(translateY, 0.0f)) {
-        View::layout(l, t, r, b);
-    } else {
-        ALOGD("MovingView %f %f", translateX, translateY)
-        skRect.setLTRB(l + translateX, t + translateY, r + translateX, b + translateY);
-        width = r - l;
-        height = b - t;
-    }
+//    if (YGFloatsEqual(translateX, 0.0f) && YGFloatsEqual(translateY, 0.0f)) {
+//        View::layout(l, t, r, b);
+//    } else {
+//        ALOGD("MovingView %f %f", translateX, translateY)
+//        skRect.setLTRB(l + translateX, t + translateY, r + translateX, b + translateY);
+//        width = r - l;
+//        height = b - t;
+//    }
+    View::layout(l, t, r, b);
+    ALOGD("MovingView %f %f", translateX, translateY)
+    skRect.setLTRB(l + translateX, t + translateY, r + translateX, b + translateY);
 }
 
 MovingView::MovingView() : View() {

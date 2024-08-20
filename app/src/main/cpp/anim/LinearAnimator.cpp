@@ -1,43 +1,33 @@
 #include "LinearAnimator.h"
-#include "native_log.h"
-#include "core/SkMatrix.h"
 
-LinearAnimator::LinearAnimator(float translateX, float translateY)
-        : IAnimator(), translateX(translateX), translateY(translateY) {
-    dst = SkRect::MakeEmpty();
-    src = SkRect::MakeEmpty();
-    translateMatrix = SkMatrix::I();
-    rotateMatrix = SkMatrix::I();
-    scaleMatrix = SkMatrix::I();
-    m = SkMatrix::I();
-}
-
-LinearAnimator::~LinearAnimator() {
-
+LinearAnimator::LinearAnimator(View *view, float startValue, float endValue)
+        : startValue(startValue), endValue(endValue) {
+    this->targetView = view;
+    view->setAnimator(this);
 }
 
 void LinearAnimator::update(SkIRect &rect) {
     if (currTime > endTime) {
-        end = true;
-        return;
+        if (loopCount == -1) {
+            startTime = currTime;
+            endTime = currTime + duration;
+        } else {
+            end = true;
+            updateInner();
+            return;
+        }
     }
-    auto interpolation = getInterpolation(1.0f);
-    ALOGD("LinearAnimator::update %ld %ld %f", currTime, endTime, interpolation)
-    auto x = translateX * interpolation;
-    auto y = translateY * interpolation;
+    updateInner();
+}
 
-    src.set(rect);
-    m.setIdentity();
-    translateMatrix.setIdentity();
-    rotateMatrix.setIdentity();
-    scaleMatrix.setIdentity();
-    translateMatrix.setTranslate(x, y);
-    //todo rotate设置不对
-//    rotateMatrix.setRotate(45, src.centerX(), src.centerY());
-//    scaleMatrix.setScale(1 - interpolation, 1 - interpolation, src.centerX(), src.centerY());
-    m.preConcat(translateMatrix);
-    m.preConcat(rotateMatrix);
-    m.preConcat(scaleMatrix);
-    m.mapRect(&dst, src, SkApplyPerspectiveClip::kNo);
-    rect.setLTRB(dst.left(), dst.top(), dst.right(), dst.bottom());
+void LinearAnimator::setUpdateListener(std::function<void(View *, float)> &&listener) {
+    this->updateListener = std::move(listener);
+}
+
+void LinearAnimator::updateInner() {
+    if (targetView != nullptr && updateListener != nullptr) {
+        auto interpolator = end ? 1.0f : getInterpolation(1.0f);
+        auto value = interpolator * (endValue - startValue) + startValue;
+        updateListener(targetView, value);
+    }
 }

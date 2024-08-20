@@ -1,34 +1,24 @@
 #pragma once
 
 #include "IAnimator.h"
-#include "core/SkMatrix.h"
+#include "View.h"
 
 class LinearAnimator : public IAnimator {
 
 public:
 
-    enum class AnimatorType {
-        Scale,
-        Rotate,
-        Translate,
-    };
-
-public:
-
-    LinearAnimator(float translateX, float translateY);
-
-    virtual ~LinearAnimator();
+    LinearAnimator(View *view, float startValue, float endValue);
 
     void update(SkIRect &rect) override;
 
+    void setUpdateListener(std::function<void(View *, float)> &&listener);
+
 private:
 
-    float translateX, translateY;
+    float startValue, endValue;
+    View *targetView;
+    std::function<void(View *, float)> updateListener = nullptr;
 
-    float startRotate, endRotate;
-
-    SkRect dst, src;
-
-    SkMatrix m, translateMatrix, rotateMatrix, scaleMatrix;
+    void updateInner();
 
 };
