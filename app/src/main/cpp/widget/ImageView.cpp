@@ -92,7 +92,7 @@ void ImageView::layout(int l, int t, int r, int b) {
                                  dstRect.centerY());
         }
     }
-    imageMatrix.setRotate(rotateZ, dstRect.centerX(), dstRect.centerY());
+    imageMatrix.preRotate(rotateZ, dstRect.centerX(), dstRect.centerY());
 }
 
 void ImageView::draw(SkCanvas *canvas) {
