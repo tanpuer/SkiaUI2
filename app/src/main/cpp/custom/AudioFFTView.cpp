@@ -63,11 +63,14 @@ void AudioFFTView::onShow() {
     if (userPause) {
         return;
     }
-    play();
+    innerPlay();
 }
 
 void AudioFFTView::onHide() {
-    pause();
+    if (userPause) {
+        return;
+    }
+    innerPause();
 }
 
 long AudioFFTView::getCurrPosition() {
@@ -103,19 +106,27 @@ bool AudioFFTView::isPlaying() {
 }
 
 void AudioFFTView::play() {
-    if (audioPlayer == nullptr) {
-        return;
-    }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(audioPlayer, startMethodID);
     userPause = false;
+    innerPlay();
 }
 
 void AudioFFTView::pause() {
+    userPause = true;
+    innerPause();
+}
+
+void AudioFFTView::innerPause() {
     if (audioPlayer == nullptr) {
         return;
     }
     auto jniEnv = context->getJniEnv();
     jniEnv->CallVoidMethod(audioPlayer, pauseMethodID);
-    userPause = true;
+}
+
+void AudioFFTView::innerPlay() {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, startMethodID);
 }

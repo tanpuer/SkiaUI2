@@ -61,4 +61,8 @@ private:
 
     bool userPause = false;
 
+    void innerPause();
+
+    void innerPlay();
+
 };
