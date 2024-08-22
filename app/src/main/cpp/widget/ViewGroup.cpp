@@ -183,18 +183,6 @@ bool ViewGroup::dispatchVelocity(Velocity *velocity) {
     return touchEventDispatcher->dispatchVelocity(velocity);
 }
 
-bool ViewGroup::hasPercent() {
-    if (View::hasPercent()) {
-        return true;
-    }
-    for (auto &child: children) {
-        if (child->hasPercent()) {
-            return true;
-        }
-    }
-    return false;
-}
-
 void ViewGroup::layout(int l, int t, int r, int b) {
     assert(false);
 }

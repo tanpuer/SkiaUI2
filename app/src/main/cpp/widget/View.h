@@ -158,15 +158,9 @@ public:
      * @param widthPercent
      * @param hwRatio
      */
-    virtual void setSizePercent(float widthPercent, float hwRatio);
+    virtual void setSizePercent(float widthPercent, float heightPercent);
 
-    virtual void setWidthAuto();
-
-    virtual void setHeightAuto();
-
-    float widthPercent, hwRatio;
-
-    virtual bool hasPercent();
+    float widthPercent, heightPercent;
 
 #pragma mark TouchEvent
 

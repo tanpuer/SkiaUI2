@@ -48,19 +48,6 @@ void ImageView::setSource(const char *path) {
     });
 }
 
-void ImageView::measure() {
-    if (skImage == nullptr) {
-        return;
-    }
-    if (isDirty) {
-        isDirty = false;
-        if (this->width > 0 && this->height > 0) {
-            return;
-        }
-        setMeasuredDimension(skImage->width(), skImage->height());
-    }
-}
-
 void ImageView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
     dstRect.setLTRB(static_cast<float >(l), static_cast<float >(t), static_cast<float >(r),

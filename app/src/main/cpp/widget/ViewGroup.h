@@ -93,8 +93,6 @@ public:
 
     float maxChildWidth, maxChildHeight;
 
-    bool hasPercent() override;
-
 #pragma mark TouchEvent
 
     virtual bool dispatchTouchEvent(TouchEvent *touchEvent);

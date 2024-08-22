@@ -20,8 +20,6 @@ public:
 
     virtual ~ImageView();
 
-    void measure() override;
-
     void layout(int l, int t, int r, int b) override;
 
     virtual void draw(SkCanvas *canvas) override;

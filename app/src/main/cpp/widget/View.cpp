@@ -16,7 +16,7 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
                marginLeft(0), marginTop(0), marginRight(0), marginBottom(0),
                paddingLeft(0), paddingTop(0), paddingRight(0), paddingBottom(0),
                isDirty(false),
-               widthPercent(0.0f), hwRatio(0.0f) {
+               widthPercent(0.0f), heightPercent(0.0f) {
     viewId = VIEW_ID++;
     paint = std::make_unique<SkPaint>();
     paint->setAntiAlias(true);
@@ -204,31 +204,15 @@ void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
 
 #pragma mark 后续才支持的
 
-void View::setSizePercent(float widthPercent, float hwRatio) {
+void View::setSizePercent(float widthPercent, float heightPercent) {
     YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
     this->widthPercent = widthPercent;
-    this->hwRatio = hwRatio;
-    isDirty = true;
-}
-
-void View::setWidthAuto() {
-    YGAssert(node, "view is null, pls check");
-    if (node == nullptr) {
-        return;
-    }
-    YGNodeStyleSetWidthAuto(node);
-    isDirty = true;
-}
-
-void View::setHeightAuto() {
-    YGAssert(node, "view is null, pls check");
-    if (node == nullptr) {
-        return;
-    }
-    YGNodeStyleSetHeightAuto(node);
+    this->heightPercent = heightPercent;
+    YGNodeStyleSetWidthPercent(node, widthPercent);
+    YGNodeStyleSetHeightPercent(node, heightPercent);
     isDirty = true;
 }
 
@@ -248,10 +232,6 @@ void View::setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatc
     ALOGD("setCustomTouchEventDispatcher")
     this->touchEventDispatcher = std::unique_ptr<TouchEventDispatcher>(touchEventDispatcher);
     this->touchEventDispatcher->setWeakView(this);
-}
-
-bool View::hasPercent() {
-    return !YGFloatsEqual(0.0f, widthPercent) && YGFloatsEqual(0.0f, hwRatio);
 }
 
 void View::setLayoutCallback(std::function<void(int, int, int, int)> callback) {

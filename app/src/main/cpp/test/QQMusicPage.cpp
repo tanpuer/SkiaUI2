@@ -18,15 +18,15 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     flexboxLayout->setStyle(SkPaint::kFill_Style);
     flexboxLayout->setBackgroundColor(SK_ColorWHITE);
     flexboxLayout->setAlignItems(YGAlignCenter);
-    flexboxLayout->setWidth(width);
-    flexboxLayout->setHeight(height);
+    flexboxLayout->setFlex(1);
     this->addView(flexboxLayout);
 
     {
         auto imageView = new ImageView();
         imageView->setContext(this->context);
-        imageView->setWidth(width);
-        imageView->setHeight(height);
+//        imageView->setWidth(width);
+//        imageView->setHeight(height);
+        imageView->setSizePercent(100, 100);
         imageView->setSource("music/bg.png");
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
