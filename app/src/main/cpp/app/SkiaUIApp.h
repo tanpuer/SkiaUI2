@@ -41,6 +41,8 @@ public:
 
     void onHide();
 
+    void deleteSkPicture(long skPicture);
+
 private:
 
     std::unique_ptr<TouchEvent> mTouchEvent;

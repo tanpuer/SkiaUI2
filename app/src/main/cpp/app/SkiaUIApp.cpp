@@ -102,3 +102,10 @@ void SkiaUIApp::onShow() {
 void SkiaUIApp::onHide() {
     testDraw->onHide();
 }
+
+void SkiaUIApp::deleteSkPicture(long skPicture) {
+    auto picture = reinterpret_cast<SkPicture*>(skPicture);
+    if (picture != nullptr) {
+        picture->unref();
+    }
+}

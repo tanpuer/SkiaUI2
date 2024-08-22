@@ -1,7 +1,3 @@
-//
-// Created by cw on 2024/2/4.
-//
-
 #include "SkiaGLApp.h"
 #include "SkiaFilter.h"
 

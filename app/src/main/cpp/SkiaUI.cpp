@@ -184,6 +184,15 @@ native_UIHide(JNIEnv *env, jobject instance, jlong javaUIApp) {
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_DeleteSkPicture(JNIEnv *env, jobject instance, jlong javaUIApp, jlong skPicture) {
+    ALOGD("native_DeleteSkPicture")
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp != nullptr) {
+        uiApp->deleteSkPicture(skPicture);
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -204,6 +213,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativePostTask",                      "(JI)V",                                        (void *) native_PostTask},
         {"nativeUIShow",                        "(J)V",                                         (void *) native_UIShow},
         {"nativeUIHide",                        "(J)V",                                         (void *) native_UIHide},
+        {"nativeDeleteSkPicture",               "(JJ)V",                                        (void *) native_DeleteSkPicture},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

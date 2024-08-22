@@ -5,7 +5,6 @@ import android.hardware.HardwareBuffer
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.VelocityTracker
@@ -110,25 +109,24 @@ class HYSkiaEngine {
             drawCount.set(0)
             frameCount = 0
         }
-        if (!finishDraw.get()) {
-            Log.d(TAG, "doFrame ignore current vysnc draw")
-            return
-        }
         skiaUIHandler.post {
-            finishDraw.set(false)
-            pic.set(nativeUIDoFrame(uiApp, System.currentTimeMillis() - start))
-            finishDraw.set(true)
+            val nextPic = nativeUIDoFrame(uiApp, System.currentTimeMillis() - start)
+            val prePic = pic.getAndSet(nextPic)
+            if (prePic != 0L) {
+                nativeDeleteSkPicture(uiApp, prePic)
+            }
             drawCount.set(drawCount.get() + 1)
         }
         skiaGLHandler.post {
-            if (pic.get() != 0L) {
-                nativeGLDoFrame(glApp, pic.get(), time)
-                pic.set(0L)
-                skImageList.forEach {
-                    nativeDeleteSkImage(glApp, it)
-                }
-                skImageList.clear()
+            val currPic = pic.getAndSet(0L)
+            if (currPic == 0L) {
+                return@post
             }
+            nativeGLDoFrame(glApp, currPic, time)
+            skImageList.forEach {
+                nativeDeleteSkImage(glApp, it)
+            }
+            skImageList.clear()
         }
     }
 
@@ -229,6 +227,7 @@ class HYSkiaEngine {
     private external fun nativePostTask(uiApp: Long, taskId: Int)
     private external fun nativeUIShow(uiApp: Long)
     private external fun nativeUIHide(uiApp: Long)
+    private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
 
     companion object {
         init {
