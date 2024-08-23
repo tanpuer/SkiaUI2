@@ -1,6 +1,7 @@
 #include <ScrollDispatcher.h>
 #include "ScrollView.h"
 #include "algorithm"
+#include "LinearAnimator.h"
 
 float ScrollView::DECELERATION_RATE = (float) (log(0.78) / log(0.9));
 
@@ -205,7 +206,7 @@ const char *ScrollView::name() {
     return "ScrollView";
 }
 
-void ScrollView::scrollToChild(int index, bool animated) {
+void ScrollView::scrollToIndex(int index, bool animated) {
     if (index < 0 && index > children.size() - 1) {
         ALOGE("ScrollView::scrollToChild error: %d", index)
         return;
@@ -215,15 +216,38 @@ void ScrollView::scrollToChild(int index, bool animated) {
         for (int i = 0; i < index; ++i) {
             translate += children[i]->getHeight();
         }
-        setTranslateY(-translate);
+        if (animated) {
+            scrollTo(-translate);
+        } else {
+            setTranslateY(-translate);
+        }
     } else {
         for (int i = 0; i < index; ++i) {
             translate += children[i]->getWidth();
         }
-//        updateTranslateX(-translateX + translate);
+        //Todo
     }
 }
 
 bool ScrollView::isScroller() {
     return true;
+}
+
+void ScrollView::scrollTo(float value) {
+    auto start = _direction == YGFlexDirectionColumn ? translateY : translateX;
+    auto scrollAnimator = new LinearAnimator(this, start, value);
+    scrollAnimator->setDuration(500);
+    scrollAnimator->setUpdateListener([this](View *view, float value) {
+        if (_direction == YGFlexDirectionColumn) {
+            setTranslateY(value);
+        } else {
+            //Todo
+        }
+    });
+    scrollAnimator->start();
+}
+
+void ScrollView::scrollBy(float value) {
+    auto start = _direction == YGFlexDirectionColumn ? translateY : translateX;
+    scrollTo(start + value);
 }

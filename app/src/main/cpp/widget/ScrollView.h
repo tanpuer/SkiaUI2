@@ -59,9 +59,17 @@ public:
 
     virtual const char *name() override;
 
-    virtual void scrollToChild(int index, bool animated);
+    virtual void scrollToIndex(int index, bool animated);
 
     bool isScroller() override;
+
+    /**
+     * vertical : value < 0 down; value > 0 up
+     * horizontal: value < 0 left; value > 0 right
+     */
+    virtual void scrollTo(float value);
+
+    virtual void scrollBy(float value);
 
 protected:
 
