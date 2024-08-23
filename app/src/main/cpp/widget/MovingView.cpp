@@ -38,16 +38,8 @@ bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
 }
 
 void MovingView::layout(int l, int t, int r, int b) {
-//    if (YGFloatsEqual(translateX, 0.0f) && YGFloatsEqual(translateY, 0.0f)) {
-//        View::layout(l, t, r, b);
-//    } else {
-//        ALOGD("MovingView %f %f", translateX, translateY)
-//        skRect.setLTRB(l + translateX, t + translateY, r + translateX, b + translateY);
-//        width = r - l;
-//        height = b - t;
-//    }
     View::layout(l, t, r, b);
-    ALOGD("MovingView %f %f", translateX, translateY)
+//    ALOGD("MovingView %f %f", translateX, translateY)
     skRect.setLTRB(l + translateX, t + translateY, r + translateX, b + translateY);
 }
 
