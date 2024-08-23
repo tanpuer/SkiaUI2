@@ -1,12 +1,7 @@
 package com.temple.skiaui.audio
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.media.audiofx.Visualizer
-import android.media.audiofx.Visualizer.OnDataCaptureListener
 import android.net.Uri
 import androidx.annotation.OptIn
-import androidx.core.content.ContextCompat
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -17,8 +12,6 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
-import kotlin.math.abs
-import kotlin.math.hypot
 
 @OptIn(UnstableApi::class)
 class HYSkiaAudioPlayer
@@ -29,13 +22,6 @@ class HYSkiaAudioPlayer
     private var exoPlayer: ExoPlayer = ExoPlayer.Builder(HYSkiaUIApp.getInstance()).build()
 
     init {
-        if (ContextCompat.checkSelfPermission(
-                HYSkiaUIApp.getInstance(),
-                Manifest.permission.RECORD_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            throw RuntimeException("need record_audio permission to use Visualizer API!")
-        }
         val dataSourceFactory = DataSource.Factory { AssetDataSource(HYSkiaUIApp.getInstance()) }
         val uri = Uri.parse("asset:///$assetsPath")
         val mediaSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
