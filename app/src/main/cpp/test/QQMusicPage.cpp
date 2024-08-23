@@ -2,6 +2,7 @@
 #include "FlexboxLayout.h"
 #include "ImageView.h"
 #include "LyricView.h"
+#include "LyricScrollView.h"
 #include "LinearAnimator.h"
 
 void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
@@ -109,7 +110,16 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         flexboxLayout->addView(imageView);
     }
 
-    auto lyricView = new LyricView();
+//    auto lyricView = new LyricView();
+//    lyricView->setContext(this->context);
+//    lyricView->setBackgroundColor("#00000000");
+//    lyricView->setWidth(width);
+//    lyricView->setHeight(height - 700);
+//    lyricView->setSourceSRT("feng.srt");
+//    lyricView->setMargin({0, 300, 0, 0});
+//    flexboxLayout->addView(lyricView);
+
+    auto lyricView = new LyricScrollView();
     lyricView->setContext(this->context);
     lyricView->setBackgroundColor("#00000000");
     lyricView->setWidth(width);
