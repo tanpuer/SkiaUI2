@@ -32,6 +32,26 @@ void IAnimator::setLoopCount(int count) {
 }
 
 float IAnimator::getInterpolation(float factor) {
-    return static_cast<float >(currTime - startTime) / static_cast<float >(duration);
+    if (paused) {
+        return static_cast<float >(pausedStartTime - pausedTotalTime) / static_cast<float >(duration);
+    } else {
+        return static_cast<float >(currTime - pausedTotalTime - startTime) / static_cast<float >(duration);
+    }
+}
+
+void IAnimator::pause() {
+    if (paused) {
+        return;
+    }
+    paused = true;
+    pausedStartTime = currTime;
+}
+
+void IAnimator::resume() {
+    if (!paused) {
+        return;
+    }
+    paused = false;
+    pausedTotalTime += currTime - pausedStartTime;
 }
 

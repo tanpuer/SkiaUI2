@@ -63,13 +63,13 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 300, 0, 0});
         flexboxLayout->addView(imageView);
-        auto rotateAnimator = new LinearAnimator(imageView, 0.0, 360.0);
-        rotateAnimator->setDuration(5000);
-        rotateAnimator->setLoopCount(-1);
-        rotateAnimator->setUpdateListener([imageView](View *view, float value) {
+        recordOutAnimator = new LinearAnimator(imageView, 0.0, 360.0);
+        recordOutAnimator->setDuration(5000);
+        recordOutAnimator->setLoopCount(-1);
+        recordOutAnimator->setUpdateListener([imageView](View *view, float value) {
             imageView->rotateZ = value;
         });
-        rotateAnimator->start();
+        recordOutAnimator->start();
     }
 
     {
@@ -86,13 +86,13 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 620, 0, 0});
         flexboxLayout->addView(imageView);
-        auto rotateAnimator = new LinearAnimator(imageView, 0.0, 360.0);
-        rotateAnimator->setDuration(5000);
-        rotateAnimator->setLoopCount(-1);
-        rotateAnimator->setUpdateListener([imageView](View *view, float value) {
+        recordInnerAnimator = new LinearAnimator(imageView, 0.0, 360.0);
+        recordInnerAnimator->setDuration(5000);
+        recordInnerAnimator->setLoopCount(-1);
+        recordInnerAnimator->setUpdateListener([imageView](View *view, float value) {
             imageView->rotateZ = value;
         });
-        rotateAnimator->start();
+        recordInnerAnimator->start();
     }
 
     {
@@ -256,14 +256,27 @@ void QQMusicPage::drawOnFrame(int drawCount) {
 }
 
 void QQMusicPage::updateArmView(bool play) {
-    if (armView == nullptr) {
-        return;
+    if (armView != nullptr) {
+        auto value = play ? 30.0 : 0.0;
+        auto rotateAnimator = new LinearAnimator(armView, armView->rotateZ, value);
+        rotateAnimator->setDuration(500);
+        rotateAnimator->setUpdateListener([this](View *view, float value) {
+            armView->rotateZ = value;
+        });
+        rotateAnimator->start();
     }
-    auto value = play ? 30.0 : 0.0;
-    auto rotateAnimator = new LinearAnimator(armView, armView->rotateZ, value);
-    rotateAnimator->setDuration(500);
-    rotateAnimator->setUpdateListener([this](View *view, float value) {
-        armView->rotateZ = value;
-    });
-    rotateAnimator->start();
+    if (recordOutAnimator != nullptr) {
+        if (play) {
+            recordOutAnimator->resume();
+        } else {
+            recordOutAnimator->pause();
+        }
+    }
+    if (recordInnerAnimator != nullptr) {
+        if (play) {
+            recordInnerAnimator->resume();
+        } else {
+            recordInnerAnimator->pause();
+        }
+    }
 }

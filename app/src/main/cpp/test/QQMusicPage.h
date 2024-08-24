@@ -4,6 +4,7 @@
 #include "AudioFFTView.h"
 #include "ProgressBar.h"
 #include "ImageView.h"
+#include "LinearAnimator.h"
 
 class QQMusicPage : public Page {
 
@@ -26,5 +27,9 @@ private:
     ImageView *armView = nullptr;
 
     void updateArmView(bool play);
+
+    LinearAnimator *recordOutAnimator = nullptr;
+
+    LinearAnimator *recordInnerAnimator = nullptr;
 
 };

@@ -32,6 +32,10 @@ public:
 
     virtual void setLoopCount(int count);
 
+    virtual void pause();
+
+    virtual void resume();
+
 protected:
 
     long duration;
@@ -43,5 +47,11 @@ protected:
     int loopCount = 1;
 
     std::function<void()> finishCallback = nullptr;
+
+    long pausedTotalTime = 0L;
+
+    long pausedStartTime = 0L;
+
+    bool paused = false;
 
 };
