@@ -23,4 +23,8 @@ private:
 
     ImageView *playImage = nullptr;
 
+    ImageView *armView = nullptr;
+
+    void updateArmView(bool play);
+
 };

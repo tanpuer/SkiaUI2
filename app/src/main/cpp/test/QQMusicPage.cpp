@@ -66,7 +66,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         auto rotateAnimator = new LinearAnimator(imageView, 0.0, 360.0);
         rotateAnimator->setDuration(5000);
         rotateAnimator->setLoopCount(-1);
-        rotateAnimator->setUpdateListener([imageView](View* view, float value) {
+        rotateAnimator->setUpdateListener([imageView](View *view, float value) {
             imageView->rotateZ = value;
         });
         rotateAnimator->start();
@@ -89,25 +89,30 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         auto rotateAnimator = new LinearAnimator(imageView, 0.0, 360.0);
         rotateAnimator->setDuration(5000);
         rotateAnimator->setLoopCount(-1);
-        rotateAnimator->setUpdateListener([imageView](View* view, float value) {
-             imageView->rotateZ = value;
+        rotateAnimator->setUpdateListener([imageView](View *view, float value) {
+            imageView->rotateZ = value;
         });
         rotateAnimator->start();
     }
 
     {
-        auto imageView = new ImageView();
-        imageView->setContext(this->context);
-        imageView->setWidth(130 * 1.5);
-        imageView->setHeight(600 * 1.5);
-        imageView->setSource("music/record_player_dark_arm.png");
-        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
-        imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
-        imageView->setAlignSelf(YGAlignFlexStart);
-        imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
-        imageView->setMargin({700, 350, 0, 0});
-        flexboxLayout->addView(imageView);
+        armView = new ImageView();
+        armView->setContext(this->context);
+        armView->setWidth(130 * 1.5);
+        armView->setHeight(600 * 1.5);
+        armView->setSource("music/record_player_dark_arm.png");
+        armView->setScaleType(ImageView::ScaleType::CenterCrop);
+        armView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        armView->setAlignSelf(YGAlignFlexStart);
+        armView->setStyle(SkPaint::kStroke_Style);
+        armView->setBackgroundColor(SK_ColorTRANSPARENT);
+        armView->setMargin({700, 350, 0, 0});
+        armView->needClip = false;
+        flexboxLayout->addView(armView);
+        armView->setRotateFunc([](SkRect &dstRect, SkMatrix &matrix, float rotateZ) {
+            matrix.preRotate(rotateZ, dstRect.centerX(), dstRect.top());
+        });
+        updateArmView(true);
     }
 
 //    auto lyricView = new LyricView();
@@ -182,9 +187,11 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
                     if (fftView->isPlaying()) {
                         playImage->setSource("music/ic_play.png");
                         fftView->pause();
+                        this->updateArmView(false);
                     } else {
                         playImage->setSource("music/ic_pause.png");
                         fftView->play();
+                        this->updateArmView(true);
                     }
                 }
             });
@@ -246,4 +253,17 @@ void QQMusicPage::drawOnFrame(int drawCount) {
         progress = current * 100.0f / duration;
         progressBar->setProgress(progress);
     }
+}
+
+void QQMusicPage::updateArmView(bool play) {
+    if (armView == nullptr) {
+        return;
+    }
+    auto value = play ? 30.0 : 0.0;
+    auto rotateAnimator = new LinearAnimator(armView, armView->rotateZ, value);
+    rotateAnimator->setDuration(500);
+    rotateAnimator->setUpdateListener([this](View *view, float value) {
+        armView->rotateZ = value;
+    });
+    rotateAnimator->start();
 }

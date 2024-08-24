@@ -79,7 +79,11 @@ void ImageView::layout(int l, int t, int r, int b) {
                                  dstRect.centerY());
         }
     }
-    imageMatrix.preRotate(rotateZ, dstRect.centerX(), dstRect.centerY());
+    if (rotateFunc != nullptr) {
+        rotateFunc(dstRect, imageMatrix, rotateZ);
+    } else {
+        imageMatrix.preRotate(rotateZ, dstRect.centerX(), dstRect.centerY());
+    }
 }
 
 void ImageView::draw(SkCanvas *canvas) {
@@ -99,7 +103,10 @@ void ImageView::draw(SkCanvas *canvas) {
     }
     canvas->save();
     clipRect.setRectXY(dstRect, radius, radius);
-    canvas->clipRRect(clipRect);
+    //Todo
+    if (needClip) {
+        canvas->clipRRect(clipRect);
+    }
     canvas->setMatrix(imageMatrix);
     canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
                           SkCanvas::kFast_SrcRectConstraint);
@@ -133,6 +140,10 @@ const char *ImageView::getSource() {
 
 const ImageView::ScaleType ImageView::getScaleType() {
     return scaleType;
+}
+
+void ImageView::setRotateFunc(std::function<void(SkRect &, SkMatrix &, float)> &&rotateFunc) {
+    this->rotateFunc = std::move(rotateFunc);
 }
 
 

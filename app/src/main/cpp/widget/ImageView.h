@@ -44,6 +44,11 @@ public:
 
     virtual void blur(float blur);
 
+    void setRotateFunc(std::function<void(SkRect &dstRect, SkMatrix &imageMatrix,
+                                          float rotateZ)> &&rotateFunc);
+
+    bool needClip = true;
+
 private:
 
     sk_sp<SkImage> skImage;
@@ -78,5 +83,7 @@ private:
     ScaleType scaleType;
 
     std::string source;
+
+    std::function<void(SkRect &dstRect, SkMatrix &imageMatrix, float rotateZ)> rotateFunc;
 
 };
