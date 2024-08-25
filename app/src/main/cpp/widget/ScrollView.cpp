@@ -214,7 +214,8 @@ void ScrollView::scrollToIndex(int index, bool animated) {
     auto translate = 0;
     if (_direction == YGFlexDirectionColumn) {
         for (int i = 0; i < index; ++i) {
-            translate += children[i]->getHeight();
+            auto child = children[i];
+            translate += child->getHeight() + child->marginTop + child->marginBottom;
         }
         if (animated) {
             scrollTo(-translate);
