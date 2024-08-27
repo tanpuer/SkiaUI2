@@ -69,6 +69,8 @@ public:
 
     virtual void scrollBy(float value);
 
+    int getDrawnCount();
+
 protected:
 
     float calculateFlingTranslate();
@@ -84,5 +86,7 @@ protected:
      */
     bool lastScrollDown = true;
     bool lastScrollRight = true;
+
+    int drawnCount = 0;
 
 };

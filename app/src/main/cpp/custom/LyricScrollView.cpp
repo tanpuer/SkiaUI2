@@ -93,7 +93,7 @@ void LyricScrollView::draw(SkCanvas *canvas) {
             textView->setTextSize(60);
         }
         currentIndex = index;
-        scrollToIndex(std::max(currentIndex - 5, 0), true);
+        scrollToIndex(std::max(currentIndex - getDrawnCount() / 2 + 1, 0), true);
     }
     //highlight
     if (currentIndex >= 0 && currentIndex < children.size()) {
@@ -138,6 +138,7 @@ View *LyricScrollView::initItem(int index) {
     textView->setBackgroundColor(SK_ColorTRANSPARENT);
     textView->setStyle(SkPaint::kStroke_Style);
     textView->setMaxLines(1);
+    textView->setMargin({0, 40, 0, 40});
     textView->setText(result[index].content.c_str());
     flexLayout->addView(textView);
     return flexLayout;

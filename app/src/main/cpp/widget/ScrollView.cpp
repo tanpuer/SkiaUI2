@@ -165,12 +165,14 @@ void ScrollView::addScrollCallback(std::function<void(float, float)> callback) {
 }
 
 void ScrollView::draw(SkCanvas *canvas) {
+    drawnCount = 0;
     canvas->save();
     canvas->clipIRect(skRect);
     View::draw(canvas);
     for (auto child: children) {
         if (!ignoreChildDraw(child)) {
             child->draw(canvas);
+            drawnCount++;
         }
     }
     canvas->restore();
@@ -244,4 +246,8 @@ void ScrollView::scrollTo(float value) {
 void ScrollView::scrollBy(float value) {
     auto start = _direction == YGFlexDirectionColumn ? translateY : translateX;
     scrollTo(start + value);
+}
+
+int ScrollView::getDrawnCount() {
+    return drawnCount;
 }
