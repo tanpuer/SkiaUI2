@@ -50,6 +50,8 @@ public:
 
     bool dispatchTouchEvent(TouchEvent *touchEvent) override;
 
+    bool dispatchVelocity(Velocity *velocity) override;
+
     void enterFromRight(const EnterExitInfo &info);
 
     void exitToLeft(const EnterExitInfo &info);

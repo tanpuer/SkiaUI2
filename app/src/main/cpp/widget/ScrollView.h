@@ -49,8 +49,6 @@ public:
 
     virtual bool ignoreChildDraw(const View *child);
 
-    void setVelocity(float x, float y);
-
     void startFling();
 
     void stopFling();
@@ -72,8 +70,6 @@ public:
     virtual void scrollBy(float value);
 
 protected:
-
-    float xVelocity, yVelocity;
 
     float calculateFlingTranslate();
 

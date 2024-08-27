@@ -421,3 +421,8 @@ void View::markDirty() {
 void View::setAnimator(IAnimator *animator) {
     this->animator.reset(animator);
 }
+
+void View::setVelocity(float x, float y) {
+    this->xVelocity = x;
+    this->yVelocity = y;
+}

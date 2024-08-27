@@ -153,9 +153,8 @@ bool TouchEventDispatcher::checkTouchInTargetView(TouchEvent *touchEvent) {
 }
 
 bool TouchEventDispatcher::dispatchVelocity(Velocity *velocity) {
-    auto scrollView = dynamic_cast<ScrollView *>(weakTargetView);
-    if (scrollView != nullptr) {
-        scrollView->setVelocity(velocity->xVelocity, velocity->yVelocity);
+    if (weakTargetView != nullptr) {
+        weakTargetView->setVelocity(velocity->xVelocity, velocity->yVelocity);
         return true;
     }
     return false;

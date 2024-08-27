@@ -146,6 +146,14 @@ bool Page::dispatchTouchEvent(TouchEvent *touchEvent) {
     return false;
 }
 
+bool Page::dispatchVelocity(Velocity *velocity) {
+    if (children.size() == 1) {
+        auto root = static_cast<ViewGroup *>(children[0]);
+        return root->dispatchVelocity(velocity);
+    }
+    return false;
+}
+
 void Page::setVisibility(bool visible) {
     this->visible = visible;
 }

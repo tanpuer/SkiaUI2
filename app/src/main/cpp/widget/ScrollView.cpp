@@ -5,8 +5,7 @@
 
 float ScrollView::DECELERATION_RATE = (float) (log(0.78) / log(0.9));
 
-ScrollView::ScrollView() : xVelocity(0.0f), yVelocity(0.0f), isFling(false),
-                           startTime(0L) {
+ScrollView::ScrollView() : isFling(false), startTime(0L) {
     touchEventDispatcher = std::make_unique<ScrollDispatcher>(this);
     scrollCallbacks = std::vector<std::function<void(float dx, float dy)>>();
 }
@@ -114,12 +113,6 @@ bool ScrollView::canScroll() {
     } else {
         return abs(translateY) <= getChildHeightSum() - height;
     }
-}
-
-void ScrollView::setVelocity(float x, float y) {
-    this->xVelocity = x;
-    this->yVelocity = y;
-//    ALOGD("ScrollView setVelocity %f %f", x, y)
 }
 
 void ScrollView::startFling() {

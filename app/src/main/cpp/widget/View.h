@@ -228,6 +228,8 @@ public:
 
     virtual void performClick();
 
+    virtual void setVelocity(float x, float y);
+
 protected:
 
     std::function<void(int, int, int, int)> viewLayoutCallback = nullptr;
@@ -235,6 +237,8 @@ protected:
     std::function<void(View *)> viewClickListener = nullptr;
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
+
+    float xVelocity, yVelocity = 0.0f;
 
 #pragma mark LifeCycle
 public:
