@@ -79,7 +79,7 @@ class HYSkiaVideo internal constructor(
         decodeHandler.post {
             this.initializeReader()
         }
-        decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
+        decodeHandler.post(decodeOneFrameRunnable)
         engine.createListeners[threadName] = createListener
     }
 
@@ -137,10 +137,11 @@ class HYSkiaVideo internal constructor(
 
         val image = imageReader?.acquireLatestImage()
         if (image != null) {
-            if (hardwareBuffer != null) {
-                image.close()
-                return null
-            }
+            //TODO
+//            if (hardwareBuffer != null) {
+//                image.close()
+//                return null
+//            }
             val hardwareBuffer = image.hardwareBuffer
             image.close()
             return hardwareBuffer
@@ -230,10 +231,6 @@ class HYSkiaVideo internal constructor(
     fun pause() {
         playing = false
         decodeHandler.removeCallbacks(decodeOneFrameRunnable)
-    }
-
-    fun deleteSkImage(ptr: Long) {
-        engine.deleteSkImage(ptr)
     }
 
     companion object {

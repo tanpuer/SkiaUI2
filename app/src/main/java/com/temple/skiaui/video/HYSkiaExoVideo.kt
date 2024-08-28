@@ -141,10 +141,6 @@ class HYSkiaExoVideo internal constructor(
         }
     }
 
-    fun deleteSkImage(ptr: Long) {
-        engine.deleteSkImage(ptr)
-    }
-
     companion object {
         private var INDEX = 1
         private const val TAG = "HYSkiaExoVideo"

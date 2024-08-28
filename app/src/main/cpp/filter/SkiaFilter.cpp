@@ -20,6 +20,7 @@ SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
 }
 
 SkiaFilter::~SkiaFilter() {
+    deleteLastSkImage(true);
     skCanvas = nullptr;
 }
 
@@ -61,6 +62,7 @@ void SkiaFilter::render(SkPicture *picture) {
     picture->playback(skCanvas);
     picture->unref();
     skiaContext->flush();
+    deleteLastSkImage(false);
 }
 
 long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBuffer) {
@@ -89,6 +91,8 @@ long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBu
             backendTex, kTopLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
             kOpaque_SkAlphaType, nullptr, deleteImageProc, deleteImageCtx);
     image->ref();
+    currentSkImage = image.get();
+    needDelete = true;
     return reinterpret_cast<long >(image.get());
 }
 
@@ -98,5 +102,19 @@ void SkiaFilter::deleteSkImage(JNIEnv *env, long skImagePtr) {
         while (skImage->getRefCnt2() > 0) {
             skImage->unref();
         }
+    }
+}
+
+void SkiaFilter::deleteLastSkImage(bool force) {
+    if (force || needDelete) {
+        needDelete = false;
+        if (lastSkImage != nullptr) {
+            while (lastSkImage->getRefCnt2() > 0) {
+                lastSkImage->unref();
+            }
+            lastSkImage = nullptr;
+        }
+        lastSkImage = currentSkImage;
+        currentSkImage = nullptr;
     }
 }

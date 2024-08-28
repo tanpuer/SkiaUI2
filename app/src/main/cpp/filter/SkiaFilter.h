@@ -32,4 +32,12 @@ private:
 
     SkCanvas *skCanvas;
 
+    SkImage *lastSkImage = nullptr;
+
+    SkImage *currentSkImage = nullptr;
+
+    void deleteLastSkImage(bool force = false);
+
+    bool needDelete = false;
+
 };
