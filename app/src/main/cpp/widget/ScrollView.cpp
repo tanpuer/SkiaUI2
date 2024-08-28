@@ -165,14 +165,12 @@ void ScrollView::addScrollCallback(std::function<void(float, float)> callback) {
 }
 
 void ScrollView::draw(SkCanvas *canvas) {
-    drawnCount = 0;
     canvas->save();
     canvas->clipIRect(skRect);
     View::draw(canvas);
     for (auto child: children) {
         if (!ignoreChildDraw(child)) {
             child->draw(canvas);
-            drawnCount++;
         }
     }
     canvas->restore();
@@ -248,6 +246,22 @@ void ScrollView::scrollBy(float value) {
     scrollTo(start + value);
 }
 
-int ScrollView::getDrawnCount() {
-    return drawnCount;
+int ScrollView::getDistanceByIndex(int index) {
+    if (index >= children.size()) {
+        ALOGE("ScrollView::getChildHeightSum invalid param index:%d", index)
+        return 0;
+    }
+    auto sum = 0;
+    if (_direction == YGFlexDirectionColumn) {
+        for (int i = 0; i < index; ++i) {
+            auto child = children[index];
+            sum += child->getHeight() + child->marginTop + child->marginBottom;
+        }
+    } else {
+        for (int i = 0; i < index; ++i) {
+            auto child = children[index];
+            sum += child->getWidth() + child->marginLeft + child->marginRight;
+        }
+    }
+    return sum;
 }

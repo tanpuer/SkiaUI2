@@ -238,6 +238,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             if (finished && fftView != nullptr) {
                 fftView->seek(progress * fftView->getDuration() / 100);
                 playImage->setSource("music/ic_pause.png");
+                updateArmView(true);
             }
         });
     }

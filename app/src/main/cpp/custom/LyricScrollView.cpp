@@ -93,7 +93,7 @@ void LyricScrollView::draw(SkCanvas *canvas) {
             textView->setTextSize(60);
         }
         currentIndex = index;
-        scrollToIndex(std::max(currentIndex - getDrawnCount() / 2 + 1, 0), true);
+        scrollTo(-std::max(ScrollView::getDistanceByIndex(currentIndex) - getHeight() / 2, 0));
     }
     //highlight
     if (currentIndex >= 0 && currentIndex < children.size()) {
