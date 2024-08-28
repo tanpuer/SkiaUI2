@@ -17,7 +17,7 @@ public:
     struct EnterExitInfo {
         int from;
         int to;
-        int duration = 1000;
+        int duration = 500;
 
         EnterExitInfo() = delete;
 
