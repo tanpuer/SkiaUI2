@@ -8,6 +8,9 @@ VideoView::VideoView() {
 
 VideoView::~VideoView() {
     auto jniEnv = getContext()->getJniEnv();
+    if (lastSkImagePtr != 0L) {
+        jniEnv->CallVoidMethod(javaVideo, deleteSkImageMethod, lastSkImagePtr);
+    }
     jniEnv->CallVoidMethod(javaVideo, releaseMethod);
     jniEnv->DeleteGlobalRef(javaVideo);
 }
@@ -23,6 +26,7 @@ void VideoView::setSource(const char *path) {
     startMethod = jniEnv->GetMethodID(javaVideoClass, "start", "()V");
     pauseMethod = jniEnv->GetMethodID(javaVideoClass, "pause", "()V");
     releaseMethod = jniEnv->GetMethodID(javaVideoClass, "release", "()V");
+    deleteSkImageMethod = jniEnv->GetMethodID(javaVideoClass, "deleteSkImage", "(J)V");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
     javaVideo = jniEnv->NewGlobalRef(jniEnv->NewObject(javaVideoClass, javaVideoConstructor,
                                                        jniEnv->NewStringUTF(path), javaSkiaEngine));
@@ -42,6 +46,7 @@ void VideoView::draw(SkCanvas *canvas) {
     auto jniEnv = getContext()->getJniEnv();
     auto skImagePtr = jniEnv->CallLongMethod(javaVideo, getCurrentSkImage);
     if (skImagePtr != lastSkImagePtr) {
+//        jniEnv->CallVoidMethod(javaVideo, deleteSkImageMethod, lastSkImagePtr);
         if (skImagePtr != 0L) {
             auto image = reinterpret_cast<SkImage *>(skImagePtr);
             skImage = SkSafeRef(image);

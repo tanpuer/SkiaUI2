@@ -48,6 +48,7 @@ class HYSkiaEngine {
     private val pluginManager = PluginManager()
     private var glApp = 0L
     private var uiApp = 0L
+    private val skImageList = mutableListOf<Long>()
     val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val executors = Executors.newFixedThreadPool(2)
 
@@ -122,6 +123,10 @@ class HYSkiaEngine {
                 return@post
             }
             nativeGLDoFrame(glApp, currPic, time)
+            skImageList.forEach {
+                nativeDeleteSkImage(glApp, it)
+            }
+            skImageList.clear()
         }
     }
 
@@ -176,6 +181,12 @@ class HYSkiaEngine {
         }
     }
 
+    fun deleteSkImage(skImagePtr: Long) {
+        skiaGLHandler.post {
+            skImageList.add(skImagePtr)
+        }
+    }
+
     fun executeTask(taskId: Int) {
         executors.submit {
             nativeExecuteTask(uiApp, taskId, HYSkiaUIApp.getInstance().assets)
@@ -202,6 +213,7 @@ class HYSkiaEngine {
         hardwareBuffer: HardwareBuffer
     ): Long
 
+    private external fun nativeDeleteSkImage(glApp: Long, skImagePtr: Long)
 
     private external fun nativeUIInit(assets: AssetManager): Long
     private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean
