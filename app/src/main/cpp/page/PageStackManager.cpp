@@ -47,8 +47,11 @@ void PageStackManager::removeDestroyedPage() {
     if (pages.size() > 0) {
         auto page = back();
         if (page != nullptr && page->isDestroyed()) {
-            pop();
+            auto _page = pop();
+            delete _page;
+            _page = nullptr;
             updateVisibility(true);
+
         }
     }
 }
