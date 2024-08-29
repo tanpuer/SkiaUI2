@@ -11,6 +11,7 @@
 #include "MovingView.h"
 #include "Button.h"
 #include "TextView.h"
+#include "QQMusicPage.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -73,8 +74,11 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         lottieView->setStrokeWidth(2);
         lottieView->setMargin({0, 0, 0, 50});
         scrollView->addView(lottieView);
-        lottieView->setOnClickListener([scrollView](View *view) {
-            scrollView->scrollTo(-1000);
+        lottieView->setOnClickListener([this, width, height](View *view) {
+            auto page = new QQMusicPage();
+            page->init(context, width, height);
+            context->getPageStackManager()->push(page);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
     }
 
