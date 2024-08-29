@@ -3,6 +3,7 @@
 TranslateAnimator::TranslateAnimator(View *view,
                                      float animStartX, float animEndX,
                                      float animStartY, float animEndY) {
+    view->setAnimator(this);
     this->targetView = view;
     view->animTranslateX = animStartX;
     view->animTranslateY = animStartY;

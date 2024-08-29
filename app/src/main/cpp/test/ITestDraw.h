@@ -21,6 +21,8 @@ public:
         YGConfigFree(config);
     };
 
+    virtual void performAnimations(int width, int height) {}
+
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) = 0;
 
     virtual void setContext(std::shared_ptr<SkiaUIContext> context) {

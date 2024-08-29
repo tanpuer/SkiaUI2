@@ -3,6 +3,8 @@
 #include "functional"
 #include "core/SkRect.h"
 
+static int32_t ANIMATOR_ID = 0;
+
 class IAnimator {
 
 public:
@@ -36,6 +38,8 @@ public:
 
     virtual void resume();
 
+    virtual uint32_t getAnimatorId();
+
 protected:
 
     long duration;
@@ -53,5 +57,7 @@ protected:
     long pausedStartTime = 0L;
 
     bool paused = false;
+
+    uint32_t animatorId = 0;
 
 };

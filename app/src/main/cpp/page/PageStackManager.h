@@ -22,6 +22,8 @@ public:
 
     void updateVisibility(bool isAnimationEnd);
 
+    void removeDestroyedPage();
+
 private:
 
     std::vector<Page *> pages;

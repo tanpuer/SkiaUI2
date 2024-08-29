@@ -37,6 +37,8 @@ public:
 
     virtual void onHide() override;
 
+    virtual void performAnimations() override;
+
 #pragma mark ViewGroup api
 
     virtual bool addView(View *view);

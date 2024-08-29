@@ -11,6 +11,8 @@ public:
 
     ~PageTest() = default;
 
+    void performAnimations(int width, int height) override;
+
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
 };

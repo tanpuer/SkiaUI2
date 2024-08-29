@@ -219,3 +219,10 @@ void ViewGroup::onHide() {
     }
 }
 
+void ViewGroup::performAnimations() {
+    View::performAnimations();
+    for (const auto &item: children) {
+        item->performAnimations();
+    }
+}
+

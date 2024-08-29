@@ -193,9 +193,13 @@ public:
 
 #pragma mark Animator
 
+public:
+
+    virtual void performAnimations();
+
 protected:
 
-    std::unique_ptr<IAnimator> animator;
+    std::unordered_map<uint32_t, std::unique_ptr<IAnimator>> animators;
 
 public:
     float animTranslateX = 0.0f;

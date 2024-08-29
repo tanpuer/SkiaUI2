@@ -49,9 +49,6 @@ MovingView::MovingView() : View() {
 }
 
 MovingView::~MovingView() {
-    if (animator != nullptr) {
-        animator.reset();
-    }
 }
 
 const char *MovingView::name() {

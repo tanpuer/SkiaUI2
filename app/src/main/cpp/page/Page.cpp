@@ -36,7 +36,7 @@ Page::~Page() {
 
 void Page::enterFromRight(const EnterExitInfo &info) {
     ALOGD("enterFromRight %d %d %d", info.from, info.to, info.duration)
-    animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
+    auto animator = new TranslateAnimator(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
     animator->addListener([this]() {
         context->getPageStackManager()->updateVisibility(true);
@@ -48,12 +48,10 @@ void Page::enterFromRight(const EnterExitInfo &info) {
 
 void Page::exitToLeft(const EnterExitInfo &info) {
     ALOGD("exitToLeft %d %d %d", info.from, info.to, info.duration)
-    animator = std::make_unique<TranslateAnimator>(this, info.from, info.to, 0, 0);
+    auto animator = new TranslateAnimator(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
     animator->addListener([this]() {
-        auto page = context->getPageStackManager()->pop();
-        context->getPageStackManager()->updateVisibility(true);
-        delete page;
+        this->markDestroyed = true;
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
@@ -62,12 +60,10 @@ void Page::exitToLeft(const EnterExitInfo &info) {
 
 void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     ALOGD("enterFromBottom %d %d %d", info.from, info.to, info.duration)
-    animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
+    auto animator = new TranslateAnimator(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
     animator->addListener([this]() {
-        auto page = context->getPageStackManager()->pop();
         context->getPageStackManager()->updateVisibility(true);
-        delete page;
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
@@ -76,12 +72,10 @@ void Page::enterFromBottom(const Page::EnterExitInfo &info) {
 
 void Page::exitToTop(const Page::EnterExitInfo &info) {
     ALOGD("exitToTop %d %d %d", info.from, info.to, info.duration)
-    animator = std::make_unique<TranslateAnimator>(this, 0, 0, info.from, info.to);
+    auto animator = new TranslateAnimator(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
     animator->addListener([this]() {
-        auto page = context->getPageStackManager()->pop();
-        context->getPageStackManager()->updateVisibility(true);
-        delete page;
+        this->markDestroyed = true;
     });
     animator->start();
     context->getPageStackManager()->updateVisibility(false);
@@ -109,9 +103,6 @@ void Page::layout(int l, int t, int r, int b) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(root->node));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(root->node));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(root->node));
-//    if (animator != nullptr && !animator->isEnd()) {
-//        animator->update(skRect);
-//    }
     root->layout(left + animTranslateX,
                  top + animTranslateY,
                  left + animTranslateX + width,
@@ -133,9 +124,6 @@ void Page::draw(SkCanvas *canvas) {
     canvas->translate(left, top);
     canvas->drawPicture(picture, nullptr, pagePaint.get());
     canvas->restore();
-    if (animator != nullptr && animator->isEnd()) {
-        animator.reset();
-    }
 }
 
 bool Page::dispatchTouchEvent(TouchEvent *touchEvent) {
@@ -189,6 +177,10 @@ void Page::onHide() {
         runtime->performFunction(hideCallback, 0, {});
     }
     ViewGroup::onHide();
+}
+
+bool Page::isDestroyed() {
+    return markDestroyed;
 }
 
 #pragma mark LifeCycle Callback end

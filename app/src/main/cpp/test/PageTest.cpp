@@ -14,18 +14,25 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
-    if (root->getWidth() != width || root->getHeight() != height) {
-        root->setWidth(width);
-        root->setHeight(height);
-    }
+    performAnimations(width, height);
+    context->getPageStackManager()->removeDestroyedPage();
     for (const auto &item: context->getPageStackManager()->getPages()) {
         if (!item->getVisibility()) {
             continue;
         }
         item->drawOnFrame(drawCount);
-
         item->measure();
         item->layout(0, 0, width, height);
         item->draw(canvas);
+    }
+}
+
+void PageTest::performAnimations(int width, int height) {
+    for (const auto &item: context->getPageStackManager()->getPages()) {
+        if (item->getWidth() != width || item->getHeight() != height) {
+            item->setWidth(width);
+            item->setHeight(height);
+        }
+        item->performAnimations();
     }
 }

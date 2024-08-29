@@ -42,3 +42,13 @@ void PageStackManager::updateVisibility(bool isAnimationEnd) {
     }
     pages[pages.size() - 2]->setVisibility(!isAnimationEnd);
 }
+
+void PageStackManager::removeDestroyedPage() {
+    if (pages.size() > 0) {
+        auto page = back();
+        if (page != nullptr && page->isDestroyed()) {
+            pop();
+            updateVisibility(true);
+        }
+    }
+}

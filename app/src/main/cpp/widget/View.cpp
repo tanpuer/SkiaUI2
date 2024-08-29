@@ -22,7 +22,6 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
     paint->setAntiAlias(true);
     paint->setColor(SK_ColorWHITE);
     touchEventDispatcher = std::make_unique<TouchEventDispatcher>(this);
-    animator = std::unique_ptr<IAnimator>(nullptr);
 }
 
 View::~View() {
@@ -59,13 +58,7 @@ void View::layout(int l, int t, int r, int b) {
     bottom = b;
     width = r - l;
     height = b - t;
-    if (animator != nullptr) {
-        if (animator->isEnd()) {
-            animator.reset();
-        } else {
-            animator->update(skRect);
-        }
-    }
+
     if (viewLayoutCallback != nullptr) {
         viewLayoutCallback(l, t, r, b);
     }
@@ -419,10 +412,24 @@ void View::markDirty() {
 }
 
 void View::setAnimator(IAnimator *animator) {
-    this->animator.reset(animator);
+    animators[animator->getAnimatorId()] = std::unique_ptr<IAnimator>(animator);
 }
 
 void View::setVelocity(float x, float y) {
     this->xVelocity = x;
     this->yVelocity = y;
+}
+
+void View::performAnimations() {
+    std::vector<uint32_t> needReset;
+    for (const auto &animator: animators) {
+        if (animator.second->isEnd()) {
+            needReset.push_back(animator.first);
+        } else {
+            animator.second->update(skRect);
+        }
+    }
+    for (auto &index: needReset) {
+        animators.erase(index);
+    }
 }

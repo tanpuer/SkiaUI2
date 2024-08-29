@@ -3,6 +3,7 @@
 long IAnimator::currTime = 0L;
 
 IAnimator::IAnimator() : duration(500L), end(true), startTime(-1L), endTime(-1), loopCount(1) {
+    animatorId = ANIMATOR_ID++;
 }
 
 IAnimator::~IAnimator() {
@@ -53,5 +54,9 @@ void IAnimator::resume() {
     }
     paused = false;
     pausedTotalTime += currTime - pausedStartTime;
+}
+
+uint32_t IAnimator::getAnimatorId() {
+    return animatorId;
 }
 

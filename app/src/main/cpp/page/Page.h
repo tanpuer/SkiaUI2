@@ -17,7 +17,7 @@ public:
     struct EnterExitInfo {
         int from;
         int to;
-        int duration = 500;
+        int duration = 1000;
 
         EnterExitInfo() = delete;
 
@@ -66,6 +66,8 @@ public:
 
     void setBlackWhiteMode();
 
+    bool isDestroyed();
+
 private:
 
     std::unique_ptr<View> rootView;
@@ -75,6 +77,8 @@ private:
     bool visible = true;
 
     std::unique_ptr<SkPaint> pagePaint;
+
+    bool markDestroyed = false;
 
 public:
     void onShow() override;
