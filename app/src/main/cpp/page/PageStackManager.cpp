@@ -51,7 +51,6 @@ void PageStackManager::removeDestroyedPage() {
             delete _page;
             _page = nullptr;
             updateVisibility(true);
-
         }
     }
 }
