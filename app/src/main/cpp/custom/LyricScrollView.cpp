@@ -129,7 +129,7 @@ View *LyricScrollView::initItem(int index) {
     flexLayout->setAlignItems(YGAlignCenter);
     flexLayout->setJustifyContent(YGJustifyCenter);
     flexLayout->setBackgroundColor(SK_ColorTRANSPARENT);
-    flexLayout->setWidth(getWidth());
+    flexLayout->setWidthPercent(100);
     auto textView = new TextView();
     textView->setContext(this->context);
     textView->setTextSize(60);

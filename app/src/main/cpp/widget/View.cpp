@@ -195,16 +195,22 @@ void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     isDirty = true;
 }
 
-#pragma mark 后续才支持的
-
-void View::setSizePercent(float widthPercent, float heightPercent) {
+void View::setWidthPercent(float widthPercent) {
     YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
     this->widthPercent = widthPercent;
-    this->heightPercent = heightPercent;
     YGNodeStyleSetWidthPercent(node, widthPercent);
+    isDirty = true;
+}
+
+void View::setHeightPercent(float heightPercent) {
+    YGAssert(node, "view is null, pls check");
+    if (node == nullptr) {
+        return;
+    }
+    this->heightPercent = heightPercent;
     YGNodeStyleSetHeightPercent(node, heightPercent);
     isDirty = true;
 }

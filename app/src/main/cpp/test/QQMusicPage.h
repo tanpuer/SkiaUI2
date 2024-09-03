@@ -5,6 +5,7 @@
 #include "ProgressBar.h"
 #include "ImageView.h"
 #include "LinearAnimator.h"
+#include "LyricScrollView.h"
 
 class QQMusicPage : public Page {
 
@@ -17,6 +18,8 @@ public:
 private:
 
     float progress = 0.0;
+
+    LyricScrollView *lyricView = nullptr;
 
     AudioFFTView *fftView = nullptr;
 

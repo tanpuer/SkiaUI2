@@ -152,13 +152,10 @@ public:
     virtual void setAspectRatio(float ratio);
 
 public:
-    //todo 后续才支持的
-    /**
-     * 绝大部分情况下，宽度根据屏幕宽度百分比设置，高度参考宽度，保持宽高比
-     * @param widthPercent
-     * @param hwRatio
-     */
-    virtual void setSizePercent(float widthPercent, float heightPercent);
+
+    virtual void setWidthPercent(float widthPercent);
+
+    virtual void setHeightPercent(float heightPercent);
 
     float widthPercent, heightPercent;
 

@@ -25,9 +25,8 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     {
         auto imageView = new ImageView();
         imageView->setContext(this->context);
-//        imageView->setWidth(width);
-//        imageView->setHeight(height);
-        imageView->setSizePercent(100, 100);
+        imageView->setWidthPercent(100);
+        imageView->setHeightPercent(100);
         imageView->setSource("music/bg.png");
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
@@ -124,18 +123,18 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
 //    lyricView->setMargin({0, 300, 0, 0});
 //    flexboxLayout->addView(lyricView);
 
-    auto lyricView = new LyricScrollView();
+    lyricView = new LyricScrollView();
     lyricView->setContext(this->context);
     lyricView->setBackgroundColor("#00000000");
-    lyricView->setWidth(width);
-    lyricView->setHeight(height - 700);
+    lyricView->setWidthPercent(100);
+    lyricView->setFlex(3);
     lyricView->setSourceSRT("feng.srt");
     lyricView->setMargin({0, 300, 0, 0});
     flexboxLayout->addView(lyricView);
 
     fftView = new AudioFFTView();
     fftView->setContext(this->context);
-    fftView->setWidth(width);
+    fftView->setWidthPercent(100);
     fftView->setFlex(1);
     fftView->setBackgroundColor("#00000000");
     fftView->setSource("feng.mp4");
@@ -228,7 +227,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
         progressBar->setProgress(0);
         progressBar->setStyle(SkPaint::kStroke_Style);
-        progressBar->setWidth(width);
+        progressBar->setWidthPercent(100);
         progressBar->setHeight(60);
         progressBar->setMargin({50, 150, 50, 50});
         progressBar->setPositionType(YGPositionType::YGPositionTypeAbsolute);
