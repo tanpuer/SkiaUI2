@@ -21,7 +21,15 @@ public:
         YGConfigFree(config);
     };
 
-    virtual void performAnimations(int width, int height) {}
+    virtual void performAnimations(int width, int height) {
+        for (const auto &item: context->getPageStackManager()->getPages()) {
+            if (item->getWidth() != width || item->getHeight() != height) {
+                item->setWidth(width);
+                item->setHeight(height);
+            }
+            item->performAnimations();
+        }
+    }
 
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) = 0;
 

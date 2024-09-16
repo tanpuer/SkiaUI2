@@ -26,13 +26,3 @@ void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height
         item->draw(canvas);
     }
 }
-
-void PageTest::performAnimations(int width, int height) {
-    for (const auto &item: context->getPageStackManager()->getPages()) {
-        if (item->getWidth() != width || item->getHeight() != height) {
-            item->setWidth(width);
-            item->setHeight(height);
-        }
-        item->performAnimations();
-    }
-}

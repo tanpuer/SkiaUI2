@@ -4,21 +4,18 @@
 #include "MeasureTime.h"
 #include "performance.h"
 
-void JavascriptTest::setContext(std::shared_ptr<SkiaUIContext> context) {
-    MeasureTime measureTime("Javascript init");
-    ITestDraw::setContext(context);
-    v8Runtime = std::make_shared<V8Runtime>();
-    context->setV8Runtime(v8Runtime);
-    injectConsole();
-    injectFrameCallback();
-    injectViews();
-    config = YGConfigNew();
-    context->setConfigRef(config);
-}
-
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     MeasureTime measureTime("Javascript draw");
-    createRoot(width, height);
+    if (root == nullptr) {
+        v8Runtime = std::make_shared<V8Runtime>();
+        context->setV8Runtime(v8Runtime);
+        injectConsole();
+        injectFrameCallback();
+        injectViews();
+
+        createRoot(width, height);
+    }
+    performAnimations(width, height);
     invokeFrameCallback();
 }
 

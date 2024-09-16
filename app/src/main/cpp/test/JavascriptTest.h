@@ -15,8 +15,6 @@ public:
 
     void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
-    void setContext(std::shared_ptr<SkiaUIContext> context) override;
-
 public:
 
     int FRAME_INDEX = 0;
