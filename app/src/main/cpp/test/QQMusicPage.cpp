@@ -4,6 +4,7 @@
 #include "LyricView.h"
 #include "LyricScrollView.h"
 #include "LinearAnimator.h"
+#include "SVGView.h"
 
 void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -47,6 +48,20 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setStrokeWidth(1);
         flexboxLayout->addView(imageView);
+    }
+
+    {
+        auto svgView = new SVGView();
+        svgView->setContext(this->context);
+        svgView->setSource("music/mv_definition_super.svg");
+        svgView->setStyle(SkPaint::kStroke_Style);
+        svgView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        svgView->setBackgroundColor(SK_ColorTRANSPARENT);
+        svgView->setWidth(100);
+        svgView->setHeight(100);
+        svgView->setAlignSelf(YGAlignFlexStart);
+        svgView->setMargin({50, 200, 0, 0});
+        flexboxLayout->addView(svgView);
     }
 
     {

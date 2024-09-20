@@ -13,9 +13,9 @@ public:
 
     virtual void setSource(const char *path);
 
-    const char* getSource();
+    const char *getSource();
 
-    virtual void setText(const std::string& text);
+    virtual void setText(const std::string &text);
 
     void draw(SkCanvas *canvas) override;
 
@@ -29,7 +29,7 @@ private:
 
     sk_sp<SkSVGDOM> skSVGDom = nullptr;
 
-    int x, y = 0;
+    int x = 0, y = 0;
 
     std::string src;
 
