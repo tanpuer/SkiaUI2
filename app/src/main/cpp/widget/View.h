@@ -239,7 +239,7 @@ protected:
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
-    float xVelocity, yVelocity = 0.0f;
+    float xVelocity = 0.0f, yVelocity = 0.0f;
 
 #pragma mark LifeCycle
 public:

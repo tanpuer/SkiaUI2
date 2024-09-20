@@ -33,6 +33,6 @@ private:
 
     std::string src;
 
-    int containerWidth, containerHeight = 0;
+    int containerWidth = 0, containerHeight = 0;
 
 };

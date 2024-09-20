@@ -2,7 +2,7 @@
 #include <base/native_log.h>
 #include "ViewGroup.h"
 
-ViewGroup::ViewGroup() : View(), maxChildWidth(0.0f), maxChildHeight(0.0f) {
+ViewGroup::ViewGroup() : View() {
 
 }
 

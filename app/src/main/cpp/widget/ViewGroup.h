@@ -93,8 +93,6 @@ public:
 
     std::vector<View *> children;
 
-    float maxChildWidth, maxChildHeight;
-
 #pragma mark TouchEvent
 
     virtual bool dispatchTouchEvent(TouchEvent *touchEvent);
