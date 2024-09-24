@@ -9,9 +9,11 @@ import android.media.MediaFormat
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
+import android.util.Log
 import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
+import com.temple.skiaui.audio.HYSkiaAudioTracker
 import java.io.IOException
 
 class HYSkiaVideo internal constructor(
@@ -48,11 +50,16 @@ class HYSkiaVideo internal constructor(
     @Volatile
     private var playing = true
 
+    private var audioTracker: HYSkiaAudioTracker? = null
+
+    private var currentVideoPts: Long = 0L
+
     private val decodeOneFrameRunnable = object : Runnable {
         override fun run() {
             if (released || !renderFlag) {
                 return
             }
+            Log.d(TAG, "Video: ${currentVideoPts}, audio:${audioTracker?.getCurrentPosition()}")
             decodeHandler.postDelayed(this, (1000 / frameRate).toLong())
             val hardwareBuffer = nextImage() ?: return
             this@HYSkiaVideo.hardwareBuffer = hardwareBuffer
@@ -81,6 +88,7 @@ class HYSkiaVideo internal constructor(
         }
         decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
         engine.createListeners[threadName] = createListener
+        playAudio()
     }
 
     fun getCurrentSkImage(): Long {
@@ -178,7 +186,7 @@ class HYSkiaVideo internal constructor(
 
     private fun decodeFrame() {
         val info = MediaCodec.BufferInfo()
-        val timeoutUs: Long = 10000
+        val timeoutUs: Long = 2000
         var isEOS = false
 
         val inputBufferId = decoder.dequeueInputBuffer(timeoutUs)
@@ -194,6 +202,7 @@ class HYSkiaVideo internal constructor(
                 seek(0)
             } else {
                 val presentationTimeUs = extractor.sampleTime
+                currentVideoPts = presentationTimeUs / 1000
                 decoder.queueInputBuffer(inputBufferId, 0, sampleSize, presentationTimeUs, 0)
                 extractor.advance()
             }
@@ -225,15 +234,22 @@ class HYSkiaVideo internal constructor(
         playing = true
         decodeHandler.removeCallbacks(decodeOneFrameRunnable)
         decodeHandler.post(decodeOneFrameRunnable)
+        audioTracker?.start()
     }
 
     fun pause() {
         playing = false
         decodeHandler.removeCallbacks(decodeOneFrameRunnable)
+        audioTracker?.pause()
     }
 
     fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
+    }
+
+    private fun playAudio() {
+        audioTracker = HYSkiaAudioTracker(assetsPath, engine)
+        audioTracker?.start()
     }
 
     companion object {

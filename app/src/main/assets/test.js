@@ -101,7 +101,7 @@ function createRoot() {
     let videoView = new VideoView();
     videoView.width = 1080;
     videoView.height = 360 * 1080 / 720;
-    videoView.src = "BigBuckBunny.mp4";
+    videoView.src = "yiluxiangbei.mp4";
     scrollView.addView(videoView);
 
     let svgView = new SVGView();

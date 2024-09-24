@@ -54,8 +54,8 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto videoView = new VideoView();
         videoView->setContext(this->context);
         videoView->setWidth(1080);
-        videoView->setHeight(360 * 1080 / 720);
-        videoView->setSource("BigBuckBunny.mp4");
+        videoView->setHeight(360 * 1080 / 640);
+        videoView->setSource("yiluxiangbei.mp4");
         videoView->setStyle(SkPaint::kStroke_Style);
         videoView->setBackgroundColor(SK_ColorRED);
         videoView->setStrokeWidth(2);
