@@ -33,6 +33,7 @@ class HYSkiaAudioTracker(
     private var encoding = -1
     private var audioTracker: AudioTrack? = null
     private var isEOS = false
+    private var mainHandler = Handler(Looper.getMainLooper())
 
     @Volatile
     private var presentationTimeUs = 0L
@@ -143,25 +144,6 @@ class HYSkiaAudioTracker(
                 createVisualizer(it)
             }
         }
-        val markerInFrames = (duration * sampleRate / 1000).toInt()
-        audioTracker?.setNotificationMarkerPosition(markerInFrames)
-        audioTracker?.setPlaybackPositionUpdateListener(object :
-            AudioTrack.OnPlaybackPositionUpdateListener {
-            override fun onMarkerReached(track: AudioTrack?) {
-                if ((audioTracker?.playbackHeadPosition ?: 0) >= markerInFrames) {
-                    isEOS = false
-                    audioTracker?.stop()
-                    seek(0)
-                    runDecode()
-                    audioTracker?.play()
-                }
-            }
-
-            override fun onPeriodicNotification(track: AudioTrack?) {
-
-            }
-
-        })
     }
 
     private fun runDecode() {
@@ -171,6 +153,9 @@ class HYSkiaAudioTracker(
         if (isEOS) {
             isEOS = false
             seek(0)
+            mainHandler.post {
+                audioCallback?.onComplete()
+            }
         }
     }
 

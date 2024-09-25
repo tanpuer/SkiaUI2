@@ -14,6 +14,7 @@ import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
 import com.temple.skiaui.audio.HYSkiaAudioTracker
+import com.temple.skiaui.audio.IAudioCallback
 import java.io.IOException
 
 class HYSkiaVideo internal constructor(
@@ -60,7 +61,11 @@ class HYSkiaVideo internal constructor(
                 return
             }
             Log.d(TAG, "Video: ${currentVideoPts}, audio:${audioTracker?.getCurrentPosition()}")
-            decodeHandler.postDelayed(this, (1000 / frameRate).toLong())
+            if (currentVideoPts >= (audioTracker?.getCurrentPosition() ?: 0)) {
+                decodeHandler.postDelayed(this, (1000 / frameRate).toLong() / 2)
+                return
+            }
+            decodeHandler.postDelayed(this, (1000 / frameRate).toLong() / 2)
             val hardwareBuffer = nextImage() ?: return
             this@HYSkiaVideo.hardwareBuffer = hardwareBuffer
             engine.makeHardwareBufferToSkImage(hardwareBuffer) {
@@ -157,6 +162,7 @@ class HYSkiaVideo internal constructor(
     }
 
     private fun seek(timestamp: Long) {
+        currentVideoPts = 0
         extractor.seekTo(timestamp * 1000, MediaExtractor.SEEK_TO_PREVIOUS_SYNC)
         decoder.flush()
     }
@@ -250,6 +256,13 @@ class HYSkiaVideo internal constructor(
     private fun playAudio() {
         audioTracker = HYSkiaAudioTracker(assetsPath, engine)
         audioTracker?.start()
+        audioTracker?.audioCallback = object : IAudioCallback {
+            override fun onComplete() {
+                decodeHandler.post {
+                    seek(0)
+                }
+            }
+        }
     }
 
     companion object {

@@ -35,15 +35,7 @@ abstract class IAudioPlayer(
     @Volatile
     protected var paused = false
 
-    init {
-        if (ContextCompat.checkSelfPermission(
-                HYSkiaUIApp.getInstance(),
-                Manifest.permission.RECORD_AUDIO
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            throw RuntimeException("need record_audio permission to use Visualizer API!")
-        }
-    }
+    var audioCallback: IAudioCallback? = null
 
     fun getFFTData(): FloatArray {
         return fftData
@@ -68,6 +60,13 @@ abstract class IAudioPlayer(
     abstract fun isPlaying(): Boolean
 
     protected fun createVisualizer(audioSessionId: Int) {
+        if (ContextCompat.checkSelfPermission(
+                HYSkiaUIApp.getInstance(),
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
         if (sessionId == audioSessionId) {
             return
         }
