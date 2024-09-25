@@ -39,10 +39,10 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     auto animator = new TranslateAnimator(this, info.from, info.to, 0, 0);
     animator->setDuration(info.duration);
     animator->addListener([this]() {
-        context->getPageStackManager()->updateVisibility(true);
+        context->getPageStackManager()->hideLastPage();
     });
     animator->start();
-    context->getPageStackManager()->updateVisibility(false);
+    context->getPageStackManager()->showCurrentPage();
     context->getPluginManager()->invokeMethod("toast", "show", "push");
 }
 
@@ -52,9 +52,10 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     animator->setDuration(info.duration);
     animator->addListener([this]() {
         this->markDestroyed = true;
+        context->getPageStackManager()->removeDestroyedPage();
     });
     animator->start();
-    context->getPageStackManager()->updateVisibility(false);
+    context->getPageStackManager()->showLastPage();
     context->getPluginManager()->invokeMethod("toast", "show", "pop");
 }
 
@@ -63,10 +64,10 @@ void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     auto animator = new TranslateAnimator(this, 0, 0, info.from, info.to);
     animator->setDuration(info.duration);
     animator->addListener([this]() {
-        context->getPageStackManager()->updateVisibility(true);
+        context->getPageStackManager()->hideLastPage();
     });
     animator->start();
-    context->getPageStackManager()->updateVisibility(false);
+    context->getPageStackManager()->showCurrentPage();
     context->getPluginManager()->invokeMethod("toast", "show", "push");
 }
 
@@ -76,9 +77,10 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     animator->setDuration(info.duration);
     animator->addListener([this]() {
         this->markDestroyed = true;
+        context->getPageStackManager()->removeDestroyedPage();
     });
     animator->start();
-    context->getPageStackManager()->updateVisibility(false);
+    context->getPageStackManager()->showLastPage();
     context->getPluginManager()->invokeMethod("toast", "show", "pop");
 }
 

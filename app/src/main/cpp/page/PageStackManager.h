@@ -20,7 +20,13 @@ public:
 
     const std::vector<Page *> &getPages();
 
-    void updateVisibility(bool isAnimationEnd);
+    void showCurrentPage();
+
+    void hideCurrentPage();
+
+    void hideLastPage();
+
+    void showLastPage();
 
     void removeDestroyedPage();
 

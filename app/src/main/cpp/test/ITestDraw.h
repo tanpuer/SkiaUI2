@@ -42,17 +42,11 @@ public:
     }
 
     virtual void onShow() {
-        auto page = context->getPageStackManager()->back();
-        if (page != nullptr) {
-            page->onShow();
-        }
+        context->getPageStackManager()->showCurrentPage();
     }
 
     virtual void onHide() {
-        auto page = context->getPageStackManager()->back();
-        if (page != nullptr) {
-            page->onHide();
-        }
+        context->getPageStackManager()->hideCurrentPage();
     }
 
 protected:

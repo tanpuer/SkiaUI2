@@ -33,16 +33,6 @@ const std::vector<Page *> &PageStackManager::getPages() {
     return pages;
 }
 
-void PageStackManager::updateVisibility(bool isAnimationEnd) {
-    if (pages.size() > 0) {
-        pages[pages.size() - 1]->setVisibility(true);
-    }
-    if (pages.size() < 2) {
-        return;
-    }
-    pages[pages.size() - 2]->setVisibility(!isAnimationEnd);
-}
-
 void PageStackManager::removeDestroyedPage() {
     if (pages.size() > 0) {
         auto page = back();
@@ -50,7 +40,42 @@ void PageStackManager::removeDestroyedPage() {
             auto _page = pop();
             delete _page;
             _page = nullptr;
-            updateVisibility(true);
         }
     }
+}
+
+void PageStackManager::showCurrentPage() {
+    if (pages.empty()) {
+        return;
+    }
+    auto page = pages.back();
+    page->setVisibility(true);
+    page->onShow();
+}
+
+void PageStackManager::hideCurrentPage() {
+    if (pages.empty()) {
+        return;
+    }
+    auto page = pages.back();
+    page->setVisibility(false);
+    page->onHide();
+}
+
+void PageStackManager::hideLastPage() {
+    if (pages.size() < 2) {
+        return;
+    }
+    auto page = pages[pages.size() - 2];
+    page->setVisibility(false);
+    page->onHide();
+}
+
+void PageStackManager::showLastPage() {
+    if (pages.size() < 2) {
+        return;
+    }
+    auto page = pages[pages.size() - 2];
+    page->setVisibility(true);
+    page->onShow();
 }
