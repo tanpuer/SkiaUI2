@@ -9,7 +9,7 @@ requestAnimationFrame(() => {
 });
 
 function createRoot() {
-    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
+    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, YUVVideoView, SVGView, Button,
         ProgressBar, Page, EnterExitInfo
     } = SkiaUI;
     page = new Page();
@@ -98,7 +98,7 @@ function createRoot() {
     imageView.backgroundColor = "#ffffff";
     scrollView.addView(imageView);
 
-    let videoView = new VideoView();
+    let videoView = new YUVVideoView();
     videoView.width = 1080;
     videoView.height = 360 * 1080 / 720;
     videoView.src = "yiluxiangbei.mp4";

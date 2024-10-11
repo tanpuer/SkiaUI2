@@ -12,6 +12,7 @@
 #include "Button.h"
 #include "TextView.h"
 #include "QQMusicPage.h"
+#include "YUVVideoView.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -51,7 +52,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     root->addView(scrollView);
 
     {
-        auto videoView = new VideoView();
+        auto videoView = new YUVVideoView();
         videoView->setContext(this->context);
         videoView->setWidth(1080);
         videoView->setHeight(360 * 1080 / 640);
@@ -62,6 +63,19 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         videoView->setMargin({0, 0, 0, 50});
         scrollView->addView(videoView);
     }
+
+//    {
+//        auto videoView = new VideoView();
+//        videoView->setContext(this->context);
+//        videoView->setWidth(1080);
+//        videoView->setHeight(360 * 1080 / 640);
+//        videoView->setSource("yiluxiangbei.mp4");
+//        videoView->setStyle(SkPaint::kStroke_Style);
+//        videoView->setBackgroundColor(SK_ColorRED);
+//        videoView->setStrokeWidth(2);
+//        videoView->setMargin({0, 0, 0, 50});
+//        scrollView->addView(videoView);
+//    }
 
     {
         auto lottieView = new LottieView();
