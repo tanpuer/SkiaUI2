@@ -221,6 +221,7 @@ class HYSkiaYUVVideo internal constructor(
         }
         decodeThread.quitSafely()
         engine.createListeners.remove(threadName)
+        audioTracker?.release()
     }
 
     fun start() {
