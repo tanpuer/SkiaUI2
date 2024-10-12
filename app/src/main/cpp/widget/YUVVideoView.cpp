@@ -96,15 +96,8 @@ void YUVVideoView::draw(SkCanvas *canvas) {
         sk_sp<SkShader> shader = builder.makeShader();
         SkPaint skPaint;
         skPaint.setShader(std::move(shader));
-        skCanvas->save();
-        if (widthRatio > heightRatio) {
-            skCanvas->translate((this->width - width * ratio) / 2.0, 0);
-        } else {
-            skCanvas->translate(0, (this->height - height * ratio) / 2.0);
-        }
         skCanvas->drawRect(SkRect::MakeXYWH(0, 0, width * ratio, height * ratio),
                            skPaint);
-        skCanvas->restore();
         auto picture = recorder.finishRecordingAsPicture();
         canvas->save();
         canvas->translate(left, top);
