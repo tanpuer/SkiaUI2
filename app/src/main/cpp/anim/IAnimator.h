@@ -52,12 +52,12 @@ protected:
 
     std::function<void()> finishCallback = nullptr;
 
-    long pausedTotalTime = 0L;
-
-    long pausedStartTime = 0L;
+    long pausedTime = 0L;
 
     bool paused = false;
 
     uint32_t animatorId = 0;
+
+    float lastInterpolator = 0.0f;
 
 };

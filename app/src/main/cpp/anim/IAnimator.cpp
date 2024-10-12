@@ -33,11 +33,10 @@ void IAnimator::setLoopCount(int count) {
 }
 
 float IAnimator::getInterpolation(float factor) {
-    if (paused) {
-        return static_cast<float >(pausedStartTime - pausedTotalTime) / static_cast<float >(duration);
-    } else {
-        return static_cast<float >(currTime - pausedTotalTime - startTime) / static_cast<float >(duration);
+    if (!paused) {
+        lastInterpolator = static_cast<float >(currTime - startTime) / static_cast<float >(duration);
     }
+    return lastInterpolator;
 }
 
 void IAnimator::pause() {
@@ -45,7 +44,7 @@ void IAnimator::pause() {
         return;
     }
     paused = true;
-    pausedStartTime = currTime;
+    pausedTime = currTime;
 }
 
 void IAnimator::resume() {
@@ -53,7 +52,8 @@ void IAnimator::resume() {
         return;
     }
     paused = false;
-    pausedTotalTime += currTime - pausedStartTime;
+    startTime += currTime - pausedTime;
+    endTime += currTime - pausedTime;
 }
 
 uint32_t IAnimator::getAnimatorId() {
