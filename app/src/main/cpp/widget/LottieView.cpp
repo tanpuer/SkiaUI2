@@ -13,16 +13,19 @@ LottieView::~LottieView() {
 void LottieView::setSource(const char *path) {
     MeasureTime measureTime("LottieView setSource");
     source = path;
-    context->resourcesLoader->decodeLottie(source, [this](const sk_sp<skottie::Animation>&) {
+    context->resourcesLoader->decodeLottie(source, [this](const sk_sp<skottie::Animation> &) {
         auto assetManager = getContext()->getAssetManager();
         auto imageData = assetManager->readImage(source.c_str());
         auto length = imageData->length;
-        lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content), length);
-        startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+        lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content),
+                                          length);
+        startTime = getContext()->getCurrentTimeMills();
+        duration = lottieAnimation->duration() * 1000L;
+        endTime = startTime + duration;
     });
 }
 
-const char* LottieView::getSource() {
+const char *LottieView::getSource() {
     return source.c_str();
 }
 
@@ -32,17 +35,18 @@ void LottieView::draw(SkCanvas *canvas) {
         return;
     }
     if (autoPlay) {
-        auto currentTime = (getContext()->getCurrentTimeMills()) / 1000.0;
+        auto currentTime = getContext()->getCurrentTimeMills();
         int totalFrames = lottieAnimation->duration() * lottieAnimation->fps();
-        if ((currentTime - startTime) > lottieAnimation->duration()) {
+        if (currentTime > endTime) {
             if (repeat) {
                 startTime = currentTime;
+                endTime = startTime + duration;
                 lottieAnimation->seekFrame(0);
             } else {
                 lottieAnimation->seekFrame(totalFrames);
             }
         } else {
-            auto frame = (currentTime - startTime) / lottieAnimation->duration() * totalFrames;
+            auto frame = (currentTime - startTime) * totalFrames / duration;
             lottieAnimation->seekFrame(frame);
         }
     }
@@ -55,12 +59,17 @@ void LottieView::layout(int l, int t, int r, int b) {
 }
 
 void LottieView::start() {
+    if (!autoPlay) {
+        auto diff = getContext()->getCurrentTimeMills() - pausedTime;
+        startTime += diff;
+        endTime += diff;
+    }
     autoPlay = true;
-    startTime = (getContext()->getCurrentTimeMills()) / 1000.0;
 }
 
 void LottieView::pause() {
     autoPlay = false;
+    pausedTime = getContext()->getCurrentTimeMills();
 }
 
 void LottieView::setRepeat(bool repeat) {

@@ -59,7 +59,7 @@ class HYSkiaYUVVideo internal constructor(
             }
             Log.d(TAG, "Video: ${currentVideoPts}, audio:${audioTracker?.getCurrentPosition()}")
             decodeHandler.postDelayed(this, (1000 / frameRate).toLong() / 2)
-            if (currentVideoPts >= (audioTracker?.getCurrentPosition() ?: 0)) {
+            if (currentVideoPts + 16 >= (audioTracker?.getCurrentPosition() ?: 0)) {
                 return
             }
             nextImage()

@@ -35,13 +35,19 @@ private:
 
     SkRect lottieRect;
 
-    double startTime = 0.;
+    long startTime = 0L;
+
+    long endTime = 0L;
 
     bool autoPlay = true;
 
     bool repeat = true;
 
     std::string source;
+
+    long pausedTime = 0L;
+
+    long duration = 0L;
 
 };
 
