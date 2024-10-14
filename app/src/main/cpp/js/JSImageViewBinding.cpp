@@ -86,6 +86,26 @@ JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     };
     imageTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "objectFill"),
                                                    objectFitGetter, objectFitSetter);
+    auto start = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<ImageView *>(wrap->Value());
+        targetView->start();
+    };
+    imageTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "start"),
+            v8::FunctionTemplate::New(isolate, start, v8::External::New(isolate, this)));
+    auto pause = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<ImageView *>(wrap->Value());
+        targetView->pause();
+    };
+    imageTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "pause"),
+            v8::FunctionTemplate::New(isolate, pause, v8::External::New(isolate, this)));
     v8::Local<v8::Function> constructor = imageTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ImageView"), constructor);
     return imageTemplate;

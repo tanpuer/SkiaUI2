@@ -39,11 +39,12 @@ void ImageView::setSource(const char *path) {
         skImage = images[0];
         srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
         ALOGD("decode image success %s %d %d", source.c_str(), skImage->width(), skImage->height())
-        lastTimeMills = getContext()->getCurrentTimeMills();
+        startTime = getContext()->getCurrentTimeMills();
         this->skImages = images;
         this->skAnimatedImage = std::move(animatedImage);
-        this->currentFrameDuration = skAnimatedImage->currentFrameDuration();
         this->frameCount = images.size();
+        this->duration = this->frameCount * skAnimatedImage->currentFrameDuration();
+        endTime = startTime + this->duration;
         isDirty = true;
     });
 }
@@ -91,15 +92,17 @@ void ImageView::draw(SkCanvas *canvas) {
         return;
     }
     View::draw(canvas);
-    if (frameCount > 1 && skAnimatedImage != nullptr) {
+    if (frameCount > 1 && skAnimatedImage != nullptr && autoPlay) {
         auto currentTimeMills = getContext()->getCurrentTimeMills();
-        if ((currentTimeMills - lastTimeMills) > currentFrameDuration) {
-            currentFrameIndex++;
-            if (currentFrameIndex >= skImages.size()) {
-                currentFrameIndex = 0;
-            }
-            skImage = skImages[currentFrameIndex];
+        if (currentTimeMills > endTime) {
+            startTime = currentTimeMills;
+            endTime = startTime + duration;
         }
+        currentFrameIndex = (currentTimeMills - startTime) * frameCount / duration;
+        if (currentFrameIndex >= skImages.size()) {
+            currentFrameIndex = 0;
+        }
+        skImage = skImages[currentFrameIndex];
     }
     canvas->save();
     clipRect.setRectXY(dstRect, radius, radius);
@@ -144,6 +147,24 @@ const ImageView::ScaleType ImageView::getScaleType() {
 
 void ImageView::setRotateFunc(std::function<void(SkRect &, SkMatrix &, float)> &&rotateFunc) {
     this->rotateFunc = std::move(rotateFunc);
+}
+
+void ImageView::pause() {
+    if (!autoPlay) {
+        return;
+    }
+    autoPlay = false;
+    auto diff = getContext()->getCurrentTimeMills() - pausedTime;
+    startTime += diff;
+    endTime += diff;
+}
+
+void ImageView::start() {
+    if (autoPlay) {
+        return;
+    }
+    autoPlay = true;
+    pausedTime = getContext()->getCurrentTimeMills();
 }
 
 

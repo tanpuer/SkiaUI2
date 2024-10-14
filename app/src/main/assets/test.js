@@ -96,6 +96,15 @@ function createRoot() {
     imageView.src = "bird.gif";
     imageView.objectFill = "contain";
     imageView.backgroundColor = "#ffffff";
+    let imageFlag = true;
+    imageView.setOnClickListener((_view) => {
+        if (imageFlag) {
+            imageView.pause();
+        } else {
+            imageView.start();
+        }
+        imageFlag = !imageFlag;
+    });
     scrollView.addView(imageView);
 
     let videoView = new YUVVideoView();

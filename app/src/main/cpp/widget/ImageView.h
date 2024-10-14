@@ -49,6 +49,10 @@ public:
 
     bool needClip = true;
 
+    void pause();
+
+    void start();
+
 private:
 
     sk_sp<SkImage> skImage;
@@ -64,9 +68,15 @@ private:
      */
     int frameCount = 1;
 
-    long lastTimeMills = 0L;
+    long startTime = 0L;
 
-    long currentFrameDuration = 60;
+    long duration = 0L;
+
+    long endTime = 0L;
+
+    bool autoPlay = true;
+
+    long pausedTime = 0L;
 
     SkRect srcRect;
 
