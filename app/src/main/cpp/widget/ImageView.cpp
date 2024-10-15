@@ -154,9 +154,7 @@ void ImageView::pause() {
         return;
     }
     autoPlay = false;
-    auto diff = getContext()->getCurrentTimeMills() - pausedTime;
-    startTime += diff;
-    endTime += diff;
+    pausedTime = getContext()->getCurrentTimeMills();
 }
 
 void ImageView::start() {
@@ -164,7 +162,9 @@ void ImageView::start() {
         return;
     }
     autoPlay = true;
-    pausedTime = getContext()->getCurrentTimeMills();
+    auto diff = getContext()->getCurrentTimeMills() - pausedTime;
+    startTime += diff;
+    endTime += diff;
 }
 
 

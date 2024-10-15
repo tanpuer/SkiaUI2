@@ -58,7 +58,7 @@ class HYSkiaYUVVideo internal constructor(
                 return
             }
             Log.d(TAG, "Video: ${currentVideoPts}, audio:${audioTracker?.getCurrentPosition()}")
-            decodeHandler.postDelayed(this, (1000 / frameRate).toLong() / 2)
+            decodeHandler.postDelayed(this, 2)
             if (currentVideoPts + 16 >= (audioTracker?.getCurrentPosition() ?: 0)) {
                 return
             }
@@ -235,10 +235,6 @@ class HYSkiaYUVVideo internal constructor(
         playing = false
         decodeHandler.removeCallbacks(decodeOneFrameRunnable)
         audioTracker?.pause()
-    }
-
-    fun deleteSkImage(ptr: Long) {
-        engine.deleteSkImage(ptr)
     }
 
     private fun playAudio() {

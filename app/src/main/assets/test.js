@@ -85,10 +85,16 @@ function createRoot() {
         flag = !flag;
     });
 
-    let textView = new TextView();
-    textView.text = "Hello World";
-    textView.textSize = 100;
-    scrollView.addView(textView);
+    let button = new Button();
+    button.text = "Button";
+    button.backgroundColor = "#ff0000";
+    button.textSize = 60;
+    button.width = 260;
+    button.height = 100;
+    button.setOnClickListener((view) => {
+        console.log("button is clicked!");
+    });
+    scrollView.addView(button);
 
     let imageView = new ImageView();
     imageView.width = 800;
@@ -118,17 +124,6 @@ function createRoot() {
     svgView.width = 800;
     svgView.height = 800;
     scrollView.addView(svgView);
-
-    let button = new Button();
-    button.text = "Button";
-    button.backgroundColor = "#ff0000";
-    button.textSize = 60;
-    button.width = 260;
-    button.height = 100;
-    button.setOnClickListener((view) => {
-        console.log("button is clicked!");
-    });
-    scrollView.addView(button);
 
     let progressBar = new ProgressBar();
     progressBar.width = 800

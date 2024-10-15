@@ -42,8 +42,6 @@ private:
 
     jmethodID releaseMethod = nullptr;
 
-    jmethodID deleteSkImageMethod = nullptr;
-
     jmethodID getYUVDataMethod = nullptr;
 
     jobject javaVideo = nullptr;
@@ -51,8 +49,6 @@ private:
     SkRect dstRect;
 
     std::unique_ptr<SkPaint> videoPaint;
-
-    long lastSkImagePtr = 0L;
 
     std::string src;
 

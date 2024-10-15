@@ -10,9 +10,6 @@ YUVVideoView::YUVVideoView() {
 
 YUVVideoView::~YUVVideoView() {
     auto jniEnv = getContext()->getJniEnv();
-    if (lastSkImagePtr != 0L) {
-        jniEnv->CallVoidMethod(javaVideo, deleteSkImageMethod, lastSkImagePtr);
-    }
     jniEnv->CallVoidMethod(javaVideo, releaseMethod);
     jniEnv->DeleteGlobalRef(javaVideo);
 }
@@ -27,7 +24,6 @@ void YUVVideoView::setSource(const char *path) {
     startMethod = jniEnv->GetMethodID(javaVideoClass, "start", "()V");
     pauseMethod = jniEnv->GetMethodID(javaVideoClass, "pause", "()V");
     releaseMethod = jniEnv->GetMethodID(javaVideoClass, "release", "()V");
-    deleteSkImageMethod = jniEnv->GetMethodID(javaVideoClass, "deleteSkImage", "(J)V");
     getYUVDataMethod = jniEnv->GetMethodID(javaVideoClass, "getYUVData",
                                             "()Lcom/temple/skiaui/video/YUVData;");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
