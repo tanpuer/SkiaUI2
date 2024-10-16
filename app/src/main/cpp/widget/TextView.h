@@ -7,6 +7,7 @@
 #include "skparagraph/include/ParagraphStyle.h"
 #include "skparagraph/include/Paragraph.h"
 #include "skparagraph/include/ParagraphBuilder.h"
+#include "skparagraph/include/TypefaceFontProvider.h"
 
 using namespace skia::textlayout;
 
@@ -105,15 +106,11 @@ public:
 
 protected:
 
-    static sk_sp<SkFontMgr> fontMgr;
-
     SkString familyName;
 
 protected:
 
     SkString text;
-
-    std::unique_ptr<SkFont> font;
 
     SkRect textRect;
 
@@ -122,8 +119,6 @@ protected:
     std::unique_ptr<TextStyle> defaultStyle;
 
     std::unique_ptr<ParagraphBuilder> paragraphBuilder;
-
-    sk_sp<FontCollection> fontCollection;
 
     std::unique_ptr<Paragraph> paragraph;
 

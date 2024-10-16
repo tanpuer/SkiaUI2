@@ -5,21 +5,11 @@
 #include "core/SkFont.h"
 #include "ports/SkFontMgr_android.h"
 #include "effects/SkGradientShader.h"
-
-sk_sp<SkFontMgr> TextView::fontMgr = nullptr;
+#include "skparagraph/include/TypefaceFontProvider.h"
 
 TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     textRect = SkRect::MakeEmpty();
     defaultStyle = std::make_unique<TextStyle>();
-    fontCollection = sk_make_sp<FontCollection>();
-    if (fontMgr == nullptr) {
-        fontMgr = SkFontMgr_New_Android(nullptr);
-        fontMgr->getFamilyName(0, &familyName);
-    }
-    fontCollection->setDefaultFontManager(fontMgr);
-    stringBuilders = std::vector<StringBuilder>();
-    font = std::make_unique<SkFont>(
-            fontMgr->legacyMakeTypeface(familyName.c_str(), SkFontStyle::Normal()));
 }
 
 TextView::~TextView() {
@@ -71,12 +61,14 @@ void TextView::measure() {
             paraStyle.setEllipsis(u"\u2026");
             paraStyle.setMaxLines(maxLine);
         }
+        auto fontCollection = getContext()->getFontCollection();
         paragraphBuilder = ParagraphBuilder::make(paraStyle, fontCollection);
         if (!stringBuilders.empty()) {
             for (const auto &iterator: stringBuilders) {
                 TextStyle textStyle;
                 textStyle.setFontStyle(iterator.fontStyle);
                 textStyle.setFontSize(iterator.textSize);
+                textStyle.setFontFamilies({SkString("Alimama")});
                 textStyle.setForegroundPaint(iterator.foregroundPaint);
                 paragraphBuilder->pushStyle(textStyle);
                 paragraphBuilder->addText(iterator.text.c_str());
@@ -86,6 +78,7 @@ void TextView::measure() {
             textStyle.setColor(skColor);
             textStyle.setFontStyle(defaultStyle->getFontStyle());
             textStyle.setFontSize(getTextSize());
+            textStyle.setFontFamilies({SkString("Alimama")});
             if (!textGradientColors.empty()) {
                 SkPaint foregroundPaint;
                 SkPoint points[2]{
@@ -116,7 +109,7 @@ void TextView::measure() {
             width = paragraph->getMaxIntrinsicWidth() + 1;
             paragraph->layout(width);
         }
-        auto spacing = font->getSpacing();
+        auto spacing = defaultStyle->getWordSpacing();
         if (originHeight > 0 && spacing > 0) {
             // Parent has told us how big to be. So be it.
             height = static_cast<float >(this->height);
@@ -143,8 +136,8 @@ void TextView::draw(SkCanvas *canvas) {
 }
 
 void TextView::setTextSize(SkScalar textSize) {
-    font->setSize(textSize);
     defaultStyle->setFontSize(textSize);
+    defaultStyle->setFontFamilies({SkString("Alimama")});
     isDirty = true;
 }
 
@@ -185,7 +178,7 @@ void TextView::pushText(const TextView::StringBuilder &stringBuilder) {
 }
 
 SkScalar TextView::getTextSize() {
-    return font->getSize();
+    return defaultStyle->getFontSize();
 }
 
 void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> pos) {

@@ -10,7 +10,7 @@ Button::~Button() {
 }
 
 void Button::setContext(std::shared_ptr<SkiaUIContext> context) {
-    View::setContext(context);
+    TextView::setContext(context);
     setPadding({defaultPadding, defaultPadding, defaultPadding});
 }
 
