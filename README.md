@@ -13,7 +13,7 @@ steps：
 7. Supported Widgets: View/TextView/ImageView/ProgressBar/FlexboxLayout/ScrollView/SVGView/ShaderView.  
    View: rect, cornerRadius.  
    ImageView: support png/gif, scaleType，cornerRadius, blur.  
-   TextView: SkParagraph.  
+   TextView: use SkParagraph, use AlimamaFangYuanTiVF-Thin.ttf by default.  
    ProgressBar: circle and linear style，also can be dragged.  
    SVGView: svg file.  
    ShaderView: render simple fragment-shader.  
