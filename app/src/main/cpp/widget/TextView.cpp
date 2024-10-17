@@ -8,8 +8,8 @@
 #include "skparagraph/include/TypefaceFontProvider.h"
 
 TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
-    textRect = SkRect::MakeEmpty();
     defaultStyle = std::make_unique<TextStyle>();
+    fontFamily.emplace_back("Alimama");
 }
 
 TextView::~TextView() {
@@ -68,7 +68,7 @@ void TextView::measure() {
                 TextStyle textStyle;
                 textStyle.setFontStyle(iterator.fontStyle);
                 textStyle.setFontSize(iterator.textSize);
-                textStyle.setFontFamilies({SkString("Alimama")});
+                textStyle.setFontFamilies({iterator.fontFamily});
                 textStyle.setForegroundPaint(iterator.foregroundPaint);
                 paragraphBuilder->pushStyle(textStyle);
                 paragraphBuilder->addText(iterator.text.c_str());
@@ -78,7 +78,7 @@ void TextView::measure() {
             textStyle.setColor(skColor);
             textStyle.setFontStyle(defaultStyle->getFontStyle());
             textStyle.setFontSize(getTextSize());
-            textStyle.setFontFamilies({SkString("Alimama")});
+            textStyle.setFontFamilies(fontFamily);
             if (!textGradientColors.empty()) {
                 SkPaint foregroundPaint;
                 SkPoint points[2]{
@@ -137,7 +137,6 @@ void TextView::draw(SkCanvas *canvas) {
 
 void TextView::setTextSize(SkScalar textSize) {
     defaultStyle->setFontSize(textSize);
-    defaultStyle->setFontFamilies({SkString("Alimama")});
     isDirty = true;
 }
 
@@ -190,4 +189,9 @@ void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> p
 void TextView::setHeight(int height) {
     View::setHeight(height);
     originHeight = height;
+}
+
+void TextView::setFontFamily(const char *fontFamily) {
+    this->fontFamily.clear();
+    this->fontFamily.emplace_back(fontFamily);
 }

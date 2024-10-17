@@ -20,13 +20,15 @@ public:
         SkFontStyle fontStyle;
         SkScalar textSize;
         SkPaint foregroundPaint;
+        SkString fontFamily;
 
         StringBuilder(SkString text, SkFontStyle fontStyle,
-                      SkScalar textSize, SkPaint foregroundPaint) noexcept {
+                      SkScalar textSize, SkPaint foregroundPaint, SkString fontFamily = SkString("Alimama")) noexcept {
             this->text = std::move(text);
             this->fontStyle = std::move(fontStyle);
             this->textSize = textSize;
             this->foregroundPaint = std::move(foregroundPaint);
+            this->fontFamily = std::move(fontFamily);
         }
 
         ~StringBuilder() {
@@ -104,15 +106,11 @@ public:
 
     void setHeight(int height) override;
 
-protected:
-
-    SkString familyName;
+    void setFontFamily(const char *fontFamily);
 
 protected:
 
     SkString text;
-
-    SkRect textRect;
 
     std::vector<SkString> textVector;
 
@@ -134,4 +132,5 @@ protected:
 
     int originHeight = 0;
 
+    std::vector<SkString> fontFamily;
 };
