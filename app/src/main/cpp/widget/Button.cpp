@@ -9,13 +9,8 @@ Button::~Button() {
     delete ripplePaint;
 }
 
-void Button::setContext(std::shared_ptr<SkiaUIContext> context) {
-    TextView::setContext(context);
-    setPadding({defaultPadding, defaultPadding, defaultPadding});
-}
-
 void Button::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
-    TextView::setMeasuredDimension(_measuredWidth, _measuredHeight);
+    TextView::setMeasuredDimension(_measuredWidth, _measuredHeight + defaultPadding * 2);
 }
 
 void Button::draw(SkCanvas *canvas) {

@@ -102,6 +102,7 @@ public:
         fontCollection = sk_make_sp<FontCollection>();
         fontCollection->setAssetFontManager(std::move(fontProvider));
         fontCollection->enableFontFallback();
+        delete fontData;
     }
 
     sk_sp<FontCollection> getFontCollection() {
