@@ -2,9 +2,6 @@
 
 #include "FlexboxLayout.h"
 
-/**
- * 如果是wrap 高度=子View高度之和，不支持嵌套ScrollView
- */
 class ScrollView : public FlexboxLayout {
 
 public:
