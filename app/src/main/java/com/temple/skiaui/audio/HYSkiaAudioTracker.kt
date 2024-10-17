@@ -186,7 +186,9 @@ class HYSkiaAudioTracker(
         if (outputBufferId >= 0) {
             decoder.getOutputBuffer(outputBufferId)?.let {
                 it.position(0)
-                audioTracker?.write(it, it.remaining(), AudioTrack.WRITE_BLOCKING)
+                runCatching {
+                    audioTracker?.write(it, it.remaining(), AudioTrack.WRITE_BLOCKING)
+                }
             }
             decoder.releaseOutputBuffer(outputBufferId, false)
             if ((info.flags and MediaCodec.BUFFER_FLAG_END_OF_STREAM) != 0) {
