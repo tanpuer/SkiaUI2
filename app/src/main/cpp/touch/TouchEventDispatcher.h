@@ -45,9 +45,6 @@ protected:
     //todo 改用weak_ptr
     View *weakTargetView;
 
-    float targetViewLeft = 0.0f;
-    float targetViewTop = 0.0f;
-
     float lastAlpha = 1.0f;
 
 };

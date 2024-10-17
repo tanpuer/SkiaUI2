@@ -18,6 +18,7 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
             break;
         }
         case TouchEvent::ACTION_MOVE: {
+            ALOGD("ScrollDispatcher::ACTION_MOVE")
             if (scrollView->_direction == YGFlexDirectionColumn) {
                 scrollView->updateTranslateY(touchEvent->y - startY);
                 startY = touchEvent->y;
@@ -41,34 +42,6 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
     return true;
 }
 
-bool ScrollDispatcher::canScroll() {
-    if (scrollView == nullptr) {
-        return false;
-    }
-    return scrollView->canScroll();
-}
-
-void ScrollDispatcher::findTargetView(TouchEvent *touchEvent) {
-    //todo
-    TouchEventDispatcher::findTargetView(touchEvent);
-}
-
-void ScrollDispatcher::dispatchToTargetView(TouchEvent *touchEvent) {
-    if (weakTargetView != nullptr) {
-        auto consumed = weakTargetView->onTouchEvent(touchEvent);
-        if (!consumed && touchEvent->action == TouchEvent::ACTION_UP) {
-            weakTargetView->performClick();
-        }
-        if (consumed) {
-            //如果已经被消费了，ScrollView就不能消费去滑动了
-            return;
-        }
-    }
-    if (canScroll()) {
-        scrollView->onTouchEvent(touchEvent);
-    }
-}
-
 void ScrollDispatcher::fling() {
 
 }
@@ -85,12 +58,35 @@ View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent
             if (child->isViewGroup()) {
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {
-                targetViewLeft = left;
-                targetViewTop = top;
                 return child;
             }
         }
     }
     ALOGD("findTargetViewTraversal null")
     return viewGroup;
+}
+
+bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
+    if (weakTargetView == scrollView) {
+        return true;
+    }
+    if (touchEvent->action == TouchEvent::ACTION_DOWN) {
+        lastScrollX = 0.0f;
+        lastScrollY = 0.0f;
+    } else if (touchEvent->action == TouchEvent::ACTION_MOVE) {
+        if (abs(touchEvent->x - lastScrollX) >= 5 || abs(touchEvent->y - lastScrollY) >= 5) {
+            //TODO
+            if (weakTargetView->forceRequestTouchMove()) {
+                return false;
+            }
+            clearTargetView();
+            weakTargetView = scrollView;
+            startX = touchEvent->x;
+            startY = touchEvent->y;
+            return true;
+        }
+        lastScrollX = touchEvent->x;
+        lastScrollY = touchEvent->y;
+    }
+    return TouchEventDispatcher::onInterceptTouchEvent(touchEvent);
 }

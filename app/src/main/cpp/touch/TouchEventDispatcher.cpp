@@ -17,9 +17,7 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
         ALOGE("dispatchTouchEvent weakRefView is null, pls check")
         return false;
     }
-    if (onInterceptTouchEvent(touchEvent)) {
-        return false;
-    }
+    onInterceptTouchEvent(touchEvent);
     switch (touchEvent->action) {
         case TouchEvent::ACTION_DOWN: {
             findTargetView(touchEvent);
@@ -96,6 +94,9 @@ void TouchEventDispatcher::findTargetView(TouchEvent *touchEvent) {
 }
 
 void TouchEventDispatcher::dispatchToTargetView(TouchEvent *touchEvent) {
+    if (touchEvent->action == TouchEvent::ACTION_MOVE) {
+        ALOGD("ScrollDispatcher::ACTION_MOVE %d", weakTargetView != nullptr);
+    }
     if (weakTargetView != nullptr) {
         auto consumed = weakTargetView->onTouchEvent(touchEvent);
         if (!consumed && touchEvent->action == TouchEvent::ACTION_UP) {
@@ -129,8 +130,6 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {
                 ALOGD("findTargetViewTraversal result %s %lld", child->name(), child->viewId)
-                targetViewLeft = left;
-                targetViewTop = top;
                 return child;
             }
         }
@@ -146,10 +145,12 @@ bool TouchEventDispatcher::checkTouchInTargetView(TouchEvent *touchEvent) {
     if (weakTargetView->forceRequestTouchMove()) {
         return true;
     }
-    auto width = YGNodeLayoutGetWidth(weakTargetView->node);
-    auto height = YGNodeLayoutGetHeight(weakTargetView->node);
-    return touchEvent->x >= targetViewLeft && touchEvent->x <= targetViewLeft + width
-           && touchEvent->y >= targetViewTop && touchEvent->y <= targetViewTop + height;
+    auto left = weakTargetView->left;
+    auto top = weakTargetView->top;
+    auto right = weakTargetView->right;
+    auto bottom = weakTargetView->bottom;
+    return touchEvent->x >= left && touchEvent->x <= right
+           && touchEvent->y >= top && touchEvent->y <= bottom;
 }
 
 bool TouchEventDispatcher::dispatchVelocity(Velocity *velocity) {
