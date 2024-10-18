@@ -118,6 +118,10 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         view->setMargin({0, 50, 0, 50});
         scrollView->addView(view);
         view->setOnClickListener([this, width, height](View *view) {
+            if (context->getPageStackManager()->getPages().size() <=1) {
+                context->getPluginManager()->invokeMethod("toast", "show", "back error");
+                return;
+            }
             auto page = context->getPageStackManager()->back();
             if (page == nullptr) {
                 ALOGE("pop failed due to empty pages")
