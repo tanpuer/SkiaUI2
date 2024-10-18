@@ -2,6 +2,7 @@ uniform float2 iResolution;
 uniform float iTime;
 uniform shader iChannel0;
 uniform float2 iChannel0Resolution;
+uniform float shaderTouchX;
 
 float S(float a, float b, float t) {
     return smoothstep(a, b, t);

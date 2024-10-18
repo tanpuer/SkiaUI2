@@ -44,7 +44,8 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
                     ResolutionUniforms resolutionUniforms;
                     resolutionUniforms.width = skImage->width();
                     resolutionUniforms.height = skImage->height();
-                    imageResolutions["iChannel" + std::to_string(i) +"Resolution"] = resolutionUniforms;
+                    imageResolutions["iChannel" + std::to_string(i) +
+                                     "Resolution"] = resolutionUniforms;
                 });
         size--;
         if (size == 0) {
@@ -55,7 +56,7 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
 
 void ShaderView::setShaderPath(const char *path, std::vector<std::string> images) {
     MeasureTime measureTime("setShaderPath");
-    context->resourcesLoader->readFile(path, [this, images](const char* data) {
+    context->resourcesLoader->readFile(path, [this, images](const char *data) {
         setShaderSource(data, images);
         isDirty = true;
     });
@@ -73,6 +74,7 @@ void ShaderView::draw(SkCanvas *canvas) {
         builder.uniform("iResolution") = uniforms;
         auto time = getContext()->getCurrentTimeMills();
         builder.uniform("iTime") = (float) time / 1000;
+        builder.uniform("shaderTouchX") = shaderTouchX;
         for (const auto &item: uniformVector) {
             builder.uniform(item.first) = item.second;
         }
@@ -110,4 +112,20 @@ void ShaderView::setCustomUniforms(std::string key, float value) {
 
 const char *ShaderView::name() {
     return "ShaderView";
+}
+
+bool ShaderView::onTouchEvent(TouchEvent *touchEvent) {
+    switch (touchEvent->action) {
+        case TouchEvent::ACTION_DOWN:
+        case TouchEvent::ACTION_MOVE: {
+            shaderTouchX = touchEvent->x - left;
+            break;
+        }
+        case TouchEvent::ACTION_UP:
+        case TouchEvent::ACTION_CANCEL: {
+            shaderTouchX = -1.0f;
+            break;
+        }
+    }
+    return View::onTouchEvent(touchEvent);
 }

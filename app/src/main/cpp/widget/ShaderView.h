@@ -26,6 +26,8 @@ public:
 
     virtual void setPictures(std::vector<sk_sp<SkPicture>> otherPictures);
 
+    bool onTouchEvent(TouchEvent *touchEvent) override;
+
 private:
 
     sk_sp<SkRuntimeEffect> runtimeEffect;
@@ -35,5 +37,7 @@ private:
     std::unordered_map<std::string, ResolutionUniforms> imageResolutions;
 
     std::unordered_map<std::string, float> uniformVector;
+
+    float shaderTouchX = -1.0f;
 
 };

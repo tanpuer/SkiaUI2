@@ -1,5 +1,6 @@
 uniform float2 iResolution;
 uniform float iTime;
+uniform float shaderTouchX;
 
 float4 main(float2 coord)
 {
