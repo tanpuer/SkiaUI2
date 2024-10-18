@@ -71,15 +71,20 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
         return true;
     }
     if (touchEvent->action == TouchEvent::ACTION_DOWN) {
-        lastScrollX = 0.0f;
-        lastScrollY = 0.0f;
+        lastScrollX = touchEvent->x;
+        lastScrollY = touchEvent->y;
     } else if (touchEvent->action == TouchEvent::ACTION_MOVE) {
-        if (abs(touchEvent->x - lastScrollX) >= ScrollView::SCROLL_SLOP || abs(touchEvent->y - lastScrollY) >= ScrollView::SCROLL_SLOP) {
+        auto diffX = abs(touchEvent->x - lastScrollX);
+        auto diffY = abs(touchEvent->y - lastScrollY);
+        if ((scrollView->_direction == YGFlexDirectionColumn && diffY > diffX &&
+             diffY > ScrollView::SCROLL_SLOP) ||
+            (scrollView->_direction == YGFlexDirectionRow && diffX > diffY &&
+             diffX > ScrollView::SCROLL_SLOP)) {
             //TODO
             if (weakTargetView != nullptr && weakTargetView->forceRequestTouchMove()) {
                 return false;
             }
-            clearTargetView();
+            clearTargetView(touchEvent);
             weakTargetView = scrollView;
             startX = touchEvent->x;
             startY = touchEvent->y;

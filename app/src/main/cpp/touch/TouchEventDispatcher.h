@@ -30,7 +30,7 @@ public:
 
     virtual void dispatchToTargetView(TouchEvent *touchEvent);
 
-    virtual void clearTargetView();
+    virtual void clearTargetView(TouchEvent *touchEvent);
 
     virtual View *findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent);
 
