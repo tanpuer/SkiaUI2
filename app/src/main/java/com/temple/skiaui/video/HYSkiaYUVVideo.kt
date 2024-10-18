@@ -1,6 +1,5 @@
 package com.temple.skiaui.video
 
-import android.hardware.HardwareBuffer
 import android.media.MediaCodec
 import android.media.MediaExtractor
 import android.media.MediaFormat
@@ -34,27 +33,21 @@ class HYSkiaYUVVideo internal constructor(
 
     private val decodeHandler = Handler(decodeThread.looper)
 
-    private var skImagePtr = 0L
-
     @Volatile
     private var released = false
-
-    private var renderFlag = true
-
-    private var hardwareBuffer: HardwareBuffer? = null
 
     @Volatile
     private var playing = true
 
     private var audioTracker: HYSkiaAudioTracker? = null
 
-    private var currentVideoPts: Long = 0L
+    private var currentVideoPts: Long = -16L
 
     private var yuvData: YUVData? = null
 
     private val decodeOneFrameRunnable = object : Runnable {
         override fun run() {
-            if (released || !renderFlag) {
+            if (released) {
                 return
             }
             Log.d(TAG, "Video: ${currentVideoPts}, audio:${audioTracker?.getCurrentPosition()}")
@@ -66,30 +59,12 @@ class HYSkiaYUVVideo internal constructor(
         }
     }
 
-    private val createListener = fun(it: Boolean) {
-        if (it && playing) {
-            decodeHandler.post(decodeOneFrameRunnable)
-        } else {
-            decodeHandler.removeCallbacks(decodeOneFrameRunnable)
-            decodeHandler.post {
-                skImagePtr = 0L
-                hardwareBuffer?.close()
-                hardwareBuffer = null
-            }
-        }
-    }
-
     init {
         decodeHandler.post {
             this.initializeReader()
         }
-        decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
-        engine.createListeners[threadName] = createListener
+        decodeHandler.postDelayed(decodeOneFrameRunnable, 0)
         playAudio()
-    }
-
-    fun getCurrentSkImage(): Long {
-        return skImagePtr
     }
 
     fun getYUVData(): YUVData? {
@@ -220,7 +195,6 @@ class HYSkiaYUVVideo internal constructor(
             extractor.release()
         }
         decodeThread.quitSafely()
-        engine.createListeners.remove(threadName)
         audioTracker?.release()
     }
 
