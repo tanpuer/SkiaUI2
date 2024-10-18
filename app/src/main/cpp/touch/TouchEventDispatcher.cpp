@@ -26,7 +26,7 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
         }
         case TouchEvent::ACTION_MOVE: {
             if (!checkTouchInTargetView(touchEvent)) {
-                clearTargetView(nullptr);
+                clearTargetView(touchEvent);
             }
             dispatchToTargetView(touchEvent);
             break;
