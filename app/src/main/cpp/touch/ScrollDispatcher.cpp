@@ -76,7 +76,7 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
     } else if (touchEvent->action == TouchEvent::ACTION_MOVE) {
         if (abs(touchEvent->x - lastScrollX) >= ScrollView::SCROLL_SLOP || abs(touchEvent->y - lastScrollY) >= ScrollView::SCROLL_SLOP) {
             //TODO
-            if (weakTargetView->forceRequestTouchMove()) {
+            if (weakTargetView != nullptr && weakTargetView->forceRequestTouchMove()) {
                 return false;
             }
             clearTargetView();

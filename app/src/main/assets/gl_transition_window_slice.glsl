@@ -8,7 +8,7 @@ uniform float2 iChannel0Resolution;
 uniform float2 iChannel1Resolution;
 
 float4 main(float2 coord) {
-    float progress = mod(iTime * 80, 400.0);
+    float progress = mod(iTime * 80, iResolution.x);
     float pr = smoothstep(-smoothness, 0.0, coord.x - progress * (1.0 + smoothness));
     float s = step(pr, fract(count * coord.x));
     float4 fromColor = iChannel0.eval(coord / iResolution * iChannel0Resolution);

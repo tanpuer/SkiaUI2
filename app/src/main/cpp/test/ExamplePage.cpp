@@ -64,115 +64,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         scrollView->addView(videoView);
     }
 
-////    {
-////        auto videoView = new VideoView();
-////        videoView->setContext(this->context);
-////        videoView->setWidth(1080);
-////        videoView->setHeight(360 * 1080 / 640);
-////        videoView->setSource("yiluxiangbei.mp4");
-////        videoView->setStyle(SkPaint::kStroke_Style);
-////        videoView->setBackgroundColor(SK_ColorRED);
-////        videoView->setStrokeWidth(2);
-////        videoView->setMargin({0, 0, 0, 50});
-////        scrollView->addView(videoView);
-////    }
-//
-//    {
-//        auto lottieView = new LottieView();
-//        lottieView->setContext(this->context);
-//        lottieView->setWidth(375);
-//        lottieView->setHeight(240);
-//        lottieView->setSource("WorkspacePlanet.json");
-//        lottieView->setStyle(SkPaint::kStroke_Style);
-//        lottieView->setBackgroundColor(SK_ColorRED);
-//        lottieView->setStrokeWidth(2);
-//        lottieView->setMargin({0, 0, 0, 50});
-//        scrollView->addView(lottieView);
-//        lottieView->setOnClickListener([this, width, height](View *view) {
-//            auto page = new QQMusicPage();
-//            page->init(context, width, height);
-//            context->getPageStackManager()->push(page);
-//            page->enterFromRight(Page::EnterExitInfo(width, 0));
-//        });
-//    }
-//
-//    {
-//        auto view = new View();
-//        view->setContext(this->context);
-//        auto colors = std::vector<SkColor>();
-//        colors.push_back(SK_ColorYELLOW);
-//        colors.push_back(SK_ColorBLUE);
-//        view->setLinearGradient(colors);
-//        view->setWidth(200);
-//        view->setHeight(200);
-//        scrollView->addView(view);
-//        view->setOnClickListener([this, width, height](View *view) {
-//            MeasureTime measureTime("pushPage");
-//            auto page = new ExamplePage();
-//            page->init(context, width, height);
-//            context->getPageStackManager()->push(page);
-//            page->enterFromRight(Page::EnterExitInfo(width, 0));
-//        });
-//    }
-//
-//    {
-//        auto view = new View();
-//        view->setContext(this->context);
-//        auto colors = std::vector<SkColor>();
-//        colors.push_back(SK_ColorCYAN);
-//        colors.push_back(SK_ColorMAGENTA);
-//        colors.push_back(SK_ColorYELLOW);
-//        colors.push_back(SK_ColorCYAN);
-//        view->setSwiperGradient(colors);
-//        view->setCornerRadius(20);
-//        view->setBlurMask(kNormal_SkBlurStyle, 10);
-//        view->setWidth(400);
-//        view->setHeight(400);
-//        view->setMargin({0, 50, 0, 50});
-//        scrollView->addView(view);
-//        view->setOnClickListener([this, width, height](View *view) {
-//            auto page = context->getPageStackManager()->back();
-//            if (page == nullptr) {
-//                ALOGE("pop failed due to empty pages")
-//                return;
-//            }
-//            page->exitToLeft(Page::EnterExitInfo(0, width));
-////            page->exitToTop(Page::EnterExitInfo(0, height));
-//        });
-//    }
-//
-//    {
-//        auto shaderView = new ShaderView();
-//        shaderView->setContext(this->context);
-//        shaderView->setShaderPath("sincos.glsl");
-//        shaderView->setWidth(1080);
-//        shaderView->setHeight(520);
-//        scrollView->addView(shaderView);
-//    }
-//
-//    {
-//        auto shaderView = new ShaderView();
-//        shaderView->setContext(this->context);
-//        shaderView->setShaderPath("raining.glsl", {"raining.png"});
-//        shaderView->setWidth(1080);
-//        shaderView->setHeight(520);
-//        shaderView->setMargin({0, 50, 0, 0});
-//        scrollView->addView(shaderView);
-//    }
-//
-//    {
-//        auto shaderView = new ShaderView();
-//        shaderView->setContext(this->context);
-//        shaderView->setShaderPath("gl_transition_window_slice.glsl",
-//                                  {"transition1.png", "transition2.png"});
-//        shaderView->setCustomUniforms("count", 10.0);
-//        shaderView->setCustomUniforms("smoothness", 0.5);
-//        shaderView->setWidth(512);
-//        shaderView->setHeight(400);
-//        shaderView->setMargin({0, 50, 0, 0});
-//        scrollView->addView(shaderView);
-//    }
-
     {
         auto lottieView = new LottieView();
         lottieView->setContext(this->context);
@@ -263,18 +154,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
                                   {"transition1.png", "transition2.png"});
         shaderView->setCustomUniforms("count", 10.0);
         shaderView->setCustomUniforms("smoothness", 0.5);
-        shaderView->setWidth(512);
-        shaderView->setHeight(400);
-        shaderView->setMargin({0, 50, 0, 0});
-        scrollView->addView(shaderView);
-    }
-
-    {
-        auto shaderView = new ShaderView();
-        shaderView->setContext(this->context);
-        shaderView->setShaderPath("gl_transition_cross_zoom.glsl",
-                                  {"transition1.png", "transition2.png"});
-        shaderView->setCustomUniforms("strength", 0.4);
         shaderView->setWidth(512);
         shaderView->setHeight(400);
         shaderView->setMargin({0, 50, 0, 0});
