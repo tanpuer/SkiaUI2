@@ -135,16 +135,15 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         shaderView->setWidth(1080);
         shaderView->setHeight(520);
         scrollView->addView(shaderView);
-    }
-
-    {
-        auto shaderView = new ShaderView();
-        shaderView->setContext(this->context);
-        shaderView->setShaderPath("raining.glsl", {"raining.png"});
-        shaderView->setWidth(1080);
-        shaderView->setHeight(520);
-        shaderView->setMargin({0, 50, 0, 0});
-        scrollView->addView(shaderView);
+        shaderView->setOnClickListener([shaderView](View* view) -> void {
+            static bool flag = true;
+            if (flag) {
+                shaderView->setShaderPath("raining.glsl", {"raining.png"});
+            } else {
+                shaderView->setShaderPath("sincos.glsl");
+            }
+            flag = !flag;
+        });
     }
 
     {
