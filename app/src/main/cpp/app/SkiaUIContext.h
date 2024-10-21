@@ -94,15 +94,24 @@ public:
     void intFont() {
         MeasureTime("initFont");
         fontMgr = SkFontMgr_New_Android(nullptr);
-        auto fontData = assetManager->readImage("font/AlimamaFangYuanTiVF-Thin.ttf");
-        auto data = SkData::MakeWithCopy(fontData->content, fontData->length);
         auto fontProvider = sk_make_sp<TypefaceFontProvider>();
-        auto typeface = fontMgr->makeFromData(std::move(data));
-        fontProvider->registerTypeface(typeface, SkString("Alimama"));
+        {
+            auto fontData = assetManager->readImage("font/AlimamaFangYuanTiVF-Thin.ttf");
+            auto data = SkData::MakeWithCopy(fontData->content, fontData->length);
+            auto typeface = fontMgr->makeFromData(std::move(data));
+            fontProvider->registerTypeface(typeface, SkString("Alimama"));
+            delete fontData;
+        }
+        {
+            auto fontData = assetManager->readImage("font/NotoColorEmoji.ttf");
+            auto data = SkData::MakeWithCopy(fontData->content, fontData->length);
+            auto typeface = fontMgr->makeFromData(std::move(data));
+            fontProvider->registerTypeface(typeface, SkString("ColorEmoji"));
+            delete fontData;
+        }
         fontCollection = sk_make_sp<FontCollection>();
         fontCollection->setAssetFontManager(std::move(fontProvider));
         fontCollection->enableFontFallback();
-        delete fontData;
     }
 
     sk_sp<FontCollection> getFontCollection() {

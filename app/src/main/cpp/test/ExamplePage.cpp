@@ -277,11 +277,14 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     {
         auto textView = new TextView();
         textView->setContext(this->context);
-        textView->setText(SkString("abcdefghijklmnopqrstuvw"));
-        textView->setWidth(700);
+        textView->setText(SkString("😀😃😄😁😆😅😂🤣☺😇🙂😍😡😟😢😻👽💩👍👎🙏👌👋👄👁👦👼👨‍🚀👨‍🚒🙋‍♂️👳👨‍👨‍👧"
+                                   "\n👧💼👡👠☂🐶🐰🐻🐼🐷🐒🐵🐔🐧🐦🐋🐟🐡🕸🐌🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝"
+                                   "\n💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏"
+                                   "\n🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳"));
+        textView->setWidth(1000);
         textView->setHeight(200);
         textView->setTextColor(SK_ColorGREEN);
-        textView->setTextSize(100);
+        textView->setTextSize(50);
         textView->setBackgroundColor(SK_ColorRED);
         textView->setStyle(SkPaint::kStroke_Style);
         textView->setMargin({50, 50, 50, 50});
