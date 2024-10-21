@@ -174,6 +174,11 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         imageView->setWidth(800);
         imageView->setHeight(500);
         imageView->setMargin({0, 100, 0, 0});
+        imageView->setOnCompleteFunc([](ImageView *imageView) {
+            static bool flag = true;
+            imageView->blur(flag ? 10.0f : 0.0f);
+            flag = !flag;
+        });
         scrollView->addView(imageView);
     }
 
@@ -268,7 +273,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         textView->setText(SkString("😀😃😄😁😆😅😂🤣☺😇🙂😍😡😟😢😻👽💩👍👎🙏👌👋👄👁👦👼👨‍🚀👨‍🚒🙋‍♂️👳👨‍👨‍👧"
                                    "\n👧💼👡👠☂🐶🐰🐻🐼🐷🐒🐵🐔🐧🐦🐋🐟🐡🕸🐌🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝"
                                    "\n💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏"
-                                   "\n🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳"));
+                                   "\n🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳Emoji展示"));
         textView->setWidth(1000);
         textView->setHeight(200);
         textView->setTextColor(SK_ColorGREEN);
@@ -314,19 +319,4 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         scrollView->addView(textView);
     }
 
-    {
-        auto imageView = new ImageView();
-        imageView->setContext(this->context);
-        imageView->setSource("raining.png");
-        imageView->setCornerRadius(200);
-        imageView->setScaleType(ImageView::ScaleType::CenterCrop);
-        imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorRED);
-        imageView->setStrokeWidth(2);
-        imageView->blur(10.0f);
-        imageView->setWidth(400);
-        imageView->setHeight(400);
-        imageView->setMargin({0, 100, 0, 0});
-        scrollView->addView(imageView);
-    }
 }

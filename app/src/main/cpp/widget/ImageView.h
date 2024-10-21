@@ -53,6 +53,8 @@ public:
 
     void start();
 
+    void setOnCompleteFunc(std::function<void(ImageView *imageView)> &&completeFunc);
+
 private:
 
     sk_sp<SkImage> skImage;
@@ -94,6 +96,8 @@ private:
 
     std::string source;
 
-    std::function<void(SkRect &dstRect, SkMatrix &imageMatrix, float rotateZ)> rotateFunc;
+    std::function<void(SkRect &dstRect, SkMatrix &imageMatrix, float rotateZ)> rotateFunc = nullptr;
+
+    std::function<void(ImageView *imageView)> completeFunc = nullptr;
 
 };

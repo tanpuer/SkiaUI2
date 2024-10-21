@@ -100,6 +100,9 @@ void ImageView::draw(SkCanvas *canvas) {
         }
         currentFrameIndex = (currentTimeMills - startTime) * frameCount / duration;
         if (currentFrameIndex >= skImages.size()) {
+            if (completeFunc != nullptr) {
+                completeFunc(this);
+            }
             currentFrameIndex = 0;
         }
         skImage = skImages[currentFrameIndex];
@@ -165,6 +168,10 @@ void ImageView::start() {
     auto diff = getContext()->getCurrentTimeMills() - pausedTime;
     startTime += diff;
     endTime += diff;
+}
+
+void ImageView::setOnCompleteFunc(std::function<void(ImageView *imageView)> &&completeFunc) {
+    this->completeFunc = std::move(completeFunc);
 }
 
 
