@@ -3,6 +3,7 @@
 Button::Button() : TextView() {
     ripplePaint = new SkPaint();
     ripplePaint->setAntiAlias(true);
+    textAlign = TextAlign::kCenter;
 }
 
 Button::~Button() {

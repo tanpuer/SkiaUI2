@@ -61,6 +61,8 @@ public:
 
     virtual void setTextSize(SkScalar textSize);
 
+    virtual void setTextAlign(TextAlign textAlign);
+
     virtual SkScalar getTextSize();
 
     virtual void setAlpha(float alpha) override;
@@ -133,4 +135,6 @@ protected:
     int originHeight = 0;
 
     std::vector<SkString> fontFamily;
+
+    TextAlign textAlign = TextAlign::kLeft;
 };

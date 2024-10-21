@@ -118,7 +118,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         view->setMargin({0, 50, 0, 50});
         scrollView->addView(view);
         view->setOnClickListener([this, width, height](View *view) {
-            if (context->getPageStackManager()->getPages().size() <=1) {
+            if (context->getPageStackManager()->getPages().size() <= 1) {
                 context->getPluginManager()->invokeMethod("toast", "show", "back error");
                 return;
             }
@@ -139,7 +139,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         shaderView->setWidth(1080);
         shaderView->setHeight(520);
         scrollView->addView(shaderView);
-        shaderView->setOnClickListener([shaderView](View* view) -> void {
+        shaderView->setOnClickListener([shaderView](View *view) -> void {
             static bool flag = false;
             if (flag) {
                 shaderView->setShaderPath("raining.glsl", {"raining.png"});
@@ -260,18 +260,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         button->setOnClickListener([](View *view) {
             ALOGD("setOnClickListener perform %s", view->name())
         });
-    }
-
-    {
-        auto textView = new TextView();
-        textView->setContext(this->context);
-        textView->setText(SkString("horizontal test"));
-        textView->setTextColor(SK_ColorBLACK);
-        textView->setTextSize(60);
-        textView->setBackgroundColor(SK_ColorRED);
-        textView->setStyle(SkPaint::kStroke_Style);
-        textView->setMargin({50, 50, 50, 50});
-        scrollView->addView(textView);
     }
 
     {

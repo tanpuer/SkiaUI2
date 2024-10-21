@@ -57,7 +57,7 @@ void TextView::measure() {
         isDirty = false;
         skia::textlayout::ParagraphStyle paraStyle;
         paraStyle.setTextStyle(*defaultStyle);
-        paraStyle.setTextAlign(TextAlign::kCenter);
+        paraStyle.setTextAlign(textAlign);
         if (maxLine > 0) {
             paraStyle.setEllipsis(u"\u2026");
             paraStyle.setMaxLines(maxLine);
@@ -138,6 +138,10 @@ void TextView::draw(SkCanvas *canvas) {
 
 void TextView::setTextSize(SkScalar textSize) {
     defaultStyle->setFontSize(textSize);
+    isDirty = true;
+}
+
+void TextView::setTextAlign(TextAlign textAlign) {
     isDirty = true;
 }
 
