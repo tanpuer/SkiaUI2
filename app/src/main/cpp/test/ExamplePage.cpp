@@ -13,6 +13,7 @@
 #include "TextView.h"
 #include "QQMusicPage.h"
 #include "YUVVideoView.h"
+#include "LoadingView.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -317,6 +318,16 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
                                                    100, paint4));
         textView->setMargin({50, 50, 50, 50});
         scrollView->addView(textView);
+    }
+
+    {
+        auto loadingView = new LoadingView();
+        loadingView->setContext(this->context);
+        loadingView->setWidth(1080);
+        loadingView->setHeight(200);
+        loadingView->setMargin({0, 0, 0, 50});
+        loadingView->setStyle(SkPaint::kStroke_Style);
+        scrollView->addView(loadingView);
     }
 
 }

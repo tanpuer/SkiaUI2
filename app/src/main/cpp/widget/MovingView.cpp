@@ -39,11 +39,10 @@ bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
 
 void MovingView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
-//    ALOGD("MovingView %f %f", translateX, translateY)
     skRect.setLTRB(l + translateX, t + translateY, r + translateX, b + translateY);
 }
 
-MovingView::MovingView() : View() {
+MovingView::MovingView() : FlexboxLayout() {
     lastX = 0.0f;
     lastY = 0.0f;
 }

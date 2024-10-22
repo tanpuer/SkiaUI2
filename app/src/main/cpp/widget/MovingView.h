@@ -1,8 +1,9 @@
 #pragma once
 
 #include "View.h"
+#include "FlexboxLayout.h"
 
-class MovingView : public View {
+class MovingView : public FlexboxLayout {
 
 public:
 
