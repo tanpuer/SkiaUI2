@@ -7,7 +7,7 @@ LoadingView::LoadingView() {
 }
 
 LoadingView::~LoadingView() {
-
+    ALOGD("LoadingView destroy");
 }
 
 void LoadingView::draw(SkCanvas *canvas) {

@@ -89,6 +89,8 @@ public:
 
     int left, top, right, bottom = 0;
 
+    bool markForDelete = false;
+
 protected:
 
     int width, height;

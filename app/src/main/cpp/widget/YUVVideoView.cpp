@@ -37,6 +37,7 @@ void YUVVideoView::setSource(const char *path) {
         return;
     }
     runtimeEffect = effect;
+    firstFrame = true;
 }
 
 const char *YUVVideoView::getSource() {
@@ -99,6 +100,12 @@ void YUVVideoView::draw(SkCanvas *canvas) {
         canvas->translate(left, top);
         canvas->drawPicture(picture);
         canvas->restore();
+        if (firstFrame) {
+            firstFrame = false;
+            if (renderFirstFrameCallback != nullptr) {
+                renderFirstFrameCallback();
+            }
+        }
     }
 }
 
@@ -122,4 +129,8 @@ void YUVVideoView::onHide() {
 
 const char *YUVVideoView::name() {
     return "YUVVideoView";
+}
+
+void YUVVideoView::setRenderFirstFrameCallback(std::function<void()> &&callback) {
+    this->renderFirstFrameCallback = std::move(callback);
 }

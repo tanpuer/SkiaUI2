@@ -30,6 +30,8 @@ public:
 
     void onHide() override;
 
+    void setRenderFirstFrameCallback(std::function<void()>&& callback);
+
 private:
 
     jclass javaVideoClass = nullptr;
@@ -53,5 +55,9 @@ private:
     std::string src;
 
     sk_sp<SkRuntimeEffect> runtimeEffect = nullptr;
+
+    std::function<void()> renderFirstFrameCallback = nullptr;
+
+    bool firstFrame = true;
 
 };

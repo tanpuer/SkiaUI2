@@ -53,16 +53,38 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     root->addView(scrollView);
 
     {
+        auto flexboxLayout = new FlexboxLayout();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(1080);
+        flexboxLayout->setHeight(360 * 1080 / 640);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({0, 0, 0, 50});
+        scrollView->addView(flexboxLayout);
+
         auto videoView = new YUVVideoView();
         videoView->setContext(this->context);
-        videoView->setWidth(1080);
-        videoView->setHeight(360 * 1080 / 640);
+        videoView->setWidthPercent(100);
+        videoView->setHeightPercent(100);
         videoView->setSource("yiluxiangbei.mp4");
         videoView->setStyle(SkPaint::kStroke_Style);
-        videoView->setBackgroundColor(SK_ColorRED);
-        videoView->setStrokeWidth(2);
-        videoView->setMargin({0, 0, 0, 50});
-        scrollView->addView(videoView);
+        videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        flexboxLayout->addView(videoView);
+
+        auto loadingView = new LoadingView();
+        loadingView->setContext(this->context);
+        loadingView->setWidthPercent(100);
+        loadingView->setHeightPercent(100);
+        loadingView->setStyle(SkPaint::kStroke_Style);
+        loadingView->setBackgroundColor(SK_ColorTRANSPARENT);
+        loadingView->setStrokeWidth(0);
+        loadingView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+        flexboxLayout->addView(loadingView);
+
+        videoView->setRenderFirstFrameCallback([loadingView, flexboxLayout]() {
+           flexboxLayout->removeView(loadingView);
+        });
     }
 
     {

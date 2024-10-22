@@ -91,6 +91,7 @@ public:
 
     virtual const char *getFlexDirection();
 
+    //TODO 智能指针
     std::vector<View *> children;
 
 #pragma mark TouchEvent
