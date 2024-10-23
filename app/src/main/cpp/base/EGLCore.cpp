@@ -1,7 +1,3 @@
-//
-// Created by cw on 2021/6/2.
-//
-
 #include "EGLCore.h"
 #include "native_log.h"
 

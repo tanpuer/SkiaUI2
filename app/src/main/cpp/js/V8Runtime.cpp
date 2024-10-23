@@ -82,7 +82,7 @@ V8Runtime::executeScript(const v8::Local<v8::String> &script, const std::string 
         ReportException(&tryCatch);
         return result;
     }
-    ALOGD("AgilV8Runtime::executeScript success")
+    ALOGD("V8Runtime::executeScript success")
     return v8::Undefined(mIsolate);
 }
 

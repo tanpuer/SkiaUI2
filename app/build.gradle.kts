@@ -47,11 +47,17 @@ android {
             version = "3.22.1"
         }
     }
+    buildFeatures {
+        compose = true
+    }
 }
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("org.java-websocket:Java-WebSocket:1.5.6")
-    implementation("androidx.media3:media3-exoplayer:1.4.0")
+    implementation("androidx.media3:media3-exoplayer:1.4.1")
+    implementation("androidx.compose.runtime:runtime:1.7.4")
+    implementation("androidx.compose.compiler:compiler:1.5.15")
+    implementation("androidx.compose.foundation:foundation-android:1.7.4")
 }
