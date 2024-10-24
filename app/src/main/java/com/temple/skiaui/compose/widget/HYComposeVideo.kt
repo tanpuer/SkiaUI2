@@ -5,11 +5,15 @@ import com.temple.skiaui.compose.foundation.Modifier
 class HYComposeVideo(modifier: Modifier): HYComposeView(modifier)  {
 
     override fun createComposeView(): HYComposeView {
-        //jni create video.cpp
-        return super.createComposeView()
+        ref = nativeCreateView()
+        return this
     }
 
     fun setSource(source: String) {
-        //jni set source
+        nativeSetSource(ref, source)
     }
+
+    private external fun nativeCreateView(): Long
+    private external fun nativeSetSource(videoView: Long, source: String)
+
 }

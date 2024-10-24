@@ -203,6 +203,10 @@ class HYSkiaEngine {
         skiaUIHandler.post(runnable)
     }
 
+    fun registerJetpackCompose() {
+        nativeRegisterJetpackCompose()
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -228,6 +232,7 @@ class HYSkiaEngine {
     private external fun nativeUIShow(uiApp: Long)
     private external fun nativeUIHide(uiApp: Long)
     private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
+    private external fun nativeRegisterJetpackCompose()
 
     companion object {
         init {

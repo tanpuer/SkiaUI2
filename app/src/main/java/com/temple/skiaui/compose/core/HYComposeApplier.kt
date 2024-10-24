@@ -14,7 +14,7 @@ class HYComposeApplier(root: HYComposeNode) : AbstractApplier<HYComposeNode>(roo
     }
 
     override fun remove(index: Int, count: Int) {
-        current.removeElement(index, count, current.view.ref)
+        current.removeElement(index, count)
     }
 
     override fun move(from: Int, to: Int, count: Int) {

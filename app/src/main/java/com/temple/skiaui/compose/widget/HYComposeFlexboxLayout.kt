@@ -5,7 +5,10 @@ import com.temple.skiaui.compose.foundation.Modifier
 class HYComposeFlexboxLayout(modifier: Modifier): HYComposeView(modifier) {
 
     override fun createComposeView(): HYComposeView {
-        //jni create flexboxlayout.cpp
+        ref = nativeCreateView()
         return this
     }
+
+    private external fun nativeCreateView(): Long
+
 }

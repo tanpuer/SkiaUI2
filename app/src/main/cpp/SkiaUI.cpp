@@ -5,6 +5,7 @@
 #include "app/SkiaGLApp.h"
 #include "app/SkiaUIApp.h"
 #include "PluginManager.h"
+#include "compose/ComposeJNI.h"
 
 const char *HYSkiaEngine = "com/temple/skiaui/HYSkiaEngine";
 
@@ -193,6 +194,12 @@ native_DeleteSkPicture(JNIEnv *env, jobject instance, jlong javaUIApp, jlong skP
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_RegisterJetpackCompose(JNIEnv *env, jobject instance) {
+    ALOGD("native_RegisterJetpackCompose")
+    registerComposeJNI(env);
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -214,6 +221,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUIShow",                        "(J)V",                                         (void *) native_UIShow},
         {"nativeUIHide",                        "(J)V",                                         (void *) native_UIHide},
         {"nativeDeleteSkPicture",               "(JJ)V",                                        (void *) native_DeleteSkPicture},
+        {"nativeRegisterJetpackCompose",        "()V",                                          (void *) native_RegisterJetpackCompose},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

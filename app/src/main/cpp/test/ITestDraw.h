@@ -55,6 +55,6 @@ protected:
 
     YGConfigRef config;
 
-    std::shared_ptr<SkiaUIContext> context;
+    std::shared_ptr<SkiaUIContext> context = nullptr;
 
 };

@@ -16,12 +16,11 @@ abstract class HYComposeNode(modifier: Modifier) {
 
     fun addElement(index: Int, child: Long, parent: Long) {
         parentRef = parent
-        //jni addChild in ViewGroup.cpp
-//        AgilContext.engine.nativeAddElement(index, child, parent)
+        nativeAddView(parent, child)
     }
 
-    fun removeElement(index: Int, count: Int, parent: Long) {
-
+    fun removeElement(index: Int, count: Int) {
+//        nativeRemoveViews(ref, index, count)
     }
 
     fun move(from: Int, to: Int, count: Int) {
@@ -49,5 +48,7 @@ abstract class HYComposeNode(modifier: Modifier) {
             }
         }
     }
+
+    private external fun nativeAddView(parent: Long, child: Long)
 
 }
