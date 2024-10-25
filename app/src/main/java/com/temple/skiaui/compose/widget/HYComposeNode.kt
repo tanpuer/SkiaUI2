@@ -41,7 +41,7 @@ abstract class HYComposeNode(modifier: Modifier) {
             when (key) {
                 "size" -> {
                     val size = value as IntArray
-                    view.setSize(value[0], value[1])
+                    view.setSize(size[0], size[1])
                 }
 
                 "backgroundColor" -> {

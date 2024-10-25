@@ -27,10 +27,11 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                 color = "#00ff00"
             }, 2000)
             Column(
-                modifier = Modifier(context).setSize(width, height)
+                modifier = Modifier(context).setSize(width, height).setBackgroundColor("#00000066")
             ) {
                 View(
-                    modifier = Modifier(context).setSize(200, 200), color
+                    modifier = Modifier(context).setSize(200, 200),
+                    color
                 )
                 Video(
                     modifier = Modifier(context).setSize(width, 360 * width / 640).setSource("yiluxiangbei.mp4")
