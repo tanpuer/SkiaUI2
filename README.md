@@ -26,7 +26,7 @@ steps：
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
 10. Page: act as the same role as Activity.
 11. Javascript: Import v8 to evaluate javascript. Look at test.js in assets.
-12. Todo: Import kotlin and Compose-runtime to run.
+12. Import kotlin and Compose-runtime to run. Look at JetpackComposeTest.kt in java.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
