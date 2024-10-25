@@ -1,6 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
-class Modifier {
+class Modifier(val context: Long) {
 
     val styles = mutableMapOf<String, Any>()
 

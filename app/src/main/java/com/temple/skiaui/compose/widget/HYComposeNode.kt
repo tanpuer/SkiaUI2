@@ -8,9 +8,12 @@ abstract class HYComposeNode(modifier: Modifier) {
 
     var parentRef: Long = -1L
 
+    var contextPtr = modifier.context
+
     val view: HYComposeView by lazy {
         val view = createComposeView()
         initStyles(view, modifier)
+        initAttrs(view, modifier)
         view
     }
 
@@ -47,6 +50,10 @@ abstract class HYComposeNode(modifier: Modifier) {
 
             }
         }
+    }
+
+    open fun initAttrs(view: HYComposeView, modifier: Modifier) {
+
     }
 
     private external fun nativeAddView(parent: Long, child: Long)

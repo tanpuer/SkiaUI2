@@ -203,6 +203,10 @@ class HYSkiaEngine {
         skiaUIHandler.post(runnable)
     }
 
+    fun postToSkiaUIDelay(runnable: Runnable, delay: Long) {
+        skiaGLHandler.postDelayed(runnable, delay)
+    }
+
     fun registerJetpackCompose() {
         nativeRegisterJetpackCompose()
     }

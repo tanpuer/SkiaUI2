@@ -2,7 +2,7 @@ package com.temple.skiaui.compose.widget
 
 import com.temple.skiaui.compose.foundation.Modifier
 
-class HYComposeFlexboxLayout(modifier: Modifier): HYComposeView(modifier) {
+class HYComposePage(modifier: Modifier) : HYComposeView(modifier) {
 
     override fun createComposeView(): HYComposeView {
         ref = nativeCreateView(contextPtr)
@@ -10,5 +10,4 @@ class HYComposeFlexboxLayout(modifier: Modifier): HYComposeView(modifier) {
     }
 
     private external fun nativeCreateView(context: Long): Long
-
 }

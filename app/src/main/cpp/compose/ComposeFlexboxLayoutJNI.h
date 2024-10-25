@@ -7,13 +7,15 @@
 const char *HYComposeFlexboxLayout = "com/temple/skiaui/compose/widget/HYComposeFlexboxLayout";
 
 extern "C" JNIEXPORT jlong JNICALL
-compose_flexbox_create_view(JNIEnv *env, jobject instance) {
+compose_flexbox_create_view(JNIEnv *env, jobject instance, jlong context) {
     auto flexboxLayout = new FlexboxLayout();
+    auto ctx = reinterpret_cast<SkiaUIContext *>(context);
+    flexboxLayout->setContext(std::shared_ptr<SkiaUIContext>(ctx));
     return reinterpret_cast<long>(flexboxLayout);
 }
 
 static JNINativeMethod g_ComposeFlexboxMethods[] = {
-        {"nativeCreateView", "()J", (void *) compose_flexbox_create_view},
+        {"nativeCreateView", "(J)J", (void *) compose_flexbox_create_view},
 };
 
 static int RegisterComposeFlexboxLayoutMethods(JNIEnv *env) {
@@ -29,4 +31,12 @@ static int RegisterComposeFlexboxLayoutMethods(JNIEnv *env) {
         return JNI_FALSE;
     }
     return JNI_TRUE;
+}
+
+static void UnRegisterComposeFlexboxLayoutMethods(JNIEnv *env) {
+    jclass clazz = env->FindClass(HYComposeFlexboxLayout);
+    if (clazz == nullptr) {
+        ALOGD("UnRegisterComposeFlexboxLayoutMethods fail clazz == null")
+    }
+    env->UnregisterNatives(clazz);
 }

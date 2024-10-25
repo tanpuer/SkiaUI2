@@ -14,6 +14,8 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
+import com.temple.skiaui.compose.widget.HYComposePage
+import com.temple.skiaui.compose.widget.HYComposeVideo
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
@@ -22,15 +24,19 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @Composable
-fun View(modifier: Modifier = Modifier()) {
+fun View(modifier: Modifier, backgroundColor: String) {
     ComposeNode<HYComposeView, HYComposeApplier>(
         factory = { HYComposeView(modifier) },
-        update = {}
+        update = {
+            set(backgroundColor) {
+                this.setBackgroundColor(backgroundColor)
+            }
+        }
     )
 }
 
 @Composable
-fun Column(modifier: Modifier = Modifier(), content: @Composable () -> Unit) {
+fun Column(modifier: Modifier, content: @Composable () -> Unit) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
         factory = { HYComposeFlexboxLayout(modifier) },
         update = {},
@@ -38,22 +44,43 @@ fun Column(modifier: Modifier = Modifier(), content: @Composable () -> Unit) {
     )
 }
 
-fun runCompose(content: @Composable () -> Unit, width: Int, height: Int, engine: HYSkiaEngine) {
+@Composable
+fun Video(modifier: Modifier) {
+    ComposeNode<HYComposeVideo, HYComposeApplier>(
+        factory = { HYComposeVideo(modifier) },
+        update = {}
+    )
+}
+
+@Composable
+fun Page(modifier: Modifier) {
+    ComposeNode<HYComposePage, HYComposeApplier>(
+        factory = { HYComposePage(modifier) },
+        update = {}
+    )
+}
+
+fun runCompose(
+    content: @Composable () -> Unit,
+    width: Int,
+    height: Int,
+    engine: HYSkiaEngine,
+    context: Long
+): Long {
     val frameClock = BroadcastFrameClock()
     val reComposer = Recomposer(frameClock)
-    val rootNode = HYComposeFlexboxLayout(
-        Modifier()
+    val rootNode = HYComposePage(
+        Modifier(context)
             .setSize(width, height)
             .setBackgroundColor("#ffffffff")
     )
+    rootNode.view
     val composition = ControlledComposition(
         applier = HYComposeApplier(rootNode),
         parent = reComposer
     )
     composition.setContent(content)
-
     val coroutineContext: CoroutineContext by lazy {
-        Looper.prepare()
         val dispatcher = HYComposeUIDispatcher(
             Choreographer.getInstance(),
             engine
@@ -79,4 +106,5 @@ fun runCompose(content: @Composable () -> Unit, width: Int, height: Int, engine:
             reComposer.runRecomposeAndApplyChanges()
         }
     }
+    return rootNode.ref
 }

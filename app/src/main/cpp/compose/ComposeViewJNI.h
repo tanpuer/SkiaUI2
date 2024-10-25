@@ -7,8 +7,10 @@
 const char *HYComposeView = "com/temple/skiaui/compose/widget/HYComposeView";
 
 extern "C" JNIEXPORT jlong JNICALL
-compose_view_create_view(JNIEnv *env, jobject instance) {
+compose_view_create_view(JNIEnv *env, jobject instance, jlong context) {
     auto view = new View();
+    auto ctx = reinterpret_cast<SkiaUIContext *>(context);
+    view->setContext(std::shared_ptr<SkiaUIContext>(ctx));
     return reinterpret_cast<long>(view);
 }
 
@@ -33,7 +35,7 @@ compose_view_set_background_color(JNIEnv *env, jobject instance, jlong viewPtr, 
 }
 
 static JNINativeMethod g_ComposeViewMethods[] = {
-        {"nativeCreateView",         "()J",                    (void *) compose_view_create_view},
+        {"nativeCreateView",         "(J)J",                   (void *) compose_view_create_view},
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
         {"nativeSetBackgroundColor", "(JLjava/lang/String;)V", (void *) compose_view_set_background_color},
@@ -51,4 +53,12 @@ static int RegisterComposeViewMethods(JNIEnv *env) {
         return JNI_FALSE;
     }
     return JNI_TRUE;
+}
+
+static void UnRegisterComposeViewMethods(JNIEnv *env) {
+    jclass clazz = env->FindClass(HYComposeView);
+    if (clazz == nullptr) {
+        ALOGD("UnRegisterComposeViewMethods fail clazz == null")
+    }
+    env->UnregisterNatives(clazz);
 }

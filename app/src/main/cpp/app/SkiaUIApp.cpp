@@ -8,6 +8,7 @@
 #include "PageTest.h"
 #include "PageStackManager.h"
 #include "JavascriptTest.h"
+#include "JetpackComposeTest.h"
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine) {
     SkGraphics::Init();
@@ -17,6 +18,7 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context->setJavaSkiaEngine(javaSkiaEngine);
     testDraw = std::make_unique<PageTest>();
 //    testDraw = std::make_unique<JavascriptTest>();
+//    testDraw = std::make_unique<JetpackComposeTest>(env);
     testDraw->setContext(context);
 }
 

@@ -5,8 +5,10 @@
 const char *HYComposeVideo = "com/temple/skiaui/compose/widget/HYComposeVideo";
 
 extern "C" JNIEXPORT jlong JNICALL
-compose_video_create_view(JNIEnv *env, jobject instance) {
+compose_video_create_view(JNIEnv *env, jobject instance, jlong context) {
     auto view = new VideoView();
+    auto ctx = reinterpret_cast<SkiaUIContext *>(context);
+    view->setContext(std::shared_ptr<SkiaUIContext>(ctx));
     return reinterpret_cast<long>(view);
 }
 
@@ -19,7 +21,7 @@ compose_video_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring s
 }
 
 static JNINativeMethod g_ComposeVideoViewMethods[] = {
-        {"nativeCreateView", "()J",                    (void *) compose_video_create_view},
+        {"nativeCreateView", "(J)J",                   (void *) compose_video_create_view},
         {"nativeSetSource",  "(JLjava/lang/String;)V", (void *) compose_video_set_source},
 };
 
@@ -36,4 +38,12 @@ static int RegisterComposeVideoMethods(JNIEnv *env) {
         return JNI_FALSE;
     }
     return JNI_TRUE;
+}
+
+static void UnRegisterComposeVideoMethods(JNIEnv *env) {
+    jclass clazz = env->FindClass(HYComposeVideo);
+    if (clazz == nullptr) {
+        ALOGD("UnRegisterComposeVideoMethods fail clazz == null")
+    }
+    env->UnregisterNatives(clazz);
 }

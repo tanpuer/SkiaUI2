@@ -31,3 +31,11 @@ static int RegisterComposeNodeMethods(JNIEnv *env) {
     }
     return JNI_TRUE;
 }
+
+static void UnRegisterComposeNodeMethods(JNIEnv *env) {
+    jclass clazz = env->FindClass(HYComposeNode);
+    if (clazz == nullptr) {
+        ALOGD("UnRegisterComposeNodeMethods fail clazz == null")
+    }
+    env->UnregisterNatives(clazz);
+}

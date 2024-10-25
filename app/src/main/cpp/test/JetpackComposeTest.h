@@ -16,4 +16,6 @@ private:
 
     JNIEnv *jniEnv = nullptr;
 
+    jobject testRef = nullptr;
+
 };
