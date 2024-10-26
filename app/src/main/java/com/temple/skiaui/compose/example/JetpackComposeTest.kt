@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Column
+import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.core.runCompose
@@ -34,8 +35,10 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     color
                 )
                 Video(
-                    modifier = Modifier(context).setSize(width, 360 * width / 640).setSource("yiluxiangbei.mp4")
+                    modifier = Modifier(context).setSize(width, 360 * width / 640)
+                        .setSource("yiluxiangbei.mp4")
                 )
+                Loading(modifier = Modifier(context).setSize(width, 200))
             }
         }, width, height, engine, context)
     }

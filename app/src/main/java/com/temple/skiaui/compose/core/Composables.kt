@@ -1,6 +1,5 @@
 package com.temple.skiaui.compose.core
 
-import android.os.Looper
 import android.util.Log
 import android.view.Choreographer
 import androidx.compose.runtime.BroadcastFrameClock
@@ -14,6 +13,7 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
+import com.temple.skiaui.compose.widget.HYComposeLoadingView
 import com.temple.skiaui.compose.widget.HYComposePage
 import com.temple.skiaui.compose.widget.HYComposeVideo
 import com.temple.skiaui.compose.widget.HYComposeView
@@ -56,6 +56,14 @@ fun Video(modifier: Modifier) {
 fun Page(modifier: Modifier) {
     ComposeNode<HYComposePage, HYComposeApplier>(
         factory = { HYComposePage(modifier) },
+        update = {}
+    )
+}
+
+@Composable
+fun Loading(modifier: Modifier) {
+    ComposeNode<HYComposeLoadingView, HYComposeApplier>(
+        factory = { HYComposeLoadingView(modifier) },
         update = {}
     )
 }
