@@ -54,3 +54,7 @@ void LoadingView::setLoadingHeight(int height) {
 void LoadingView::setLoadingDuration(int duration) {
     this->duration = duration;
 }
+
+const char *LoadingView::name() {
+    return "Loading";
+}

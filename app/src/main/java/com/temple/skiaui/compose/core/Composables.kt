@@ -82,7 +82,6 @@ fun runCompose(
             .setSize(width, height)
             .setBackgroundColor("#ffffffff")
     )
-    rootNode.view
     val composition = ControlledComposition(
         applier = HYComposeApplier(rootNode),
         parent = reComposer

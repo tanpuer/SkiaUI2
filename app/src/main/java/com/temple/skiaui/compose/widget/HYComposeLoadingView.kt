@@ -4,10 +4,6 @@ import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposeLoadingView(modifier: Modifier): HYComposeView(modifier) {
 
-    override fun createComposeView(): HYComposeView {
-        ref = nativeCreateView(contextPtr)
-        return this
-    }
+    override fun getViewType(): String = "Loading"
 
-    private external fun nativeCreateView(context: Long): Long
 }

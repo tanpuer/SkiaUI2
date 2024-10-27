@@ -6,14 +6,6 @@
 
 const char *HYComposeView = "com/temple/skiaui/compose/widget/HYComposeView";
 
-extern "C" JNIEXPORT jlong JNICALL
-compose_view_create_view(JNIEnv *env, jobject instance, jlong context) {
-    auto view = new View();
-    auto ctx = reinterpret_cast<SkiaUIContext *>(context);
-    view->setContext(std::shared_ptr<SkiaUIContext>(ctx));
-    return reinterpret_cast<long>(view);
-}
-
 extern "C" JNIEXPORT void JNICALL
 compose_view_set_width(JNIEnv *env, jobject instance, jlong viewPtr, jint width) {
     auto view = reinterpret_cast<View *>(viewPtr);
@@ -35,7 +27,6 @@ compose_view_set_background_color(JNIEnv *env, jobject instance, jlong viewPtr, 
 }
 
 static JNINativeMethod g_ComposeViewMethods[] = {
-        {"nativeCreateView",         "(J)J",                   (void *) compose_view_create_view},
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
         {"nativeSetBackgroundColor", "(JLjava/lang/String;)V", (void *) compose_view_set_background_color},

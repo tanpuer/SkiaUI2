@@ -10,7 +10,7 @@ class HYComposeApplier(root: HYComposeNode) : AbstractApplier<HYComposeNode>(roo
     }
 
     override fun insertTopDown(index: Int, instance: HYComposeNode) {
-        current.addElement(index, instance.view.ref, current.view.ref)
+        current.addElement(index, instance.ref, current.ref)
     }
 
     override fun remove(index: Int, count: Int) {

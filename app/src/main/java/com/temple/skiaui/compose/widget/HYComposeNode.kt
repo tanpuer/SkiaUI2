@@ -2,19 +2,23 @@ package com.temple.skiaui.compose.widget
 
 import com.temple.skiaui.compose.foundation.Modifier
 
-abstract class HYComposeNode(modifier: Modifier) {
+abstract class HYComposeNode(val modifier: Modifier) {
 
-    var ref: Long = -1L
+    var ref: Long = 0L
 
-    var parentRef: Long = -1L
+    private var parentRef: Long = 0L
 
-    var contextPtr = modifier.context
+    private var contextPtr: Long = 0L
 
-    val view: HYComposeView by lazy {
-        val view = createComposeView()
-        initStyles(view, modifier)
-        initAttrs(view, modifier)
-        view
+    init {
+        this.contextPtr = modifier.context
+        initNativeView()
+    }
+
+    private fun initNativeView() {
+        ref = nativeCreateView(contextPtr, getViewType())
+        initStyles(modifier)
+        initAttrs(modifier)
     }
 
     fun addElement(index: Int, child: Long, parent: Long) {
@@ -34,28 +38,27 @@ abstract class HYComposeNode(modifier: Modifier) {
 
     }
 
-    abstract fun createComposeView(): HYComposeView
+    abstract fun getViewType(): String
 
-    private fun initStyles(view: HYComposeView, modifier: Modifier) {
+    open fun initStyles(modifier: Modifier) {
         modifier.styles.forEach { (key, value) ->
             when (key) {
                 "size" -> {
                     val size = value as IntArray
-                    view.setSize(size[0], size[1])
+                    (this as? HYComposeView)?.setSize(size[0], size[1])
                 }
 
                 "backgroundColor" -> {
-                    view.setBackgroundColor(value as String)
+                    (this as? HYComposeView)?.setBackgroundColor(value as String)
                 }
 
             }
         }
     }
 
-    open fun initAttrs(view: HYComposeView, modifier: Modifier) {
-
-    }
+    open fun initAttrs(modifier: Modifier) {}
 
     private external fun nativeAddView(parent: Long, child: Long)
+    private external fun nativeCreateView(contextPtr: Long, type: String): Long
 
 }

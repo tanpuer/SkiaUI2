@@ -2,15 +2,10 @@ package com.temple.skiaui.compose.widget
 
 import com.temple.skiaui.compose.foundation.Modifier
 
-class HYComposeVideo(modifier: Modifier): HYComposeView(modifier)  {
+class HYComposeVideo(modifier: Modifier) : HYComposeView(modifier) {
 
-    override fun createComposeView(): HYComposeView {
-        ref = nativeCreateView(contextPtr)
-        return this
-    }
-
-    override fun initAttrs(view: HYComposeView, modifier: Modifier) {
-        super.initAttrs(view, modifier)
+    override fun initAttrs(modifier: Modifier) {
+        super.initAttrs(modifier)
         modifier.attributes.forEach { (key, value) ->
             when (key) {
                 "source" -> {
@@ -21,7 +16,8 @@ class HYComposeVideo(modifier: Modifier): HYComposeView(modifier)  {
         }
     }
 
-    private external fun nativeCreateView(context: Long): Long
+    override fun getViewType(): String = "Video"
+
     private external fun nativeSetSource(videoView: Long, source: String)
 
 }

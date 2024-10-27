@@ -4,10 +4,6 @@ import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposePage(modifier: Modifier) : HYComposeView(modifier) {
 
-    override fun createComposeView(): HYComposeView {
-        ref = nativeCreateView(contextPtr)
-        return this
-    }
+    override fun getViewType(): String = "Page"
 
-    private external fun nativeCreateView(context: Long): Long
 }

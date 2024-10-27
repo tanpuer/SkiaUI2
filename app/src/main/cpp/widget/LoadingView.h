@@ -22,6 +22,8 @@ public:
 
     void setLoadingDuration(int duration);
 
+    const char * name() override;
+
 private:
 
     int loadingWidth = 10;

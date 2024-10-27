@@ -4,11 +4,6 @@ import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposeFlexboxLayout(modifier: Modifier): HYComposeView(modifier) {
 
-    override fun createComposeView(): HYComposeView {
-        ref = nativeCreateView(contextPtr)
-        return this
-    }
-
-    private external fun nativeCreateView(context: Long): Long
+    override fun getViewType(): String = "FlexboxLayout"
 
 }
