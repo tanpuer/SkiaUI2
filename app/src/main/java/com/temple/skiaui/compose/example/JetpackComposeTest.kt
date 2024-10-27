@@ -7,6 +7,8 @@ import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Column
 import com.temple.skiaui.compose.core.Loading
+import com.temple.skiaui.compose.core.Lottie
+import com.temple.skiaui.compose.core.Shader
 import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.core.runCompose
@@ -39,6 +41,14 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                         .setSource("yiluxiangbei.mp4")
                 )
                 Loading(modifier = Modifier(context).setSize(width, 200))
+                Lottie(
+                    modifier = Modifier(context).setSize(375, 240)
+                        .setSource("WorkspacePlanet.json")
+                )
+                Shader(
+                    modifier = Modifier(context).setSize(540, 260)
+                        .setSource("sincos.glsl")
+                )
             }
         }, width, height, engine, context)
     }

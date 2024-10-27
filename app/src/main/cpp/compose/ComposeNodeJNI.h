@@ -5,6 +5,8 @@
 #include "ViewGroup.h"
 #include "VideoView.h"
 #include "LoadingView.h"
+#include "LottieView.h"
+#include "ShaderView.h"
 
 const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
 
@@ -26,6 +28,8 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"Video",         []() -> View * { return new VideoView(); }},
             {"View",          []() -> View * { return new View(); }},
             {"Loading",       []() -> View * { return new LoadingView(); }},
+            {"Lottie",        []() -> View * { return new LottieView(); }},
+            {"Shader",        []() -> View * { return new ShaderView(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {

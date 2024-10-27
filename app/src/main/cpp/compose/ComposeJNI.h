@@ -7,6 +7,8 @@
 #include "ComposeFlexboxLayoutJNI.h"
 #include "ComposePageJNI.h"
 #include "ComposeLoadingViewJNI.h"
+#include "ComposeLottieJNI.h"
+#include "ComposeShaderJNI.h"
 
 static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeNodeMethods(jniEnv);
@@ -15,6 +17,8 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeFlexboxLayoutMethods(jniEnv);
     RegisterComposePageMethods(jniEnv);
     RegisterComposeLoadingViewMethods(jniEnv);
+    RegisterComposeLottieMethods(jniEnv);
+    RegisterComposeShaderMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -24,4 +28,6 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeFlexboxLayoutMethods(jniEnv);
     UnRegisterComposePageMethods(jniEnv);
     UnRegisterComposeLoadingViewMethods(jniEnv);
+    UnRegisterComposeLottieMethods(jniEnv);
+    UnRegisterComposeShaderMethods(jniEnv);
 }

@@ -14,7 +14,9 @@ import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
 import com.temple.skiaui.compose.widget.HYComposeLoadingView
+import com.temple.skiaui.compose.widget.HYComposeLottie
 import com.temple.skiaui.compose.widget.HYComposePage
+import com.temple.skiaui.compose.widget.HYComposeShader
 import com.temple.skiaui.compose.widget.HYComposeVideo
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlinx.coroutines.CoroutineScope
@@ -64,6 +66,22 @@ fun Page(modifier: Modifier) {
 fun Loading(modifier: Modifier) {
     ComposeNode<HYComposeLoadingView, HYComposeApplier>(
         factory = { HYComposeLoadingView(modifier) },
+        update = {}
+    )
+}
+
+@Composable
+fun Lottie(modifier: Modifier) {
+    ComposeNode<HYComposeLottie, HYComposeApplier>(
+        factory = { HYComposeLottie(modifier) },
+        update = {}
+    )
+}
+
+@Composable
+fun Shader(modifier: Modifier) {
+    ComposeNode<HYComposeShader, HYComposeApplier>(
+        factory = { HYComposeShader(modifier) },
         update = {}
     )
 }
