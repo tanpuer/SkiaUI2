@@ -26,10 +26,26 @@ compose_view_set_background_color(JNIEnv *env, jobject instance, jlong viewPtr, 
     env->ReleaseStringUTFChars(color, colorStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_click_callback(JNIEnv *env, jobject instance, jlong viewPtr) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->checkJavaViewRef(instance);
+    view->setOnClickListener([](View *view) -> void {
+        auto ctx = view->getContext();
+        auto env = ctx->getJniEnv();
+        auto javaGlobalRef = view->getJavaViewRef();
+        auto triggerClickEventMethodId = env->GetMethodID(env->GetObjectClass(javaGlobalRef),
+                                                          "triggerClickEvent",
+                                                          "()V");
+        env->CallVoidMethod(javaGlobalRef, triggerClickEventMethodId);
+    });
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
         {"nativeSetBackgroundColor", "(JLjava/lang/String;)V", (void *) compose_view_set_background_color},
+        {"nativeSetClickCallback",   "(J)V",                   (void *) compose_view_set_click_callback},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

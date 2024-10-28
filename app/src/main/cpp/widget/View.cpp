@@ -439,3 +439,13 @@ void View::performAnimations() {
         animators.erase(index);
     }
 }
+
+void View::checkJavaViewRef(jobject instance) {
+    if (globalJavaViewRef == nullptr) {
+        globalJavaViewRef = getContext()->getJniEnv()->NewGlobalRef(instance);
+    }
+}
+
+jobject View::getJavaViewRef() {
+    return globalJavaViewRef;
+}

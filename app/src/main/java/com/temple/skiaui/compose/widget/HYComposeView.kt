@@ -29,6 +29,17 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         }
     }
 
+    override fun initEvents(modifier: Modifier) {
+        super.initEvents(modifier)
+        modifier.events.forEach { (key, value) ->
+            when (key) {
+                "click" -> {
+                    nativeSetClickCallback(ref)
+                }
+            }
+        }
+    }
+
     fun setSize(width: Int, height: Int) {
         nativeSetWidth(ref, width)
         nativeSetHeight(ref, height)
@@ -46,9 +57,14 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         nativeSetHeight(ref, height)
     }
 
+    fun triggerClickEvent() {
+        (modifier.events["click"] as? (view: HYComposeView) -> Unit)?.invoke(this)
+    }
+
     override fun getViewType(): String = "View"
 
     private external fun nativeSetWidth(view: Long, width: Int)
     private external fun nativeSetHeight(view: Long, height: Int)
     private external fun nativeSetBackgroundColor(view: Long, color: String)
+    private external fun nativeSetClickCallback(view: Long)
 }

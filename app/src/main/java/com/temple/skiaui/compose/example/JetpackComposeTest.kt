@@ -15,13 +15,17 @@ import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.core.runCompose
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setBackgroundColor
+import com.temple.skiaui.compose.foundation.setHeight
 import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setSource
 import com.temple.skiaui.compose.foundation.setTextSize
 import com.temple.skiaui.compose.foundation.setWidth
+import com.temple.skiaui.compose.widget.HYComposeView
+import kotlin.random.Random
 
 class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
 
@@ -32,31 +36,38 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
     fun start(width: Int, height: Int): Long {
         return runCompose({
             var color by remember { mutableStateOf("#ff0000") }
-            engine.postToSkiaUIDelay({
-                color = "#00ff00"
-            }, 2000)
             Column(
                 modifier = Modifier(context).setSize(width, height)
                     .setBackgroundColor("#00000066")
-                    .setAlignItems("center")
+                    .setAlignItems("flex-end")
             ) {
                 View(
-                    modifier = Modifier(context).setSize(200, 200), color
+                    modifier = Modifier(context)
+                        .setSize(200, 200)
+                        .onClick { view: HYComposeView ->
+                            val hexChars = "0123456789abcdef"
+                            val nextColor = StringBuilder("#")
+                            for (i in 0 until 6) {
+                                nextColor.append(hexChars[Random.nextInt(hexChars.length)])
+                            }
+                            color = nextColor.toString()
+                        },
+                    color
                 )
                 Video(
                     modifier = Modifier(context).setSize(width, 360 * width / 640)
                         .setSource("yiluxiangbei.mp4")
                 )
-                Loading(modifier = Modifier(context).setSize(width, 200))
+                Loading(modifier = Modifier(context).setSize(500, 200))
+                Text(
+                    modifier = Modifier(context).setSize(800, 100).setTextSize(50),
+                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmoji展示"
+                )
                 Lottie(
                     modifier = Modifier(context).setSize(375, 240).setSource("WorkspacePlanet.json")
                 )
                 Shader(
                     modifier = Modifier(context).setSize(540, 260).setSource("sincos.glsl")
-                )
-                Text(
-                    modifier = Modifier(context).setWidth(800).setTextSize(50),
-                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄\n🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊\n❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmoji展示"
                 )
             }
         }, width, height, engine, context)

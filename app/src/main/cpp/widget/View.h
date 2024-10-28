@@ -253,4 +253,15 @@ public:
 public:
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> clickFunction;
 
+#pragma mark Compose
+public:
+
+    void checkJavaViewRef(jobject instance);
+
+    jobject getJavaViewRef();
+
+private:
+
+    jobject globalJavaViewRef = nullptr;
+
 };

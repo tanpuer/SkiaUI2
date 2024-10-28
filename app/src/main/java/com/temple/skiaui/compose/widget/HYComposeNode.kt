@@ -19,6 +19,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
         ref = nativeCreateView(contextPtr, getViewType())
         initStyles(modifier)
         initAttrs(modifier)
+        initEvents(modifier)
     }
 
     fun addElement(index: Int, child: Long, parent: Long) {
@@ -43,6 +44,8 @@ abstract class HYComposeNode(val modifier: Modifier) {
     open fun initStyles(modifier: Modifier) {}
 
     open fun initAttrs(modifier: Modifier) {}
+
+    open fun initEvents(modifier: Modifier) {}
 
     private external fun nativeAddView(parent: Long, child: Long)
     private external fun nativeCreateView(contextPtr: Long, type: String): Long

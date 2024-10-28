@@ -6,6 +6,6 @@ class Modifier(val context: Long) {
 
     val attributes = mutableMapOf<String, Any>()
 
-    val events = mutableMapOf<String, (params: Any) -> Unit>()
+    val events = mutableMapOf<String, Any>()
 
 }
