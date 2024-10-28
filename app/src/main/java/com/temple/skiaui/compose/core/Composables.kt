@@ -16,7 +16,9 @@ import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
 import com.temple.skiaui.compose.widget.HYComposeLoadingView
 import com.temple.skiaui.compose.widget.HYComposeLottie
 import com.temple.skiaui.compose.widget.HYComposePage
+import com.temple.skiaui.compose.widget.HYComposeScrollView
 import com.temple.skiaui.compose.widget.HYComposeShader
+import com.temple.skiaui.compose.widget.HYComposeText
 import com.temple.skiaui.compose.widget.HYComposeVideo
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlinx.coroutines.CoroutineScope
@@ -41,6 +43,24 @@ fun View(modifier: Modifier, backgroundColor: String) {
 fun Column(modifier: Modifier, content: @Composable () -> Unit) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
         factory = { HYComposeFlexboxLayout(modifier) },
+        update = {},
+        content = content
+    )
+}
+
+@Composable
+fun Row(modifier: Modifier, content: @Composable () -> Unit) {
+    ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
+        factory = { HYComposeFlexboxLayout(modifier).apply { setFlexDirection("row") } },
+        update = {},
+        content = content
+    )
+}
+
+@Composable
+fun Scroll(modifier: Modifier, content: @Composable () -> Unit) {
+    ComposeNode<HYComposeScrollView, HYComposeApplier>(
+        factory = { HYComposeScrollView(modifier) },
         update = {},
         content = content
     )
@@ -83,6 +103,18 @@ fun Shader(modifier: Modifier) {
     ComposeNode<HYComposeShader, HYComposeApplier>(
         factory = { HYComposeShader(modifier) },
         update = {}
+    )
+}
+
+@Composable
+fun Text(modifier: Modifier, content: String) {
+    ComposeNode<HYComposeText, HYComposeApplier>(
+        factory = { HYComposeText(modifier) },
+        update = {
+            set(content) {
+                setText(content)
+            }
+        }
     )
 }
 

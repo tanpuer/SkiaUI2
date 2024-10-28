@@ -25,8 +25,9 @@ steps：
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
 10. Page: act as the same role as Activity.
-11. Javascript: Import v8 to evaluate javascript. Look at test.js in assets.
-12. Import kotlin and Compose-runtime to run. Look at JetpackComposeTest.kt in java.
+11. C++: See CppTest.cpp. 
+12. js: See test.js in assets. Import v8 to evaluate javascript. 
+13. kotlin: Look at JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)

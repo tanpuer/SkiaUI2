@@ -5,7 +5,7 @@
 #include "ScrollView.h"
 #include "core/SkGraphics.h"
 #include "SkiaUIContext.h"
-#include "PageTest.h"
+#include "CppTest.h"
 #include "PageStackManager.h"
 #include "JavascriptTest.h"
 #include "JetpackComposeTest.h"
@@ -16,7 +16,7 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context->setConfigRef(YGConfigNew());
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
-    testDraw = std::make_unique<PageTest>();
+    testDraw = std::make_unique<CppTest>();
 //    testDraw = std::make_unique<JavascriptTest>();
 //    testDraw = std::make_unique<JetpackComposeTest>(env);
     testDraw->setContext(context);

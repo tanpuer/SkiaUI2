@@ -3,13 +3,13 @@
 #include "ITestDraw.h"
 #include "Page.h"
 
-class PageTest : public ITestDraw {
+class CppTest : public ITestDraw {
 
 public:
 
-    PageTest() = default;
+    CppTest() = default;
 
-    ~PageTest() = default;
+    ~CppTest() = default;
 
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 

@@ -9,6 +9,8 @@
 #include "ComposeLoadingViewJNI.h"
 #include "ComposeLottieJNI.h"
 #include "ComposeShaderJNI.h"
+#include "ComposeTextJNI.h"
+#include "ComposeScrollViewJNI.h"
 
 static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeNodeMethods(jniEnv);
@@ -19,6 +21,8 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeLoadingViewMethods(jniEnv);
     RegisterComposeLottieMethods(jniEnv);
     RegisterComposeShaderMethods(jniEnv);
+    RegisterComposeTextMethods(jniEnv);
+    RegisterComposeScrollMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -30,4 +34,6 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeLoadingViewMethods(jniEnv);
     UnRegisterComposeLottieMethods(jniEnv);
     UnRegisterComposeShaderMethods(jniEnv);
+    UnRegisterComposeTextMethods(jniEnv);
+    UnRegisterComposeScrollMethods(jniEnv);
 }

@@ -1,10 +1,10 @@
-#include "PageTest.h"
+#include "CppTest.h"
 #include "Page.h"
 #include "PageStackManager.h"
 #include "ExamplePage.h"
 #include "QQMusicPage.h"
 
-void PageTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
+void CppTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (root == nullptr) {
         ALOGD("doDrawTest %d %d", width, height)
         auto page = new ExamplePage();

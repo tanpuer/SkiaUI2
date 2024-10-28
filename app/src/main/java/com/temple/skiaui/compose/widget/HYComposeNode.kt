@@ -40,21 +40,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
 
     abstract fun getViewType(): String
 
-    open fun initStyles(modifier: Modifier) {
-        modifier.styles.forEach { (key, value) ->
-            when (key) {
-                "size" -> {
-                    val size = value as IntArray
-                    (this as? HYComposeView)?.setSize(size[0], size[1])
-                }
-
-                "backgroundColor" -> {
-                    (this as? HYComposeView)?.setBackgroundColor(value as String)
-                }
-
-            }
-        }
-    }
+    open fun initStyles(modifier: Modifier) {}
 
     open fun initAttrs(modifier: Modifier) {}
 
