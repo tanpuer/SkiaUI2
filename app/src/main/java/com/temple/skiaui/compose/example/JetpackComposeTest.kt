@@ -18,8 +18,6 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
-import com.temple.skiaui.compose.foundation.setBackgroundColor
-import com.temple.skiaui.compose.foundation.setShaderSource
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setSource
 import com.temple.skiaui.compose.foundation.setTextSize
@@ -35,10 +33,13 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
     fun start(width: Int, height: Int): Long {
         return runCompose({
             var color by remember { mutableStateOf("#ff0000") }
-            Column(
+            var shaderSource by remember {
+                mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
+            }
+            Scroll(
                 modifier = Modifier(context).setSize(width, height)
-                    .setBackgroundColor("#00000066")
-                    .setAlignItems("flex-end")
+                    .setAlignItems("flex-end"),
+                "#00000066"
             ) {
                 View(
                     modifier = Modifier(context)
@@ -66,8 +67,15 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     modifier = Modifier(context).setSize(375, 240).setSource("WorkspacePlanet.json")
                 )
                 Shader(
-                    modifier = Modifier(context).setSize(540, 260)
-                        .setShaderSource(ShaderSource("raining.glsl", arrayOf("raining.png")))
+                    modifier = Modifier(context).setSize(540, 540)
+                        .onClick { view: HYComposeView ->
+                            if (shaderSource.list.isEmpty()) {
+                                shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
+                            } else {
+                                shaderSource = ShaderSource("sincos.glsl", arrayOf())
+                            }
+                        },
+                    shaderSource
                 )
             }
         }, width, height, engine, context)

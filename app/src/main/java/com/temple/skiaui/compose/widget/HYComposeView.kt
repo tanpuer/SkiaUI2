@@ -13,10 +13,6 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                     setSize(size[0], size[1])
                 }
 
-                "backgroundColor" -> {
-                    setBackgroundColor(value as String)
-                }
-
                 "width" -> {
                     nativeSetWidth(ref, value as Int)
                 }

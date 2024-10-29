@@ -10,6 +10,7 @@ import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.snapshots.Snapshot
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
@@ -40,10 +41,14 @@ fun View(modifier: Modifier, backgroundColor: String) {
 }
 
 @Composable
-fun Column(modifier: Modifier, content: @Composable () -> Unit) {
+fun Column(modifier: Modifier, backgroundColor: String, content: @Composable () -> Unit) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
         factory = { HYComposeFlexboxLayout(modifier) },
-        update = {},
+        update = {
+            set(backgroundColor) {
+                this.setBackgroundColor(backgroundColor)
+            }
+        },
         content = content
     )
 }
@@ -58,10 +63,14 @@ fun Row(modifier: Modifier, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun Scroll(modifier: Modifier, content: @Composable () -> Unit) {
+fun Scroll(modifier: Modifier, backgroundColor: String, content: @Composable () -> Unit) {
     ComposeNode<HYComposeScrollView, HYComposeApplier>(
         factory = { HYComposeScrollView(modifier) },
-        update = {},
+        update = {
+            set(backgroundColor) {
+                this.setBackgroundColor(backgroundColor)
+            }
+        },
         content = content
     )
 }
@@ -99,10 +108,14 @@ fun Lottie(modifier: Modifier) {
 }
 
 @Composable
-fun Shader(modifier: Modifier) {
+fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
     ComposeNode<HYComposeShader, HYComposeApplier>(
         factory = { HYComposeShader(modifier) },
-        update = {}
+        update = {
+            set(shaderSource) {
+                setShaderSource(shaderSource)
+            }
+        }
     )
 }
 
