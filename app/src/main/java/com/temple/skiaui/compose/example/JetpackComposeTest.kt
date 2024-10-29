@@ -15,15 +15,14 @@ import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.core.runCompose
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setBackgroundColor
-import com.temple.skiaui.compose.foundation.setHeight
-import com.temple.skiaui.compose.foundation.setJustifyContent
+import com.temple.skiaui.compose.foundation.setShaderSource
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setSource
 import com.temple.skiaui.compose.foundation.setTextSize
-import com.temple.skiaui.compose.foundation.setWidth
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.random.Random
 
@@ -67,7 +66,8 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     modifier = Modifier(context).setSize(375, 240).setSource("WorkspacePlanet.json")
                 )
                 Shader(
-                    modifier = Modifier(context).setSize(540, 260).setSource("sincos.glsl")
+                    modifier = Modifier(context).setSize(540, 260)
+                        .setShaderSource(ShaderSource("raining.glsl", arrayOf("raining.png")))
                 )
             }
         }, width, height, engine, context)

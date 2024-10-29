@@ -9,3 +9,10 @@ fun Modifier.setText(source: String): Modifier {
     attributes["text"] = source
     return this
 }
+
+data class ShaderSource(var source: String, var list: Array<String>)
+
+fun Modifier.setShaderSource(source: ShaderSource): Modifier {
+    attributes["shaderSource"] = source
+    return this
+}

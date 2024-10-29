@@ -5,15 +5,25 @@
 const char *HYComposeShader = "com/temple/skiaui/compose/widget/HYComposeShader";
 
 extern "C" JNIEXPORT void JNICALL
-compose_shader_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
+compose_shader_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source,
+                          jobjectArray array) {
     auto shaderView = reinterpret_cast<ShaderView *>(viewPtr);
     auto sourceStr = env->GetStringUTFChars(source, nullptr);
-    shaderView->setShaderPath(sourceStr);
+    std::vector<std::string> images;
+    auto size = env->GetArrayLength(array);
+    for (int i = 0; i < size; ++i) {
+        auto jStr = static_cast<jstring>(env->GetObjectArrayElement(array, i));
+        auto cStr = env->GetStringUTFChars(jStr, nullptr);
+        images.push_back(cStr);
+        env->ReleaseStringUTFChars(jStr, cStr);
+    }
+    shaderView->setShaderPath(sourceStr, images);
     env->ReleaseStringUTFChars(source, sourceStr);
 }
 
 static JNINativeMethod g_ComposeShaderViewMethods[] = {
-        {"nativeSetSource", "(JLjava/lang/String;)V", (void *) compose_shader_set_source},
+        {"nativeSetSource", "(JLjava/lang/String;[Ljava/lang/String;)V",
+         (void *) compose_shader_set_source},
 };
 
 static int RegisterComposeShaderMethods(JNIEnv *env) {

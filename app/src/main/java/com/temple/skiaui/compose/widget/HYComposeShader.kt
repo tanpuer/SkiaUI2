@@ -1,6 +1,7 @@
 package com.temple.skiaui.compose.widget
 
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.ShaderSource
 
 class HYComposeShader(modifier: Modifier) : HYComposeView(modifier) {
 
@@ -10,14 +11,15 @@ class HYComposeShader(modifier: Modifier) : HYComposeView(modifier) {
         super.initAttrs(modifier)
         modifier.attributes.forEach { (key, value) ->
             when (key) {
-                "source" -> {
-                    nativeSetSource(ref, value as String)
+                "shaderSource" -> {
+                    val source = value as ShaderSource
+                    nativeSetSource(ref, source.source, source.list)
                 }
 
             }
         }
     }
 
-    private external fun nativeSetSource(shaderView: Long, source: String)
+    private external fun nativeSetSource(shaderView: Long, source: String, images: Array<String>)
 
 }
