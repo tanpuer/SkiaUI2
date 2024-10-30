@@ -92,10 +92,14 @@ fun Page(modifier: Modifier) {
 }
 
 @Composable
-fun Loading(modifier: Modifier) {
+fun Loading(modifier: Modifier, color: String = "") {
     ComposeNode<HYComposeLoadingView, HYComposeApplier>(
         factory = { HYComposeLoadingView(modifier) },
-        update = {}
+        update = {
+            set(color) {
+                setColor(color)
+            }
+        }
     )
 }
 

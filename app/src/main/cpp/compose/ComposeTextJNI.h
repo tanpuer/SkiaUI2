@@ -1,3 +1,5 @@
+#pragma once
+
 #include "jni.h"
 #include "TextView.h"
 #include "native_log.h"

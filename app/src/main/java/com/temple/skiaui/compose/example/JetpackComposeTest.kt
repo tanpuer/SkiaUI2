@@ -61,7 +61,10 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     modifier = Modifier(context).setSize(width, 360 * width / 640)
                         .setSource("yiluxiangbei.mp4")
                 )
-                Loading(modifier = Modifier(context).setSize(500, 200))
+                Loading(
+                    modifier = Modifier(context).setSize(500, 200),
+                    color = color
+                )
                 Text(
                     modifier = Modifier(context)
                         .setSize(800, 100)
