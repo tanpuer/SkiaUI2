@@ -25,12 +25,15 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
 }
 
 View::~View() {
-    clickFunction.Reset();
     if (node != nullptr) {
         YGNodeFree(node);
     }
     viewLayoutCallback = nullptr;
     viewClickListener = nullptr;
+    clickFunction.Reset();
+    if (globalJavaViewRef) {
+        getContext()->getJniEnv()->DeleteGlobalRef(globalJavaViewRef);
+    }
 }
 
 #pragma mark yoga

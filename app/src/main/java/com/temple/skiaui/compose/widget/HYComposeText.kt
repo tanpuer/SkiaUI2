@@ -27,11 +27,16 @@ class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetMaxLine(ref, maxLine)
     }
 
+    fun setEllipse(ellipse: String) {
+        nativeSetEllipsis(ref, ellipse)
+    }
+
     override fun getViewType(): String = "Text"
 
     private external fun nativeSetText(textView: Long, text: String)
     private external fun nativeSetTextSize(textView: Long, textSize: Int)
     private external fun nativeSetColor(textView: Long, color: String)
     private external fun nativeSetMaxLine(textView: Long, maxLine: Int)
+    private external fun nativeSetEllipsis(textView: Long, ellipse: String)
 
 }

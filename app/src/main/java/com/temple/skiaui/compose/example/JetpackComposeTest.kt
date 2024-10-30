@@ -43,19 +43,14 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
             }
             LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
-                    .setAlignItems("flex-end"),
+                    .setAlignItems("flex-start"),
                 "#00000066"
             ) {
                 View(
                     modifier = Modifier(context)
                         .setSize(200, 200)
                         .onClick { view: HYComposeView ->
-                            val hexChars = "0123456789abcdef"
-                            val nextColor = StringBuilder("#")
-                            for (i in 0 until 6) {
-                                nextColor.append(hexChars[Random.nextInt(hexChars.length)])
-                            }
-                            color = nextColor.toString()
+                            color = randomColor()
                         },
                     color
                 )
@@ -64,7 +59,11 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     "yiluxiangbei.mp4"
                 )
                 Loading(
-                    modifier = Modifier(context).setSize(500, 200),
+                    modifier = Modifier(context)
+                        .setSize(500, 200)
+                        .onClick {
+                            color = randomColor()
+                        },
                     color = color
                 )
                 Text(
@@ -74,9 +73,10 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                         .onClick {
                             epplise = !epplise
                         },
-                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmoji展示",
+                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
                     color = "#0000ff",
-                    maxLine = if (epplise) 3 else 0
+                    maxLine = if (epplise) 3 else 0,
+                    ellipsis = "点击展开"
                 )
                 Lottie(
                     modifier = Modifier(context)
@@ -100,6 +100,15 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                 )
             }
         }, width, height, engine, context)
+    }
+
+    private fun randomColor(): String {
+        val hexChars = "0123456789abcdef"
+        val nextColor = StringBuilder("#")
+        for (i in 0 until 6) {
+            nextColor.append(hexChars[Random.nextInt(hexChars.length)])
+        }
+        return nextColor.toString()
     }
 
 }

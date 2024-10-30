@@ -49,11 +49,23 @@ compose_video_set_max_line(JNIEnv *env, jobject instance, jlong viewPtr, jint ma
     textView->setMaxLines(maxLine);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_video_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring ellipse) {
+    auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
+    auto ellipseStr = env->GetStringUTFChars(ellipse, nullptr);
+    textView->setEllipsis(ellipseStr);
+    env->ReleaseStringUTFChars(ellipse, ellipseStr);
+}
+
 static JNINativeMethod g_ComposeVideoViewMethods[] = {
         {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_video_set_text},
         {"nativeSetTextSize", "(JI)V",                  (void *) compose_video_set_text_size},
         {"nativeSetColor",    "(JLjava/lang/String;)V", (void *) compose_video_set_color},
         {"nativeSetMaxLine",  "(JI)V",                  (void *) compose_video_set_max_line},
+        {"nativeSetEllipsis", "(JLjava/lang/String;)V", (void *) compose_video_set_ellipse},
 };
 
 static int RegisterComposeTextMethods(JNIEnv *env) {

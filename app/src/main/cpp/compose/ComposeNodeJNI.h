@@ -46,9 +46,31 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
     return 0L;
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_node_remove_views(JNIEnv *env, jobject instance, jlong parent, jint index, jint count) {
+    auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
+    if (viewGroup == nullptr) {
+        return;
+    }
+    for (int i = 0; i < count; ++i) {
+        viewGroup->removeViewAt(index);
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_node_remove_all_children(JNIEnv *env, jobject instance, jlong parent) {
+    auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
+    if (viewGroup == nullptr) {
+        return;
+    }
+    viewGroup->removeAllViews();
+}
+
 static JNINativeMethod g_ComposeNodeMethods[] = {
-        {"nativeAddView",    "(JJ)V",                  (void *) compose_node_add_view},
-        {"nativeCreateView", "(JLjava/lang/String;)J", (void *) compose_node_create_view_factory},
+        {"nativeAddView",           "(JJ)V",                  (void *) compose_node_add_view},
+        {"nativeCreateView",        "(JLjava/lang/String;)J", (void *) compose_node_create_view_factory},
+        {"nativeRemoveViews",       "(JII)V",                 (void *) compose_node_remove_views},
+        {"nativeRemoveAllChildren", "()V",                    (void *) compose_node_remove_all_children},
 };
 
 static int RegisterComposeNodeMethods(JNIEnv *env) {

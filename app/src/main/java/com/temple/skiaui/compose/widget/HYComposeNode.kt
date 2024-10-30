@@ -28,7 +28,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
     }
 
     fun removeElement(index: Int, count: Int) {
-//        nativeRemoveViews(ref, index, count)
+        nativeRemoveViews(ref, index, count)
     }
 
     fun move(from: Int, to: Int, count: Int) {
@@ -36,7 +36,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
     }
 
     fun clear() {
-
+        nativeRemoveAllChildren()
     }
 
     abstract fun getViewType(): String
@@ -49,5 +49,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
 
     private external fun nativeAddView(parent: Long, child: Long)
     private external fun nativeCreateView(contextPtr: Long, type: String): Long
+    private external fun nativeRemoveViews(parent: Long, index: Int, count: Int)
+    private external fun nativeRemoveAllChildren();
 
 }

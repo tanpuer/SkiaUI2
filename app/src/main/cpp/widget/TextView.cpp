@@ -59,7 +59,7 @@ void TextView::measure() {
         paraStyle.setTextStyle(*defaultStyle);
         paraStyle.setTextAlign(textAlign);
         if (maxLine > 0) {
-            paraStyle.setEllipsis(u"\u2026");
+            paraStyle.setEllipsis(ellipsis);
             paraStyle.setMaxLines(maxLine);
         }
         auto fontCollection = getContext()->getFontCollection();
@@ -198,4 +198,10 @@ void TextView::setHeight(int height) {
 void TextView::setFontFamily(const char *fontFamily) {
     this->fontFamily.clear();
     this->fontFamily.emplace_back(fontFamily);
+    isDirty = true;
+}
+
+void TextView::setEllipsis(const char *ellipsis) {
+    this->ellipsis = ellipsis;
+    isDirty = true;
 }

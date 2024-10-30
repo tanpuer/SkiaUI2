@@ -110,6 +110,8 @@ public:
 
     void setFontFamily(const char *fontFamily);
 
+    void setEllipsis(const char* ellipsis);
+
 protected:
 
     SkString text;
@@ -137,4 +139,6 @@ protected:
     std::vector<SkString> fontFamily;
 
     TextAlign textAlign = TextAlign::kLeft;
+
+    SkString ellipsis = SkString("\u2026");
 };

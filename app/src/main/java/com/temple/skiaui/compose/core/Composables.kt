@@ -135,7 +135,7 @@ fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
 }
 
 @Composable
-fun Text(modifier: Modifier, content: String, color: String, maxLine: Int = 0) {
+fun Text(modifier: Modifier, content: String, color: String, maxLine: Int = 0, ellipsis: String = "…") {
     ComposeNode<HYComposeText, HYComposeApplier>(
         factory = { HYComposeText(modifier) },
         update = {
@@ -147,6 +147,9 @@ fun Text(modifier: Modifier, content: String, color: String, maxLine: Int = 0) {
             }
             set(maxLine) {
                 setMaxLine(maxLine)
+            }
+            set(ellipsis) {
+                setEllipse(ellipsis)
             }
         }
     )
