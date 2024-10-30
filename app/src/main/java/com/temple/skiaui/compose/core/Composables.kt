@@ -76,10 +76,14 @@ fun LazyColumn(modifier: Modifier, backgroundColor: String, content: @Composable
 }
 
 @Composable
-fun Video(modifier: Modifier) {
+fun Video(modifier: Modifier, source: String) {
     ComposeNode<HYComposeVideo, HYComposeApplier>(
         factory = { HYComposeVideo(modifier) },
-        update = {}
+        update = {
+            set(source) {
+                setSource(source)
+            }
+        }
     )
 }
 
@@ -104,10 +108,17 @@ fun Loading(modifier: Modifier, color: String = "") {
 }
 
 @Composable
-fun Lottie(modifier: Modifier) {
+fun Lottie(modifier: Modifier, source: String, play: Boolean = true) {
     ComposeNode<HYComposeLottie, HYComposeApplier>(
         factory = { HYComposeLottie(modifier) },
-        update = {}
+        update = {
+            set(source) {
+                setSource(source)
+            }
+            set(play) {
+                if (play) start() else pause()
+            }
+        }
     )
 }
 

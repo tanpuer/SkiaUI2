@@ -19,7 +19,6 @@ import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setSize
-import com.temple.skiaui.compose.foundation.setSource
 import com.temple.skiaui.compose.foundation.setTextSize
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.random.Random
@@ -37,6 +36,9 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                 mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
             }
             var epplise by remember {
+                mutableStateOf(true)
+            }
+            var lottiePlay by remember {
                 mutableStateOf(true)
             }
             LazyColumn(
@@ -58,8 +60,8 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     color
                 )
                 Video(
-                    modifier = Modifier(context).setSize(width, 360 * width / 640)
-                        .setSource("yiluxiangbei.mp4")
+                    modifier = Modifier(context).setSize(width, 360 * width / 640),
+                    "yiluxiangbei.mp4"
                 )
                 Loading(
                     modifier = Modifier(context).setSize(500, 200),
@@ -77,7 +79,13 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     maxLine = if (epplise) 3 else 0
                 )
                 Lottie(
-                    modifier = Modifier(context).setSize(375, 240).setSource("WorkspacePlanet.json")
+                    modifier = Modifier(context)
+                        .setSize(375, 240)
+                        .onClick {
+                            lottiePlay = !lottiePlay
+                        },
+                    "WorkspacePlanet.json",
+                    lottiePlay
                 )
                 Shader(
                     modifier = Modifier(context).setSize(540, 540)

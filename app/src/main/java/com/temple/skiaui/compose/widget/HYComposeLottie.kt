@@ -6,18 +6,20 @@ class HYComposeLottie(modifier: Modifier) : HYComposeView(modifier) {
 
     override fun getViewType(): String = "Lottie"
 
-    override fun initAttrs(modifier: Modifier) {
-        super.initAttrs(modifier)
-        modifier.attributes.forEach { (key, value) ->
-            when (key) {
-                "source" -> {
-                    nativeSetSource(ref, value as String)
-                }
+    fun setSource(source: String) {
+        nativeSetSource(ref, source)
+    }
 
-            }
-        }
+    fun start() {
+        nativeStart(ref)
+    }
+
+    fun pause() {
+        nativePause(ref)
     }
 
     private external fun nativeSetSource(lottieView: Long, source: String)
+    private external fun nativeStart(lottieView: Long)
+    private external fun nativePause(lottieView: Long)
 
 }

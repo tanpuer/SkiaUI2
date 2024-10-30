@@ -9,13 +9,36 @@ const char *HYComposeLottie = "com/temple/skiaui/compose/widget/HYComposeLottie"
 extern "C" JNIEXPORT void JNICALL
 compose_lottie_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
     auto lottieView = reinterpret_cast<LottieView *>(viewPtr);
+    if (lottieView == nullptr) {
+        return;
+    }
     auto sourceStr = env->GetStringUTFChars(source, nullptr);
     lottieView->setSource(sourceStr);
     env->ReleaseStringUTFChars(source, sourceStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_lottie_start(JNIEnv *env, jobject instance, jlong viewPtr) {
+    auto lottieView = reinterpret_cast<LottieView *>(viewPtr);
+    if (lottieView == nullptr) {
+        return;
+    }
+    lottieView->start();
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_lottie_pause(JNIEnv *env, jobject instance, jlong viewPtr) {
+    auto lottieView = reinterpret_cast<LottieView *>(viewPtr);
+    if (lottieView == nullptr) {
+        return;
+    }
+    lottieView->pause();
+}
+
 static JNINativeMethod g_ComposeLottieViewMethods[] = {
         {"nativeSetSource", "(JLjava/lang/String;)V", (void *) compose_lottie_set_source},
+        {"nativeStart",     "(J)V",                   (void *) compose_lottie_start},
+        {"nativePause",     "(J)V",                   (void *) compose_lottie_pause},
 };
 
 static int RegisterComposeLottieMethods(JNIEnv *env) {

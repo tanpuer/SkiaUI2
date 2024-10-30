@@ -4,16 +4,8 @@ import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposeVideo(modifier: Modifier) : HYComposeView(modifier) {
 
-    override fun initAttrs(modifier: Modifier) {
-        super.initAttrs(modifier)
-        modifier.attributes.forEach { (key, value) ->
-            when (key) {
-                "source" -> {
-                    nativeSetSource(ref, value as String)
-                }
-
-            }
-        }
+    fun setSource(source: String) {
+        nativeSetSource(ref, source)
     }
 
     override fun getViewType(): String = "Video"
