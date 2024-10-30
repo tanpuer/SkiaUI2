@@ -6,9 +6,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Column
+import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
-import com.temple.skiaui.compose.core.Scroll
 import com.temple.skiaui.compose.core.Shader
 import com.temple.skiaui.compose.core.Text
 import com.temple.skiaui.compose.core.Video
@@ -36,7 +36,10 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
             var shaderSource by remember {
                 mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
             }
-            Scroll(
+            var epplise by remember {
+                mutableStateOf(true)
+            }
+            LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
                     .setAlignItems("flex-end"),
                 "#00000066"
@@ -60,8 +63,15 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                 )
                 Loading(modifier = Modifier(context).setSize(500, 200))
                 Text(
-                    modifier = Modifier(context).setSize(800, 100).setTextSize(50),
-                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmoji展示"
+                    modifier = Modifier(context)
+                        .setSize(800, 100)
+                        .setTextSize(50)
+                        .onClick {
+                            epplise = !epplise
+                        },
+                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmoji展示",
+                    color = "#0000ff",
+                    maxLine = if (epplise) 3 else 0
                 )
                 Lottie(
                     modifier = Modifier(context).setSize(375, 240).setSource("WorkspacePlanet.json")

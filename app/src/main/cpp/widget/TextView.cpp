@@ -146,7 +146,6 @@ void TextView::setTextAlign(TextAlign textAlign) {
 }
 
 void TextView::setMaxLines(int maxLine) {
-    assert(maxLine > 0);
     this->maxLine = maxLine;
     isDirty = true;
 }

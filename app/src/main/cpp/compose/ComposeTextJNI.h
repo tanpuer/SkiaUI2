@@ -1,12 +1,16 @@
 #include "jni.h"
 #include "TextView.h"
 #include "native_log.h"
+#include "color_util.h"
 
 const char *HYComposeText = "com/temple/skiaui/compose/widget/HYComposeText";
 
 extern "C" JNIEXPORT void JNICALL
 compose_video_set_text(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
     auto sourceStr = env->GetStringUTFChars(source, nullptr);
     textView->setText(sourceStr);
     env->ReleaseStringUTFChars(source, sourceStr);
@@ -15,12 +19,39 @@ compose_video_set_text(JNIEnv *env, jobject instance, jlong viewPtr, jstring sou
 extern "C" JNIEXPORT void JNICALL
 compose_video_set_text_size(JNIEnv *env, jobject instance, jlong viewPtr, jint size) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
     textView->setTextSize(size);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_video_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
+    auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
+    auto colorStr = env->GetStringUTFChars(color, nullptr);
+    int r, g, b, a;
+    hexToRGBA(colorStr, r, g, b, a);
+    textView->setTextColor(SkColorSetARGB(a, r, g, b));
+    env->ReleaseStringUTFChars(color, colorStr);
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_video_set_max_line(JNIEnv *env, jobject instance, jlong viewPtr, jint maxLine) {
+    auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
+    textView->setMaxLines(maxLine);
+}
+
 static JNINativeMethod g_ComposeVideoViewMethods[] = {
-        {"nativeSetText", "(JLjava/lang/String;)V", (void *) compose_video_set_text},
-        {"nativeSetTextSize", "(JI)V", (void *) compose_video_set_text_size}
+        {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_video_set_text},
+        {"nativeSetTextSize", "(JI)V",                  (void *) compose_video_set_text_size},
+        {"nativeSetColor",    "(JLjava/lang/String;)V", (void *) compose_video_set_color},
+        {"nativeSetMaxLine",  "(JI)V",                  (void *) compose_video_set_max_line},
 };
 
 static int RegisterComposeTextMethods(JNIEnv *env) {

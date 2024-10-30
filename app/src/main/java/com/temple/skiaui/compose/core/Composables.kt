@@ -63,7 +63,7 @@ fun Row(modifier: Modifier, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun Scroll(modifier: Modifier, backgroundColor: String, content: @Composable () -> Unit) {
+fun LazyColumn(modifier: Modifier, backgroundColor: String, content: @Composable () -> Unit) {
     ComposeNode<HYComposeScrollView, HYComposeApplier>(
         factory = { HYComposeScrollView(modifier) },
         update = {
@@ -120,12 +120,18 @@ fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
 }
 
 @Composable
-fun Text(modifier: Modifier, content: String) {
+fun Text(modifier: Modifier, content: String, color: String, maxLine: Int = 0) {
     ComposeNode<HYComposeText, HYComposeApplier>(
         factory = { HYComposeText(modifier) },
         update = {
             set(content) {
                 setText(content)
+            }
+            set(color) {
+                setColor(color)
+            }
+            set(maxLine) {
+                setMaxLine(maxLine)
             }
         }
     )

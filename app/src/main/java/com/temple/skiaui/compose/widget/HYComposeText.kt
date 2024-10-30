@@ -4,17 +4,6 @@ import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
 
-    override fun initAttrs(modifier: Modifier) {
-        super.initAttrs(modifier)
-        modifier.attributes.forEach { (key, value) ->
-            when (key) {
-                "text" -> {
-                    nativeSetText(ref, value as String)
-                }
-            }
-        }
-    }
-
     override fun initStyles(modifier: Modifier) {
         super.initStyles(modifier)
         modifier.styles.forEach { (key, value) ->
@@ -30,9 +19,19 @@ class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetText(ref, value)
     }
 
+    fun setColor(color: String) {
+        nativeSetColor(ref, color)
+    }
+
+    fun setMaxLine(maxLine: Int) {
+        nativeSetMaxLine(ref, maxLine)
+    }
+
     override fun getViewType(): String = "Text"
 
     private external fun nativeSetText(textView: Long, text: String)
     private external fun nativeSetTextSize(textView: Long, textSize: Int)
+    private external fun nativeSetColor(textView: Long, color: String)
+    private external fun nativeSetMaxLine(textView: Long, maxLine: Int)
 
 }
