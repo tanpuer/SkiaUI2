@@ -69,6 +69,7 @@ void ResourcesLoader::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
             skImages.push_back(skAnimatedImage->getCurrentFrame());
         }
         imagesMap[taskId] = skImages;
+        skAnimatedImage->reset();
         animatedImagesMap[taskId] = skAnimatedImage;
         env->CallVoidMethod(javaSkiaEngine, postTaskMethod, taskId);
     } else if (lottieCallback.find(taskId) != lottieCallback.end()) {

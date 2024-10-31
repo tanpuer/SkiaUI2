@@ -294,9 +294,9 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto textView = new TextView();
         textView->setContext(this->context);
         textView->setText(SkString("😀😃😄😁😆😅😂🤣☺😇🙂😍😡😟😢😻👽💩👍👎🙏👌👋👄👁👦👼👨‍🚀👨‍🚒🙋‍♂️👳👨‍👨‍👧"
-                                   "👧\n💼👡👠☂🐶🐰🐻🐼🐷🐒🐵🐔🐧🐦🐋🐟🐡🕸🐌🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝"
+                                   "👧💼👡👠☂🐶🐰🐻🐼🐷🐒🐵🐔🐧🐦🐋🐟🐡🕸🐌🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝"
                                    "💦💧❄\n🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏"
-                                   "🔑📁🗓📊\n❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmoji展示"));
+                                   "🔑📁🗓📊\n❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow"));
         textView->setWidth(1000);
         textView->setHeight(200);
         textView->setTextColor(SK_ColorGREEN);
@@ -304,6 +304,13 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         textView->setBackgroundColor(SK_ColorRED);
         textView->setStyle(SkPaint::kStroke_Style);
         textView->setMargin({50, 50, 50, 50});
+        textView->setMaxLines(3);
+        textView->setEllipsis("点击展开");
+        textView->setOnClickListener([textView](View *view) -> void {
+            static bool flag = true;
+            textView->setMaxLines(flag ? 0 : 3);
+            flag = !flag;
+        });
         scrollView->addView(textView);
     }
 
