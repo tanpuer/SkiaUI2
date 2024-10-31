@@ -33,6 +33,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"Shader",        []() -> View * { return new ShaderView(); }},
             {"Text",          []() -> View * { return new TextView(); }},
             {"Scroll",        []() -> View * { return new ScrollView(); }},
+            {"Image",         []() -> View * { return new ImageView(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {

@@ -6,6 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Column
+import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
@@ -98,6 +99,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                         },
                     shaderSource
                 )
+                Image(modifier = Modifier(context).setSize(300, 300), source = "bird.gif")
             }
         }, width, height, engine, context)
     }

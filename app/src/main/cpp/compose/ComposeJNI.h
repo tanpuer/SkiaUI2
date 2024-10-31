@@ -11,6 +11,7 @@
 #include "ComposeShaderJNI.h"
 #include "ComposeTextJNI.h"
 #include "ComposeScrollViewJNI.h"
+#include "ComposeImageJNI.h"
 
 static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeNodeMethods(jniEnv);
@@ -23,6 +24,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeShaderMethods(jniEnv);
     RegisterComposeTextMethods(jniEnv);
     RegisterComposeScrollMethods(jniEnv);
+    RegisterComposeImageMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -36,4 +38,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeShaderMethods(jniEnv);
     UnRegisterComposeTextMethods(jniEnv);
     UnRegisterComposeScrollMethods(jniEnv);
+    UnRegisterComposeImageMethods(jniEnv);
 }

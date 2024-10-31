@@ -14,6 +14,7 @@ import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
+import com.temple.skiaui.compose.widget.HYComposeImage
 import com.temple.skiaui.compose.widget.HYComposeLoadingView
 import com.temple.skiaui.compose.widget.HYComposeLottie
 import com.temple.skiaui.compose.widget.HYComposePage
@@ -150,6 +151,18 @@ fun Text(modifier: Modifier, content: String, color: String, maxLine: Int = 0, e
             }
             set(ellipsis) {
                 setEllipse(ellipsis)
+            }
+        }
+    )
+}
+
+@Composable
+fun Image(modifier: Modifier, source: String) {
+    ComposeNode<HYComposeImage, HYComposeApplier>(
+        factory = { HYComposeImage(modifier) },
+        update = {
+            set(source) {
+                setImageSource(source)
             }
         }
     )
