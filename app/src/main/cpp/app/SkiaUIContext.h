@@ -109,6 +109,12 @@ public:
             fontProvider->registerTypeface(typeface, SkString("ColorEmoji"));
             delete fontData;
         }
+        {
+            auto fontData = assetManager->readImage("font/iconfont.woff");
+            auto data = SkData::MakeWithCopy(fontData->content, fontData->length);
+            iconFontTypeFace = fontMgr->makeFromData(std::move(data));
+            delete fontData;
+        }
         fontCollection = sk_make_sp<FontCollection>();
         fontCollection->setAssetFontManager(std::move(fontProvider));
         fontCollection->setDefaultFontManager(fontMgr);
@@ -117,6 +123,10 @@ public:
 
     sk_sp<FontCollection> getFontCollection() {
         return fontCollection;
+    }
+
+    sk_sp<SkTypeface> getIconFontTypeFace() {
+        return iconFontTypeFace;
     }
 
 public:
@@ -145,5 +155,7 @@ private:
     sk_sp<SkFontMgr> fontMgr = nullptr;
 
     sk_sp<FontCollection> fontCollection = nullptr;
+
+    sk_sp<SkTypeface> iconFontTypeFace = nullptr;
 
 };

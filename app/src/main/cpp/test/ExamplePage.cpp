@@ -14,6 +14,7 @@
 #include "QQMusicPage.h"
 #include "YUVVideoView.h"
 #include "LoadingView.h"
+#include "Icon.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -83,7 +84,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->addView(loadingView);
 
         videoView->setRenderFirstFrameCallback([loadingView, flexboxLayout]() {
-           flexboxLayout->removeView(loadingView);
+            flexboxLayout->removeView(loadingView);
         });
     }
 
@@ -293,10 +294,11 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     {
         auto textView = new TextView();
         textView->setContext(this->context);
-        textView->setText(SkString("😀😃😄😁😆😅😂🤣☺😇🙂😍😡😟😢😻👽💩👍👎🙏👌👋👄👁👦👼👨‍🚀👨‍🚒🙋‍♂️👳👨‍👨‍👧"
-                                   "👧💼👡👠☂🐶🐰🐻🐼🐷🐒🐵🐔🐧🐦🐋🐟🐡🕸🐌🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝"
-                                   "💦💧❄\n🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏"
-                                   "🔑📁🗓📊\n❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow"));
+        textView->setText(SkString(
+                "😀😃😄😁😆😅😂🤣☺😇🙂😍😡😟😢😻👽💩👍👎🙏👌👋👄👁👦👼👨‍🚀👨‍🚒🙋‍♂️👳👨‍👨‍👧"
+                "👧💼👡👠☂🐶🐰🐻🐼🐷🐒🐵🐔🐧🐦🐋🐟🐡🕸🐌🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝"
+                "💦💧❄\n🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏"
+                "🔑📁🗓📊\n❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow"));
         textView->setWidth(1000);
         textView->setHeight(200);
         textView->setTextColor(SK_ColorGREEN);
@@ -357,6 +359,87 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         loadingView->setMargin({0, 0, 0, 50});
         loadingView->setStyle(SkPaint::kStroke_Style);
         scrollView->addView(loadingView);
+    }
+
+    {
+        auto flexboxLayout = new FlexboxLayout();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(980);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({50, 0, 50, 50});
+        flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+        flexboxLayout->setJustifyContent(YGJustifySpaceBetween);
+        flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+        scrollView->addView(flexboxLayout);
+
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe615);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            icon->setIconColor(SK_ColorRED);
+            flexboxLayout->addView(icon);
+        }
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe7ce);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            flexboxLayout->addView(icon);
+        }
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe670);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            icon->setIconColor(SK_ColorBLUE);
+            flexboxLayout->addView(icon);
+        }
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe67d);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            flexboxLayout->addView(icon);
+        }
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe606);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            flexboxLayout->addView(icon);
+        }
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe6a2);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            flexboxLayout->addView(icon);
+        }
+        {
+            auto icon = new Icon();
+            icon->setContext(this->context);
+            icon->setIcon(0xe61f);
+            icon->setStyle(SkPaint::kStroke_Style);
+            icon->setStrokeWidth(1);
+            icon->setIconSize(100);
+            icon->setIconColor(SK_ColorBLUE);
+            flexboxLayout->addView(icon);
+        }
     }
 
 }
