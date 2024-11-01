@@ -8,7 +8,7 @@
 const char *HYComposeText = "com/temple/skiaui/compose/widget/HYComposeText";
 
 extern "C" JNIEXPORT void JNICALL
-compose_video_set_text(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
+compose_text_set_text(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
     if (textView == nullptr) {
         return;
@@ -19,7 +19,7 @@ compose_video_set_text(JNIEnv *env, jobject instance, jlong viewPtr, jstring sou
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_video_set_text_size(JNIEnv *env, jobject instance, jlong viewPtr, jint size) {
+compose_text_set_text_size(JNIEnv *env, jobject instance, jlong viewPtr, jint size) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
     if (textView == nullptr) {
         return;
@@ -28,7 +28,7 @@ compose_video_set_text_size(JNIEnv *env, jobject instance, jlong viewPtr, jint s
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_video_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
+compose_text_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
     if (textView == nullptr) {
         return;
@@ -41,7 +41,7 @@ compose_video_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring co
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_video_set_max_line(JNIEnv *env, jobject instance, jlong viewPtr, jint maxLine) {
+compose_text_set_max_line(JNIEnv *env, jobject instance, jlong viewPtr, jint maxLine) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
     if (textView == nullptr) {
         return;
@@ -50,7 +50,7 @@ compose_video_set_max_line(JNIEnv *env, jobject instance, jlong viewPtr, jint ma
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_video_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring ellipse) {
+compose_text_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring ellipse) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
     if (textView == nullptr) {
         return;
@@ -61,11 +61,11 @@ compose_video_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring 
 }
 
 static JNINativeMethod g_ComposeVideoViewMethods[] = {
-        {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_video_set_text},
-        {"nativeSetTextSize", "(JI)V",                  (void *) compose_video_set_text_size},
-        {"nativeSetColor",    "(JLjava/lang/String;)V", (void *) compose_video_set_color},
-        {"nativeSetMaxLine",  "(JI)V",                  (void *) compose_video_set_max_line},
-        {"nativeSetEllipsis", "(JLjava/lang/String;)V", (void *) compose_video_set_ellipse},
+        {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_text_set_text},
+        {"nativeSetTextSize", "(JI)V",                  (void *) compose_text_set_text_size},
+        {"nativeSetColor",    "(JLjava/lang/String;)V", (void *) compose_text_set_color},
+        {"nativeSetMaxLine",  "(JI)V",                  (void *) compose_text_set_max_line},
+        {"nativeSetEllipsis", "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
 };
 
 static int RegisterComposeTextMethods(JNIEnv *env) {

@@ -6,10 +6,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Column
+import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
+import com.temple.skiaui.compose.core.Row
 import com.temple.skiaui.compose.core.Shader
 import com.temple.skiaui.compose.core.Text
 import com.temple.skiaui.compose.core.Video
@@ -19,8 +21,10 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
+import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
+import com.temple.skiaui.compose.foundation.setWidth
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.random.Random
 
@@ -100,6 +104,18 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     shaderSource
                 )
                 Image(modifier = Modifier(context).setSize(300, 300), source = "bird.gif")
+                Row(
+                    modifier = Modifier(context).setWidth(width)
+                        .setJustifyContent("space-between")
+                ) {
+                    Icon(modifier = Modifier(context), 0xe615, color = "#ff0000")
+                    Icon(modifier = Modifier(context), 0xe7ce, color = "#ffff00")
+                    Icon(modifier = Modifier(context), 0xe670)
+                    Icon(modifier = Modifier(context), 0xe67d, color = "#00ff00")
+                    Icon(modifier = Modifier(context), 0xe606, color = "#00ffff")
+                    Icon(modifier = Modifier(context), 0xe6a2, color = "#000000")
+                    Icon(modifier = Modifier(context), 0xe61f)
+                }
             }
         }, width, height, engine, context)
     }

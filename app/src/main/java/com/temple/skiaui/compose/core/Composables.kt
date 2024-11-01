@@ -14,6 +14,7 @@ import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
+import com.temple.skiaui.compose.widget.HYComposeIcon
 import com.temple.skiaui.compose.widget.HYComposeImage
 import com.temple.skiaui.compose.widget.HYComposeLoadingView
 import com.temple.skiaui.compose.widget.HYComposeLottie
@@ -163,6 +164,24 @@ fun Image(modifier: Modifier, source: String) {
         update = {
             set(source) {
                 setImageSource(source)
+            }
+        }
+    )
+}
+
+@Composable
+fun Icon(modifier: Modifier, icon: Int, color: String = "#0000ff", size: Int = 100) {
+    ComposeNode<HYComposeIcon, HYComposeApplier>(
+        factory = { HYComposeIcon(modifier) },
+        update = {
+            set(icon) {
+                setIcon(icon)
+            }
+            set(color) {
+                setIconColor(color)
+            }
+            set(size) {
+                setIconSize(size)
             }
         }
     )
