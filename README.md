@@ -15,8 +15,6 @@ steps：
    ImageView: support png/gif, scaleType，cornerRadius, blur.  
    TextView: use SkParagraph, use AlimamaFangYuanTiVF-Thin.ttf by default.  
    Icon: use the iconfont.woff by default.  
-   Radio: Button which can be selected.  
-   Loading: default loadingView, also can be customized.  
    ProgressBar: circle and linear style，also can be dragged.  
    SVGView: svg file.  
    ShaderView: render simple fragment-shader.  
@@ -24,6 +22,7 @@ steps：
    VideoView: render local video by MediaCodec/HardwareBuffer/SkImage.  
    YUVVideoView: render video by MediaCodec/SkRuntimeEffect.  
    LyricView: parse .lrc/.srt files, use RecyclerView to render lyric.  
+   Other CustomsViews: Loading, Switch, Radio...  
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.

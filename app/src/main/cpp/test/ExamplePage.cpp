@@ -16,6 +16,7 @@
 #include "LoadingView.h"
 #include "Icon.h"
 #include "Radio.h"
+#include "Switch.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -375,70 +376,24 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
         scrollView->addView(flexboxLayout);
 
-        {
+        std::unordered_map<int32_t, SkColor> iconInfos{
+                {0xe615, SK_ColorRED},
+                {0xe7ce, SK_ColorGREEN},
+                {0xe670, SkColorSetARGB(255, 31, 132, 226)},
+                {0xe67d, SK_ColorGREEN},
+                {0xe606, SK_ColorGREEN},
+                {0xe6a2, SK_ColorGREEN},
+                {0xe61f, SK_ColorBLUE},
+
+        };
+        for (auto &info: iconInfos) {
             auto icon = new Icon();
             icon->setContext(this->context);
-            icon->setIcon(0xe615);
+            icon->setIcon(info.first);
             icon->setStyle(SkPaint::kStroke_Style);
             icon->setStrokeWidth(1);
             icon->setIconSize(100);
-            icon->setIconColor(SK_ColorRED);
-            flexboxLayout->addView(icon);
-        }
-        {
-            auto icon = new Icon();
-            icon->setContext(this->context);
-            icon->setIcon(0xe7ce);
-            icon->setStyle(SkPaint::kStroke_Style);
-            icon->setStrokeWidth(1);
-            icon->setIconSize(100);
-            flexboxLayout->addView(icon);
-        }
-        {
-            auto icon = new Icon();
-            icon->setContext(this->context);
-            icon->setIcon(0xe670);
-            icon->setStyle(SkPaint::kStroke_Style);
-            icon->setStrokeWidth(1);
-            icon->setIconSize(100);
-            icon->setIconColor(SK_ColorBLUE);
-            flexboxLayout->addView(icon);
-        }
-        {
-            auto icon = new Icon();
-            icon->setContext(this->context);
-            icon->setIcon(0xe67d);
-            icon->setStyle(SkPaint::kStroke_Style);
-            icon->setStrokeWidth(1);
-            icon->setIconSize(100);
-            flexboxLayout->addView(icon);
-        }
-        {
-            auto icon = new Icon();
-            icon->setContext(this->context);
-            icon->setIcon(0xe606);
-            icon->setStyle(SkPaint::kStroke_Style);
-            icon->setStrokeWidth(1);
-            icon->setIconSize(100);
-            flexboxLayout->addView(icon);
-        }
-        {
-            auto icon = new Icon();
-            icon->setContext(this->context);
-            icon->setIcon(0xe6a2);
-            icon->setStyle(SkPaint::kStroke_Style);
-            icon->setStrokeWidth(1);
-            icon->setIconSize(100);
-            flexboxLayout->addView(icon);
-        }
-        {
-            auto icon = new Icon();
-            icon->setContext(this->context);
-            icon->setIcon(0xe61f);
-            icon->setStyle(SkPaint::kStroke_Style);
-            icon->setStrokeWidth(1);
-            icon->setIconSize(100);
-            icon->setIconColor(SK_ColorBLUE);
+            icon->setIconColor(info.second);
             flexboxLayout->addView(icon);
         }
     }
@@ -452,11 +407,10 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->setStrokeWidth(0);
         flexboxLayout->setMargin({0, 0, 50, 50});
         scrollView->addView(flexboxLayout);
-
-        std::unordered_map<std::string, bool> frameworks {
+        std::unordered_map<std::string, bool> frameworks{
                 {"React-Native", true},
-                {"Appx", true},
-                {"Simplex", false}
+                {"Appx",         true},
+                {"Simplex",      false}
         };
         for (auto &value: frameworks) {
             auto group = new FlexboxLayout();
@@ -468,6 +422,12 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             group->setAlignItems(YGAlign::YGAlignCenter);
             group->setFlexDirection(YGFlexDirectionRow);
             flexboxLayout->addView(group);
+            group->setOnClickListener([](View *view) -> void {
+                auto radio = reinterpret_cast<Radio *>(reinterpret_cast<FlexboxLayout *>(view)->children[0]);
+                if (radio != nullptr) {
+                    radio->getClickListener()(radio);
+                }
+            });
             auto radio = new Radio();
             radio->setContext(this->context);
             radio->setSelected(value.second);
@@ -480,9 +440,37 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             label->setMargin({50, 0, 0, 0});
             label->setTextSize(50);
             label->setTextColor(SK_ColorBLACK);
+            label->setOnClickListener([radio](View *view) -> void {
+                radio->getClickListener()(radio);
+            });
             group->addView(label);
         }
 
+    }
+
+    {
+
+        auto flexboxLayout = new FlexboxLayout();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(980);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({0, 0, 50, 50});
+        scrollView->addView(flexboxLayout);
+
+        {
+            auto switchView = new Switch();
+            switchView->setContext(this->context);
+            switchView->setMargin({0, 0, 0, 50});
+            flexboxLayout->addView(switchView);
+        }
+        {
+            auto switchView = new Switch();
+            switchView->setContext(this->context);
+            switchView->setColor(SK_ColorRED);
+            flexboxLayout->addView(switchView);
+        }
     }
 
 
