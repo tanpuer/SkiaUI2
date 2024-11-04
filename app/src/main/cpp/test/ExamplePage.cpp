@@ -15,6 +15,7 @@
 #include "YUVVideoView.h"
 #include "LoadingView.h"
 #include "Icon.h"
+#include "Radio.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -441,5 +442,48 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             flexboxLayout->addView(icon);
         }
     }
+
+    {
+        auto flexboxLayout = new FlexboxLayout();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(980);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({0, 0, 50, 50});
+        scrollView->addView(flexboxLayout);
+
+        std::unordered_map<std::string, bool> frameworks {
+                {"React-Native", true},
+                {"Appx", true},
+                {"Simplex", false}
+        };
+        for (auto &value: frameworks) {
+            auto group = new FlexboxLayout();
+            group->setContext(this->context);
+            group->setStyle(SkPaint::kStroke_Style);
+            group->setBackgroundColor(SK_ColorTRANSPARENT);
+            group->setStrokeWidth(0);
+            group->setMargin({0, 0, 50, 50});
+            group->setAlignItems(YGAlign::YGAlignCenter);
+            group->setFlexDirection(YGFlexDirectionRow);
+            flexboxLayout->addView(group);
+            auto radio = new Radio();
+            radio->setContext(this->context);
+            radio->setSelected(value.second);
+            radio->setWidth(100);
+            radio->setHeight(100);
+            group->addView(radio);
+            auto label = new TextView();
+            label->setContext(this->context);
+            label->setText(value.first.c_str());
+            label->setMargin({50, 0, 0, 0});
+            label->setTextSize(50);
+            label->setTextColor(SK_ColorBLACK);
+            group->addView(label);
+        }
+
+    }
+
 
 }

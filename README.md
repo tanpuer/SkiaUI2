@@ -15,6 +15,8 @@ steps：
    ImageView: support png/gif, scaleType，cornerRadius, blur.  
    TextView: use SkParagraph, use AlimamaFangYuanTiVF-Thin.ttf by default.  
    Icon: use the iconfont.woff by default.  
+   Radio: Button which can be selected.  
+   Loading: default loadingView, also can be customized.  
    ProgressBar: circle and linear style，also can be dragged.  
    SVGView: svg file.  
    ShaderView: render simple fragment-shader.  

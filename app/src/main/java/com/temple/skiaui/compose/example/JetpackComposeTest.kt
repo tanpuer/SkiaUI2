@@ -107,6 +107,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                 Row(
                     modifier = Modifier(context).setWidth(width)
                         .setJustifyContent("space-between")
+                        .setAlignItems("center")
                 ) {
                     Icon(modifier = Modifier(context), 0xe615, color = "#ff0000")
                     Icon(modifier = Modifier(context), 0xe7ce, color = "#ffff00")
