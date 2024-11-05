@@ -51,7 +51,7 @@ public:
 
 protected:
 
-    ViewGroup *root = nullptr;
+    Page *root = nullptr;
 
     YGConfigRef config;
 

@@ -207,7 +207,7 @@ public:
     float rotateY = 0.0f;
     float rotateZ = 0.0f;
 
-    void setAnimator(IAnimator* animator);
+    void setAnimator(IAnimator *animator);
 
 protected:
 

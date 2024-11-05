@@ -68,6 +68,10 @@ public:
 
     bool isDestroyed();
 
+    void pageSizeChange(int width, int height);
+
+    void setOnPageSizeChangeListener(std::function<void(int, int)> &&callback);
+
 private:
 
     std::unique_ptr<View> rootView;
@@ -79,6 +83,8 @@ private:
     std::unique_ptr<SkPaint> pagePaint;
 
     bool markDestroyed = false;
+
+    std::vector<std::function<void(int, int)>> pageChangeCallbackList;
 
 public:
     void onShow() override;

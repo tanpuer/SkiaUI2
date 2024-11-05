@@ -185,4 +185,16 @@ bool Page::isDestroyed() {
     return markDestroyed;
 }
 
+void Page::pageSizeChange(int width, int height) {
+    setWidth(width);
+    setHeight(height);
+    for (const auto &item: pageChangeCallbackList) {
+        item(width, height);
+    }
+}
+
+void Page::setOnPageSizeChangeListener(std::function<void(int, int)> &&callback) {
+    pageChangeCallbackList.emplace_back(std::move(callback));
+}
+
 #pragma mark LifeCycle Callback end

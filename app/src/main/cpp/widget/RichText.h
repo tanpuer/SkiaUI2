@@ -53,4 +53,6 @@ private:
 
     std::vector<Node> nodes;
 
+    int paragraphWidth = 0;
+
 };

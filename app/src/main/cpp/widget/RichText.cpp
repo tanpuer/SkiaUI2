@@ -63,57 +63,57 @@ void RichText::measure() {
         textNode2.color = SK_ColorGREEN;
         textNode2.fontSize = 50;
         nodes.push_back(textNode2);
-
-        if (isDirty) {
-            auto fontCollection = getContext()->getFontCollection();
-            skia::textlayout::ParagraphStyle paraStyle;
-            paraStyle.setTextStyle(*defaultStyle);
-            paraStyle.setTextAlign(TextAlign::kLeft);
-            paragraphBuilder = ParagraphBuilder::make(paraStyle, fontCollection);
-
-            for (int i = 0; i < nodes.size(); ++i) {
-                auto item = nodes[i];
-                if (item.type == NodeType::Img) {
-                    PlaceholderStyle placeholderStyle(item.width, item.height,
-                                                      PlaceholderAlignment::kAboveBaseline,
-                                                      TextBaseline::kAlphabetic, 0);
-                    auto resourcesLoader = getContext()->resourcesLoader;
-                    resourcesLoader->decodeImage(item.src,
-                                                 [i, this](
-                                                         const std::vector<sk_sp<SkImage>> &images,
-                                                         sk_sp<SkAnimatedImage> animatedImage) {
-                                                     auto image = images[0];
-                                                     this->nodes[i].skImage = image;
-                                                 });
-                    TextStyle textStyle;
-                    paragraphBuilder->pushStyle(textStyle);
-                    paragraphBuilder->addPlaceholder(placeholderStyle);
-                } else if (item.type == NodeType::Txt) {
-                    TextStyle textStyle;
-                    textStyle.setColor(item.color);
-                    SkFontStyle fontStyle(item.weight,
-                                          SkFontStyle::kNormal_Width,
-                                          item.italic ? SkFontStyle::Slant::kItalic_Slant
-                                                      : SkFontStyle::Slant::kUpright_Slant);
-                    textStyle.setFontStyle(fontStyle);
-                    textStyle.setFontSize(item.fontSize);
-                    textStyle.setFontFamilies(fontFamily);
-                    if (item.underline) {
-                        textStyle.setDecoration(TextDecoration::kUnderline);
-                    } else if (item.deleteText) {
-                        textStyle.setDecoration(TextDecoration::kLineThrough);
-                    }
-                    paragraphBuilder->pushStyle(textStyle);
-                    paragraphBuilder->addText(item.text.c_str());
-                }
-            }
-            paragraph = paragraphBuilder->Build();
-            paragraph->layout(width);
-            height = paragraph->getHeight();
-            setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
-        }
     }
+    if (isDirty && paragraphWidth != width) {
+        auto fontCollection = getContext()->getFontCollection();
+        skia::textlayout::ParagraphStyle paraStyle;
+        paraStyle.setTextStyle(*defaultStyle);
+        paraStyle.setTextAlign(TextAlign::kLeft);
+        paragraphBuilder = ParagraphBuilder::make(paraStyle, fontCollection);
 
+        for (int i = 0; i < nodes.size(); ++i) {
+            auto item = nodes[i];
+            if (item.type == NodeType::Img) {
+                PlaceholderStyle placeholderStyle(item.width, item.height,
+                                                  PlaceholderAlignment::kAboveBaseline,
+                                                  TextBaseline::kAlphabetic, 0);
+                auto resourcesLoader = getContext()->resourcesLoader;
+                resourcesLoader->decodeImage(item.src,
+                                             [i, this](
+                                                     const std::vector<sk_sp<SkImage>> &images,
+                                                     sk_sp<SkAnimatedImage> animatedImage) {
+                                                 auto image = images[0];
+                                                 this->nodes[i].skImage = image;
+                                             });
+                TextStyle textStyle;
+                paragraphBuilder->pushStyle(textStyle);
+                paragraphBuilder->addPlaceholder(placeholderStyle);
+            } else if (item.type == NodeType::Txt) {
+                TextStyle textStyle;
+                textStyle.setColor(item.color);
+                SkFontStyle fontStyle(item.weight,
+                                      SkFontStyle::kNormal_Width,
+                                      item.italic ? SkFontStyle::Slant::kItalic_Slant
+                                                  : SkFontStyle::Slant::kUpright_Slant);
+                textStyle.setFontStyle(fontStyle);
+                textStyle.setFontSize(item.fontSize);
+                textStyle.setFontFamilies(fontFamily);
+                if (item.underline) {
+                    textStyle.setDecoration(TextDecoration::kUnderline);
+                } else if (item.deleteText) {
+                    textStyle.setDecoration(TextDecoration::kLineThrough);
+                }
+                paragraphBuilder->pushStyle(textStyle);
+                paragraphBuilder->addText(item.text.c_str());
+            }
+        }
+        paragraph = paragraphBuilder->Build();
+        paragraph->layout(width);
+        height = paragraph->getHeight();
+        setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
+        paragraphWidth = width;
+        isDirty = false;
+    }
 }
 
 void RichText::draw(SkCanvas *canvas) {

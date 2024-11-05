@@ -57,6 +57,19 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     root->addView(scrollView);
 
     {
+        auto richText = new RichText();
+        richText->setContext(this->context);
+        richText->setWidth(width);
+        richText->setStyle(SkPaint::kStroke_Style);
+        richText->setBackgroundColor(SK_ColorTRANSPARENT);
+        richText->setStrokeWidth(0);
+        this->setOnPageSizeChangeListener([richText](int width, int height) {
+            richText->setWidth(width);
+        });
+        scrollView->addView(richText);
+    }
+
+    {
         auto flexboxLayout = new FlexboxLayout();
         flexboxLayout->setContext(this->context);
         flexboxLayout->setWidth(1080);
@@ -472,16 +485,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             switchView->setColor(SK_ColorRED);
             flexboxLayout->addView(switchView);
         }
-    }
-
-    {
-        auto richText = new RichText();
-        richText->setContext(this->context);
-        richText->setWidth(1080);
-        richText->setStyle(SkPaint::kStroke_Style);
-        richText->setBackgroundColor(SK_ColorTRANSPARENT);
-        richText->setStrokeWidth(0);
-        scrollView->addView(richText);
     }
 
 

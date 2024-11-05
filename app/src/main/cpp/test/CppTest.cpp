@@ -14,6 +14,9 @@ void CppTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height)
         context->getPageStackManager()->push(page);
         page->enterFromRight(Page::EnterExitInfo(width, 0));
     }
+    if (root->getWidth() != width || root->getHeight() != height) {
+        root->pageSizeChange(width, height);
+    }
     performAnimations(width, height);
     context->getPageStackManager()->removeDestroyedPage();
     for (const auto &item: context->getPageStackManager()->getPages()) {
