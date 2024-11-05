@@ -25,7 +25,7 @@ void Switch::setEnabled(bool enable) {
     animator->setUpdateListener([this](View *view, float value) -> void {
         this->translateX = value;
     });
-    animator->setDuration(300);
+    animator->setDuration(switchDuration);
     animator->start();
     isDirty = true;
 }

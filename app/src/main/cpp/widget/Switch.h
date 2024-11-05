@@ -48,4 +48,6 @@ private:
 
     int switchRadius = 12;
 
+    int switchDuration = 200;
+
 };

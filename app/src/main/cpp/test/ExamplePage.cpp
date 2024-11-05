@@ -17,6 +17,7 @@
 #include "Icon.h"
 #include "Radio.h"
 #include "Switch.h"
+#include "RichText.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -471,6 +472,16 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             switchView->setColor(SK_ColorRED);
             flexboxLayout->addView(switchView);
         }
+    }
+
+    {
+        auto richText = new RichText();
+        richText->setContext(this->context);
+        richText->setWidth(1080);
+        richText->setStyle(SkPaint::kStroke_Style);
+        richText->setBackgroundColor(SK_ColorTRANSPARENT);
+        richText->setStrokeWidth(0);
+        scrollView->addView(richText);
     }
 
 
