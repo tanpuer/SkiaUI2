@@ -27,6 +27,7 @@ bool ViewGroup::addViewAt(View *view, uint32_t index) {
     YGNodeInsertChild(node, view->node, index);
     view->parentName = name();
     view->parentId = viewId;
+    view->parent = this;
     children.insert(children.cbegin() + index, view);
     return true;
 }

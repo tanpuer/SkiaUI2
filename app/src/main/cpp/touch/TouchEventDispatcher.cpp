@@ -17,10 +17,12 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
         ALOGE("dispatchTouchEvent weakRefView is null, pls check")
         return false;
     }
-    onInterceptTouchEvent(touchEvent);
     switch (touchEvent->action) {
         case TouchEvent::ACTION_DOWN: {
             findTargetView(touchEvent);
+            if (weakTargetView != nullptr) {
+                weakTargetView->onInterceptTouchEvent(touchEvent);
+            }
             dispatchToTargetView(touchEvent);
             break;
         }
@@ -28,7 +30,25 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
             if (!checkTouchInTargetView(touchEvent)) {
                 clearTargetView(touchEvent);
             }
-            dispatchToTargetView(touchEvent);
+            if (weakTargetView != nullptr) {
+                if (weakTargetView->onInterceptTouchEvent(touchEvent)) {
+                    dispatchToTargetView(touchEvent);
+                } else {
+                    auto parent = weakTargetView->getParent();
+                    while (parent != nullptr) {
+                        if (parent->onInterceptTouchEvent(touchEvent)) {
+                            weakTargetView = parent;
+                            touchEvent->action = TouchEvent::ACTION_DOWN;
+                            dispatchToTargetView(touchEvent);
+                            touchEvent->action = TouchEvent::ACTION_MOVE;
+                            dispatchToTargetView(touchEvent);
+                            break;
+                        } else {
+                            parent = parent->getParent();
+                        }
+                    }
+                }
+            }
             break;
         }
         case TouchEvent::ACTION_UP: {
@@ -52,6 +72,9 @@ bool TouchEventDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
     if (view == nullptr) {
         ALOGE("dispatchTouchEvent weakRefView is null, pls check")
         return false;
+    }
+    if (view->forceRequestTouchMove()) {
+        return true;
     }
     return false;
 }

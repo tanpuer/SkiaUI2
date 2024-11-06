@@ -452,3 +452,7 @@ void View::checkJavaViewRef(jobject instance) {
 jobject View::getJavaViewRef() {
     return globalJavaViewRef;
 }
+
+View *View::getParent() {
+    return parent;
+}

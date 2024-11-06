@@ -121,6 +121,7 @@ void ScrollView::startFling() {
     if (_direction == YGFlexDirectionColumn) {
         if (abs(yVelocity) <= MIN_VELOCITY) {
             yVelocity = .0f;
+            onFlingStopped();
             return;
         } else if (abs(yVelocity) >= MAX_VELOCITY) {
             yVelocity = yVelocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
@@ -130,6 +131,7 @@ void ScrollView::startFling() {
     } else {
         if (abs(xVelocity) <= MIN_VELOCITY) {
             xVelocity = .0f;
+            onFlingStopped();
             return;
         } else if (abs(xVelocity) >= MAX_VELOCITY) {
             xVelocity = xVelocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
@@ -141,6 +143,7 @@ void ScrollView::startFling() {
 
 void ScrollView::stopFling() {
     isFling = false;
+    onFlingStopped();
 }
 
 float ScrollView::calculateFlingTranslate() {
@@ -266,4 +269,8 @@ int ScrollView::getDistanceByIndex(int index) {
         }
     }
     return sum;
+}
+
+void ScrollView::onFlingStopped() {
+
 }

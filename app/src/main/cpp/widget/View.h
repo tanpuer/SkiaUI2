@@ -83,6 +83,8 @@ public:
 
     virtual void markDirty();
 
+    virtual View* getParent();
+
     YGNodeRef node;
 
     YGConfigRef config = nullptr;
@@ -90,6 +92,8 @@ public:
     int left, top, right, bottom = 0;
 
     bool markForDelete = false;
+
+    View *parent = nullptr;
 
 protected:
 

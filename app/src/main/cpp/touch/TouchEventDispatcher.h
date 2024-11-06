@@ -47,4 +47,10 @@ protected:
 
     float lastAlpha = 1.0f;
 
+    float startX = 0.0f;
+    float startY = 0.0f;
+
+    float lastScrollX = 0.0f;
+    float lastScrollY = 0.0f;
+
 };

@@ -26,12 +26,6 @@ protected:
      */
     virtual void fling();
 
-    float startX = 0.0f;
-    float startY = 0.0f;
-
     ScrollView *scrollView;
-
-    float lastScrollX = 0.0f;
-    float lastScrollY = 0.0f;
 
 };

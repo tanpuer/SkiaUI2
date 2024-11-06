@@ -18,6 +18,7 @@
 #include "Radio.h"
 #include "Switch.h"
 #include "RichText.h"
+#include "PickerView.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -55,6 +56,31 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
+
+    {
+        auto pickerView = new PickerView();
+        pickerView->setContext(this->context);
+        pickerView->setWidth(540);
+        for (int i = 0; i < 17; ++i) {
+            auto fbLayout = new FlexboxLayout();
+            fbLayout->setContext(this->context);
+            fbLayout->setAlignItems(YGAlign::YGAlignCenter);
+            fbLayout->setJustifyContent(YGJustify::YGJustifyCenter);
+            fbLayout->setWidthPercent(100);
+            fbLayout->setHeight(120);
+            pickerView->addView(fbLayout);
+
+            auto value = 2008 + i;
+            auto textView = new TextView();
+            textView->setContext(this->context);
+            textView->setText(std::to_string(value).c_str());
+            textView->setTextColor(SK_ColorBLACK);
+            textView->setTextSize(50);
+            textView->setTextAlign(skia::textlayout::TextAlign::kCenter);
+            fbLayout->addView(textView);
+        }
+        scrollView->addView(pickerView);
+    }
 
     {
         auto richText = new RichText();
@@ -483,6 +509,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             auto switchView = new Switch();
             switchView->setContext(this->context);
             switchView->setColor(SK_ColorRED);
+            switchView->setEnabled(false);
             flexboxLayout->addView(switchView);
         }
     }
