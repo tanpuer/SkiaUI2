@@ -142,8 +142,10 @@ void ScrollView::startFling() {
 }
 
 void ScrollView::stopFling() {
-    isFling = false;
-    onFlingStopped();
+    if (isFling) {
+        isFling = false;
+        onFlingStopped();
+    }
 }
 
 float ScrollView::calculateFlingTranslate() {
@@ -153,6 +155,7 @@ float ScrollView::calculateFlingTranslate() {
     if (yVelocity / velocity <= 0 || abs(velocity) <= MIN_VELOCITY) {
         yVelocity = .0f;
         isFling = false;
+        onFlingStopped();
     }
 //    float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
 //  see OverScroller.java

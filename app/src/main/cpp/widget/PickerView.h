@@ -28,7 +28,7 @@ private:
 
     void scrollToNearestChild();
 
-    std::function<void(int)> callback;
+    std::function<void(int)> changeCallback;
 
     std::unique_ptr<SkPaint> bottomPaint;
 
