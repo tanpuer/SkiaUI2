@@ -125,52 +125,66 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     }
 
     {
-        auto view = new View();
-        view->setContext(this->context);
-        auto colors = std::vector<SkColor>();
-        colors.push_back(SK_ColorYELLOW);
-        colors.push_back(SK_ColorBLUE);
-        view->setLinearGradient(colors);
-        view->setWidth(200);
-        view->setHeight(200);
-        scrollView->addView(view);
-        view->setOnClickListener([this, width, height](View *view) {
-            MeasureTime measureTime("pushPage");
-            auto page = new ExamplePage();
-            page->init(context, width, height);
-            context->getPageStackManager()->push(page);
-            page->enterFromRight(Page::EnterExitInfo(width, 0));
-        });
-    }
+        auto flexboxLayout = new FlexboxLayout();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(1080);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({0, 0, 0, 50});
+        flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+        flexboxLayout->setJustifyContent(YGJustify::YGJustifyCenter);
+        flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+        scrollView->addView(flexboxLayout);
 
-    {
-        auto view = new View();
-        view->setContext(this->context);
-        auto colors = std::vector<SkColor>();
-        colors.push_back(SK_ColorCYAN);
-        colors.push_back(SK_ColorMAGENTA);
-        colors.push_back(SK_ColorYELLOW);
-        colors.push_back(SK_ColorCYAN);
-        view->setSwiperGradient(colors);
-        view->setCornerRadius(20);
-        view->setBlurMask(kNormal_SkBlurStyle, 10);
-        view->setWidth(400);
-        view->setHeight(400);
-        view->setMargin({0, 50, 0, 50});
-        scrollView->addView(view);
-        view->setOnClickListener([this, width, height](View *view) {
-            if (context->getPageStackManager()->getPages().size() <= 1) {
-                context->getPluginManager()->invokeMethod("toast", "show", "back error");
-                return;
-            }
-            auto page = context->getPageStackManager()->back();
-            if (page == nullptr) {
-                ALOGE("pop failed due to empty pages")
-                return;
-            }
-            page->exitToLeft(Page::EnterExitInfo(0, width));
+        {
+            auto view = new View();
+            view->setContext(this->context);
+            auto colors = std::vector<SkColor>();
+            colors.push_back(SK_ColorYELLOW);
+            colors.push_back(SK_ColorBLUE);
+            view->setLinearGradient(colors);
+            view->setWidth(200);
+            view->setHeight(200);
+            flexboxLayout->addView(view);
+            view->setOnClickListener([this, width, height](View *view) {
+                MeasureTime measureTime("pushPage");
+                auto page = new ExamplePage();
+                page->init(context, width, height);
+                context->getPageStackManager()->push(page);
+                page->enterFromRight(Page::EnterExitInfo(width, 0));
+            });
+        }
+
+        {
+            auto view = new View();
+            view->setContext(this->context);
+            auto colors = std::vector<SkColor>();
+            colors.push_back(SK_ColorCYAN);
+            colors.push_back(SK_ColorMAGENTA);
+            colors.push_back(SK_ColorYELLOW);
+            colors.push_back(SK_ColorCYAN);
+            view->setSwiperGradient(colors);
+            view->setCornerRadius(20);
+            view->setBlurMask(kNormal_SkBlurStyle, 10);
+            view->setWidth(400);
+            view->setHeight(400);
+            view->setMargin({200, 50, 0, 0});
+            flexboxLayout->addView(view);
+            view->setOnClickListener([this, width, height](View *view) {
+                if (context->getPageStackManager()->getPages().size() <= 1) {
+                    context->getPluginManager()->invokeMethod("toast", "show", "back error");
+                    return;
+                }
+                auto page = context->getPageStackManager()->back();
+                if (page == nullptr) {
+                    ALOGE("pop failed due to empty pages")
+                    return;
+                }
+                page->exitToLeft(Page::EnterExitInfo(0, width));
 //            page->exitToTop(Page::EnterExitInfo(0, height));
-        });
+            });
+        }
     }
 
     {

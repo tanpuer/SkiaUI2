@@ -129,3 +129,22 @@ bool ShaderView::onTouchEvent(TouchEvent *touchEvent) {
     }
     return View::onTouchEvent(touchEvent);
 }
+
+bool ShaderView::onInterceptTouchEvent(TouchEvent *touchEvent) {
+    switch (touchEvent->action) {
+        case TouchEvent::ACTION_DOWN: {
+            lastScrollX = touchEvent->x;
+            lastScrollY = touchEvent->y;
+            break;
+        }
+        case TouchEvent::ACTION_MOVE: {
+            auto diffX = abs(touchEvent->x - lastScrollX);
+            auto diffY = abs(touchEvent->y - lastScrollY);
+            shaderTouchX = touchEvent->x - left;
+            return diffX > diffY;
+        }
+        default:
+            break;
+    }
+    return true;
+}
