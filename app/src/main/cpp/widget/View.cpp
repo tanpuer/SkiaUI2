@@ -266,10 +266,6 @@ std::function<void(View *)> View::getClickListener() {
     return viewClickListener;
 }
 
-bool View::forceRequestTouchMove() {
-    return false;
-}
-
 void View::setPositionType(YGPositionType type) {
     YGAssert(node, "view is null, pls check");
     if (node == nullptr) {

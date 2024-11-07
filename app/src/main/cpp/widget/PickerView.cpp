@@ -74,7 +74,3 @@ void PickerView::draw(SkCanvas *canvas) {
     canvas->drawRect(centerMask, *centerPaint);
     canvas->drawIRect(skRect, *bottomPaint);
 }
-
-bool PickerView::forceRequestTouchMove() {
-    return true;
-}

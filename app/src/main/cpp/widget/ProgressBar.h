@@ -17,7 +17,7 @@ public:
 
     virtual ~ProgressBar();
 
-    virtual bool forceRequestTouchMove() override;
+    bool onInterceptTouchEvent(TouchEvent *touchEvent) override;
 
 #pragma mark progressbar api
 

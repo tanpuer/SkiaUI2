@@ -17,7 +17,7 @@ public:
 
     const char *name() override;
 
-    virtual bool forceRequestTouchMove() override;
+    bool onInterceptTouchEvent(TouchEvent *touchEvent) override;
 
 private:
 

@@ -69,13 +69,6 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
 }
 
 bool TouchEventDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
-    if (view == nullptr) {
-        ALOGE("dispatchTouchEvent weakRefView is null, pls check")
-        return false;
-    }
-    if (view->forceRequestTouchMove()) {
-        return true;
-    }
     return false;
 }
 
@@ -139,6 +132,8 @@ void TouchEventDispatcher::clearTargetView(TouchEvent *touchEvent) {
         }
         ALOGD("dispatchTouchEvent, clearTargetView success")
         weakTargetView = nullptr;
+        lastScrollX = 0.0f;
+        lastScrollY = 0.0f;
     }
 }
 
@@ -171,7 +166,7 @@ bool TouchEventDispatcher::checkTouchInTargetView(TouchEvent *touchEvent) {
     if (weakTargetView == nullptr || weakTargetView->node == nullptr) {
         return false;
     }
-    if (weakTargetView->forceRequestTouchMove()) {
+    if (weakTargetView->onInterceptTouchEvent(touchEvent)) {
         return true;
     }
     auto left = weakTargetView->left;

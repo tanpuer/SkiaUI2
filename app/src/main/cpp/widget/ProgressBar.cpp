@@ -172,7 +172,7 @@ void ProgressBar::setStrokeWidth(SkScalar _width) {
     backgroundPaint->setStrokeWidth(_width);
 }
 
-bool ProgressBar::forceRequestTouchMove() {
+bool ProgressBar::onInterceptTouchEvent(TouchEvent *touchEvent) {
     return true;
 }
 

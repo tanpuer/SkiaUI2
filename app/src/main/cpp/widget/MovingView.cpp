@@ -54,6 +54,6 @@ const char *MovingView::name() {
     return "MovingView";
 }
 
-bool MovingView::forceRequestTouchMove() {
+bool MovingView::onInterceptTouchEvent(TouchEvent *touchEvent) {
     return true;
 }

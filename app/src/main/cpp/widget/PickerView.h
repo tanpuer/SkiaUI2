@@ -22,8 +22,6 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
-    bool forceRequestTouchMove() override;
-
 private:
 
     void scrollToNearestChild();
