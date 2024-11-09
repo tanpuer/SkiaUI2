@@ -22,6 +22,7 @@ steps：
    VideoView: render local video by MediaCodec/HardwareBuffer/SkImage.  
    YUVVideoView: render video by MediaCodec/SkRuntimeEffect.  
    LyricView: parse .lrc/.srt files, use RecyclerView to render lyric.  
+   MovingArea: intercept TouchEvents by default and can move.  
    Other CustomsViews: Loading, Switch, Radio, Picker...  
    ...
 8. scrollView: scroll, fling，for more optimizations.
@@ -29,7 +30,7 @@ steps：
 10. Page: act as the same role as Activity.
 11. C++: See CppTest.cpp. 
 12. js: See test.js in assets. Import v8 to evaluate javascript. 
-13. kotlin: Look at JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
+13. kotlin: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)

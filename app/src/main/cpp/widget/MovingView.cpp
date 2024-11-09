@@ -43,8 +43,6 @@ void MovingView::layout(int l, int t, int r, int b) {
 }
 
 MovingView::MovingView() : FlexboxLayout() {
-    lastX = 0.0f;
-    lastY = 0.0f;
 }
 
 MovingView::~MovingView() {

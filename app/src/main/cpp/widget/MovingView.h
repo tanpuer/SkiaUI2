@@ -21,7 +21,7 @@ public:
 
 private:
 
-    float lastX;
-    float lastY;
+    float lastX = 0.0f;
+    float lastY = 0.0f;
 
 };

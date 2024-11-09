@@ -19,6 +19,7 @@
 #include "Switch.h"
 #include "RichText.h"
 #include "PickerView.h"
+#include "MovingArea.h"
 
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
@@ -219,6 +220,18 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     }
 
     {
+        auto flexboxLayout = new MovingArea();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(1080);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({0, 50, 0, 0});
+        flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+        flexboxLayout->setJustifyContent(YGJustify::YGJustifyCenter);
+        flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+        scrollView->addView(flexboxLayout);
+
         auto imageView = new ImageView();
         imageView->setContext(this->context);
         imageView->setSource("bird.gif");
@@ -226,29 +239,26 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         imageView->setStyle(SkPaint::kStroke_Style);
         imageView->setBackgroundColor(SK_ColorRED);
         imageView->setStrokeWidth(2);
-        imageView->setWidth(800);
-        imageView->setHeight(500);
-        imageView->setMargin({0, 100, 0, 0});
+        imageView->setWidth(400);
+        imageView->setHeight(250);
         imageView->setOnCompleteFunc([](ImageView *imageView) {
             static bool flag = true;
             imageView->blur(flag ? 10.0f : 0.0f);
             flag = !flag;
         });
-        scrollView->addView(imageView);
-    }
+        flexboxLayout->addView(imageView);
 
-    {
         auto svgView = new SVGView();
         svgView->setContext(this->context);
         svgView->setSource("tiger.svg");
         svgView->setStyle(SkPaint::kStroke_Style);
         svgView->setBackgroundColor(SK_ColorRED);
         svgView->setStrokeWidth(2);
-        svgView->setXY(100, 100);
-        svgView->setWidth(800);
-        svgView->setHeight(800);
-        svgView->setMargin({0, 100, 0, 0});
-        scrollView->addView(svgView);
+        svgView->setXY(0, 0);
+        svgView->setWidth(600);
+        svgView->setHeight(600);
+        svgView->setMargin({50, 0, 0, 0});
+        flexboxLayout->addView(svgView);
     }
 
     {
