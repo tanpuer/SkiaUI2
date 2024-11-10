@@ -21,6 +21,8 @@ public:
 
     void setIconColor(SkColor color);
 
+    void setAlpha(float alpha) override;
+
 private:
 
     int32_t text = 0;

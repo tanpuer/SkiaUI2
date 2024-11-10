@@ -50,3 +50,8 @@ void Icon::setIconColor(SkColor color) {
     iconPaint->setColor(color);
 }
 
+void Icon::setAlpha(float alpha) {
+    View::setAlpha(alpha);
+    iconPaint->setAlphaf(alpha);
+}
+
