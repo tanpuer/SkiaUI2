@@ -10,7 +10,7 @@ steps：
 4. Only support FlexboxLayout. Measure/Layout/Draw are triggered by Vsync.
 5. TouchEvents: dispatchTouchEvent/interceptTouchEvent/onTouchEvent.
 6. Animations support scale/rotate/translate，the interpolator will be executed in Layout then update SkRect.
-7. Supported Widgets: View/TextView/ImageView/ProgressBar/FlexboxLayout/ScrollView/SVGView/ShaderView.  
+7. Supported Widgets:   
    View: rect, cornerRadius.  
    ImageView: support png/gif, scaleType，cornerRadius, blur.  
    TextView: use SkParagraph, use AlimamaFangYuanTiVF-Thin.ttf by default.  
