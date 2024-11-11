@@ -48,7 +48,7 @@ void SVGView::layout(int l, int t, int r, int b) {
 void SVGView::setXY(int x, int y) {
     this->x = x;
     this->y = y;
-    isDirty = true;
+    markDirty();
 }
 
 const char *SVGView::getSource() {

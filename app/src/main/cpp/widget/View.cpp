@@ -52,7 +52,7 @@ void View::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
 void View::layout(int l, int t, int r, int b) {
     //todo 默认设置boarder位置 Android layout默认啥都不做
     if (left != l || top != t || right != r || bottom != b) {
-        isDirty = true;
+        markDirty();
     }
     skRect.setLTRB(l, t, r, b);
     left = l;
@@ -108,7 +108,7 @@ void View::setAlignSelf(YGAlign align) {
         return;
     }
     YGNodeStyleSetAlignSelf(node, align);
-    isDirty = true;
+    markDirty();
 }
 
 bool View::isViewGroup() {
@@ -134,20 +134,20 @@ int View::getWidth() {
 void View::setBackgroundColor(SkColor color) {
     SkASSERT(paint);
     paint->setColor(color);
-    isDirty = true;
+    markDirty();
     backgroundColor = SkColorToString(color);
 }
 
 void View::setAntiAlias(bool antiAlias) {
     SkASSERT(paint);
     paint->setAntiAlias(antiAlias);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setStyle(SkPaint::Style style) {
     SkASSERT(paint);
     paint->setStyle(style);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setCornerRadius(int radius) {
@@ -158,7 +158,7 @@ void View::setCornerRadius(int radius) {
     }
     cornerRadius = radius;
     paint->setPathEffect(SkCornerPathEffect::Make(static_cast<SkScalar>(radius)));
-    isDirty = true;
+    markDirty();
 }
 
 void View::setStrokeWidth(SkScalar _width) {
@@ -168,13 +168,13 @@ void View::setStrokeWidth(SkScalar _width) {
         return;
     }
     paint->setStrokeWidth(_width);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setAlpha(float alpha) {
     SkASSERT(paint);
     paint->setAlphaf(alpha);
-    isDirty = true;
+    markDirty();
 }
 
 float View::getAlpha() {
@@ -184,18 +184,18 @@ float View::getAlpha() {
 
 void View::setLinearGradient(std::vector<SkColor> colors) {
     linearGradientColors = std::move(colors);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setSwiperGradient(std::vector<SkColor> colors) {
     swiperGradientColors = std::move(colors);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     auto filter = SkMaskFilter::MakeBlur(style, sigma);
     paint->setMaskFilter(filter);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setWidthPercent(float widthPercent) {
@@ -205,7 +205,7 @@ void View::setWidthPercent(float widthPercent) {
     }
     this->widthPercent = widthPercent;
     YGNodeStyleSetWidthPercent(node, widthPercent);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setHeightPercent(float heightPercent) {
@@ -215,7 +215,7 @@ void View::setHeightPercent(float heightPercent) {
     }
     this->heightPercent = heightPercent;
     YGNodeStyleSetHeightPercent(node, heightPercent);
-    isDirty = true;
+    markDirty();
 }
 
 bool View::onInterceptTouchEvent(TouchEvent *touchEvent) {
@@ -238,22 +238,22 @@ void View::setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatc
 
 void View::setLayoutCallback(std::function<void(int, int, int, int)> callback) {
     viewLayoutCallback = callback;
-    isDirty = true;
+    markDirty();
 }
 
 void View::removeLayoutCallback() {
     viewLayoutCallback = nullptr;
-    isDirty = true;
+    markDirty();
 }
 
 void View::setOnClickListener(std::function<void(View *)> clickListener) {
     viewClickListener = clickListener;
-    isDirty = true;
+    markDirty();
 }
 
 void View::removeClickListener() {
     viewClickListener = nullptr;
-    isDirty = true;
+    markDirty();
 }
 
 void View::performClick() {
@@ -272,7 +272,7 @@ void View::setPositionType(YGPositionType type) {
         return;
     }
     YGNodeStyleSetPositionType(node, type);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setDisplay(YGDisplay display) {
@@ -281,7 +281,7 @@ void View::setDisplay(YGDisplay display) {
         return;
     }
     YGNodeStyleSetDisplay(node, display);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setFlexGrow(float grow) {
@@ -290,7 +290,7 @@ void View::setFlexGrow(float grow) {
         return;
     }
     YGNodeStyleSetFlexGrow(node, grow);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setGap(const YGGutter gutter, const float gapLength) {
@@ -299,7 +299,7 @@ void View::setGap(const YGGutter gutter, const float gapLength) {
         return;
     }
     YGNodeStyleSetGap(node, gutter, gapLength);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setFlex(float flex) {
@@ -308,7 +308,7 @@ void View::setFlex(float flex) {
         return;
     }
     YGNodeStyleSetFlex(node, flex);
-    isDirty = true;
+    markDirty();
 }
 
 float View::getFlex() {
@@ -350,7 +350,7 @@ void View::setMargin(std::vector<int> margins) {
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeTop, marginTop);
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeRight, marginRight);
     YGNodeStyleSetMargin(node, YGEdge::YGEdgeBottom, marginBottom);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setPadding(std::vector<int> paddings) {
@@ -366,7 +366,7 @@ void View::setPadding(std::vector<int> paddings) {
     YGNodeStyleSetPadding(node, YGEdge::YGEdgeTop, paddings[1]);
     YGNodeStyleSetPadding(node, YGEdge::YGEdgeRight, paddings[2]);
     YGNodeStyleSetPadding(node, YGEdge::YGEdgeBottom, paddings[3]);
-    isDirty = true;
+    markDirty();
 }
 
 void View::setAspectRatio(float ratio) {
@@ -375,7 +375,7 @@ void View::setAspectRatio(float ratio) {
         return;
     }
     YGNodeStyleSetAspectRatio(node, ratio);
-    isDirty = true;
+    markDirty();
 }
 
 const std::shared_ptr<SkiaUIContext> View::getContext() {

@@ -28,7 +28,7 @@ void TextView::setText(const char *text) {
 void TextView::setText(SkString text) {
     this->text = std::move(text);
     stringBuilders.clear();
-    isDirty = true;
+    markDirty();
 }
 
 SkString TextView::getText() {
@@ -38,14 +38,14 @@ SkString TextView::getText() {
 void TextView::setTextColor(SkColor color) {
     skColor = color;
     defaultStyle->setColor(color);
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::setAlpha(float alpha) {
     View::setAlpha(alpha);
     defaultStyle->setColor(SkColorSetARGB(alpha * 255, SkColorGetR(skColor), SkColorGetG(skColor),
                                           SkColorGetB(skColor)));
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::measure() {
@@ -138,17 +138,17 @@ void TextView::draw(SkCanvas *canvas) {
 
 void TextView::setTextSize(SkScalar textSize) {
     defaultStyle->setFontSize(textSize);
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::setTextAlign(TextAlign textAlign) {
     this->textAlign = textAlign;
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::setMaxLines(int maxLine) {
     this->maxLine = maxLine;
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::setDecoration(TextDecoration decoration) {
@@ -178,7 +178,7 @@ void TextView::addShadow(SkColor color, SkPoint offset, double blurSigma) {
 
 void TextView::pushText(const TextView::StringBuilder &stringBuilder) {
     stringBuilders.emplace_back(stringBuilder);
-    isDirty = true;
+    markDirty();
 }
 
 SkScalar TextView::getTextSize() {
@@ -188,7 +188,7 @@ SkScalar TextView::getTextSize() {
 void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> pos) {
     textGradientColors = std::move(colors);
     textGradientPos = std::move(pos);
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::setHeight(int height) {
@@ -204,10 +204,10 @@ void TextView::setWidth(int width) {
 void TextView::setFontFamily(const char *fontFamily) {
     this->fontFamily.clear();
     this->fontFamily.emplace_back(fontFamily);
-    isDirty = true;
+    markDirty();
 }
 
 void TextView::setEllipsis(const char *ellipsis) {
     this->ellipsis = ellipsis;
-    isDirty = true;
+    markDirty();
 }

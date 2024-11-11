@@ -46,7 +46,7 @@ void ImageView::setSource(const char *path) {
         this->frameCount = images.size();
         this->duration = this->frameCount * skAnimatedImage->currentFrameDuration();
         endTime = startTime + this->duration;
-        isDirty = true;
+        markDirty();
     });
 }
 
@@ -134,12 +134,12 @@ const char *ImageView::name() {
 void ImageView::setCornerRadius(int radius) {
     this->radius = static_cast<float >(radius);
     View::setCornerRadius(radius);
-    isDirty = true;
+    markDirty();
 }
 
 void ImageView::setScaleType(ImageView::ScaleType scaleType) {
     this->scaleType = scaleType;
-    isDirty = true;
+    markDirty();
 }
 
 void ImageView::blur(float blur) {
@@ -149,7 +149,7 @@ void ImageView::blur(float blur) {
         auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
         imagePaint->setImageFilter(filter);
     }
-    isDirty = true;
+    markDirty();
 }
 
 const char *ImageView::getSource() {

@@ -102,12 +102,12 @@ void ProgressBar::setProgress(float progress) {
         return;
     }
     this->progress = progress;
-    isDirty = true;
+    markDirty();
 }
 
 void ProgressBar::setAutoMode(bool autoMode) {
     this->autoMode = autoMode;
-    isDirty = true;
+    markDirty();
 }
 
 bool ProgressBar::getAutoMode() {
@@ -116,7 +116,7 @@ bool ProgressBar::getAutoMode() {
 
 void ProgressBar::setType(ProgressBar::ProgressBarType type) {
     this->type = type;
-    isDirty = true;
+    markDirty();
 }
 
 ProgressBar::ProgressBarType ProgressBar::getType() {

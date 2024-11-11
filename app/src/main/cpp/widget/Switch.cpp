@@ -16,7 +16,7 @@ Switch::~Switch() {
 
 void Switch::setColor(SkColor color) {
     switchColor = color;
-    isDirty = true;
+    markDirty();
 }
 
 void Switch::setEnabled(bool enable) {
@@ -27,7 +27,7 @@ void Switch::setEnabled(bool enable) {
     });
     animator->setDuration(switchDuration);
     animator->start();
-    isDirty = true;
+    markDirty();
 }
 
 void Switch::measure() {

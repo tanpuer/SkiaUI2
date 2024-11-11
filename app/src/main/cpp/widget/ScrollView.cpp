@@ -88,24 +88,24 @@ void ScrollView::updateTranslateX(float diffX) {
 }
 
 bool ScrollView::addView(View *view) {
-    isDirty = true;
+    markDirty();
     auto index = YGNodeGetChildCount(node);
 //    ALOGD("RecyclerView addView at %d %ld", index, children.size())
     return FlexboxLayout::addViewAt(view, index);
 }
 
 bool ScrollView::addViewAt(View *view, uint32_t index) {
-    isDirty = true;
+    markDirty();
     return ViewGroup::addViewAt(view, index);
 }
 
 bool ScrollView::removeView(View *view) {
-    isDirty = true;
+    markDirty();
     return FlexboxLayout::removeView(view);
 }
 
 bool ScrollView::removeViewAt(uint32_t index) {
-    isDirty = true;
+    markDirty();
     return ViewGroup::removeViewAt(index);
 }
 

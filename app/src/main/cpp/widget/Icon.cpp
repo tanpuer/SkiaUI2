@@ -38,12 +38,12 @@ void Icon::draw(SkCanvas *canvas) {
 
 void Icon::setIcon(int32_t text) {
     this->text = text;
-    isDirty = true;
+    markDirty();
 }
 
 void Icon::setIconSize(int size) {
     this->size = size;
-    isDirty = true;
+    markDirty();
 }
 
 void Icon::setIconColor(SkColor color) {

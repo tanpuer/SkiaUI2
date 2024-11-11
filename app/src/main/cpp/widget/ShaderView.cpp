@@ -25,7 +25,7 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
             return;
         }
         runtimeEffect = effect;
-        isDirty = true;
+        markDirty();
     };
     auto size = images.size();
     if (size == 0) {
@@ -58,7 +58,7 @@ void ShaderView::setShaderPath(const char *path, std::vector<std::string> images
     MeasureTime measureTime("setShaderPath");
     context->resourcesLoader->readFile(path, [this, images](const char *data) {
         setShaderSource(data, images);
-        isDirty = true;
+        markDirty();
     });
 }
 
@@ -103,7 +103,7 @@ void ShaderView::setPictures(std::vector<sk_sp<SkPicture>> otherPictures) {
                                                    SkFilterMode::kLinear);
         skShaders["iChannel" + std::to_string(i)] = std::move(shader);
     }
-    isDirty = true;
+    markDirty();
 }
 
 void ShaderView::setCustomUniforms(std::string key, float value) {

@@ -6,7 +6,7 @@ Radio::Radio() {
     radioPaint->setColor(SK_ColorGRAY);
     setOnClickListener([this](View *view) {
         selected = !selected;
-        isDirty = true;
+        markDirty();
         if (this->changeFunc) {
             this->changeFunc(selected);
         }
@@ -54,5 +54,5 @@ void Radio::setOnClickListener(std::function<void(View *)> clickListener) {
 
 void Radio::setSelected(bool selected) {
     this->selected = selected;
-    isDirty = true;
+    markDirty();
 }
