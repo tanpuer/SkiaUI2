@@ -56,6 +56,7 @@ void SkiaFilter::setWindowSize(int width, int height) {
 }
 
 void SkiaFilter::render(SkPicture *picture) {
+//    MeasureTime measureTime("SkiaFilter::render");
     SkASSERT(skCanvas);
     skCanvas->clear(SK_ColorWHITE);
     picture->playback(skCanvas);

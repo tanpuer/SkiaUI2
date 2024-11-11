@@ -195,6 +195,9 @@ bool ImageView::onInterceptTouchEvent(TouchEvent *touchEvent) {
 }
 
 bool ImageView::onTouchEvent(TouchEvent *touchEvent) {
+    if (!scaleEffectFlag) {
+        return false;
+    }
     switch (touchEvent->action) {
         case TouchEvent::ACTION_DOWN: {
             translateX = 0.0f;
