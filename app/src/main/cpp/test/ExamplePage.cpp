@@ -241,6 +241,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         imageView->setStrokeWidth(2);
         imageView->setWidth(400);
         imageView->setHeight(250);
+        imageView->setScaleEffect(true);
         imageView->setOnCompleteFunc([](ImageView *imageView) {
             static bool flag = true;
             imageView->blur(flag ? 10.0f : 0.0f);

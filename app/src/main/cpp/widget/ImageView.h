@@ -55,6 +55,12 @@ public:
 
     void setOnCompleteFunc(std::function<void(ImageView *imageView)> &&completeFunc);
 
+    void setScaleEffect(bool flag);
+
+    bool onInterceptTouchEvent(TouchEvent *touchEvent) override;
+
+    bool onTouchEvent(TouchEvent *touchEvent) override;
+
 private:
 
     sk_sp<SkImage> skImage;
@@ -99,5 +105,12 @@ private:
     std::function<void(SkRect &dstRect, SkMatrix &imageMatrix, float rotateZ)> rotateFunc = nullptr;
 
     std::function<void(ImageView *imageView)> completeFunc = nullptr;
+
+    bool scaleEffectFlag = false;
+
+    float lastX = 0.0f;
+    float lastY = 0.0f;
+
+    SkRect scaleRect;
 
 };

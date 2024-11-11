@@ -7,6 +7,7 @@
 #include "SkiaUIContext.h"
 #include "effects/SkImageFilters.h"
 #include "codec/SkAndroidCodec.h"
+#include "LinearAnimator.h"
 
 ImageView::ImageView() : View(), radius(0), scaleType(ScaleType::FitXY) {
     imagePaint = std::make_unique<SkPaint>();
@@ -85,6 +86,10 @@ void ImageView::layout(int l, int t, int r, int b) {
     } else {
         imageMatrix.preRotate(rotateZ, dstRect.centerX(), dstRect.centerY());
     }
+    if (scaleEffectFlag && (!YGFloatsEqual(translateX, 0.0f) || !YGFloatsEqual(translateY, 0.0f))) {
+        scaleRect.setLTRB(l + translateX, t + translateY, l + translateX + width * 1.3f,
+                          t + translateY + height * 1.3f);
+    }
 }
 
 void ImageView::draw(SkCanvas *canvas) {
@@ -117,6 +122,9 @@ void ImageView::draw(SkCanvas *canvas) {
     canvas->drawImageRect(skImage, srcRect, dstRect, SkSamplingOptions(), imagePaint.get(),
                           SkCanvas::kFast_SrcRectConstraint);
     canvas->restore();
+    if (scaleEffectFlag && (!YGFloatsEqual(translateX, 0.0f) || !YGFloatsEqual(translateY, 0.0f))) {
+        canvas->drawImageRect(skImage, scaleRect, SkSamplingOptions(), imagePaint.get());
+    }
 }
 
 const char *ImageView::name() {
@@ -176,6 +184,49 @@ void ImageView::start() {
 
 void ImageView::setOnCompleteFunc(std::function<void(ImageView *imageView)> &&completeFunc) {
     this->completeFunc = std::move(completeFunc);
+}
+
+void ImageView::setScaleEffect(bool flag) {
+     this->scaleEffectFlag = flag;
+}
+
+bool ImageView::onInterceptTouchEvent(TouchEvent *touchEvent) {
+    return scaleEffectFlag;
+}
+
+bool ImageView::onTouchEvent(TouchEvent *touchEvent) {
+    switch (touchEvent->action) {
+        case TouchEvent::ACTION_DOWN: {
+            translateX = 0.0f;
+            translateY = 0.0f;
+            lastX = touchEvent->x;
+            lastY = touchEvent->y;
+            break;
+        }
+        case TouchEvent::ACTION_MOVE: {
+            translateX += touchEvent->x - lastX;
+            translateY += touchEvent->y - lastY;
+            lastX = touchEvent->x;
+            lastY = touchEvent->y;
+            break;
+        }
+        case TouchEvent::ACTION_UP: {
+            auto animator = new LinearAnimator(this, translateX, 0.0f);
+            animator->setDuration(300L);
+            auto x = translateX;
+            auto y = translateY;
+            animator->setUpdateListener([x, y](View *view, float value) {
+                view->translateX = value;
+                view->translateY = value * y / x;
+            });
+            animator->start();
+            break;
+        }
+        default: {
+            break;
+        }
+    }
+    return true;
 }
 
 
