@@ -37,6 +37,7 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
                     auto parent = weakTargetView->getParent();
                     while (parent != nullptr) {
                         if (parent->onInterceptTouchEvent(touchEvent)) {
+                            clearTargetView(touchEvent);
                             weakTargetView = parent;
                             touchEvent->action = TouchEvent::ACTION_DOWN;
                             dispatchToTargetView(touchEvent);

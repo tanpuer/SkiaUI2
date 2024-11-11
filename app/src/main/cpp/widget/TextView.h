@@ -108,6 +108,8 @@ public:
 
     void setHeight(int height) override;
 
+    void setWidth(int width) override;
+
     void setFontFamily(const char *fontFamily);
 
     void setEllipsis(const char* ellipsis);
@@ -135,6 +137,8 @@ protected:
     std::vector<float> textGradientPos;
 
     int originHeight = 0;
+
+    int originWidth = 0;
 
     std::vector<SkString> fontFamily;
 

@@ -102,9 +102,9 @@ void TextView::measure() {
         auto width = 0.0f;
         auto height = 0.0f;
         //为了方便计算大小，最好强制制定TextView的宽度，否则默认用maxIntrinsicWidth
-        if (originHeight > 0 && this->width > 0) {
-            width = this->width;
-            paragraph->layout(this->width);
+        if (originHeight > 0 && this->originWidth > 0) {
+            width = this->originWidth;
+            paragraph->layout(this->originWidth);
         } else {
             paragraph->layout(SK_ScalarInfinity);
             width = paragraph->getMaxIntrinsicWidth() + 1;
@@ -142,6 +142,7 @@ void TextView::setTextSize(SkScalar textSize) {
 }
 
 void TextView::setTextAlign(TextAlign textAlign) {
+    this->textAlign = textAlign;
     isDirty = true;
 }
 
@@ -193,6 +194,11 @@ void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> p
 void TextView::setHeight(int height) {
     View::setHeight(height);
     originHeight = height;
+}
+
+void TextView::setWidth(int width) {
+    View::setWidth(width);
+    originWidth = width;
 }
 
 void TextView::setFontFamily(const char *fontFamily) {

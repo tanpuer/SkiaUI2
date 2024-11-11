@@ -11,7 +11,8 @@ Button::~Button() {
 }
 
 void Button::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
-    TextView::setMeasuredDimension(_measuredWidth, _measuredHeight + defaultPadding * 2);
+    TextView::setMeasuredDimension(_measuredWidth + (originWidth > 0 ? 0 : defaultPadding * 2),
+                                   _measuredHeight + defaultPadding * 2);
 }
 
 void Button::draw(SkCanvas *canvas) {
@@ -20,9 +21,16 @@ void Button::draw(SkCanvas *canvas) {
     }
     View::draw(canvas);
     SkASSERT(paragraph);
-    paragraph->paint(canvas, skRect.left(), skRect.top() + defaultPadding);
+    paragraph->paint(canvas, skRect.left() + (originWidth > 0 ? 0 : defaultPadding),
+                     skRect.top() + defaultPadding);
 }
 
 const char *Button::name() {
     return "Button";
+}
+
+void Button::setContext(std::shared_ptr<SkiaUIContext> context) {
+    View::setContext(context);
+    setBackgroundColor(SkColorSetARGB(255, 31, 132, 226));
+    setTextColor(SK_ColorWHITE);
 }
