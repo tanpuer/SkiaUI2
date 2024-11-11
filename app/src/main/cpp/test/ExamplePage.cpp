@@ -220,7 +220,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     }
 
     {
-        auto flexboxLayout = new MovingArea();
+        auto flexboxLayout = new FlexboxLayout();
         flexboxLayout->setContext(this->context);
         flexboxLayout->setWidth(1080);
         flexboxLayout->setStyle(SkPaint::kStroke_Style);
@@ -304,7 +304,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     }
 
     {
-        auto view = new MovingView();
+        auto view = new MovingArea();
         view->setContext(this->context);
         view->setBackgroundColor(SK_ColorBLUE);
         view->setStyle(SkPaint::kFill_Style);

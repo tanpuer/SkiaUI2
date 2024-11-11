@@ -11,7 +11,7 @@ public:
     static float DECELERATION_RATE;
     constexpr static float INFLEXION = 0.35f;
     constexpr static float GRAVITY = 9.8f;
-    constexpr static int SCROLL_SLOP = 8;
+    constexpr static int SCROLL_SLOP = 1;
 
 public:
 
