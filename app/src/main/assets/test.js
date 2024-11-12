@@ -10,7 +10,7 @@ requestAnimationFrame(() => {
 
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, YUVVideoView, SVGView, Button,
-        ProgressBar, Page, EnterExitInfo
+        ProgressBar, Page, EnterExitInfo, Icon, FlexboxLayout
     } = SkiaUI;
     page = new Page();
     page.onCreate(() => {
@@ -133,6 +133,18 @@ function createRoot() {
     progressBar.barColor = "#ff0000";
     progressBar.autoMode = false;
     scrollView.addView(progressBar);
+
+    let iconContainer = new FlexboxLayout();
+    iconContainer.flexDirection = "row";
+    let iconInfos = [0xe615, 0xe7ce, 0xe670, 0xe67d, 0xe606, 0xe6a2, 0xe61f];
+    iconInfos.forEach((info) => {
+        let icon = new Icon();
+        icon.icon = info;
+        icon.size = 100;
+        icon.color = "#ff00ff"
+        iconContainer.addView(icon);
+    });
+    scrollView.addView(iconContainer);
 
     page.addView(scrollView);
 

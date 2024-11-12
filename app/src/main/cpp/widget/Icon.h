@@ -17,9 +17,17 @@ public:
 
     void setIcon(int32_t text);
 
+    int32_t getIcon();
+
     void setIconSize(int size);
 
+    int getIconSize();
+
     void setIconColor(SkColor color);
+
+    void setIconColor(const char* color);
+
+    const char *getIconColor();
 
     void setAlpha(float alpha) override;
 
@@ -38,5 +46,7 @@ private:
     float x = 0.0;
 
     float y = 0.0;
+
+    const char* iconColor = nullptr;
 
 };

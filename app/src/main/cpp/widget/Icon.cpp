@@ -1,5 +1,6 @@
 #include "Icon.h"
 #include "core/SkFont.h"
+#include "color_util.h"
 
 Icon::Icon() : View() {
     iconPaint = std::make_unique<SkPaint>();
@@ -53,5 +54,24 @@ void Icon::setIconColor(SkColor color) {
 void Icon::setAlpha(float alpha) {
     View::setAlpha(alpha);
     iconPaint->setAlphaf(alpha);
+}
+
+int32_t Icon::getIcon() {
+    return text;
+}
+
+int Icon::getIconSize() {
+    return size;
+}
+
+const char *Icon::getIconColor() {
+    return iconColor;
+}
+
+void Icon::setIconColor(const char *color) {
+    iconColor = color;
+    int r, g, b, a;
+    hexToRGBA(color, r, g, b, a);
+    setIconColor(SkColorSetARGB(a, r, g, b));
 }
 
