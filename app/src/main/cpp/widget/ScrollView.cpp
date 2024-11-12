@@ -159,7 +159,7 @@ float ScrollView::calculateFlingTranslate() {
     }
 //    float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
 //  see OverScroller.java
-    float ppi = 3 * 160.0f;
+    float ppi = 2.625 * 160.0f;
     auto mPhysicalCoeff = GRAVITY * 39.37f * ppi * 0.84f;
     auto l = log(INFLEXION * abs(velocity) / (FLING_FRICTION * mPhysicalCoeff));
     double decelMinusOne = DECELERATION_RATE - 1.0;
