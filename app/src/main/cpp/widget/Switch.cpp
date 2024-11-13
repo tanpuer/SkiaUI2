@@ -28,6 +28,9 @@ void Switch::setEnabled(bool enable) {
     animator->setDuration(switchDuration);
     animator->start();
     markDirty();
+    if (onChangeListener != nullptr) {
+        onChangeListener(enable);
+    }
 }
 
 void Switch::measure() {
@@ -65,4 +68,12 @@ void Switch::setHeight(int height) {
 
 void Switch::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
     View::setMeasuredDimension(_measuredWidth, _measuredHeight);
+}
+
+bool Switch::getEnabled() {
+    return enable;
+}
+
+void Switch::setOnChangeListener(std::function<void(bool)> &&listener) {
+    this->onChangeListener = std::move(listener);
 }

@@ -10,7 +10,7 @@ requestAnimationFrame(() => {
 
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, YUVVideoView, SVGView, Button,
-        ProgressBar, Page, EnterExitInfo, Icon, FlexboxLayout
+        ProgressBar, Page, EnterExitInfo, Icon, FlexboxLayout, Switch
     } = SkiaUI;
     page = new Page();
     page.onCreate(() => {
@@ -115,14 +115,14 @@ function createRoot() {
 
     let videoView = new YUVVideoView();
     videoView.width = 1080;
-    videoView.height = 360 * 1080 / 720;
+    videoView.height = 360 * 1080 / 640;
     videoView.src = "yiluxiangbei.mp4";
     scrollView.addView(videoView);
 
     let svgView = new SVGView();
     svgView.src = "tiger.svg";
-    svgView.width = 800;
-    svgView.height = 800;
+    svgView.width = 600;
+    svgView.height = 600;
     scrollView.addView(svgView);
 
     let progressBar = new ProgressBar();
@@ -145,6 +145,13 @@ function createRoot() {
         iconContainer.addView(icon);
     });
     scrollView.addView(iconContainer);
+
+    let switchView = new Switch();
+    switchView.enable = true;
+    switchView.setOnChangeListener((enable) => {
+        console.log("switch enable ", enable);
+    });
+    scrollView.addView(switchView);
 
     page.addView(scrollView);
 

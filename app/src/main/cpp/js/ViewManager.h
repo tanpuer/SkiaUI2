@@ -20,6 +20,7 @@
 #include "JSFileBinding.h"
 #include "JSYUVVideoViewBinding.h"
 #include "JSIconBinding.h"
+#include "JSSwitchBinding.h"
 
 class ViewManager {
 
@@ -54,6 +55,7 @@ private:
     std::unique_ptr<JSProgressBarBinding> jsProgressBarBinding;
     std::unique_ptr<JSPageBinding> jsPageBinding;
     std::unique_ptr<JSIconBinding> jsIconBinding;
+    std::unique_ptr<JSSwitchBinding> jsSwitchBinding;
 
 private:
 
