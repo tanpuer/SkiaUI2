@@ -9,11 +9,15 @@ class HYSkiaTextureView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : TextureView(context, attrs), TextureView.SurfaceTextureListener, Choreographer.FrameCallback{
 
-    private val engine = HYSkiaEngine()
+    private lateinit var engine: HYSkiaEngine
     private var created  = false
 
     init {
         surfaceTextureListener = this
+    }
+
+    fun initEngine(type: Int) {
+        engine = HYSkiaEngine(type)
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {
@@ -56,6 +60,10 @@ class HYSkiaTextureView @JvmOverloads constructor(
 
     fun onBackPressed() {
         engine.onBackPressed()
+    }
+
+    fun release() {
+        engine.release()
     }
 
 }

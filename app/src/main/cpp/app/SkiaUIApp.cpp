@@ -10,15 +10,20 @@
 #include "JavascriptTest.h"
 #include "JetpackComposeTest.h"
 
-SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine) {
+SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine,
+                     int exampleType) {
     SkGraphics::Init();
     context = std::make_shared<SkiaUIContext>();
     context->setConfigRef(YGConfigNew());
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
-    testDraw = std::make_unique<CppTest>();
-//    testDraw = std::make_unique<JavascriptTest>();
-//    testDraw = std::make_unique<JetpackComposeTest>(env);
+    if (exampleType == 1) {
+        testDraw = std::make_unique<JavascriptTest>();
+    } else if (exampleType == 2) {
+        testDraw = std::make_unique<JetpackComposeTest>(env);
+    } else {
+        testDraw = std::make_unique<CppTest>();
+    }
     testDraw->setContext(context);
 }
 
@@ -61,7 +66,7 @@ void SkiaUIApp::setWindowSize(int width, int height) {
 }
 
 bool SkiaUIApp::onBackPressed() {
-    if (context->getPageStackManager()->getPages().size() <=1) {
+    if (context->getPageStackManager()->getPages().size() <= 1) {
         context->getPluginManager()->invokeMethod("toast", "show", "back error");
         return false;
     }
@@ -106,7 +111,7 @@ void SkiaUIApp::onHide() {
 }
 
 void SkiaUIApp::deleteSkPicture(long skPicture) {
-    auto picture = reinterpret_cast<SkPicture*>(skPicture);
+    auto picture = reinterpret_cast<SkPicture *>(skPicture);
     if (picture != nullptr) {
         picture->unref();
     }

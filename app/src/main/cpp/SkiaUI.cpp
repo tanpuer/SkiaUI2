@@ -91,9 +91,9 @@ native_SetVelocity(JNIEnv *env, jobject instance, jlong javaUIApp, jfloat x, jfl
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-native_UIInit(JNIEnv *env, jobject instance, jobject javaAssetManager) {
+native_UIInit(JNIEnv *env, jobject instance, jobject javaAssetManager, jint exampleType) {
     auto globalAssets = env->NewGlobalRef(javaAssetManager);
-    auto uiApp = new SkiaUIApp(env, globalAssets, instance);
+    auto uiApp = new SkiaUIApp(env, globalAssets, instance, exampleType);
     ALOGD("native_UIInit")
     return reinterpret_cast<long>(uiApp);
 }
@@ -210,7 +210,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeDeleteSkImage",                 "(JJ)V",                                        (void *) native_DeleteSkImage},
         {"nativeTouchEvent",                    "(JIFF)Z",                                      (void *) native_TouchEvent},
         {"nativeSetVelocity",                   "(JFF)V",                                       (void *) native_SetVelocity},
-        {"nativeUIInit",                        "(Landroid/content/res/AssetManager;)J",        (void *) native_UIInit},
+        {"nativeUIInit",                        "(Landroid/content/res/AssetManager;I)J",       (void *) native_UIInit},
         {"nativeUIDoFrame",                     "(JJ)J",                                        (void *) native_UIDoFrame},
         {"nativeUIChanged",                     "(JIIJ)V",                                      (void *) native_UIChanged},
         {"nativeRelease",                       "(JJ)V",                                        (void *) native_Release},

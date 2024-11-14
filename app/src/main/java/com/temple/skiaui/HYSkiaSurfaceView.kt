@@ -8,11 +8,15 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : SurfaceView(context, attrs, defStyleAttr), SurfaceHolder.Callback, Choreographer.FrameCallback{
 
-    private val engine = HYSkiaEngine()
+    private lateinit var engine: HYSkiaEngine
     private var created = false
 
     init {
         holder.addCallback(this)
+    }
+
+    fun initEngine(type: Int) {
+        engine = HYSkiaEngine(type)
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {
@@ -49,6 +53,10 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
 
     fun onBackPressed() {
         engine.onBackPressed()
+    }
+
+    fun release() {
+        engine.release()
     }
 
 }

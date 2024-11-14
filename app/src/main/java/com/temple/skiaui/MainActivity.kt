@@ -18,6 +18,8 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         val controller = WindowCompat.getInsetsController(window, window.decorView)
         controller.hide(WindowInsetsCompat.Type.statusBars())
         surfaceView = findViewById(R.id.surfaceView)
+        val type = intent.getIntExtra("type", 0)
+        surfaceView.initEngine(type)
         surfaceView.setRenderCallback(this)
         fpsView = findViewById(R.id.tvFps)
         requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO), 101)
@@ -33,6 +35,11 @@ class MainActivity : AppCompatActivity(), RenderCallback {
 
     override fun onPlatformBackPressed() {
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        surfaceView.release()
     }
 
 }

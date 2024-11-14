@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
-class HYSkiaEngine {
+class HYSkiaEngine(val exampleType: Int) {
 
     private var velocityTracker: VelocityTracker? = null
 
@@ -57,7 +57,7 @@ class HYSkiaEngine {
             glApp = nativeGLInit()
         }
         skiaUIHandler.post {
-            uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets)
+            uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets, exampleType)
             nativeSetPlugins(uiApp, pluginManager)
         }
     }
@@ -152,11 +152,14 @@ class HYSkiaEngine {
     }
 
     fun release() {
-        nativeRelease(uiApp, glApp)
-        skiaUIHandlerThread.quitSafely()
-        skiaGLHandlerThread.quitSafely()
-        uiApp = 0L
-        glApp = 0L
+        skiaUIHandler.post {
+            nativeRelease(uiApp, glApp)
+            uiApp = 0L
+            glApp = 0L
+            executors.shutdown()
+            skiaUIHandlerThread.quitSafely()
+            skiaGLHandlerThread.quitSafely()
+        }
     }
 
     fun onBackPressed() {
@@ -223,7 +226,7 @@ class HYSkiaEngine {
 
     private external fun nativeDeleteSkImage(glApp: Long, skImagePtr: Long)
 
-    private external fun nativeUIInit(assets: AssetManager): Long
+    private external fun nativeUIInit(assets: AssetManager, exampleType: Int): Long
     private external fun nativeTouchEvent(uiApp: Long, action: Int, x: Float, y: Float): Boolean
     private external fun nativeSetVelocity(uiApp: Long, xVelocity: Float, yVelocity: Float)
     private external fun nativeUIChanged(uiApp: Long, width: Int, height: Int, time: Long)

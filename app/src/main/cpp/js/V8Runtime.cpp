@@ -3,17 +3,24 @@
 #include <ostream>
 #include <sstream>
 
+v8::Isolate *V8Runtime::staticIsolate = nullptr;
+
 V8Runtime::V8Runtime() {
-    v8::V8::SetFlagsFromString("--nolazy");
-    v8::V8::Initialize();
-    arrayBufferAllocator_.reset(
-            v8::ArrayBuffer::Allocator::NewDefaultAllocator());
-    mPlatform = v8::platform::NewDefaultPlatform();
-    v8::V8::InitializeICU();
-    v8::V8::InitializePlatform(mPlatform.get());
-    v8::Isolate::CreateParams createParams;
-    createParams.array_buffer_allocator = arrayBufferAllocator_.get();
-    mIsolate = v8::Isolate::New(createParams);
+    if (staticIsolate != nullptr) {
+        mIsolate = staticIsolate;
+    } else {
+        v8::V8::SetFlagsFromString("--nolazy");
+        v8::V8::Initialize();
+        arrayBufferAllocator_.reset(
+                v8::ArrayBuffer::Allocator::NewDefaultAllocator());
+        mPlatform = v8::platform::NewDefaultPlatform();
+        v8::V8::InitializeICU();
+        v8::V8::InitializePlatform(mPlatform.get());
+        v8::Isolate::CreateParams createParams;
+        createParams.array_buffer_allocator = arrayBufferAllocator_.get();
+        mIsolate = v8::Isolate::New(createParams);
+        staticIsolate = mIsolate;
+    }
     v8::Locker locker(mIsolate);
     v8::Isolate::Scope scopedIsolate(mIsolate);
     v8::HandleScope scopedHandle(mIsolate);
@@ -32,7 +39,7 @@ V8Runtime::~V8Runtime() {
     v8::Isolate::Scope scopedIsolate(mIsolate);
     v8::HandleScope scopedHandle(mIsolate);
     mContext.Reset();
-    mIsolate->Dispose();
+    skiaUI.Reset();
 }
 
 v8::Local<v8::Context> V8Runtime::CreateGlobalContext(v8::Isolate *isolate) {
