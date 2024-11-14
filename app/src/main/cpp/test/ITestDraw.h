@@ -18,7 +18,6 @@ public:
 
     virtual ~ITestDraw() {
         delete root;
-        YGConfigFree(config);
     };
 
     virtual void performAnimations(int width, int height) {
@@ -52,8 +51,6 @@ public:
 protected:
 
     Page *root = nullptr;
-
-    YGConfigRef config;
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
 

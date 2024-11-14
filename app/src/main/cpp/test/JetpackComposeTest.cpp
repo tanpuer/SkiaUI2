@@ -14,7 +14,7 @@ void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, 
         auto constructor = jniEnv->GetMethodID(jClazz, "<init>",
                                                "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
-        auto contextPtr = reinterpret_cast<long>(getContext().get());
+        auto contextPtr = reinterpret_cast<long>(this);
         testRef = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(jClazz, constructor, javaSkiaEngine, contextPtr));
         auto startMethod = jniEnv->GetMethodID(jClazz, "start", "(II)J");

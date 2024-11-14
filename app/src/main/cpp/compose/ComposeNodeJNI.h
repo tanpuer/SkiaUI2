@@ -41,8 +41,8 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {
-        auto ctx = reinterpret_cast<SkiaUIContext *>(contextPtr);
-        result->setContext(std::shared_ptr<SkiaUIContext>(ctx));
+        auto testDraw = reinterpret_cast<ITestDraw *>(contextPtr);
+        result->setContext(testDraw->getContext());
         env->ReleaseStringUTFChars(type, typeStr);
         return reinterpret_cast<long >(result);
     }
