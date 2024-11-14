@@ -1,14 +1,14 @@
 #pragma once
 
 #include "jni.h"
-#include "VideoView.h"
+#include "YUVVideoView.h"
 #include "native_log.h"
 
 const char *HYComposeVideo = "com/temple/skiaui/compose/widget/HYComposeVideo";
 
 extern "C" JNIEXPORT void JNICALL
 compose_video_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
-    auto videoView = reinterpret_cast<VideoView *>(viewPtr);
+    auto videoView = reinterpret_cast<YUVVideoView *>(viewPtr);
     auto sourceStr = env->GetStringUTFChars(source, nullptr);
     videoView->setSource(sourceStr);
     env->ReleaseStringUTFChars(source, sourceStr);

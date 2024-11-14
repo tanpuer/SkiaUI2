@@ -102,6 +102,9 @@ class HYSkiaYUVVideo internal constructor(
     }
 
     private fun nextImage() {
+        if (released) {
+            return
+        }
         if (!decoderOutputAvailable()) {
             val data = decodeFrame()
             if (data == null) {

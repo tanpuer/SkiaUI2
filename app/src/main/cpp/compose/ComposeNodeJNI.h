@@ -3,13 +3,13 @@
 #include "jni.h"
 #include "native_log.h"
 #include "ViewGroup.h"
-#include "VideoView.h"
 #include "LoadingView.h"
 #include "LottieView.h"
 #include "ShaderView.h"
 #include "ScrollView.h"
 #include "Icon.h"
 #include "Switch.h"
+#include "YUVVideoView.h"
 
 const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
 
@@ -28,7 +28,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
     static std::unordered_map<std::string, std::function<View *()>> viewFactory = {
             {"Page",          []() -> View * { return new Page(); }},
             {"FlexboxLayout", []() -> View * { return new FlexboxLayout(); }},
-            {"Video",         []() -> View * { return new VideoView(); }},
+            {"Video",         []() -> View * { return new YUVVideoView(); }},
             {"View",          []() -> View * { return new View(); }},
             {"Loading",       []() -> View * { return new LoadingView(); }},
             {"Lottie",        []() -> View * { return new LottieView(); }},

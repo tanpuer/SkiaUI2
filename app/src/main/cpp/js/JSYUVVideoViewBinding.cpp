@@ -1,5 +1,5 @@
 #include "JSYUVVideoViewBinding.h"
-#include "VideoView.h"
+#include "YUVVideoView.h"
 
 v8::Local<v8::FunctionTemplate>
 JSYUVVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
@@ -10,7 +10,7 @@ JSYUVVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object
         auto data = v8::Local<v8::External>::Cast(args.Data());
         auto binding = static_cast<JSYUVVideoViewBinding *>(data->Value());
         SkASSERT(binding);
-        auto videoView = new VideoView();
+        auto videoView = new YUVVideoView();
         videoView->setContext(binding->context);
         args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), videoView));
         args.GetReturnValue().Set(args.This());
@@ -27,7 +27,7 @@ JSYUVVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object
             info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
             return;
         }
-        auto videoView = static_cast<VideoView *>(v8::Local<v8::External>::Cast(
+        auto videoView = static_cast<YUVVideoView *>(v8::Local<v8::External>::Cast(
                 info.Holder()->GetInternalField(0))->Value());
         if (videoView) {
             v8::String::Utf8Value utf8(value);
@@ -39,7 +39,7 @@ JSYUVVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object
     };
     auto sourceGetter = [](v8::Local<v8::String> property,
                            const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto videoView = static_cast<VideoView *>(v8::Local<v8::External>::Cast(
+        auto videoView = static_cast<YUVVideoView *>(v8::Local<v8::External>::Cast(
                 info.Holder()->GetInternalField(0))->Value());
         if (videoView) {
             info.GetReturnValue().Set(

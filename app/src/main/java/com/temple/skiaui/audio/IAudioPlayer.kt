@@ -89,6 +89,9 @@ abstract class IAudioPlayer(
                 fft: ByteArray,
                 samplingRate: Int
             ) {
+                if (released) {
+                    return
+                }
                 val model = FloatArray(fft.size / 2 + 1)
                 model[0] = abs(fft[1].toFloat())
                 var j = 1

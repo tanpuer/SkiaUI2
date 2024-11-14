@@ -233,6 +233,7 @@ class HYSkiaVideo internal constructor(
             extractor.release()
         }
         decodeThread.quitSafely()
+        audioTracker?.release()
         engine.createListeners.remove(threadName)
     }
 
