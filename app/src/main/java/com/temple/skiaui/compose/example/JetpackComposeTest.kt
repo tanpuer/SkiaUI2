@@ -13,6 +13,7 @@ import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
 import com.temple.skiaui.compose.core.Row
 import com.temple.skiaui.compose.core.Shader
+import com.temple.skiaui.compose.core.Switch
 import com.temple.skiaui.compose.core.Text
 import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
@@ -117,6 +118,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     Icon(modifier = Modifier(context), 0xe6a2, color = "#000000")
                     Icon(modifier = Modifier(context), 0xe61f)
                 }
+                Switch(Modifier(context))
             }
         }, width, height, engine, context)
     }

@@ -13,6 +13,7 @@
 #include "ComposeScrollViewJNI.h"
 #include "ComposeImageJNI.h"
 #include "ComposeIconJNI.h"
+#include "ComposeSwitchJNI.h"
 
 static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeNodeMethods(jniEnv);
@@ -27,6 +28,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeScrollMethods(jniEnv);
     RegisterComposeImageMethods(jniEnv);
     RegisterComposeIconMethods(jniEnv);
+    RegisterComposeSwitchMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -42,4 +44,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeScrollMethods(jniEnv);
     UnRegisterComposeImageMethods(jniEnv);
     UnRegisterComposeIconMethods(jniEnv);
+    UnRegisterComposeSwitchMethods(jniEnv);
 }

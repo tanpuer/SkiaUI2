@@ -9,6 +9,7 @@
 #include "ShaderView.h"
 #include "ScrollView.h"
 #include "Icon.h"
+#include "Switch.h"
 
 const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
 
@@ -36,6 +37,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"Scroll",        []() -> View * { return new ScrollView(); }},
             {"Image",         []() -> View * { return new ImageView(); }},
             {"Icon",          []() -> View * { return new Icon(); }},
+            {"Switch",        []() -> View * { return new Switch(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {

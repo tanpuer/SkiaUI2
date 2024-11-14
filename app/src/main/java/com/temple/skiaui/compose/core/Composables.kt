@@ -21,6 +21,7 @@ import com.temple.skiaui.compose.widget.HYComposeLottie
 import com.temple.skiaui.compose.widget.HYComposePage
 import com.temple.skiaui.compose.widget.HYComposeScrollView
 import com.temple.skiaui.compose.widget.HYComposeShader
+import com.temple.skiaui.compose.widget.HYComposeSwitch
 import com.temple.skiaui.compose.widget.HYComposeText
 import com.temple.skiaui.compose.widget.HYComposeVideo
 import com.temple.skiaui.compose.widget.HYComposeView
@@ -137,7 +138,13 @@ fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
 }
 
 @Composable
-fun Text(modifier: Modifier, content: String, color: String, maxLine: Int = 0, ellipsis: String = "…") {
+fun Text(
+    modifier: Modifier,
+    content: String,
+    color: String,
+    maxLine: Int = 0,
+    ellipsis: String = "…"
+) {
     ComposeNode<HYComposeText, HYComposeApplier>(
         factory = { HYComposeText(modifier) },
         update = {
@@ -182,6 +189,21 @@ fun Icon(modifier: Modifier, icon: Int, color: String = "#0000ff", size: Int = 1
             }
             set(size) {
                 setIconSize(size)
+            }
+        }
+    )
+}
+
+@Composable
+fun Switch(modifier: Modifier, enable: Boolean = true, color: String = "#ff00ff") {
+    ComposeNode<HYComposeSwitch, HYComposeApplier>(
+        factory = { HYComposeSwitch(modifier) },
+        update = {
+            set(enable) {
+                setEnable(enable)
+            }
+            set(color) {
+                setColor(color)
             }
         }
     )
