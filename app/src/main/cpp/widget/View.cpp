@@ -412,6 +412,10 @@ void View::markDirty() {
     isDirty = true;
 }
 
+void View::clearDirty() {
+    isDirty = false;
+}
+
 void View::setAnimator(IAnimator *animator) {
     animators[animator->getAnimatorId()] = std::unique_ptr<IAnimator>(animator);
 }

@@ -49,8 +49,8 @@ void PickerView::measure() {
     if (isDirty) {
         auto totalHeight = children[1]->getHeight() * 7;
         ViewGroup::setHeight(totalHeight);
-        isDirty = false;
         centerHeight = children[0]->getHeight();
+        clearDirty();
     }
 }
 

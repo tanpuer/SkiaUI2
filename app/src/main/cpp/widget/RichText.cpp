@@ -112,7 +112,7 @@ void RichText::measure() {
         height = paragraph->getHeight();
         setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
         paragraphWidth = width;
-        isDirty = false;
+        clearDirty();
     }
 }
 

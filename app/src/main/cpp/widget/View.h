@@ -83,6 +83,8 @@ public:
 
     virtual void markDirty();
 
+    virtual void clearDirty();
+
     virtual View* getParent();
 
     YGNodeRef node;

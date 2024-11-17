@@ -25,6 +25,7 @@ void Icon::measure() {
         x = bounds.x();
         y = bounds.y();
         setMeasuredDimension(width, height);
+        clearDirty();
     }
 }
 

@@ -54,7 +54,7 @@ void TextView::measure() {
         return;
     }
     if (isDirty) {
-        isDirty = false;
+        clearDirty();
         skia::textlayout::ParagraphStyle paraStyle;
         paraStyle.setTextStyle(*defaultStyle);
         paraStyle.setTextAlign(textAlign);
