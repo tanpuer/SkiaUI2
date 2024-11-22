@@ -46,8 +46,11 @@ set_property(TARGET skshaper PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDRO
 add_library(skparagraph STATIC IMPORTED)
 set_property(TARGET skparagraph PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libskparagraph.a")
 
-add_library(skunicode STATIC IMPORTED)
-set_property(TARGET skunicode PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libskunicode.a")
+add_library(skunicode_core STATIC IMPORTED)
+set_property(TARGET skunicode_core PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libskunicode_core.a")
+
+add_library(skunicode_icu STATIC IMPORTED)
+set_property(TARGET skunicode_icu PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libskunicode_icu.a")
 
 add_library(skottie STATIC IMPORTED)
 set_property(TARGET skottie PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libskottie.a")
@@ -112,7 +115,8 @@ target_link_libraries(skiaui
         svg
         skshaper
         skparagraph
-        skunicode
+        skunicode_core
+        skunicode_icu
         skottie
         sksg
 

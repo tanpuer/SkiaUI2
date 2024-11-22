@@ -4,7 +4,7 @@
 #include "core/SkGraphics.h"
 #include "include/gpu/ganesh/gl/GrGLBackendSurface.h"
 #include "gpu/ganesh/gl/GrGLDirectContext.h"
-#include "gpu/GrBackendSurface.h"
+#include "gpu/ganesh/GrBackendSurface.h"
 #include "gpu/ganesh/SkSurfaceGanesh.h"
 #include "core/SkColorSpace.h"
 #include "core/SkPictureRecorder.h"

@@ -3,8 +3,8 @@
 #include <ITestDraw.h>
 #include <Velocity.h>
 #include "IFilter.h"
-#include "gpu/gl/GrGLInterface.h"
-#include "gpu/GrDirectContext.h"
+#include "gpu/ganesh/gl/GrGLInterface.h"
+#include "gpu/ganesh/GrDirectContext.h"
 #include "core/SkSurface.h"
 #include "core/SkCanvas.h"
 
