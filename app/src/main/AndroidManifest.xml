@@ -9,7 +9,7 @@
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="SkiaUI"
-        android:roundIcon="@drawable/logo"
+        android:roundIcon="@drawable/round_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity
