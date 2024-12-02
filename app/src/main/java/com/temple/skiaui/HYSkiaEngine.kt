@@ -7,7 +7,6 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.Surface
-import android.view.VelocityTracker
 import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -15,8 +14,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 class HYSkiaEngine(val exampleType: Int) {
-
-    private var velocityTracker: VelocityTracker? = null
 
     /**
      * 执行UI逻辑
@@ -52,6 +49,10 @@ class HYSkiaEngine(val exampleType: Int) {
     val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val executors = Executors.newFixedThreadPool(2)
 
+    data class Velocity(val x: Float, val y: Float)
+    private val touchPoints = mutableListOf<Velocity>()
+    private val touchTimes = mutableListOf<Long>()
+
     init {
         skiaGLHandler.post {
             glApp = nativeGLInit()
@@ -72,7 +73,6 @@ class HYSkiaEngine(val exampleType: Int) {
         skiaGLHandler.post {
             nativeGLCreated(glApp, surface)
         }
-        velocityTracker = VelocityTracker.obtain()
         createListeners.forEach {
             it.value.invoke(true)
         }
@@ -95,8 +95,6 @@ class HYSkiaEngine(val exampleType: Int) {
         skiaGLHandler.post {
             nativeGLDestroyed(glApp)
         }
-        velocityTracker?.recycle()
-        velocityTracker = null
         createListeners.forEach {
             it.value.invoke(false)
         }
@@ -134,15 +132,30 @@ class HYSkiaEngine(val exampleType: Int) {
         val x = event.x
         val y = event.y
         val action = event.action
-        velocityTracker?.addMovement(event)
+        if (action == MotionEvent.ACTION_DOWN) {
+            touchPoints.clear()
+            touchTimes.clear()
+        }
+        if (touchPoints.size >= 5) {
+            touchPoints.removeAt(0)
+            touchTimes.removeAt(0)
+        }
+        touchPoints.add(Velocity(x, y))
+        touchTimes.add(System.currentTimeMillis())
         if (action == MotionEvent.ACTION_UP) {
-            velocityTracker?.computeCurrentVelocity(1000)
-            skiaUIHandler.post {
-                nativeSetVelocity(
-                    uiApp,
-                    velocityTracker?.xVelocity ?: 0f,
-                    velocityTracker?.yVelocity ?: 0f
-                )
+            if (touchPoints.size >= 2) {
+                val firstTouch = touchPoints.first()
+                val lastTouch = touchPoints.last()
+                val firstTime = touchTimes.first()
+                val lastTime = touchTimes.last()
+                val dt = lastTime - firstTime
+                if (dt > 0) {
+                    nativeSetVelocity(
+                        uiApp,
+                        (lastTouch.x - firstTouch.x) * 1000 / dt,
+                        (lastTouch.y - firstTouch.y) * 1000 / dt,
+                    )
+                }
             }
         }
         skiaUIHandler.post {
