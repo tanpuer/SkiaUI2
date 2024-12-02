@@ -18,7 +18,7 @@ void LoadingView::draw(SkCanvas *canvas) {
         SkRect rect;
         auto startTime = i * duration / 2 / (size - 1);
         auto endTime = startTime + duration / 2;
-        auto middleTime = startTime + duration / 4;
+        auto middleTime = startTime + duration / (size - 1);
         auto rectHeight = 0;
         if (time > endTime || time < startTime) {
             rectHeight = loadingHeight;
