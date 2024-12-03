@@ -4,6 +4,8 @@
 #include "YUVVideoView.h"
 #include "native_log.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeVideo = "com/temple/skiaui/compose/widget/HYComposeVideo";
 
 extern "C" JNIEXPORT void JNICALL

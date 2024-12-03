@@ -3,6 +3,8 @@
 #include "IAnimator.h"
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class LinearAnimator : public IAnimator {
 
 public:
@@ -22,3 +24,5 @@ private:
     void updateInner();
 
 };
+
+}

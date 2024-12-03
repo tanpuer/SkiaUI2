@@ -1,5 +1,7 @@
 #pragma once
 
+namespace HYSkiaUI {
+
 class Velocity {
 
 public:
@@ -11,3 +13,5 @@ public:
     float yVelocity;
 
 };
+
+}

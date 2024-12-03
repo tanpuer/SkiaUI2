@@ -1,6 +1,8 @@
 #include "WebSocketServer.h"
 #include "native_log.h"
 
+namespace HYSkiaUI {
+
 WebSocketServer::WebSocketServer(int port, std::function<void(std::string)> onMessage) {
     this->port = port;
     this->onMessage = std::move(onMessage);
@@ -69,4 +71,6 @@ void WebSocketServer::waitFrontendMessage() {
 //    ws_->read(buffer);
 //    std::string message = boost::beast::buffers_to_string(buffer.data());
 //    onMessage_(std::move(message));
+}
+
 }

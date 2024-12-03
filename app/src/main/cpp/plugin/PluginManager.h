@@ -4,6 +4,8 @@
 #include "unordered_map"
 #include "string"
 
+namespace HYSkiaUI {
+
 class PluginManager {
 
 public:
@@ -29,3 +31,5 @@ private:
     JNIEnv *env = nullptr;
 
 };
+
+}

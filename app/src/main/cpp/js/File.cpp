@@ -1,7 +1,9 @@
 #include "File.h"
 #include "native_log.h"
 
-File::File(std::string path, std::shared_ptr<SkiaUIContext>& context) : path(std::move(path)) {
+namespace HYSkiaUI {
+
+File::File(std::string path, std::shared_ptr<SkiaUIContext> &context) : path(std::move(path)) {
     this->context = context;
     ALOGD("File:: new File %s", path.c_str())
 }
@@ -20,4 +22,6 @@ std::string File::read() {
     }
     ALOGD("File:: read %s", path.c_str())
     return context->getAssetManager()->readFile(path.c_str());
+}
+
 }

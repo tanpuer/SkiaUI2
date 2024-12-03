@@ -5,6 +5,8 @@
 
 using namespace skottie;
 
+namespace HYSkiaUI {
+
 class LottieView : public View {
 
 public:
@@ -15,7 +17,7 @@ public:
 
     void setSource(const char *path);
 
-    const char* getSource();
+    const char *getSource();
 
     void draw(SkCanvas *canvas) override;
 
@@ -51,3 +53,4 @@ private:
 
 };
 
+}

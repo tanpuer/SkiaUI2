@@ -3,6 +3,8 @@
 #include "functional"
 #include "core/SkRect.h"
 
+namespace HYSkiaUI {
+
 static int32_t ANIMATOR_ID = 0;
 
 class IAnimator {
@@ -61,3 +63,5 @@ protected:
     float lastInterpolator = 0.0f;
 
 };
+
+}

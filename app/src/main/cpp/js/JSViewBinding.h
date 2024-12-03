@@ -2,6 +2,8 @@
 
 #include "JSBinding.h"
 
+namespace HYSkiaUI {
+
 class JSViewBinding : public JSBinding {
 
 public:
@@ -16,3 +18,4 @@ public:
 
 };
 
+}

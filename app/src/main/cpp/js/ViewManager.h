@@ -22,6 +22,8 @@
 #include "JSIconBinding.h"
 #include "JSSwitchBinding.h"
 
+namespace HYSkiaUI {
+
 class ViewManager {
 
 public:
@@ -62,3 +64,5 @@ private:
     std::unique_ptr<JSFileBinding> jsFileBinding;
 
 };
+
+}

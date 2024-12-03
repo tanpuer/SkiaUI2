@@ -5,6 +5,8 @@
 #include "v8.h"
 #include "V8Runtime.h"
 
+namespace HYSkiaUI {
+
 static int64_t PAGE_ID = 0;
 
 /**
@@ -106,3 +108,5 @@ public:
     virtual void drawOnFrame(int drawCount) {}
 
 };
+
+}

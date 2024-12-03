@@ -5,6 +5,8 @@
 #include <v8-inspector.h>
 #include "js/V8Runtime.h"
 
+namespace HYSkiaUI {
+
 class V8InspectorChannelImp final : public v8_inspector::V8Inspector::Channel {
 public:
     V8InspectorChannelImp(std::shared_ptr<V8Runtime> &runtime,
@@ -20,3 +22,5 @@ private:
     std::shared_ptr<V8Runtime> runtime;
     std::function<void(std::string)> onResponse;
 };
+
+}

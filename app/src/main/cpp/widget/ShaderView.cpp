@@ -5,6 +5,8 @@
 #include "codec/SkAndroidCodec.h"
 #include "android/SkAnimatedImage.h"
 
+namespace HYSkiaUI {
+
 ShaderView::ShaderView() {
 
 }
@@ -147,4 +149,6 @@ bool ShaderView::onInterceptTouchEvent(TouchEvent *touchEvent) {
             break;
     }
     return true;
+}
+
 }

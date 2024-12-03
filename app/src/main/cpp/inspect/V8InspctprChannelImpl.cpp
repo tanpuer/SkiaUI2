@@ -2,6 +2,8 @@
 #include <functional>
 #include "inspect_utils.h"
 
+namespace HYSkiaUI {
+
 V8InspectorChannelImp::V8InspectorChannelImp(
         std::shared_ptr<V8Runtime> &runtime,
         const std::function<void(std::string)> &onResponse) {
@@ -27,4 +29,6 @@ void V8InspectorChannelImp::sendNotification(std::unique_ptr<v8_inspector::Strin
 
 void V8InspectorChannelImp::flushProtocolNotifications() {
     // flush protocol notification
+}
+
 }

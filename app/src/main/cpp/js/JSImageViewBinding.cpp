@@ -2,6 +2,8 @@
 #include "ImageView.h"
 #include "w3c_util.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                    v8::Local<v8::FunctionTemplate> inherit,
@@ -109,4 +111,6 @@ JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     v8::Local<v8::Function> constructor = imageTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ImageView"), constructor);
     return imageTemplate;
+}
+
 }

@@ -5,6 +5,8 @@
 #include "native_log.h"
 #include "color_util.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeSwitch = "com/temple/skiaui/compose/widget/HYComposeSwitch";
 
 extern "C" JNIEXPORT void JNICALL

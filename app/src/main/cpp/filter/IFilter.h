@@ -4,6 +4,8 @@
 
 class SkPicture;
 
+namespace HYSkiaUI {
+
 class IFilter {
 
 public:
@@ -16,7 +18,7 @@ public:
 
     virtual void render(SkPicture *picture) = 0;
 
-    virtual long MakeHardwareBufferToSkImage(JNIEnv* env, jobject hardwareBuffer) = 0;
+    virtual long MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer) = 0;
 
     virtual void deleteSkImage(JNIEnv *env, long skImagePtr) = 0;
 
@@ -28,3 +30,5 @@ protected:
     long time;
 
 };
+
+}

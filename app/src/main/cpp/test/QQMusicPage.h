@@ -7,6 +7,8 @@
 #include "LinearAnimator.h"
 #include "LyricScrollView.h"
 
+namespace HYSkiaUI {
+
 class QQMusicPage : public Page {
 
 public:
@@ -36,3 +38,5 @@ private:
     LinearAnimator *recordInnerAnimator = nullptr;
 
 };
+
+}

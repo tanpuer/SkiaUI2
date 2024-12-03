@@ -4,6 +4,8 @@
 #include "native_log.h"
 #include "ShaderView.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeShader = "com/temple/skiaui/compose/widget/HYComposeShader";
 
 extern "C" JNIEXPORT void JNICALL

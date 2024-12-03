@@ -3,6 +3,8 @@
 #include "View.h"
 #include "memory"
 
+namespace HYSkiaUI {
+
 class CanvasTest : public View {
 
 public:
@@ -24,3 +26,5 @@ private:
 
     long testIndex = 0;
 };
+
+}

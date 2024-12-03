@@ -3,6 +3,8 @@
 #include "v8.h"
 #include "JavascriptTest.h"
 
+using namespace HYSkiaUI;
+
 auto requestAnimationFrameCallback = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
     v8::Isolate *isolate = args.GetIsolate();
     v8::HandleScope handle_scope(isolate);

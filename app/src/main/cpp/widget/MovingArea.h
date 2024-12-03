@@ -2,6 +2,8 @@
 
 #include "FlexboxLayout.h"
 
+namespace HYSkiaUI {
+
 class MovingArea : public FlexboxLayout {
 
 public:
@@ -16,7 +18,7 @@ public:
 
     void layout(int l, int t, int r, int b) override;
 
-    const char * name() override;
+    const char *name() override;
 
 private:
 
@@ -24,3 +26,5 @@ private:
     float lastY = 0.0f;
 
 };
+
+}

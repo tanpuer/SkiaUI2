@@ -4,6 +4,8 @@
 #include "memory"
 #include "Velocity.h"
 
+namespace HYSkiaUI {
+
 class View;
 
 class ViewGroup;
@@ -54,3 +56,5 @@ protected:
     float lastScrollY = 0.0f;
 
 };
+
+}

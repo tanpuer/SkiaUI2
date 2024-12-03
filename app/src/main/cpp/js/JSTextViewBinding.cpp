@@ -1,6 +1,8 @@
 #include "JSTextViewBinding.h"
 #include "TextView.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                   v8::Local<v8::FunctionTemplate> inherit,
@@ -84,4 +86,6 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
     v8::Local<v8::Function> constructor = textTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "TextView"), constructor);
     return textTemplate;
+}
+
 }

@@ -3,6 +3,8 @@
 #include <ostream>
 #include <sstream>
 
+namespace HYSkiaUI {
+
 v8::Isolate *V8Runtime::staticIsolate = nullptr;
 
 V8Runtime::V8Runtime() {
@@ -266,4 +268,6 @@ void V8Runtime::injectNumber(const char *name, int number) {
 
 v8::Platform *V8Runtime::getPlatform() {
     return mPlatform.get();
+}
+
 }

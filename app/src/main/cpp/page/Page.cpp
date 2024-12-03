@@ -7,6 +7,8 @@
 #include "core/SkColorFilter.h"
 #include "PluginManager.h"
 
+namespace HYSkiaUI {
+
 Page::Page() {
     pageId = PAGE_ID++;
     ALOGD("Page create %d", pageId)
@@ -198,3 +200,5 @@ void Page::setOnPageSizeChangeListener(std::function<void(int, int)> &&callback)
 }
 
 #pragma mark LifeCycle Callback end
+
+}

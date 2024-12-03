@@ -2,6 +2,8 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class Radio : public View {
 
 public:
@@ -29,3 +31,5 @@ private:
     void setOnClickListener(std::function<void(View *)> clickListener) override;
 
 };
+
+}

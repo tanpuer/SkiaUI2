@@ -7,6 +7,8 @@
 #include "PluginManager.h"
 #include "compose/ComposeJNI.h"
 
+using namespace HYSkiaUI;
+
 const char *HYSkiaEngine = "com/temple/skiaui/HYSkiaEngine";
 
 extern "C" JNIEXPORT jlong JNICALL

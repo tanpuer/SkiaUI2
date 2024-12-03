@@ -5,6 +5,8 @@
 #include "console.h"
 #include "ViewManager.h"
 
+namespace HYSkiaUI {
+
 class JavascriptTest : public ITestDraw {
 
 public:
@@ -48,3 +50,5 @@ private:
     std::shared_ptr<ViewManager> viewManager;
 
 };
+
+}

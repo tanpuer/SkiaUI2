@@ -4,6 +4,8 @@
 #include "MovingView.h"
 #include "ScrollView.h"
 
+namespace HYSkiaUI {
+
 TouchEventDispatcher::TouchEventDispatcher(View *view) {
     this->view = view;
     weakTargetView = nullptr;
@@ -184,4 +186,6 @@ bool TouchEventDispatcher::dispatchVelocity(Velocity *velocity) {
         return true;
     }
     return false;
+}
+
 }

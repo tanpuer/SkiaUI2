@@ -2,6 +2,7 @@
 #include "assert.h"
 #include "native_log.h"
 
+namespace HYSkiaUI {
 
 PluginManager::PluginManager() {
 
@@ -43,3 +44,4 @@ void PluginManager::releaseJavaPluginManager(JNIEnv *env) {
     this->env = nullptr;
 }
 
+}

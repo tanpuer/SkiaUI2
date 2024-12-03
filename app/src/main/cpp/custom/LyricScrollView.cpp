@@ -4,6 +4,8 @@
 #include "TextView.h"
 #include "regex"
 
+namespace HYSkiaUI {
+
 LyricScrollView::LyricScrollView() {
 
 }
@@ -146,4 +148,6 @@ View *LyricScrollView::initItem(int index) {
 
 void LyricScrollView::setCurrPositionFunc(std::function<long()> &&func) {
     this->currentPositionFunc = std::move(func);
+}
+
 }

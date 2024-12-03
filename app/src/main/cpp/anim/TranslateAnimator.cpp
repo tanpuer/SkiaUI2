@@ -1,5 +1,7 @@
 #include "TranslateAnimator.h"
 
+namespace HYSkiaUI {
+
 TranslateAnimator::TranslateAnimator(View *view,
                                      float animStartX, float animEndX,
                                      float animStartY, float animEndY) {
@@ -35,4 +37,6 @@ void TranslateAnimator::start() {
     SkASSERT(targetView);
     animStartX = targetView->animTranslateX;
     animStartY = targetView->animTranslateY;
+}
+
 }

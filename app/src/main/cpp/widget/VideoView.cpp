@@ -1,6 +1,8 @@
 #include "VideoView.h"
 #include "jni.h"
 
+namespace HYSkiaUI {
+
 VideoView::VideoView() {
     videoPaint = std::make_unique<SkPaint>();
     videoPaint->setAntiAlias(true);
@@ -78,4 +80,6 @@ void VideoView::onHide() {
 
 const char *VideoView::name() {
     return "VideoView";
+}
+
 }

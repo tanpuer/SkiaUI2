@@ -2,6 +2,8 @@
 
 #include "TextView.h"
 
+namespace HYSkiaUI {
+
 class Button : public TextView {
 
 public:
@@ -30,3 +32,5 @@ private:
     int defaultPadding = 20;
 
 };
+
+}

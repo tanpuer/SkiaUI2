@@ -1,5 +1,7 @@
 #include "JetpackComposeTest.h"
 
+namespace HYSkiaUI {
+
 JetpackComposeTest::JetpackComposeTest(JNIEnv *jniEnv) {
     this->jniEnv = jniEnv;
 }
@@ -35,4 +37,6 @@ void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, 
         item->layout(0, 0, width, height);
         item->draw(canvas);
     }
+}
+
 }

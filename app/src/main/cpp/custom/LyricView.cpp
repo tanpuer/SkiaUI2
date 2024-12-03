@@ -4,6 +4,8 @@
 #include "TextView.h"
 #include "regex"
 
+namespace HYSkiaUI {
+
 LyricView::LyricView() {
 }
 
@@ -260,4 +262,6 @@ void LyricViewHolder::updateView(Lyric item) {
     textView->setMaxLines(1);
     textView->setText(item.content.c_str());
     textView->setTextSize(60);
+}
+
 }

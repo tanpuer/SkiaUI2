@@ -9,6 +9,8 @@
 #include "codec/SkAndroidCodec.h"
 #include "LinearAnimator.h"
 
+namespace HYSkiaUI {
+
 ImageView::ImageView() : View(), radius(0), scaleType(ScaleType::FitXY) {
     imagePaint = std::make_unique<SkPaint>();
     imagePaint->setAntiAlias(true);
@@ -187,7 +189,7 @@ void ImageView::setOnCompleteFunc(std::function<void(ImageView *imageView)> &&co
 }
 
 void ImageView::setScaleEffect(bool flag) {
-     this->scaleEffectFlag = flag;
+    this->scaleEffectFlag = flag;
 }
 
 bool ImageView::onInterceptTouchEvent(TouchEvent *touchEvent) {
@@ -232,4 +234,4 @@ bool ImageView::onTouchEvent(TouchEvent *touchEvent) {
     return true;
 }
 
-
+}

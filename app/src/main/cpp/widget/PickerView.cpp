@@ -1,6 +1,8 @@
 #include "PickerView.h"
 #include "effects/SkGradientShader.h"
 
+namespace HYSkiaUI {
+
 PickerView::PickerView() {
     bottomPaint = std::make_unique<SkPaint>();
     bottomPaint->setAntiAlias(true);
@@ -73,4 +75,6 @@ void PickerView::draw(SkCanvas *canvas) {
     ScrollView::draw(canvas);
     canvas->drawRect(centerMask, *centerPaint);
     canvas->drawIRect(skRect, *bottomPaint);
+}
+
 }

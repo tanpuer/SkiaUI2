@@ -5,6 +5,8 @@
 #include "SkiaUIContext.h"
 #include "V8Runtime.h"
 
+namespace HYSkiaUI {
+
 class JSBinding {
 
 public:
@@ -27,3 +29,5 @@ protected:
     std::shared_ptr<V8Runtime> runtime = nullptr;
 
 };
+
+}

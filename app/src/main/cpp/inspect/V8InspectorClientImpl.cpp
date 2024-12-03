@@ -1,5 +1,7 @@
 #include "V8InspectorClientImpl.h"
 
+namespace HYSkiaUI {
+
 V8InspectorClientImpl::V8InspectorClientImpl(
         std::shared_ptr<V8Runtime> &runtime,
         const std::function<void(std::string)> &onResponse,
@@ -56,4 +58,6 @@ void V8InspectorClientImpl::schedulePauseOnNextStatement(const v8_inspector::Str
 
 void V8InspectorClientImpl::waitFrontendMessageOnPause() {
     terminated = false;
+}
+
 }

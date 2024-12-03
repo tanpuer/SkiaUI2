@@ -21,6 +21,8 @@
 #include "PickerView.h"
 #include "MovingArea.h"
 
+namespace HYSkiaUI {
+
 void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
     setWidth(width);
@@ -541,4 +543,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         }
         scrollView->addView(pickerView);
     }
+}
+
 }

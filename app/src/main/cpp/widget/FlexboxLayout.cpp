@@ -1,5 +1,7 @@
 #include "FlexboxLayout.h"
 
+namespace HYSkiaUI {
+
 FlexboxLayout::FlexboxLayout() : ViewGroup() {
 
 }
@@ -52,4 +54,6 @@ void FlexboxLayout::layoutHorizontal(int l, int t, int r, int b) {
 //        ALOGD("FlexboxLayout: layout horizontal %s %d %d %d %d", child->name(), left, top, width, height)
         child->layout(left + l, top + t, left + l + width, top + t + height);
     }
+}
+
 }

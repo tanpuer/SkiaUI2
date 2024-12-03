@@ -3,6 +3,8 @@
 #include "effects/SkGradientShader.h"
 #include "color_util.h"
 
+namespace HYSkiaUI {
+
 ProgressBar::ProgressBar()
         : View(), progressRect(SkRect::MakeEmpty()), autoMode(true), progress(0), index(0),
           type(ProgressBarType::CIRCLE), pressed(false), progressCallback(nullptr) {
@@ -188,4 +190,6 @@ const char *ProgressBar::getBarColor() {
 
 const char *ProgressBar::name() {
     return "ProgressBar";
+}
+
 }

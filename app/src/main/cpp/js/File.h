@@ -4,6 +4,8 @@
 #include "memory"
 #include "SkiaUIContext.h"
 
+namespace HYSkiaUI {
+
 class File {
 
 public:
@@ -14,7 +16,7 @@ public:
 
     void operator=(File &file) = delete;
 
-    File(std::string path, std::shared_ptr<SkiaUIContext>& context);
+    File(std::string path, std::shared_ptr<SkiaUIContext> &context);
 
     bool exist();
 
@@ -27,3 +29,5 @@ private:
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
 };
+
+}

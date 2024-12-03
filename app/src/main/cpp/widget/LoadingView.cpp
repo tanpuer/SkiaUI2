@@ -1,5 +1,7 @@
 #include "LoadingView.h"
 
+namespace HYSkiaUI {
+
 LoadingView::LoadingView() {
     paint = std::make_unique<SkPaint>();
     paint->setStyle(SkPaint::Style::kStrokeAndFill_Style);
@@ -57,4 +59,6 @@ void LoadingView::setLoadingDuration(int duration) {
 
 const char *LoadingView::name() {
     return "Loading";
+}
+
 }

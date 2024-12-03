@@ -3,6 +3,8 @@
 #include "v8.h"
 #include "JavascriptTest.h"
 
+using namespace HYSkiaUI;
+
 auto nowCallback = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
     auto isolate = args.GetIsolate();
     if (args.Length() != 0) {

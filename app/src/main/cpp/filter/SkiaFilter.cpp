@@ -15,6 +15,8 @@
 #include "GrAHardwareBufferUtils.h"
 #include "android/GrAHardwareBufferUtils.h"
 
+namespace HYSkiaUI {
+
 SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
     SkGraphics::Init();
 }
@@ -100,4 +102,6 @@ void SkiaFilter::deleteSkImage(JNIEnv *env, long skImagePtr) {
             skImage->unref();
         }
     }
+}
+
 }

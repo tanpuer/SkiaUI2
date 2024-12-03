@@ -4,6 +4,8 @@
 #include "RecyclerViewAdapter.h"
 #include "RecyclerViewHolder.h"
 
+namespace HYSkiaUI {
+
 template<typename T>
 class RecyclerView : public ScrollView {
 
@@ -138,16 +140,18 @@ public:
 
 #pragma mark adapter
 
-    virtual void setAdapter(RecyclerViewAdapter<T> *adapter) {
+    virtual void setAdapter(RecyclerViewAdapter <T> *adapter) {
         this->adapter = adapter;
     }
 
-    virtual RecyclerViewAdapter<T> *getAdapter() {
+    virtual RecyclerViewAdapter <T> *getAdapter() {
         return adapter;
     }
 
 protected:
 
-    RecyclerViewAdapter<T> *adapter = nullptr;
+    RecyclerViewAdapter <T> *adapter = nullptr;
 
 };
+
+}

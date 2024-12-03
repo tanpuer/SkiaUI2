@@ -6,6 +6,8 @@
 #include "LinearAnimator.h"
 #include "SVGView.h"
 
+namespace HYSkiaUI {
+
 void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int height) {
     setContext(context);
     setWidth(width);
@@ -294,4 +296,6 @@ void QQMusicPage::updateArmView(bool play) {
             recordInnerAnimator->pause();
         }
     }
+}
+
 }

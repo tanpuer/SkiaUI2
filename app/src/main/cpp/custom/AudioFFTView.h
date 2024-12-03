@@ -3,6 +3,8 @@
 #include "View.h"
 #include "jni.h"
 
+namespace HYSkiaUI {
+
 class AudioFFTView : public View {
 
 public:
@@ -66,3 +68,5 @@ private:
     void innerPlay();
 
 };
+
+}

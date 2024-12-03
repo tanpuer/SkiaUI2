@@ -1,5 +1,7 @@
 #include "Button.h"
 
+namespace HYSkiaUI {
+
 Button::Button() : TextView() {
     ripplePaint = new SkPaint();
     ripplePaint->setAntiAlias(true);
@@ -33,4 +35,6 @@ void Button::setContext(std::shared_ptr<SkiaUIContext> context) {
     View::setContext(context);
     setBackgroundColor(SkColorSetARGB(255, 31, 132, 226));
     setTextColor(SK_ColorWHITE);
+}
+
 }

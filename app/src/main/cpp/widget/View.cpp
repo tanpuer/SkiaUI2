@@ -9,6 +9,8 @@
 #include "core/SkBlurTypes.h"
 #include "color_util.h"
 
+namespace HYSkiaUI {
+
 View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadius(0),
                skRectWithBorder(SkRect::MakeEmpty()),
                minWidth(0), minHeight(0),
@@ -451,4 +453,6 @@ jobject View::getJavaViewRef() {
 
 View *View::getParent() {
     return parent;
+}
+
 }

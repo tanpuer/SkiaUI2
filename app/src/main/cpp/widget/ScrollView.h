@@ -2,6 +2,8 @@
 
 #include "FlexboxLayout.h"
 
+namespace HYSkiaUI {
+
 class ScrollView : public FlexboxLayout {
 
 public:
@@ -88,3 +90,5 @@ protected:
     bool lastScrollRight = true;
 
 };
+
+}

@@ -16,6 +16,8 @@
 
 using namespace skia::textlayout;
 
+namespace HYSkiaUI {
+
 class SkiaUIContext {
 
 public:
@@ -159,3 +161,5 @@ private:
     sk_sp<SkTypeface> iconFontTypeFace = nullptr;
 
 };
+
+}

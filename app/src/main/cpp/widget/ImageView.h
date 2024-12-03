@@ -4,6 +4,8 @@
 #include "core/SkImage.h"
 #include "android/SkAnimatedImage.h"
 
+namespace HYSkiaUI {
+
 class ImageView : public View {
 
 public:
@@ -114,3 +116,5 @@ private:
     SkRect scaleRect;
 
 };
+
+}

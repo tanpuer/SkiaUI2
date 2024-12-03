@@ -3,6 +3,8 @@
 #include <ScrollView.h>
 #include "TouchEventDispatcher.h"
 
+namespace HYSkiaUI {
+
 class ScrollDispatcher : public TouchEventDispatcher {
 
 public:
@@ -29,3 +31,5 @@ protected:
     ScrollView *scrollView;
 
 };
+
+}

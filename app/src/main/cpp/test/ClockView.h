@@ -2,6 +2,8 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class ClockView : public View {
 
 public:
@@ -14,9 +16,9 @@ public:
 
 private:
 
-    void drawBackground(SkCanvas* canvas);
+    void drawBackground(SkCanvas *canvas);
 
-    void drawClockHand(SkCanvas* canvas, float angle, float length, float handWidth, SkColor color);
+    void drawClockHand(SkCanvas *canvas, float angle, float length, float handWidth, SkColor color);
 
     std::unique_ptr<SkPaint> numberPaint;
 
@@ -31,3 +33,5 @@ private:
     std::unique_ptr<SkPaint> handPaint;
 
 };
+
+}

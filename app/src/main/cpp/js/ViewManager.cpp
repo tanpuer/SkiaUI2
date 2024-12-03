@@ -1,5 +1,7 @@
 #include "ViewManager.h"
 
+namespace HYSkiaUI {
+
 ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
                          std::shared_ptr<V8Runtime> &runtime) {
     this->context = context;
@@ -76,11 +78,13 @@ void ViewManager::registerHYViews() {
                 isolate, skiaUI, viewTemplate,
                 v8::External::New(isolate, jsIconBinding.get()));
         auto switchTemplate = jsSwitchBinding->registerJSView(
-                isolate,skiaUI, viewTemplate,
+                isolate, skiaUI, viewTemplate,
                 v8::External::New(isolate, jsSwitchBinding.get()));
 
         auto fileTemplate = jsFileBinding->registerJSView(
                 isolate, skiaUI, v8::FunctionTemplate::New(isolate),
                 v8::External::New(isolate, jsFileBinding.get()));
     });
+}
+
 }

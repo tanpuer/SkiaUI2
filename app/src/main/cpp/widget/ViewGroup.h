@@ -4,6 +4,8 @@
 #include "vector"
 #include "Velocity.h"
 
+namespace HYSkiaUI {
+
 class ViewGroup : public View {
 
 public:
@@ -107,3 +109,5 @@ public:
     virtual bool dispatchVelocity(Velocity *velocity);
 
 };
+
+}

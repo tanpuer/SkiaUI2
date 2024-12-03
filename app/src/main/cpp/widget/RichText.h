@@ -3,6 +3,8 @@
 #include "View.h"
 #include "core/SkFont.h"
 
+namespace HYSkiaUI {
+
 class RichText : public View {
 
     enum class NodeType {
@@ -56,3 +58,5 @@ private:
     int paragraphWidth = 0;
 
 };
+
+}

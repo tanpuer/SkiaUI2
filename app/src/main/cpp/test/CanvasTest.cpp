@@ -2,6 +2,8 @@
 #include "core/SkPath.h"
 #include "effects/SkGradientShader.h"
 
+namespace HYSkiaUI {
+
 CanvasTest::CanvasTest() {
     paint = std::make_unique<SkPaint>();
     paint->setAntiAlias(true);
@@ -58,4 +60,6 @@ void CanvasTest::draw(SkCanvas *canvas) {
 void CanvasTest::setCircleSize(int size) {
     this->size = size;
     markDirty();
+}
+
 }

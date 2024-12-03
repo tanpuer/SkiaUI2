@@ -10,6 +10,8 @@
 #include "JavascriptTest.h"
 #include "JetpackComposeTest.h"
 
+namespace HYSkiaUI {
+
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine,
                      int exampleType) {
     SkGraphics::Init();
@@ -115,4 +117,6 @@ void SkiaUIApp::deleteSkPicture(long skPicture) {
     if (picture != nullptr) {
         picture->unref();
     }
+}
+
 }

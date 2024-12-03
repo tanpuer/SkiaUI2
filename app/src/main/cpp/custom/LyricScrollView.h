@@ -3,6 +3,8 @@
 #include "ScrollView.h"
 #include "LyricView.h"
 
+namespace HYSkiaUI {
+
 class LyricScrollView : public ScrollView {
 
 public:
@@ -13,11 +15,11 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
-    void setCurrPositionFunc(std::function<long()>&& func);
+    void setCurrPositionFunc(std::function<long()> &&func);
 
 private:
 
-    View* initItem(int index);
+    View *initItem(int index);
 
     std::vector<Lyric> result;
 
@@ -28,3 +30,5 @@ private:
     int currentIndex = -1;
 
 };
+
+}

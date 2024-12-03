@@ -2,6 +2,8 @@
 #include <base/native_log.h>
 #include "ViewGroup.h"
 
+namespace HYSkiaUI {
+
 ViewGroup::ViewGroup() : View() {
 
 }
@@ -237,3 +239,4 @@ void ViewGroup::performAnimations() {
     }
 }
 
+}

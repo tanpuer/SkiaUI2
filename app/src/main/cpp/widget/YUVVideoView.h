@@ -6,6 +6,8 @@
 #include "View.h"
 #include "effects/SkRuntimeEffect.h"
 
+namespace HYSkiaUI {
+
 class YUVVideoView : public View {
 
 public:
@@ -16,7 +18,7 @@ public:
 
     void setSource(const char *path);
 
-    const char* getSource();
+    const char *getSource();
 
     void start();
 
@@ -30,7 +32,7 @@ public:
 
     void onHide() override;
 
-    void setRenderFirstFrameCallback(std::function<void()>&& callback);
+    void setRenderFirstFrameCallback(std::function<void()> &&callback);
 
 private:
 
@@ -61,3 +63,5 @@ private:
     bool firstFrame = true;
 
 };
+
+}

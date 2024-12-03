@@ -1,5 +1,7 @@
 #include "IAnimator.h"
 
+namespace HYSkiaUI {
+
 long IAnimator::currTime = 0L;
 
 IAnimator::IAnimator() : duration(500L), end(true), startTime(-1L), endTime(-1), loopCount(1) {
@@ -34,7 +36,8 @@ void IAnimator::setLoopCount(int count) {
 
 float IAnimator::getInterpolation(float factor) {
     if (!paused) {
-        lastInterpolator = static_cast<float >(currTime - startTime) / static_cast<float >(duration);
+        lastInterpolator =
+                static_cast<float >(currTime - startTime) / static_cast<float >(duration);
     }
     return lastInterpolator;
 }
@@ -60,3 +63,4 @@ uint32_t IAnimator::getAnimatorId() {
     return animatorId;
 }
 
+}

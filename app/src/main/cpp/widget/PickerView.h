@@ -2,6 +2,8 @@
 
 #include "ScrollView.h"
 
+namespace HYSkiaUI {
+
 class PickerView : public ScrollView {
 
 public:
@@ -38,3 +40,5 @@ private:
 
     std::vector<SkColor> maskColor;
 };
+
+}

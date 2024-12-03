@@ -4,6 +4,8 @@
 #include "Page.h"
 #include "native_log.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposePage = "com/temple/skiaui/compose/widget/HYComposePage";
 
 static JNINativeMethod g_ComposePageMethods[] = {

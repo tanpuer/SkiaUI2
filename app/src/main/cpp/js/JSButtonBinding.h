@@ -2,6 +2,8 @@
 
 #include "JSBinding.h"
 
+namespace HYSkiaUI {
+
 class JSButtonBinding : public JSBinding {
 
 public:
@@ -15,3 +17,5 @@ public:
                    v8::Local<v8::External> external) override;
 
 };
+
+}

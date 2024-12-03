@@ -4,6 +4,8 @@
 #include "native_log.h"
 #include "LottieView.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeLottie = "com/temple/skiaui/compose/widget/HYComposeLottie";
 
 extern "C" JNIEXPORT void JNICALL

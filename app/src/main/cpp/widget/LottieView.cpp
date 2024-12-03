@@ -2,6 +2,8 @@
 
 using namespace skottie;
 
+namespace HYSkiaUI {
+
 LottieView::LottieView() {
     paint->setColor(SK_ColorWHITE);
 }
@@ -78,4 +80,6 @@ void LottieView::setRepeat(bool repeat) {
 
 const char *LottieView::name() {
     return "LottieView";
+}
+
 }

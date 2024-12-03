@@ -15,6 +15,8 @@
 #include "ComposeIconJNI.h"
 #include "ComposeSwitchJNI.h"
 
+using namespace HYSkiaUI;
+
 static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeNodeMethods(jniEnv);
     RegisterComposeViewMethods(jniEnv);

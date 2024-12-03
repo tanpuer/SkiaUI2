@@ -6,6 +6,8 @@
 #include "core/SkImage.h"
 #include "unordered_map"
 
+namespace HYSkiaUI {
+
 class ShaderView : public View {
 
 public:
@@ -45,3 +47,5 @@ private:
     float lastScrollY = 0.0f;
 
 };
+
+}

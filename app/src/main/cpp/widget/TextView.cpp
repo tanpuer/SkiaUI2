@@ -7,6 +7,8 @@
 #include "effects/SkGradientShader.h"
 #include "skparagraph/include/TypefaceFontProvider.h"
 
+namespace HYSkiaUI {
+
 TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     defaultStyle = std::make_unique<TextStyle>();
     fontFamily.emplace_back("Alimama");
@@ -210,4 +212,6 @@ void TextView::setFontFamily(const char *fontFamily) {
 void TextView::setEllipsis(const char *ellipsis) {
     this->ellipsis = ellipsis;
     markDirty();
+}
+
 }

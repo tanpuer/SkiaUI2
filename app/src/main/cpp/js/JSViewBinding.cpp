@@ -2,6 +2,8 @@
 #include "View.h"
 #include "color_util.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                               v8::Local<v8::FunctionTemplate> inherit,
@@ -187,7 +189,8 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
                         v8::Local<v8::Value> argv[1] = {external};
                         auto callback = view->clickFunction.Get(isolate);
                         if (!callback.IsEmpty()) {
-                            callback->Call(isolate->GetCurrentContext(), isolate->GetCurrentContext()->Global(), 1, argv);
+                            callback->Call(isolate->GetCurrentContext(),
+                                           isolate->GetCurrentContext()->Global(), 1, argv);
                         } else {
                             ALOGE("error: miss js callback for View");
                         }
@@ -243,4 +246,6 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     v8::Local<v8::Function> constructor = viewTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "View"), constructor);
     return viewTemplate;
+}
+
 }

@@ -4,6 +4,8 @@
 #include "MeasureTime.h"
 #include "performance.h"
 
+namespace HYSkiaUI {
+
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     MeasureTime measureTime("Javascript draw");
     if (root == nullptr) {
@@ -85,4 +87,6 @@ void JavascriptTest::injectPerformance() {
             }
     );
     v8Runtime->injectObject(v8Runtime->global(), "performance", performanceMap, {});
+}
+
 }

@@ -2,6 +2,8 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class ProgressBar : public View {
 
 public:
@@ -25,9 +27,9 @@ public:
 
     virtual void setBarColor(SkColor color);
 
-    virtual void setBarColor(const std::string& hexColor);
+    virtual void setBarColor(const std::string &hexColor);
 
-    virtual const char* getBarColor();
+    virtual const char *getBarColor();
 
     virtual void setGradientBarColor(SkColor colors[], int size);
 
@@ -54,7 +56,8 @@ public:
 
     virtual bool onTouchEvent(TouchEvent *touchEvent) override;
 
-    virtual void setProgressCallback(std::function<void(int progress, bool finished)> progressCallback);
+    virtual void
+    setProgressCallback(std::function<void(int progress, bool finished)> progressCallback);
 
     virtual void setStrokeWidth(SkScalar _width) override;
 
@@ -87,3 +90,5 @@ private:
     std::string barColor;
 
 };
+
+}

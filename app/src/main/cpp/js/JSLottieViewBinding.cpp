@@ -1,6 +1,8 @@
 #include "JSLottieViewBinding.h"
 #include "LottieView.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSLottieViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                     v8::Local<v8::FunctionTemplate> inherit,
@@ -75,4 +77,6 @@ JSLottieViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
             v8::FunctionTemplate::New(isolate, pause, v8::External::New(isolate, this)));
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "LottieView"), lottieTemplate->GetFunction());
     return lottieTemplate;
+}
+
 }

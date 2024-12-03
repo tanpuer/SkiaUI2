@@ -8,6 +8,8 @@
 #include "core/SkSurface.h"
 #include "core/SkCanvas.h"
 
+namespace HYSkiaUI {
+
 class SkiaFilter : public IFilter {
 
 public:
@@ -33,3 +35,5 @@ private:
     SkCanvas *skCanvas;
 
 };
+
+}

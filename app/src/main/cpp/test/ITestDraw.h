@@ -7,6 +7,8 @@
 #include "MovingView.h"
 #include "Page.h"
 
+namespace HYSkiaUI {
+
 /**
  * 各种布局测试用例
  */
@@ -55,3 +57,5 @@ protected:
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
 };
+
+}

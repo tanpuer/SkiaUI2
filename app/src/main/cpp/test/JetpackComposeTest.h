@@ -2,6 +2,8 @@
 
 #include "ITestDraw.h"
 
+namespace HYSkiaUI {
+
 class JetpackComposeTest : public ITestDraw {
 
 public:
@@ -19,3 +21,5 @@ private:
     jobject testRef = nullptr;
 
 };
+
+}

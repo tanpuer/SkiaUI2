@@ -6,6 +6,8 @@
 #include "core/SkTypeface.h"
 #include "core/SkFont.h"
 
+namespace HYSkiaUI {
+
 ClockView::ClockView() {
     numberPaint = std::make_unique<SkPaint>();
     numberPaint->setAntiAlias(true);
@@ -57,7 +59,8 @@ void ClockView::draw(SkCanvas *canvas) {
     // 秒针
     drawClockHand(canvas, now_tm->tm_sec * 6, skRect.width() * 0.4, 5, SK_ColorRED);
 
-    canvas->drawCircle(skRect.left() + skRect.width() / 2, skRect.top() + skRect.height() / 2, 20, *centerPaint);
+    canvas->drawCircle(skRect.left() + skRect.width() / 2, skRect.top() + skRect.height() / 2, 20,
+                       *centerPaint);
 }
 
 void ClockView::drawClockHand(SkCanvas *canvas, float angle, float length, float handWidth,
@@ -113,4 +116,6 @@ void ClockView::drawBackground(SkCanvas *canvas) {
         auto y = skRect.top() + skRect.height() / 2 + radius * 0.7 * sin(radians - M_PI / 2) + 20;
         canvas->drawString(SkString(std::to_string(i)), x, y, *font, *numberPaint);
     }
+}
+
 }

@@ -2,6 +2,8 @@
 
 #include "v8.h"
 
+using namespace HYSkiaUI;
+
 auto handleConsole = [](const v8::FunctionCallbackInfo<v8::Value> &args) -> std::string {
     std::string result;
     v8::Isolate *isolate = args.GetIsolate();

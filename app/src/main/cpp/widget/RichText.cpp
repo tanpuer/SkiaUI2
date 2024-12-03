@@ -1,6 +1,8 @@
 #include "RichText.h"
 #include "json11.h"
 
+namespace HYSkiaUI {
+
 RichText::RichText() : View() {
     defaultStyle = std::make_unique<TextStyle>();
     fontFamily.emplace_back("Alimama");
@@ -14,10 +16,10 @@ RichText::~RichText() {
 void RichText::setText(SkString jsonValue) {
     std::string err;
     auto json = json11::Json::parse(jsonValue.c_str(), err);
-    if(err.length() > 0){
+    if (err.length() > 0) {
         return;
     }
-    const json11::Json::array& jsonArray = json.array_items();
+    const json11::Json::array &jsonArray = json.array_items();
     for (int32_t index = 0; index < static_cast<int>(jsonArray.size()); index++) {
         auto child = jsonArray[index];
     }
@@ -143,4 +145,6 @@ void RichText::draw(SkCanvas *canvas) {
 
 const char *RichText::name() {
     return "RichText";
+}
+
 }

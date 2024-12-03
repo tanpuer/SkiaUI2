@@ -1,6 +1,8 @@
 #include "JSProgressBarBinding.h"
 #include "ProgressBar.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                      v8::Local<v8::FunctionTemplate> inherit,
@@ -138,4 +140,6 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
 
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ProgressBar"), constructor);
     return progressBarTemplate;
+}
+
 }

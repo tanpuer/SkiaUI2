@@ -1,10 +1,12 @@
 #include "JSYUVVideoViewBinding.h"
 #include "YUVVideoView.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSYUVVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
-                                   v8::Local<v8::FunctionTemplate> inherit,
-                                   v8::Local<v8::External> external) {
+                                      v8::Local<v8::FunctionTemplate> inherit,
+                                      v8::Local<v8::External> external) {
     auto videoViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         SkASSERT(args.IsConstructCall() && args.Length() == 0);
         auto data = v8::Local<v8::External>::Cast(args.Data());
@@ -54,4 +56,6 @@ JSYUVVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object
     v8::Local<v8::Function> constructor = videoTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "YUVVideoView"), constructor);
     return videoTemplate;
+}
+
 }

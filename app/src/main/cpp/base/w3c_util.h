@@ -5,6 +5,8 @@
 #include "ImageView.h"
 #include <cassert>
 
+using namespace HYSkiaUI;
+
 static YGWrap W3CToYGWrap(const std::string &value) {
     if (value == "nowrap") {
         return YGWrapNoWrap;

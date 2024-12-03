@@ -3,6 +3,8 @@
 #include "functional"
 #include "jni.h"
 
+namespace HYSkiaUI {
+
 class WebSocketServer {
 public:
     WebSocketServer(int port, std::function<void(std::string)> onMessage);
@@ -24,3 +26,5 @@ private:
     std::function<void(std::string)> onMessage;
     std::unique_ptr<jobject> ws = nullptr;
 };
+
+}

@@ -1,6 +1,8 @@
 #include "JSFileBinding.h"
 #include "File.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSFileBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                               v8::Local<v8::FunctionTemplate> inherit,
@@ -57,4 +59,6 @@ JSFileBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     v8::Local<v8::Function> constructor = fileTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "File"), constructor);
     return fileTemplate;
+}
+
 }

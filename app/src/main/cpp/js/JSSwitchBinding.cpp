@@ -2,6 +2,8 @@
 #include "Switch.h"
 #include "color_util.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSSwitchBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                 v8::Local<v8::FunctionTemplate> inherit,
@@ -111,4 +113,6 @@ JSSwitchBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skia
     v8::Local<v8::Function> constructor = switchTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "Switch"), constructor);
     return switchTemplate;
+}
+
 }

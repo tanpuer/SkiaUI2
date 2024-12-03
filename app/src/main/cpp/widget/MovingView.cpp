@@ -2,6 +2,8 @@
 #include "LinearAnimator.h"
 #include "yoga/Utils.h"
 
+namespace HYSkiaUI {
+
 bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
     switch (touchEvent->action) {
         case TouchEvent::ACTION_DOWN: {
@@ -54,4 +56,6 @@ const char *MovingView::name() {
 
 bool MovingView::onInterceptTouchEvent(TouchEvent *touchEvent) {
     return true;
+}
+
 }

@@ -1,6 +1,8 @@
 #include "JSVideoViewBinding.h"
 #include "VideoView.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                    v8::Local<v8::FunctionTemplate> inherit,
@@ -54,4 +56,6 @@ JSVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     v8::Local<v8::Function> constructor = videoTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "VideoView"), constructor);
     return videoTemplate;
+}
+
 }

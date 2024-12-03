@@ -6,9 +6,8 @@
 #include "Velocity.h"
 #include "PluginManager.h"
 
-/**
- * UI线程执行的逻辑入口
- */
+namespace HYSkiaUI {
+
 class SkiaUIApp {
 
 public:
@@ -56,3 +55,5 @@ private:
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
 };
+
+}

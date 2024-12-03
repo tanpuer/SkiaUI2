@@ -1,6 +1,8 @@
 #include "JSButtonBinding.h"
 #include "Button.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSButtonBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                 v8::Local<v8::FunctionTemplate> inherit,
@@ -22,4 +24,6 @@ JSButtonBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skia
     v8::Local<v8::Function> constructor = buttonTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "Button"), constructor);
     return buttonTemplate;
+}
+
 }

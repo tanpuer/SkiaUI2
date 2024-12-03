@@ -3,6 +3,8 @@
 #include "algorithm"
 #include "LinearAnimator.h"
 
+namespace HYSkiaUI {
+
 float ScrollView::DECELERATION_RATE = (float) (log(0.78) / log(0.9));
 
 ScrollView::ScrollView() : isFling(false), startTime(0L) {
@@ -275,5 +277,7 @@ int ScrollView::getDistanceByIndex(int index) {
 }
 
 void ScrollView::onFlingStopped() {
+
+}
 
 }

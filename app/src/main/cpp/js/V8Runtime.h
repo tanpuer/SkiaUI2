@@ -6,6 +6,8 @@
 #include "YGConfig.h"
 #include "map"
 
+namespace HYSkiaUI {
+
 class V8Runtime {
 
 public:
@@ -66,3 +68,5 @@ private:
 public:
     static v8::Isolate *staticIsolate;
 };
+
+}

@@ -5,6 +5,8 @@
 #include "AssetManager.h"
 #include "core/SkStream.h"
 
+namespace HYSkiaUI {
+
 void ResourcesLoader::decodeImage(
         const std::string &path,
         std::function<void(std::vector<sk_sp<SkImage>>, sk_sp<SkAnimatedImage>)> &&callback) {
@@ -132,4 +134,6 @@ void ResourcesLoader::postTask(JNIEnv *env, int taskId) {
         fileMap.erase(taskId);
         pathMap.erase(taskId);
     }
+}
+
 }

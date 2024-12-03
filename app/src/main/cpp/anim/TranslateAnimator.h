@@ -3,6 +3,8 @@
 #include "IAnimator.h"
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class TranslateAnimator : public IAnimator {
 
 public:
@@ -26,3 +28,5 @@ private:
     View *targetView = nullptr;
 
 };
+
+}

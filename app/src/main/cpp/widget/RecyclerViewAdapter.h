@@ -5,6 +5,8 @@
 #include "RecyclerViewHolder.h"
 #include "unordered_map"
 
+namespace HYSkiaUI {
+
 template<typename T>
 class RecyclerViewAdapter {
 
@@ -46,13 +48,13 @@ public:
 
 #pragma mark ViewHolder
 
-    virtual RecyclerViewHolder<T> *onCreateViewHolder(int viewType) = 0;
+    virtual RecyclerViewHolder <T> *onCreateViewHolder(int viewType) = 0;
 
-    virtual void onBindViewHolder(RecyclerViewHolder<T> *viewHolder, int index, T item) = 0;
+    virtual void onBindViewHolder(RecyclerViewHolder <T> *viewHolder, int index, T item) = 0;
 
-    virtual void onRecycleViewHolder(RecyclerViewHolder<T> *viewHolder, T item) = 0;
+    virtual void onRecycleViewHolder(RecyclerViewHolder <T> *viewHolder, T item) = 0;
 
-    virtual void putViewHolderToCache(int itemType, RecyclerViewHolder<T> *vh) {
+    virtual void putViewHolderToCache(int itemType, RecyclerViewHolder <T> *vh) {
         if (vhCache.find(itemType) == vhCache.end()) {
             ALOGD("RecyclerView init cache %d", itemType)
             vhCache.emplace(itemType, new std::stack<RecyclerViewHolder<T> *>());
@@ -62,7 +64,7 @@ public:
         ALOGD("RecyclerView push to cache %d %d", itemType, vhStack->size())
     }
 
-    virtual RecyclerViewHolder<T> *getViewHolderFromCache(int itemType) {
+    virtual RecyclerViewHolder <T> *getViewHolderFromCache(int itemType) {
         if (vhCache.find(itemType) == vhCache.end()) {
             ALOGD("RecyclerView init cache %d", itemType)
             vhCache.emplace(itemType, new std::stack<RecyclerViewHolder<T> *>());
@@ -82,7 +84,7 @@ public:
 #pragma mark notify
 
     virtual void notifyDataSetChanged() {
-        for(auto &item: currVHList) {
+        for (auto &item: currVHList) {
         }
     }
 
@@ -102,7 +104,7 @@ public:
      * 向下滑动时，回收头部的vh
      * @param vh
      */
-    void recycleStartVH(RecyclerViewHolder<T> *vh) {
+    void recycleStartVH(RecyclerViewHolder <T> *vh) {
         ALOGD("RecyclerView recycleStartVH %d %d", startIndex, getItemType(startIndex))
         putViewHolderToCache(getItemType(startIndex), vh);
         onRecycleViewHolder(vh, data[startIndex]);
@@ -114,7 +116,7 @@ public:
      * 向上滑动时，回收尾部的vh
      * @param vh
      */
-    void recyclerEndVH(RecyclerViewHolder<T> *vh) {
+    void recyclerEndVH(RecyclerViewHolder <T> *vh) {
         ALOGD("RecyclerView recyclerEndVH %d", endIndex)
         putViewHolderToCache(getItemType(endIndex), vh);
         endIndex--;
@@ -125,7 +127,7 @@ public:
     /**
      * 向上滑动时，处理头部的vh
      */
-    RecyclerViewHolder<T> *handleStartVH() {
+    RecyclerViewHolder <T> *handleStartVH() {
         startIndex--;
         auto itemType = getItemType(startIndex);
         RecyclerViewHolder<T> *vh = getViewHolderFromCache(itemType);
@@ -145,7 +147,7 @@ public:
      * 向下滑动时，处理尾部的vh
      * @return
      */
-    RecyclerViewHolder<T> *handleEndVH() {
+    RecyclerViewHolder <T> *handleEndVH() {
         auto itemType = getItemType(endIndex);
         auto vh = getViewHolderFromCache(itemType);
         if (vh == nullptr) {
@@ -185,3 +187,5 @@ public:
     std::vector<RecyclerViewHolder<T> *> currVHList;
 
 };
+
+}

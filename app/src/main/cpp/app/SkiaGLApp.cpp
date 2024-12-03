@@ -1,6 +1,8 @@
 #include "SkiaGLApp.h"
 #include "SkiaFilter.h"
 
+namespace HYSkiaUI {
+
 SkiaGLApp::SkiaGLApp(JNIEnv *env) {
 }
 
@@ -54,4 +56,6 @@ void SkiaGLApp::deleteSkImage(JNIEnv *env, long skImagePtr) {
     if (mFilter != nullptr) {
         mFilter->deleteSkImage(env, skImagePtr);
     }
+}
+
 }

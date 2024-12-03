@@ -2,6 +2,7 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
 
 class Icon : public View {
 
@@ -25,7 +26,7 @@ public:
 
     void setIconColor(SkColor color);
 
-    void setIconColor(const char* color);
+    void setIconColor(const char *color);
 
     const char *getIconColor();
 
@@ -47,6 +48,8 @@ private:
 
     float y = 0.0;
 
-    const char* iconColor = nullptr;
+    const char *iconColor = nullptr;
 
 };
+
+}

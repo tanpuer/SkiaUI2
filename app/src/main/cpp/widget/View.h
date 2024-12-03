@@ -18,6 +18,8 @@
 
 static int64_t VIEW_ID = 0;
 
+namespace HYSkiaUI {
+
 struct ResolutionUniforms {
     float width;
     float height;
@@ -85,7 +87,7 @@ public:
 
     virtual void clearDirty();
 
-    virtual View* getParent();
+    virtual View *getParent();
 
     YGNodeRef node;
 
@@ -265,3 +267,5 @@ private:
     jobject globalJavaViewRef = nullptr;
 
 };
+
+}

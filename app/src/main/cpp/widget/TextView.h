@@ -11,6 +11,8 @@
 
 using namespace skia::textlayout;
 
+namespace HYSkiaUI {
+
 class TextView : public View {
 
 public:
@@ -23,7 +25,8 @@ public:
         SkString fontFamily;
 
         StringBuilder(SkString text, SkFontStyle fontStyle,
-                      SkScalar textSize, SkPaint foregroundPaint, SkString fontFamily = SkString("Alimama")) noexcept {
+                      SkScalar textSize, SkPaint foregroundPaint,
+                      SkString fontFamily = SkString("Alimama")) noexcept {
             this->text = std::move(text);
             this->fontStyle = std::move(fontStyle);
             this->textSize = textSize;
@@ -112,7 +115,7 @@ public:
 
     void setFontFamily(const char *fontFamily);
 
-    void setEllipsis(const char* ellipsis);
+    void setEllipsis(const char *ellipsis);
 
 protected:
 
@@ -146,3 +149,5 @@ protected:
 
     SkString ellipsis = SkString("\u2026");
 };
+
+}

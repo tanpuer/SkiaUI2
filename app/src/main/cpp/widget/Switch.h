@@ -2,6 +2,8 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class Switch : public View {
 
 public:
@@ -22,7 +24,7 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
-    void setOnChangeListener(std::function<void(bool)>&& listener);
+    void setOnChangeListener(std::function<void(bool)> &&listener);
 
 public:
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> changeFunction;
@@ -60,3 +62,5 @@ private:
     std::function<void(bool)> onChangeListener = nullptr;
 
 };
+
+}

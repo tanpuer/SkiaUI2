@@ -2,6 +2,8 @@
 
 #include "Page.h"
 
+namespace HYSkiaUI {
+
 static bool blackWhiteMode = false;
 
 class ExamplePage : public Page {
@@ -17,3 +19,5 @@ private:
     void initChildren(ViewGroup *root, int width, int height);
 
 };
+
+}

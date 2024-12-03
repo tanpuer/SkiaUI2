@@ -2,6 +2,8 @@
 
 #include "native_log.h"
 
+namespace HYSkiaUI {
+
 class TouchEvent {
 
 public:
@@ -13,7 +15,7 @@ public:
         ACTION_CANCEL = 3
     };
 
-    TouchEvent(MotionEvent action, float x, float y): action(action), x(x), y(y) {
+    TouchEvent(MotionEvent action, float x, float y) : action(action), x(x), y(y) {
 
     }
 
@@ -26,3 +28,5 @@ public:
     float x, y;
 
 };
+
+}

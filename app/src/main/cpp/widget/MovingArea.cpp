@@ -1,6 +1,8 @@
 #include "MovingArea.h"
 #include "LinearAnimator.h"
 
+namespace HYSkiaUI {
+
 MovingArea::MovingArea() : FlexboxLayout() {
 
 }
@@ -40,4 +42,6 @@ void MovingArea::layout(int l, int t, int r, int b) {
 
 const char *MovingArea::name() {
     return "MovingArea";
+}
+
 }

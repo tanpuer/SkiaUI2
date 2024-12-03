@@ -2,6 +2,8 @@
 #include "ScrollView.h"
 #include "w3c_util.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSScrollViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                     v8::Local<v8::FunctionTemplate> inherit,
@@ -34,4 +36,6 @@ JSScrollViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
             v8::FunctionTemplate::New(isolate, setScrollViewFlexDirection));
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ScrollView"), scrollTemplate->GetFunction());
     return scrollTemplate;
+}
+
 }

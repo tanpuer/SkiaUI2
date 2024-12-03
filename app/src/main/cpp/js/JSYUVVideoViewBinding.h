@@ -2,11 +2,14 @@
 
 #include "JSBinding.h"
 
+namespace HYSkiaUI {
+
 class JSYUVVideoViewBinding : public JSBinding {
 
 public:
 
-    JSYUVVideoViewBinding(std::shared_ptr<SkiaUIContext> &context, std::shared_ptr<V8Runtime> &runtime)
+    JSYUVVideoViewBinding(std::shared_ptr<SkiaUIContext> &context,
+                          std::shared_ptr<V8Runtime> &runtime)
             : JSBinding(context, runtime) {}
 
     v8::Local<v8::FunctionTemplate>
@@ -15,3 +18,5 @@ public:
                    v8::Local<v8::External> external) override;
 
 };
+
+}

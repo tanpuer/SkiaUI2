@@ -1,6 +1,8 @@
 #include "PageStackManager.h"
 #include "Page.h"
 
+namespace HYSkiaUI {
+
 PageStackManager::PageStackManager() {
 
 }
@@ -78,4 +80,6 @@ void PageStackManager::showLastPage() {
     auto page = pages[pages.size() - 2];
     page->setVisibility(true);
     page->onShow();
+}
+
 }

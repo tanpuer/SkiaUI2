@@ -1,6 +1,8 @@
 #include "JSShaderViewBinding.h"
 #include "ShaderView.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSShaderViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                     v8::Local<v8::FunctionTemplate> inherit,
@@ -45,4 +47,6 @@ JSShaderViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
                                              v8::FunctionTemplate::New(isolate, shaderSetPath));
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ShaderView"), shaderTemplate->GetFunction());
     return shaderTemplate;
+}
+
 }

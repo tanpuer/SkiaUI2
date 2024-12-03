@@ -3,6 +3,8 @@
 #include "RecyclerView.h"
 #include "RecyclerViewHolder.h"
 
+namespace HYSkiaUI {
+
 enum class LyricType {
     Lrc,
     Srt,
@@ -72,7 +74,7 @@ public:
 
     void drawLyricSRT();
 
-    void setCurrPositionFunc(std::function<long()>&& func);
+    void setCurrPositionFunc(std::function<long()> &&func);
 
 private:
 
@@ -85,3 +87,5 @@ private:
     int currentIndex = -1;
 
 };
+
+}

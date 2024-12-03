@@ -2,6 +2,8 @@
 
 #include "vector"
 
+namespace HYSkiaUI {
+
 class Page;
 
 class PageStackManager {
@@ -35,3 +37,5 @@ private:
     std::vector<Page *> pages;
 
 };
+
+}

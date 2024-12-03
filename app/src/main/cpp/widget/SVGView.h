@@ -3,6 +3,8 @@
 #include "View.h"
 #include "svg/include/SkSVGDOM.h"
 
+namespace HYSkiaUI {
+
 class SVGView : public View {
 
 public:
@@ -36,3 +38,5 @@ private:
     int containerWidth = 0, containerHeight = 0;
 
 };
+
+}

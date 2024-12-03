@@ -3,6 +3,8 @@
 #include "View.h"
 #include "FlexboxLayout.h"
 
+namespace HYSkiaUI {
+
 class MovingView : public FlexboxLayout {
 
 public:
@@ -25,3 +27,5 @@ private:
     float lastY = 0.0f;
 
 };
+
+}

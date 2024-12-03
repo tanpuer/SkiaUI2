@@ -4,6 +4,8 @@
 #include "Page.h"
 #include "native_log.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeScrollView = "com/temple/skiaui/compose/widget/HYComposeScrollView";
 
 static JNINativeMethod g_ComposeScrollViewMethods[] = {

@@ -5,6 +5,8 @@
 #include "core/SkImage.h"
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class VideoView : public View {
 
 public:
@@ -15,7 +17,7 @@ public:
 
     void setSource(const char *path);
 
-    const char* getSource();
+    const char *getSource();
 
     void start();
 
@@ -49,7 +51,7 @@ private:
 
     jobject javaVideo = nullptr;
 
-    SkImage* skImage = nullptr;
+    SkImage *skImage = nullptr;
 
     SkRect dstRect;
 
@@ -60,3 +62,5 @@ private:
     std::string src;
 
 };
+
+}

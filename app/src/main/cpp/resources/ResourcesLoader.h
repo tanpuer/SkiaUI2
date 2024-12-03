@@ -8,6 +8,8 @@
 #include "android/SkAnimatedImage.h"
 #include "memory"
 
+namespace HYSkiaUI {
+
 static int32_t TASK_ID = 0;
 //Todo, post decoding-tasks to thread-pool, then post results to UI-thread.
 static std::unordered_map<int, std::function<void(std::vector<sk_sp<SkImage>>,
@@ -59,3 +61,5 @@ private:
     jmethodID postTaskMethod;
     jobject javaSkiaEngine;
 };
+
+}

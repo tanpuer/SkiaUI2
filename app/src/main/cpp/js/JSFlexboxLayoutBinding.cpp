@@ -2,6 +2,8 @@
 #include "w3c_util.h"
 #include "FlexboxLayout.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSFlexboxLayoutBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                        v8::Local<v8::FunctionTemplate> inherit,
@@ -35,4 +37,6 @@ JSFlexboxLayoutBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Objec
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "FlexboxLayout"),
                 flexboxTemplate->GetFunction());
     return flexboxTemplate;
+}
+
 }

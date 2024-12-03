@@ -1,5 +1,7 @@
 #include "ScrollDispatcher.h"
 
+namespace HYSkiaUI {
+
 ScrollDispatcher::ScrollDispatcher(ScrollView *view) : TouchEventDispatcher(view) {
     this->scrollView = view;
 }
@@ -101,4 +103,6 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
         lastScrollY = touchEvent->y;
     }
     return TouchEventDispatcher::onInterceptTouchEvent(touchEvent);
+}
+
 }

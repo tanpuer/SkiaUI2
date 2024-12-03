@@ -2,6 +2,8 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
+
 class LoadingView : public View {
 
 public:
@@ -22,7 +24,7 @@ public:
 
     void setLoadingDuration(int duration);
 
-    const char * name() override;
+    const char *name() override;
 
 private:
 
@@ -38,3 +40,5 @@ private:
 
     int duration = 800; //ms
 };
+
+}

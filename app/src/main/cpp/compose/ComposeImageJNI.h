@@ -4,6 +4,8 @@
 #include "native_log.h"
 #include "ImageView.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeImage = "com/temple/skiaui/compose/widget/HYComposeImage";
 
 extern "C" JNIEXPORT void JNICALL

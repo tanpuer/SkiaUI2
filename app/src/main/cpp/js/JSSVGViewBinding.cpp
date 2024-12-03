@@ -1,6 +1,8 @@
 #include "JSSVGViewBinding.h"
 #include "SVGView.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSSVGViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                  v8::Local<v8::FunctionTemplate> inherit,
@@ -54,4 +56,6 @@ JSSVGViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> ski
     v8::Local<v8::Function> constructor = svgTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "SVGView"), constructor);
     return svgTemplate;
+}
+
 }

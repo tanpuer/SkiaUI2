@@ -1,5 +1,7 @@
 #include "AudioFFTView.h"
 
+namespace HYSkiaUI {
+
 AudioFFTView::AudioFFTView() {
     fftPaint = std::make_unique<SkPaint>();
     fftPaint->setAntiAlias(true);
@@ -129,4 +131,6 @@ void AudioFFTView::innerPlay() {
     }
     auto jniEnv = context->getJniEnv();
     jniEnv->CallVoidMethod(audioPlayer, startMethodID);
+}
+
 }

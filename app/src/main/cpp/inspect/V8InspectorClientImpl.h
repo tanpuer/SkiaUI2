@@ -7,6 +7,8 @@
 #include "inspect_utils.h"
 #include "V8InspctprChannelImpl.h"
 
+namespace HYSkiaUI {
+
 class V8InspectorClientImpl final : public v8_inspector::V8InspectorClient {
 public:
     V8InspectorClientImpl(std::shared_ptr<V8Runtime> &runtime,
@@ -36,3 +38,5 @@ private:
     uint8_t terminated = 0;
     uint8_t run_nested_loop = 0;
 };
+
+}

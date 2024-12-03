@@ -7,9 +7,8 @@
 #include "AssetManager.h"
 #include "IFilter.h"
 
-/**
- * GL线程执行的逻辑入口
- */
+namespace HYSkiaUI {
+
 class SkiaGLApp {
 
 public:
@@ -37,3 +36,5 @@ private:
     int mWidth = 0, mHeight = 0;
 
 };
+
+}

@@ -2,6 +2,8 @@
 #include "ViewGroup.h"
 #include "w3c_util.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                    v8::Local<v8::FunctionTemplate> inherit,
@@ -175,4 +177,6 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
 
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ViewGroup"), viewGroupTemplate->GetFunction());
     return viewGroupTemplate;
+}
+
 }

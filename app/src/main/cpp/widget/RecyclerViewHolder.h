@@ -2,6 +2,8 @@
 
 #include "View.h"
 
+namespace HYSkiaUI {
+
 template<typename T>
 class RecyclerViewHolder {
 
@@ -31,3 +33,5 @@ protected:
     View *itemView;
 
 };
+
+}

@@ -11,6 +11,8 @@
 #include "Switch.h"
 #include "YUVVideoView.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
 
 extern "C" JNIEXPORT void JNICALL

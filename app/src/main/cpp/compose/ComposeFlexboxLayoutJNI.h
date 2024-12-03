@@ -5,6 +5,8 @@
 #include "FlexboxLayout.h"
 #include "w3c_util.h"
 
+using namespace HYSkiaUI;
+
 const char *HYComposeFlexboxLayout = "com/temple/skiaui/compose/widget/HYComposeFlexboxLayout";
 
 extern "C" JNIEXPORT void JNICALL

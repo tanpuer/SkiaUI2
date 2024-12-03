@@ -3,6 +3,8 @@
 #include "core/SkPictureRecorder.h"
 #include "core/SkPicture.h"
 
+namespace HYSkiaUI {
+
 YUVVideoView::YUVVideoView() {
     videoPaint = std::make_unique<SkPaint>();
     videoPaint->setAntiAlias(true);
@@ -25,7 +27,7 @@ void YUVVideoView::setSource(const char *path) {
     pauseMethod = jniEnv->GetMethodID(javaVideoClass, "pause", "()V");
     releaseMethod = jniEnv->GetMethodID(javaVideoClass, "release", "()V");
     getYUVDataMethod = jniEnv->GetMethodID(javaVideoClass, "getYUVData",
-                                            "()Lcom/temple/skiaui/video/YUVData;");
+                                           "()Lcom/temple/skiaui/video/YUVData;");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
     javaVideo = jniEnv->NewGlobalRef(jniEnv->NewObject(javaVideoClass, javaVideoConstructor,
                                                        jniEnv->NewStringUTF(path), javaSkiaEngine));
@@ -133,4 +135,6 @@ const char *YUVVideoView::name() {
 
 void YUVVideoView::setRenderFirstFrameCallback(std::function<void()> &&callback) {
     this->renderFirstFrameCallback = std::move(callback);
+}
+
 }

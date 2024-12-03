@@ -1,6 +1,8 @@
 #include "JSPageBinding.h"
 #include "Page.h"
 
+namespace HYSkiaUI {
+
 v8::Local<v8::FunctionTemplate>
 JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                               v8::Local<v8::FunctionTemplate> inherit,
@@ -108,4 +110,6 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
                                            v8::FunctionTemplate::New(isolate, onDestroy));
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "Page"), pageTemplate->GetFunction());
     return pageTemplate;
+}
+
 }
