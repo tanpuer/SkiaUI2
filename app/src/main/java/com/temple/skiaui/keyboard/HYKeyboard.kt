@@ -14,7 +14,7 @@ import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
 
 
-class HYKeyboard(val engine: HYSkiaEngine, val inputViewPtr: Long) {
+class HYKeyboard(val engine: HYSkiaEngine, private val inputViewPtr: Long) {
 
     private val mainHandler = Handler(Looper.getMainLooper())
     private var content = ""
@@ -48,9 +48,11 @@ class HYKeyboard(val engine: HYSkiaEngine, val inputViewPtr: Long) {
     }
 
     fun release() {
-        val window = (engine.view.context as AppCompatActivity).window
-        val editText = window.decorView.findViewWithTag<View>("keyboardTagView$inputViewPtr");
-        (window.decorView as ViewGroup).removeView(editText)
+        mainHandler.post {
+            val window = (engine.view.context as AppCompatActivity).window
+            val editText = window.decorView.findViewWithTag<View>("keyboardTagView$inputViewPtr");
+            (window.decorView as ViewGroup).removeView(editText)
+        }
     }
 
     fun getContent(): String {
