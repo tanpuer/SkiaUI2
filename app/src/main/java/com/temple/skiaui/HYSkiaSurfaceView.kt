@@ -16,7 +16,7 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
     }
 
     fun initEngine(type: Int) {
-        engine = HYSkiaEngine(type)
+        engine = HYSkiaEngine(type, this)
     }
 
     override fun surfaceCreated(holder: SurfaceHolder) {

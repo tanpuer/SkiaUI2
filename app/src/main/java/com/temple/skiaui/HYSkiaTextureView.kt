@@ -17,7 +17,7 @@ class HYSkiaTextureView @JvmOverloads constructor(
     }
 
     fun initEngine(type: Int) {
-        engine = HYSkiaEngine(type)
+        engine = HYSkiaEngine(type, this)
     }
 
     override fun onSurfaceTextureAvailable(surface: SurfaceTexture, width: Int, height: Int) {

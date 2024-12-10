@@ -6,6 +6,7 @@
 #include "app/SkiaUIApp.h"
 #include "PluginManager.h"
 #include "compose/ComposeJNI.h"
+#include "InputView.h"
 
 using namespace HYSkiaUI;
 
@@ -202,6 +203,16 @@ native_RegisterJetpackCompose(JNIEnv *env, jobject instance) {
     registerComposeJNI(env);
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_SetFocus(JNIEnv *env, jobject instance, jobject javaUIApp, jlong inputViewPtr,
+                jboolean focus) {
+    ALOGD("native_SetFocus")
+    auto inputView = reinterpret_cast<InputView *>(inputViewPtr);
+    if (inputView != nullptr) {
+        inputView->setFocus(focus);
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -224,6 +235,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUIHide",                        "(J)V",                                         (void *) native_UIHide},
         {"nativeDeleteSkPicture",               "(JJ)V",                                        (void *) native_DeleteSkPicture},
         {"nativeRegisterJetpackCompose",        "()V",                                          (void *) native_RegisterJetpackCompose},
+        {"nativeSetFocus",                      "(JJZ)V",                                       (void *) native_SetFocus},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

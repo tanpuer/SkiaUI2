@@ -7,13 +7,14 @@ import android.os.HandlerThread
 import android.os.Looper
 import android.view.MotionEvent
 import android.view.Surface
+import android.view.View
 import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
-class HYSkiaEngine(val exampleType: Int) {
+class HYSkiaEngine(private val exampleType: Int, val view: View) {
 
     /**
      * 执行UI逻辑
@@ -227,6 +228,10 @@ class HYSkiaEngine(val exampleType: Int) {
         nativeRegisterJetpackCompose()
     }
 
+    fun setFocus(inputView: Long, focus: Boolean) {
+        nativeSetFocus(uiApp, inputView, focus)
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -253,6 +258,7 @@ class HYSkiaEngine(val exampleType: Int) {
     private external fun nativeUIHide(uiApp: Long)
     private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
     private external fun nativeRegisterJetpackCompose()
+    private external fun nativeSetFocus(uiApp: Long, inputView: Long, focus: Boolean)
 
     companion object {
         init {
