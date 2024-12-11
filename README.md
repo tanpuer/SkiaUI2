@@ -24,6 +24,7 @@ steps：
    LyricView: parse .lrc/.srt files, use RecyclerView to render lyric.  
    MovingArea: intercept TouchEvents by default and can move.  
    InputView: binding to Java EditText and render it's text.  
+   Swiper: just like ViewPager.  
    Other CustomsViews: Loading, Switch, Radio, Picker...  
    ...
 8. scrollView: scroll, fling，for more optimizations.

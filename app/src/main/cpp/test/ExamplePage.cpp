@@ -21,6 +21,7 @@
 #include "PickerView.h"
 #include "MovingArea.h"
 #include "InputView.h"
+#include "SwiperView.h"
 
 namespace HYSkiaUI {
 
@@ -524,6 +525,31 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             switchView->setColor(SK_ColorRED);
             switchView->setEnabled(false);
             flexboxLayout->addView(switchView);
+        }
+    }
+
+    {
+        auto swiperView = new SwiperView();
+        swiperView->setContext(this->context);
+        swiperView->setFlexDirection(YGFlexDirectionRow);
+        swiperView->setWidth(width);
+        swiperView->setHeight(500);
+        swiperView->setMargin({50, 50, 50, 50});
+        swiperView->setAutoMode(true);
+        swiperView->setStyle(SkPaint::kFill_Style);
+        swiperView->setBackgroundColor(SK_ColorWHITE);
+        swiperView->setStrokeWidth(0);
+        scrollView->addView(swiperView);
+
+        auto colors = {SK_ColorGREEN, SK_ColorYELLOW, SK_ColorMAGENTA, SK_ColorBLUE};
+        for (auto color: colors) {
+            auto view = new View();
+            view->setContext(this->context);
+            view->setWidthPercent(100);
+            view->setHeightPercent(100);
+            view->setBackgroundColor(color);
+            view->setStyle(SkPaint::kFill_Style);
+            swiperView->addView(view);
         }
     }
 

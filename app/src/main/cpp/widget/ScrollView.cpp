@@ -46,9 +46,6 @@ void ScrollView::updateTranslateY(float diffY) {
     if (translateY >= 0) {
         translateY = 0;
     }
-    for (auto &callback: scrollCallbacks) {
-        callback(0.0, diffY);
-    }
     lastScrollDown = diffY < 0.0f;
 }
 
@@ -65,6 +62,21 @@ void ScrollView::setTranslateY(float y) {
     lastScrollDown = y < 0.0f;
 }
 
+void ScrollView::setTranslateX(float x) {
+    translateX = x;
+    if (YGFloatsEqual(translateX, 1080)) {
+        ALOGD("Error!")
+    }
+    auto maxTranslate = width - getChildWidthSum();
+    if (translateX <= maxTranslate) {
+        translateX = maxTranslate;
+    }
+    if (translateX > 0) {
+        translateX = 0;
+    }
+    lastScrollRight = x < 0.0f;
+}
+
 void ScrollView::setFlexWrap(YGWrap wrap) {
     assert(wrap == YGWrapNoWrap);
     FlexboxLayout::setFlexWrap(wrap);
@@ -76,17 +88,17 @@ void ScrollView::setFlexDirection(YGFlexDirection direction) {
 
 void ScrollView::updateTranslateX(float diffX) {
     translateX += diffX;
+    if (YGFloatsEqual(translateX, 1080)) {
+        ALOGD("Error!")
+    }
     auto maxTranslate = width - getChildWidthSum();
     if (translateX <= maxTranslate) {
         translateX = maxTranslate;
     }
-    if (translateX >= 0) {
+    if (translateX > 0) {
         translateX = 0;
     }
-    for (auto &callback: scrollCallbacks) {
-        callback(diffX, 0.0);
-    }
-    lastScrollRight = diffX < 0.0f;
+    lastScrollRight = diffX > 0.0f;
 }
 
 bool ScrollView::addView(View *view) {
@@ -151,11 +163,11 @@ void ScrollView::stopFling() {
 }
 
 float ScrollView::calculateFlingTranslate() {
-    float velocity = yVelocity - (yVelocity > 0 ? 1.0f : -1.0f) * GRAVITY *
+    auto _velocity = _direction == YGFlexDirectionColumn ? yVelocity : -xVelocity;
+    float velocity = _velocity - (_velocity > 0 ? 1.0f : -1.0f) * GRAVITY *
                                  (IAnimator::currTime - startTime); //v' = v + gt;
-//    ALOGD("ScrollView velocity %f %f", yVelocity, velocity)
-    if (yVelocity / velocity <= 0 || abs(velocity) <= MIN_VELOCITY) {
-        yVelocity = .0f;
+    if (_velocity / velocity <= 0 || abs(velocity) <= MIN_VELOCITY) {
+        _velocity = .0f;
         isFling = false;
         onFlingStopped();
     }
@@ -166,7 +178,11 @@ float ScrollView::calculateFlingTranslate() {
     auto l = log(INFLEXION * abs(velocity) / (FLING_FRICTION * mPhysicalCoeff));
     double decelMinusOne = DECELERATION_RATE - 1.0;
     auto diff = FLING_FRICTION * mPhysicalCoeff * exp(DECELERATION_RATE / decelMinusOne * l);
-    updateTranslateY(diff * (yVelocity > 0 ? 1.0 : -1.0) / 10.0);
+    if (_direction == YGFlexDirectionColumn) {
+        updateTranslateY(diff * (_velocity > 0 ? 1.0 : -1.0) / 10.0);
+    } else {
+        updateTranslateX(diff * (_velocity > 0 ? -1.0 : 1.0) / 10.0);
+    }
     return 0.0f;
 }
 
@@ -227,9 +243,14 @@ void ScrollView::scrollToIndex(int index, bool animated) {
         }
     } else {
         for (int i = 0; i < index; ++i) {
-            translate += children[i]->getWidth();
+            auto child = children[i];
+            translate += children[i]->getWidth() + child->marginLeft + child->marginRight;
         }
-        //Todo
+        if (animated) {
+            scrollTo(-translate);
+        } else {
+            setTranslateX(-translate);
+        }
     }
 }
 
@@ -245,7 +266,7 @@ void ScrollView::scrollTo(float value) {
         if (_direction == YGFlexDirectionColumn) {
             setTranslateY(value);
         } else {
-            //Todo
+            setTranslateX(value);
         }
     });
     scrollAnimator->start();
