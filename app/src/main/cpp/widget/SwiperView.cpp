@@ -2,17 +2,17 @@
 
 namespace HYSkiaUI {
 
-HYSkiaUI::SwiperView::SwiperView() {
+SwiperView::SwiperView() {
     indicatorPaint = std::make_unique<SkPaint>();
     indicatorPaint->setAntiAlias(true);
     indicatorPaint->setStyle(SkPaint::Style::kFill_Style);
 }
 
-HYSkiaUI::SwiperView::~SwiperView() {
+SwiperView::~SwiperView() {
 
 }
 
-void HYSkiaUI::SwiperView::setAutoMode(bool flag) {
+void SwiperView::setAutoMode(bool flag) {
     this->autoMode = flag;
 }
 
@@ -84,7 +84,7 @@ void SwiperView::setOnChangeListener(std::function<void(int)> &&callback) {
     this->changeListener = std::move(callback);
 }
 
-bool SwiperView::onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
+bool SwiperView::onTouchEvent(TouchEvent *touchEvent) {
     if (touchEvent->action == TouchEvent::ACTION_DOWN) {
         swipeFlag = false;
     } else if (touchEvent->action == TouchEvent::ACTION_UP ||

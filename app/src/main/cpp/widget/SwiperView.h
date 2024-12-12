@@ -24,7 +24,7 @@ public:
 
     void setOnChangeListener(std::function<void(int)>&& callback);
 
-    bool onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) override;
+    bool onTouchEvent(TouchEvent *touchEvent) override;
 
     void setSwipeDuration(long duration);
 
