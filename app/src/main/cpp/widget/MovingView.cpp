@@ -36,6 +36,7 @@ bool MovingView::onTouchEvent(TouchEvent *touchEvent) {
             break;
         }
     }
+    markDirty();
     return true;
 }
 

@@ -34,6 +34,7 @@ void LoadingView::draw(SkCanvas *canvas) {
                      rectHeight);
         canvas->drawRect(rect, *paint);
     }
+    markDirty();
 }
 
 void LoadingView::setLoadingColor(SkColor color) {

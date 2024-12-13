@@ -68,6 +68,7 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
             break;
         }
     }
+    view->markDirty();
     return true;
 }
 

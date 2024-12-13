@@ -28,46 +28,11 @@ InputView::~InputView() {
 void InputView::setPlaceHolder(const char *placeHolder) {
     this->placeHolder = placeHolder;
     markDirty();
+    markMeasure();
 }
 
 void InputView::measure() {
-    if (isDirty) {
-        auto fontCollection = getContext()->getFontCollection();
-        skia::textlayout::ParagraphStyle paraStyle;
-        paraStyle.setTextStyle(*defaultStyle);
-        paraStyle.setTextAlign(TextAlign::kLeft);
-        paragraphBuilder = ParagraphBuilder::make(paraStyle, fontCollection);
-
-        TextStyle textStyle;
-        textStyle.setColor(content.empty() ? SK_ColorGRAY : SK_ColorBLACK);
-        SkFontStyle fontStyle(SkFontStyle::Weight::kNormal_Weight,
-                              SkFontStyle::kNormal_Width,
-                              SkFontStyle::Slant::kUpright_Slant);
-        textStyle.setFontStyle(fontStyle);
-        textStyle.setFontSize(this->fontSize);
-        textStyle.setFontFamilies(fontFamily);
-        paragraphBuilder->pushStyle(textStyle);
-        paragraphBuilder->addText(content.empty() ? placeHolder.c_str() : content.c_str());
-
-        if (cursorHeight != 0) {
-            TextStyle cursorStyle;
-            paragraphBuilder->pushStyle(cursorStyle);
-            PlaceholderStyle placeholderStyle(20, cursorHeight,
-                                              PlaceholderAlignment::kAboveBaseline,
-                                              TextBaseline::kAlphabetic, 0);
-            paragraphBuilder->addPlaceholder(placeholderStyle);
-        }
-
-        paragraph = paragraphBuilder->Build();
-        paragraph->layout(width);
-        height = paragraph->getHeight();
-        if (cursorHeight == 0) {
-            cursorHeight = paragraph->getAlphabeticBaseline();
-            markDirty();
-        }
-        setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
-        clearDirty();
-    }
+    measureText();
 }
 
 void InputView::draw(SkCanvas *canvas) {
@@ -81,6 +46,7 @@ void InputView::draw(SkCanvas *canvas) {
     if (content != str) {
         content = str;
         markDirty();
+        markMeasure();
     }
     jniEnv->ReleaseStringUTFChars(jString, str);
     if (isFocused && getContext()->getCurrentTimeMills() % 1000 < 500) {
@@ -100,11 +66,13 @@ void InputView::draw(SkCanvas *canvas) {
         }
     }
     paragraph->paint(canvas, skRect.left(), skRect.top());
+    markDirty();
 }
 
 void InputView::setTextSize(int size) {
     this->fontSize = size;
     markDirty();
+    markMeasure();
 }
 
 void InputView::setContext(std::shared_ptr<SkiaUIContext> context) {
@@ -124,6 +92,47 @@ void InputView::setContext(std::shared_ptr<SkiaUIContext> context) {
 
 void InputView::setFocus(bool focus) {
     this->isFocused = focus;
+}
+
+void InputView::measureText() {
+    if (!needToMeasure) {
+        return;
+    }
+    auto fontCollection = getContext()->getFontCollection();
+    skia::textlayout::ParagraphStyle paraStyle;
+    paraStyle.setTextStyle(*defaultStyle);
+    paraStyle.setTextAlign(TextAlign::kLeft);
+    paragraphBuilder = ParagraphBuilder::make(paraStyle, fontCollection);
+
+    TextStyle textStyle;
+    textStyle.setColor(content.empty() ? SK_ColorGRAY : SK_ColorBLACK);
+    SkFontStyle fontStyle(SkFontStyle::Weight::kNormal_Weight,
+                          SkFontStyle::kNormal_Width,
+                          SkFontStyle::Slant::kUpright_Slant);
+    textStyle.setFontStyle(fontStyle);
+    textStyle.setFontSize(this->fontSize);
+    textStyle.setFontFamilies(fontFamily);
+    paragraphBuilder->pushStyle(textStyle);
+    paragraphBuilder->addText(content.empty() ? placeHolder.c_str() : content.c_str());
+
+    if (cursorHeight != 0) {
+        TextStyle cursorStyle;
+        paragraphBuilder->pushStyle(cursorStyle);
+        PlaceholderStyle placeholderStyle(20, cursorHeight,
+                                          PlaceholderAlignment::kAboveBaseline,
+                                          TextBaseline::kAlphabetic, 0);
+        paragraphBuilder->addPlaceholder(placeholderStyle);
+    }
+
+    paragraph = paragraphBuilder->Build();
+    paragraph->layout(width);
+    height = paragraph->getHeight();
+    if (cursorHeight == 0) {
+        cursorHeight = paragraph->getAlphabeticBaseline();
+        markDirty();
+    }
+    setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
+    clearMeasure();
 }
 
 }

@@ -246,7 +246,6 @@ void View::removeLayoutCallback() {
 
 void View::setOnClickListener(std::function<void(View *)> clickListener) {
     viewClickListener = clickListener;
-    markDirty();
 }
 
 void View::removeClickListener() {
@@ -412,6 +411,7 @@ void View::onHide() {
 
 void View::markDirty() {
     isDirty = true;
+    getContext()->markDirty();
 }
 
 void View::clearDirty() {
@@ -453,6 +453,14 @@ jobject View::getJavaViewRef() {
 
 View *View::getParent() {
     return parent;
+}
+
+void View::markMeasure() {
+    needToMeasure = true;
+}
+
+void View::clearMeasure() {
+    needToMeasure = false;
 }
 
 }

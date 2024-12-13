@@ -41,6 +41,7 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
             break;
         }
     }
+    scrollView->markDirty();
     return true;
 }
 

@@ -26,6 +26,8 @@ public:
 
 private:
 
+    void measureText();
+
     std::unique_ptr<TextStyle> defaultStyle;
 
     std::unique_ptr<ParagraphBuilder> paragraphBuilder;

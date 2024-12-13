@@ -31,6 +31,7 @@ void LinearAnimator::updateInner() {
         auto interpolator = end ? 1.0f : getInterpolation(1.0f);
         auto value = interpolator * (endValue - startValue) + startValue;
         updateListener(targetView, value);
+        targetView->markDirty();
     }
 }
 

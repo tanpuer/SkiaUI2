@@ -131,6 +131,18 @@ public:
         return iconFontTypeFace;
     }
 
+    void markDirty() {
+        dirty = true;
+    }
+
+    void clearDirty() {
+        dirty = false;
+    }
+
+    bool isDirty() {
+        return dirty;
+    }
+
 public:
     std::shared_ptr<ResourcesLoader> resourcesLoader;
 
@@ -159,6 +171,8 @@ private:
     sk_sp<FontCollection> fontCollection = nullptr;
 
     sk_sp<SkTypeface> iconFontTypeFace = nullptr;
+
+    bool dirty = true;
 
 };
 

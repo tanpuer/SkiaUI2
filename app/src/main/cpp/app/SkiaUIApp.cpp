@@ -35,8 +35,12 @@ SkiaUIApp::~SkiaUIApp() {
 
 long SkiaUIApp::doFrame(long time) {
     context->setTimeMills(time);
-    drawCount++;
     IAnimator::currTime = time;
+    if (!context->isDirty()) {
+        return 0;
+    }
+    drawCount++;
+    context->clearDirty();
     SkPictureRecorder recorder;
     auto recordingCanvas = recorder.beginRecording(mWidth, mHeight);
     context->setCanvas(recordingCanvas);

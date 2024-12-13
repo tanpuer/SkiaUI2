@@ -61,6 +61,7 @@ void ClockView::draw(SkCanvas *canvas) {
 
     canvas->drawCircle(skRect.left() + skRect.width() / 2, skRect.top() + skRect.height() / 2, 20,
                        *centerPaint);
+    markDirty();
 }
 
 void ClockView::drawClockHand(SkCanvas *canvas, float angle, float length, float handWidth,

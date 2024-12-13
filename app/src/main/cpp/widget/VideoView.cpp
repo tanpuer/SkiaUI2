@@ -58,6 +58,7 @@ void VideoView::draw(SkCanvas *canvas) {
         lastSkImagePtr = skImagePtr;
     }
     canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), videoPaint.get());
+    markDirty();
 }
 
 void VideoView::start() {

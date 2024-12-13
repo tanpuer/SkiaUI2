@@ -126,6 +126,7 @@ ProgressBar::ProgressBarType ProgressBar::getType() {
 }
 
 bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
+    markDirty();
     if (!autoMode && type == ProgressBarType::LINEAR) {
         switch (touchEvent->action) {
             case TouchEvent::ACTION_DOWN:

@@ -110,6 +110,9 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
         skiaUIHandler.post {
             val nextPic = nativeUIDoFrame(uiApp, System.currentTimeMillis() - start)
+            if (nextPic == 0L) {
+                return@post
+            }
             val prePic = pic.getAndSet(nextPic)
             if (prePic != 0L) {
                 nativeDeleteSkPicture(uiApp, prePic)

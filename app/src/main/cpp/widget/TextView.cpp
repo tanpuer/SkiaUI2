@@ -55,7 +55,7 @@ void TextView::measure() {
         setMeasuredDimension(0, 0);
         return;
     }
-    if (isDirty) {
+    if (needToMeasure) {
         clearDirty();
         skia::textlayout::ParagraphStyle paraStyle;
         paraStyle.setTextStyle(*defaultStyle);
@@ -127,6 +127,7 @@ void TextView::measure() {
         }
         setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
         ALOGD("TextView setSize %f %f", width, height)
+        clearMeasure();
     }
 }
 
@@ -141,16 +142,19 @@ void TextView::draw(SkCanvas *canvas) {
 void TextView::setTextSize(SkScalar textSize) {
     defaultStyle->setFontSize(textSize);
     markDirty();
+    markMeasure();
 }
 
 void TextView::setTextAlign(TextAlign textAlign) {
     this->textAlign = textAlign;
     markDirty();
+    markMeasure();
 }
 
 void TextView::setMaxLines(int maxLine) {
     this->maxLine = maxLine;
     markDirty();
+    markMeasure();
 }
 
 void TextView::setDecoration(TextDecoration decoration) {
@@ -181,6 +185,7 @@ void TextView::addShadow(SkColor color, SkPoint offset, double blurSigma) {
 void TextView::pushText(const TextView::StringBuilder &stringBuilder) {
     stringBuilders.emplace_back(stringBuilder);
     markDirty();
+    markMeasure();
 }
 
 SkScalar TextView::getTextSize() {
@@ -191,6 +196,7 @@ void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> p
     textGradientColors = std::move(colors);
     textGradientPos = std::move(pos);
     markDirty();
+    markMeasure();
 }
 
 void TextView::setHeight(int height) {
@@ -207,11 +213,13 @@ void TextView::setFontFamily(const char *fontFamily) {
     this->fontFamily.clear();
     this->fontFamily.emplace_back(fontFamily);
     markDirty();
+    markMeasure();
 }
 
 void TextView::setEllipsis(const char *ellipsis) {
     this->ellipsis = ellipsis;
     markDirty();
+    markMeasure();
 }
 
 }

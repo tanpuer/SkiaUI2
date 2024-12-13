@@ -87,6 +87,10 @@ public:
 
     virtual void clearDirty();
 
+    virtual void markMeasure();
+
+    virtual void clearMeasure();
+
     virtual View *getParent();
 
     YGNodeRef node;
@@ -216,6 +220,8 @@ protected:
     bool isDirty;
 
     std::string backgroundColor;
+
+    bool needToMeasure = false;
 
 #pragma mark cakllbacks
 

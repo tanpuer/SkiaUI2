@@ -30,6 +30,7 @@ void TranslateAnimator::update(SkIRect &rect) {
     auto interpolator = getInterpolation(1.0f);
     targetView->animTranslateX = animStartX + (animEndX - animStartX) * interpolator;
     targetView->animTranslateY = animStartY + (animEndY - animStartY) * interpolator;
+    targetView->markDirty();
 }
 
 void TranslateAnimator::start() {

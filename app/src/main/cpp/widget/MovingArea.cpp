@@ -20,6 +20,7 @@ bool MovingArea::onTouchEvent(TouchEvent *touchEvent) {
         case TouchEvent::ACTION_DOWN: {
             lastX = touchEvent->x;
             lastY = touchEvent->y;
+            markDirty();
             break;
         }
         case TouchEvent::ACTION_MOVE: {
@@ -27,6 +28,7 @@ bool MovingArea::onTouchEvent(TouchEvent *touchEvent) {
             translateY += touchEvent->y - lastY;
             lastX = touchEvent->x;
             lastY = touchEvent->y;
+            markDirty();
             break;
         }
         default: {

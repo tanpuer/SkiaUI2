@@ -53,6 +53,9 @@ void LottieView::draw(SkCanvas *canvas) {
         }
     }
     lottieAnimation->render(canvas, &lottieRect, Animation::RenderFlag::kDisableTopLevelClipping);
+    if (autoPlay) {
+        markDirty();
+    }
 }
 
 void LottieView::layout(int l, int t, int r, int b) {

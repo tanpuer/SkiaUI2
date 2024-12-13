@@ -35,6 +35,7 @@ void SwiperView::draw(SkCanvas *canvas) {
                 }
             }
         }
+        markDirty();
     }
 }
 
@@ -91,6 +92,7 @@ bool SwiperView::onTouchEvent(TouchEvent *touchEvent) {
                touchEvent->action == TouchEvent::ACTION_CANCEL) {
         swipeFlag = true;
     }
+    markDirty();
     return ViewGroup::onTouchEvent(touchEvent);
 }
 

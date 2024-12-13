@@ -60,6 +60,7 @@ void ScrollView::setTranslateY(float y) {
         translateY = 0;
     }
     lastScrollDown = y < 0.0f;
+    markDirty();
 }
 
 void ScrollView::setTranslateX(float x) {
@@ -75,6 +76,7 @@ void ScrollView::setTranslateX(float x) {
         translateX = 0;
     }
     lastScrollRight = x < 0.0f;
+    markDirty();
 }
 
 void ScrollView::setFlexWrap(YGWrap wrap) {
@@ -268,6 +270,7 @@ void ScrollView::scrollTo(float value) {
         } else {
             setTranslateX(value);
         }
+        markDirty();
     });
     scrollAnimator->start();
 }

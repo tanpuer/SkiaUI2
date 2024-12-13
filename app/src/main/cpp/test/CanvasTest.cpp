@@ -55,6 +55,7 @@ void CanvasTest::draw(SkCanvas *canvas) {
 
     canvas->restore();
     View::draw(canvas);
+    markDirty();
 }
 
 void CanvasTest::setCircleSize(int size) {
