@@ -41,6 +41,7 @@ void TextView::setTextColor(SkColor color) {
     skColor = color;
     defaultStyle->setColor(color);
     markDirty();
+    markMeasure();
 }
 
 void TextView::setAlpha(float alpha) {
@@ -48,6 +49,7 @@ void TextView::setAlpha(float alpha) {
     defaultStyle->setColor(SkColorSetARGB(alpha * 255, SkColorGetR(skColor), SkColorGetG(skColor),
                                           SkColorGetB(skColor)));
     markDirty();
+    markMeasure();
 }
 
 void TextView::measure() {
