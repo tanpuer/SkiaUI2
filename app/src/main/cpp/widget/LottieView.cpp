@@ -70,6 +70,7 @@ void LottieView::start() {
         endTime += diff;
     }
     autoPlay = true;
+    markDirty();
 }
 
 void LottieView::pause() {

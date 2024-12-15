@@ -14,6 +14,9 @@ SwiperView::~SwiperView() {
 
 void SwiperView::setAutoMode(bool flag) {
     this->autoMode = flag;
+    if (autoMode) {
+        markDirty();
+    }
 }
 
 void SwiperView::draw(SkCanvas *canvas) {
