@@ -50,7 +50,7 @@ void InputView::draw(SkCanvas *canvas) {
     }
     jniEnv->ReleaseStringUTFChars(jString, str);
     if (isFocused && getContext()->getCurrentTimeMills() % 1000 < 500) {
-        if (content.empty()) {
+        if (paragraph->getRectsForPlaceholders().empty() || content.empty()) {
             canvas->drawRect(SkRect::MakeLTRB(skRect.left(),
                                               skRect.bottom() - cursorHeight,
                                               skRect.left() + 10,
