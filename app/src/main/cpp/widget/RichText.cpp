@@ -65,6 +65,8 @@ void RichText::measure() {
         textNode2.color = SK_ColorGREEN;
         textNode2.fontSize = 50;
         nodes.push_back(textNode2);
+
+        markMeasure();
     }
     if (needToMeasure && paragraphWidth != width) {
         auto fontCollection = getContext()->getFontCollection();
