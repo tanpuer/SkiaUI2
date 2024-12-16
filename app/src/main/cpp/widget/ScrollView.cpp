@@ -266,11 +266,16 @@ void ScrollView::scrollTo(float value) {
     scrollAnimator->setDuration(500);
     scrollAnimator->setUpdateListener([this](View *view, float value) {
         if (_direction == YGFlexDirectionColumn) {
-            setTranslateY(value);
+            if (!YGFloatsEqual(this->translateY, value)) {
+                setTranslateY(value);
+                markDirty();
+            }
         } else {
-            setTranslateX(value);
+            if (!YGFloatsEqual(this->translateX, value)) {
+                setTranslateX(value);
+                markDirty();
+            }
         }
-        markDirty();
     });
     scrollAnimator->start();
 }

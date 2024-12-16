@@ -59,7 +59,9 @@ void AudioFFTView::draw(SkCanvas *canvas) {
         }
         jni->ReleaseFloatArrayElements(fft, floatArray, 0);
     }
-    markDirty();
+    if (!userPause) {
+        markDirty();
+    }
 }
 
 void AudioFFTView::onShow() {

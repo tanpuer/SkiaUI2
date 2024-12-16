@@ -103,6 +103,9 @@ void ProgressBar::setProgress(float progress) {
         ALOGE("ProgressBar isPressed, ignore setProgress %f", progress)
         return;
     }
+    if (YGFloatsEqual(progress, this->progress)) {
+        return;
+    }
     this->progress = progress;
     markDirty();
 }
