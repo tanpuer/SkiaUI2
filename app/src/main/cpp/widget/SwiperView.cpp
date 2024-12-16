@@ -9,7 +9,7 @@ SwiperView::SwiperView() {
 }
 
 SwiperView::~SwiperView() {
-
+    clearTimer();
 }
 
 void SwiperView::setAutoMode(bool flag) {
@@ -30,10 +30,7 @@ void SwiperView::setAutoMode(bool flag) {
             markDirty();
         }, autoSwipeDuration, true);
     } else {
-        if (timerId != -1L) {
-            getContext()->clearTimer(timerId);
-            timerId = -1L;
-        }
+        clearTimer();
     }
 }
 
@@ -101,6 +98,13 @@ bool SwiperView::onTouchEvent(TouchEvent *touchEvent) {
 
 void SwiperView::setSwipeDuration(long duration) {
     this->autoSwipeDuration = duration;
+}
+
+void SwiperView::clearTimer() {
+    if (timerId != -1L) {
+        getContext()->clearTimer(timerId);
+        timerId = -1L;
+    }
 }
 
 }

@@ -52,6 +52,8 @@ private:
 
     long timerId = -1L;
 
+    void clearTimer();
+
 };
 
 }
