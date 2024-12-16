@@ -42,6 +42,8 @@ public:
 
     void deleteSkPicture(long skPicture);
 
+    void performTimeout(long id);
+
 private:
 
     std::unique_ptr<TouchEvent> mTouchEvent;

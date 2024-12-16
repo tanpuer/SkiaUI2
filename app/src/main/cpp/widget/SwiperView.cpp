@@ -15,17 +15,7 @@ SwiperView::~SwiperView() {
 void SwiperView::setAutoMode(bool flag) {
     this->autoMode = flag;
     if (autoMode) {
-        markDirty();
-    }
-}
-
-void SwiperView::draw(SkCanvas *canvas) {
-    ScrollView::draw(canvas);
-    drawIndicators(canvas);
-    if (autoMode && swipeFlag) {
-        auto currentTime = getContext()->getCurrentTimeMills();
-        if (currentTime - startTime > autoSwipeDuration) {
-            startTime = currentTime;
+        timerId = getContext()->setTimer([this]() {
             auto targetIndex = currentIndex + 1;
             if (targetIndex >= children.size()) {
                 targetIndex = 0;
@@ -37,9 +27,19 @@ void SwiperView::draw(SkCanvas *canvas) {
                     changeListener(currentIndex);
                 }
             }
+            markDirty();
+        }, autoSwipeDuration, true);
+    } else {
+        if (timerId != -1L) {
+            getContext()->clearTimer(timerId);
+            timerId = -1L;
         }
-        markDirty();
     }
+}
+
+void SwiperView::draw(SkCanvas *canvas) {
+    ScrollView::draw(canvas);
+    drawIndicators(canvas);
 }
 
 void SwiperView::drawIndicators(SkCanvas *canvas) {
@@ -90,12 +90,12 @@ void SwiperView::setOnChangeListener(std::function<void(int)> &&callback) {
 
 bool SwiperView::onTouchEvent(TouchEvent *touchEvent) {
     if (touchEvent->action == TouchEvent::ACTION_DOWN) {
-        swipeFlag = false;
+        lastAutoMode = this->autoMode;
+        setAutoMode(false);
     } else if (touchEvent->action == TouchEvent::ACTION_UP ||
                touchEvent->action == TouchEvent::ACTION_CANCEL) {
-        swipeFlag = true;
+        setAutoMode(lastAutoMode);
     }
-    markDirty();
     return ViewGroup::onTouchEvent(touchEvent);
 }
 

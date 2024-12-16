@@ -235,6 +235,12 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         nativeSetFocus(uiApp, inputView, focus)
     }
 
+    fun setTimeout(id: Long, delay: Long) {
+        skiaUIHandler.postDelayed({
+            nativePerformTimeout(uiApp, id)
+        }, delay)
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -262,6 +268,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
     private external fun nativeRegisterJetpackCompose()
     private external fun nativeSetFocus(uiApp: Long, inputView: Long, focus: Boolean)
+    private external fun nativePerformTimeout(uiApp: Long, id: Long)
 
     companion object {
         init {

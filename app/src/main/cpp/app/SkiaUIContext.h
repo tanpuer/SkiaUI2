@@ -18,6 +18,19 @@ using namespace skia::textlayout;
 
 namespace HYSkiaUI {
 
+struct TimerData {
+    std::function<void()> function;
+    bool repeat;
+    long delay;
+
+    TimerData(std::function<void()> &&function, bool repeat, long delay) {
+        this->function = std::move(function);
+        this->repeat = repeat;
+        this->delay = delay;
+    }
+
+};
+
 class SkiaUIContext {
 
 public:
@@ -71,6 +84,8 @@ public:
     void setJavaSkiaEngine(jobject instance) {
         javaSkiaEngine = jniEnv->NewGlobalRef(instance);
         resourcesLoader = std::make_shared<ResourcesLoader>(jniEnv, javaSkiaEngine);
+        auto jClazz = jniEnv->FindClass("com/temple/skiaui/HYSkiaEngine");
+        setTimeoutMethodId = jniEnv->GetMethodID(jClazz, "setTimeout", "(JJ)V");
     }
 
     const jobject getJavaSkiaEngine() {
@@ -143,6 +158,36 @@ public:
         return dirty;
     }
 
+    long setTimer(std::function<void()> &&callback, long delay, bool repeat) {
+        if (jniEnv == nullptr || javaSkiaEngine == nullptr || setTimeoutMethodId == nullptr) {
+            return -1L;
+        }
+        auto id = timerId++;
+        jniEnv->CallVoidMethod(javaSkiaEngine, setTimeoutMethodId, id, delay);
+        timerMap.emplace(id, TimerData(std::move(callback), repeat, delay));
+        return id;
+    }
+
+    void clearTimer(long id) {
+        auto itr = timerMap.find(id);
+        if (itr == timerMap.end()) {
+            return;
+        }
+        timerMap.erase(id);
+    }
+
+    void performTimer(long id) {
+        auto itr = timerMap.find(id);
+        if (itr == timerMap.end()) {
+            return;
+        }
+        auto data = itr->second;
+        data.function();
+        if (data.repeat) {
+            jniEnv->CallVoidMethod(javaSkiaEngine, setTimeoutMethodId, id, data.delay);
+        }
+    }
+
 public:
     std::shared_ptr<ResourcesLoader> resourcesLoader;
 
@@ -173,6 +218,12 @@ private:
     sk_sp<SkTypeface> iconFontTypeFace = nullptr;
 
     bool dirty = true;
+
+    std::unordered_map<long, TimerData> timerMap;
+
+    jmethodID setTimeoutMethodId = nullptr;
+
+    long timerId = 0;
 
 };
 

@@ -123,4 +123,10 @@ void SkiaUIApp::deleteSkPicture(long skPicture) {
     }
 }
 
+void SkiaUIApp::performTimeout(long id) {
+    if (context) {
+        context->performTimer(id);
+    }
+}
+
 }

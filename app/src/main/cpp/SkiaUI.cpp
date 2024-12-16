@@ -213,6 +213,15 @@ native_SetFocus(JNIEnv *env, jobject instance, jobject javaUIApp, jlong inputVie
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_PerformTimeout(JNIEnv *env, jobject instance, jobject javaUIApp, jlong id) {
+    ALOGD("native_PerformTimeout")
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp != nullptr) {
+        uiApp->performTimeout(id);
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -236,6 +245,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeDeleteSkPicture",               "(JJ)V",                                        (void *) native_DeleteSkPicture},
         {"nativeRegisterJetpackCompose",        "()V",                                          (void *) native_RegisterJetpackCompose},
         {"nativeSetFocus",                      "(JJZ)V",                                       (void *) native_SetFocus},
+        {"nativePerformTimeout",                "(JJ)V",                                        (void *) native_PerformTimeout},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

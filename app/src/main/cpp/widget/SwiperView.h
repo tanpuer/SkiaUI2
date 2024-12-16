@@ -34,6 +34,8 @@ private:
 
     bool autoMode = false;
 
+    bool lastAutoMode = false;
+
     std::unique_ptr<SkPaint> indicatorPaint;
 
     int indicatorSize = 20;
@@ -44,11 +46,11 @@ private:
 
     std::function<void(int)> changeListener = nullptr;
 
-    bool swipeFlag = true;
-
     long startTime = 0L;
 
     long autoSwipeDuration = 5000L;
+
+    long timerId = -1L;
 
 };
 
