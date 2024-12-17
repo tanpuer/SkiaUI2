@@ -204,10 +204,12 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
                         playImage->setSource("music/ic_play.png");
                         fftView->pause();
                         this->updateArmView(false);
+                        lyricView->pause();
                     } else {
                         playImage->setSource("music/ic_pause.png");
                         fftView->play();
                         this->updateArmView(true);
+                        lyricView->start();
                     }
                 }
             });
@@ -255,6 +257,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
                 fftView->seek(progress * fftView->getDuration() / 100);
                 playImage->setSource("music/ic_pause.png");
                 updateArmView(true);
+                lyricView->start();
             }
         });
     }

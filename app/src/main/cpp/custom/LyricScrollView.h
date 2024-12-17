@@ -17,6 +17,10 @@ public:
 
     void setCurrPositionFunc(std::function<long()> &&func);
 
+    void pause();
+
+    void start();
+
 private:
 
     View *initItem(int index);
@@ -28,6 +32,8 @@ private:
     std::function<long()> currentPositionFunc = nullptr;
 
     int currentIndex = -1;
+
+    bool paused = false;
 
 };
 

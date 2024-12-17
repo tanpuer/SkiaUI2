@@ -97,6 +97,9 @@ void LyricScrollView::draw(SkCanvas *canvas) {
         currentIndex = index;
         scrollTo(-std::max(ScrollView::getDistanceByIndex(currentIndex) - getHeight() / 2, 0));
     }
+    if (paused) {
+        return;
+    }
     //highlight
     if (currentIndex >= 0 && currentIndex < children.size()) {
         auto child = children[currentIndex];
@@ -148,6 +151,15 @@ View *LyricScrollView::initItem(int index) {
 
 void LyricScrollView::setCurrPositionFunc(std::function<long()> &&func) {
     this->currentPositionFunc = std::move(func);
+}
+
+void LyricScrollView::pause() {
+    paused = true;
+}
+
+void LyricScrollView::start() {
+    paused = false;
+    markDirty();
 }
 
 }

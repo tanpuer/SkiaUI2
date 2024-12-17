@@ -46,6 +46,7 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     animator->start();
     context->getPageStackManager()->showCurrentPage();
     context->getPluginManager()->invokeMethod("toast", "show", "push");
+    context->markDirty();
 }
 
 void Page::exitToLeft(const EnterExitInfo &info) {
@@ -59,6 +60,7 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     animator->start();
     context->getPageStackManager()->showLastPage();
     context->getPluginManager()->invokeMethod("toast", "show", "pop");
+    context->markDirty();
 }
 
 void Page::enterFromBottom(const Page::EnterExitInfo &info) {
@@ -71,6 +73,7 @@ void Page::enterFromBottom(const Page::EnterExitInfo &info) {
     animator->start();
     context->getPageStackManager()->showCurrentPage();
     context->getPluginManager()->invokeMethod("toast", "show", "push");
+    context->markDirty();
 }
 
 void Page::exitToTop(const Page::EnterExitInfo &info) {
@@ -84,6 +87,7 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     animator->start();
     context->getPageStackManager()->showLastPage();
     context->getPluginManager()->invokeMethod("toast", "show", "pop");
+    context->markDirty();
 }
 
 void Page::measure() {

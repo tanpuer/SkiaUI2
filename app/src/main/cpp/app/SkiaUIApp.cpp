@@ -110,6 +110,7 @@ void SkiaUIApp::postTask(JNIEnv *env, int taskId) {
 
 void SkiaUIApp::onShow() {
     testDraw->onShow();
+    context->markDirty();
 }
 
 void SkiaUIApp::onHide() {
