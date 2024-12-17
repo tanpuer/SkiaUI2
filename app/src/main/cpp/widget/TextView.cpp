@@ -198,7 +198,6 @@ void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> p
     textGradientColors = std::move(colors);
     textGradientPos = std::move(pos);
     markDirty();
-    markMeasure();
 }
 
 void TextView::setHeight(int height) {
