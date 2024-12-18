@@ -123,6 +123,18 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     }
 
     {
+        auto flexboxLayout = new FlexboxLayout();
+        flexboxLayout->setContext(this->context);
+        flexboxLayout->setWidth(width);
+        flexboxLayout->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+        flexboxLayout->setStrokeWidth(0);
+        flexboxLayout->setMargin({0, 0, 0, 50});
+        flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+        flexboxLayout->setJustifyContent(YGJustify::YGJustifyCenter);
+        flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+        scrollView->addView(flexboxLayout);
+
         auto lottieView = new LottieView();
         lottieView->setContext(this->context);
         lottieView->setWidth(375);
@@ -131,14 +143,22 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         lottieView->setStyle(SkPaint::kStroke_Style);
         lottieView->setBackgroundColor(SK_ColorRED);
         lottieView->setStrokeWidth(2);
-        lottieView->setMargin({0, 0, 0, 50});
-        scrollView->addView(lottieView);
+        flexboxLayout->addView(lottieView);
         lottieView->setOnClickListener([this, width, height](View *view) {
             auto page = new QQMusicPage();
             page->init(context, width, height);
             context->getPageStackManager()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
+
+        auto textView = new TextView();
+        textView->setContext(this->context);
+        textView->setText(SkString("go to MusicPage"));
+        textView->setTextColor(SK_ColorGREEN);
+        textView->setTextSize(50);
+        textView->setBackgroundColor(SK_ColorTRANSPARENT);
+        textView->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->addView(textView);
     }
 
     {
@@ -171,6 +191,15 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
                 context->getPageStackManager()->push(page);
                 page->enterFromRight(Page::EnterExitInfo(width, 0));
             });
+
+            auto textView = new TextView();
+            textView->setContext(this->context);
+            textView->setText(SkString("push"));
+            textView->setTextColor(SK_ColorGREEN);
+            textView->setTextSize(50);
+            textView->setBackgroundColor(SK_ColorTRANSPARENT);
+            textView->setStyle(SkPaint::kStroke_Style);
+            flexboxLayout->addView(textView);
         }
 
         {
@@ -186,7 +215,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             view->setBlurMask(kNormal_SkBlurStyle, 10);
             view->setWidth(400);
             view->setHeight(400);
-            view->setMargin({200, 50, 0, 0});
+            view->setMargin({100, 50, 0, 0});
             flexboxLayout->addView(view);
             view->setOnClickListener([this, width, height](View *view) {
                 if (context->getPageStackManager()->getPages().size() <= 1) {
@@ -201,6 +230,15 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
                 page->exitToLeft(Page::EnterExitInfo(0, width));
 //            page->exitToTop(Page::EnterExitInfo(0, height));
             });
+
+            auto textView = new TextView();
+            textView->setContext(this->context);
+            textView->setText(SkString("pop"));
+            textView->setTextColor(SK_ColorRED);
+            textView->setTextSize(50);
+            textView->setBackgroundColor(SK_ColorTRANSPARENT);
+            textView->setStyle(SkPaint::kStroke_Style);
+            flexboxLayout->addView(textView);
         }
     }
 
