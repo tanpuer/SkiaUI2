@@ -65,9 +65,6 @@ void ScrollView::setTranslateY(float y) {
 
 void ScrollView::setTranslateX(float x) {
     translateX = x;
-    if (YGFloatsEqual(translateX, 1080)) {
-        ALOGD("Error!")
-    }
     auto maxTranslate = width - getChildWidthSum();
     if (translateX <= maxTranslate) {
         translateX = maxTranslate;
