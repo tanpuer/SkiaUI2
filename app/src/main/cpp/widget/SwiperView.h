@@ -28,6 +28,10 @@ public:
 
     void setSwipeDuration(long duration);
 
+    virtual void onShow() override;
+
+    virtual void onHide() override;
+
 private:
 
     int findTargetIndex();
