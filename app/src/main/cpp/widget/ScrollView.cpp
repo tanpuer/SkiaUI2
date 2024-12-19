@@ -182,6 +182,7 @@ float ScrollView::calculateFlingTranslate() {
     } else {
         updateTranslateX(diff * (_velocity > 0 ? -1.0 : 1.0) / 10.0);
     }
+    markDirty();
     return 0.0f;
 }
 
