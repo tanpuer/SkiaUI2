@@ -32,7 +32,7 @@ void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, 
         if (!item->getVisibility()) {
             continue;
         }
-        item->drawOnFrame(drawCount);
+        item->drawOneFrame(drawCount);
         item->measure();
         item->layout(0, 0, width, height);
         item->draw(canvas);

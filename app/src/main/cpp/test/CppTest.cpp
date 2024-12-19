@@ -25,7 +25,7 @@ void CppTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height)
         if (!item->getVisibility()) {
             continue;
         }
-        item->drawOnFrame(drawCount);
+        item->drawOneFrame(drawCount);
         item->measure();
         item->layout(0, 0, width, height);
         item->draw(canvas);

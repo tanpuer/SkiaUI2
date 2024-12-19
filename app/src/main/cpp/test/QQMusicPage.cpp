@@ -263,7 +263,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     }
 }
 
-void QQMusicPage::drawOnFrame(int drawCount) {
+void QQMusicPage::drawOneFrame(int drawCount) {
     if (fftView != nullptr && progressBar != nullptr) {
         auto duration = fftView->getDuration();
         auto current = fftView->getCurrPosition();

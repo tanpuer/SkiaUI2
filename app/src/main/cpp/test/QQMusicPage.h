@@ -15,7 +15,7 @@ public:
 
     void init(std::shared_ptr<SkiaUIContext> &context, int width, int height) override;
 
-    void drawOnFrame(int drawCount) override;
+    void drawOneFrame(int drawCount) override;
 
 private:
 
