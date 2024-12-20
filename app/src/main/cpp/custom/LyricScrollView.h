@@ -1,9 +1,21 @@
 #pragma once
 
 #include "ScrollView.h"
-#include "LyricView.h"
 
 namespace HYSkiaUI {
+
+enum class LyricType {
+    Lrc,
+    Srt,
+};
+
+struct Lyric {
+    std::string content;
+    uint32_t type; //0=lrc; 1=srt
+    std::vector<long> timeMills;
+    std::vector<std::string> contentList; //逐字专用
+    uint32_t lineIndex;
+};
 
 class LyricScrollView : public ScrollView {
 

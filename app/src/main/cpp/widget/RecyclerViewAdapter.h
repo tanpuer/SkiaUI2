@@ -29,7 +29,7 @@ public:
         }
     }
 
-    virtual void setData(std::vector<T> data) {
+    virtual void setData(std::vector<T>& data) {
         this->data = std::move(data);
     }
 

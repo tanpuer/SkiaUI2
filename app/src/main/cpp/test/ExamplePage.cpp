@@ -22,6 +22,7 @@
 #include "MovingArea.h"
 #include "InputView.h"
 #include "SwiperView.h"
+#include "RecyclerViewPage.h"
 
 namespace HYSkiaUI {
 
@@ -102,6 +103,12 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         videoView->setStyle(SkPaint::kStroke_Style);
         videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         flexboxLayout->addView(videoView);
+        videoView->setOnClickListener([this, width, height](View *view) {
+//            auto page = new RecyclerViewPage();
+//            page->init(context, width, height);
+//            context->getPageStackManager()->push(page);
+//            page->enterFromRight(Page::EnterExitInfo(width, 0));
+        });
 
         auto loadingView = new LoadingView();
         loadingView->setContext(this->context);
