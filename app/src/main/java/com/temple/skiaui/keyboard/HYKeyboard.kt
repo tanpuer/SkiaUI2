@@ -65,7 +65,7 @@ class HYKeyboard(val engine: HYSkiaEngine, private val inputViewPtr: Long) {
         if (view == null) {
             val decorView: View = window.decorView
             val focusView = decorView.findViewWithTag<View>("keyboardTagView$inputViewPtr")
-            if (focusView == null) {
+            if (focusView == null || focusView.tag != "keyboardTagView$inputViewPtr") {
                 view = EditText(window.context).apply {
                     addTextChangedListener(object : TextWatcher {
                         override fun beforeTextChanged(

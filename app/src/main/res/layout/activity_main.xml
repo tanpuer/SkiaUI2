@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <FrameLayout
+        android:id="@+id/platformContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.temple.skiaui.HYSkiaSurfaceView
         android:id="@+id/surfaceView"
         android:layout_width="match_parent"

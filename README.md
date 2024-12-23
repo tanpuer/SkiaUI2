@@ -34,6 +34,7 @@ steps：
 12. js: See test.js in assets. Import v8 to evaluate javascript. 
 13. kotlin: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
 14. Dirty-Render: markDirty after "draw" if necessary. 
+15. PlatformView: render WebView by ImageReader/HardwareBuffer/SkImage. 
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
