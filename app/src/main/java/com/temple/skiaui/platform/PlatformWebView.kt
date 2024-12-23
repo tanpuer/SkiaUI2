@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
-import android.webkit.WebResourceResponse
 import android.webkit.WebView
 import android.webkit.WebViewClient
 
@@ -15,7 +14,7 @@ class PlatformWebView @JvmOverloads constructor(
 
     init {
         settings.javaScriptEnabled = true
-        webViewClient = WebViewClient()
+        webViewClient = HYWebViewClient()
         webChromeClient = WebChromeClient()
     }
 
@@ -31,12 +30,15 @@ class PlatformWebView @JvmOverloads constructor(
         render?.unLockCanvas(glCanvas)
     }
 
-    inner class HYWebChromeClient: WebViewClient() {
+    inner class HYWebViewClient: WebViewClient() {
         override fun shouldOverrideUrlLoading(
             view: WebView?,
             request: WebResourceRequest?
         ): Boolean {
-            view?.loadUrl(request?.url.toString())
+            val url = request?.url?.toString()
+            if (url?.startsWith("http://") == true || url?.startsWith("https://") == true) {
+                return false
+            }
             return true
         }
     }
