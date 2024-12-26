@@ -51,6 +51,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private val executors = Executors.newFixedThreadPool(2)
 
     data class Velocity(val x: Float, val y: Float)
+
     private val touchPoints = mutableListOf<Velocity>()
     private val touchTimes = mutableListOf<Long>()
 
@@ -241,6 +242,10 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }, delay)
     }
 
+    fun webViewProgressChange(webView: Long, progress: Int) {
+        nativeWebViewProgressChange(webView, progress)
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -269,6 +274,8 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private external fun nativeRegisterJetpackCompose()
     private external fun nativeSetFocus(uiApp: Long, inputView: Long, focus: Boolean)
     private external fun nativePerformTimeout(uiApp: Long, id: Long)
+
+    private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
 
     companion object {
         init {

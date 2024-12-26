@@ -54,11 +54,12 @@ void WebView::layout(int l, int t, int r, int b) {
                                               "(Ljava/lang/String;)V");
         sendTouchEventMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "sendTouchEvent", "(IFF)V");
         auto javaConstructor = jniEnv->GetMethodID(javaWebViewPlugin, "<init>",
-                                                   "(Lcom/temple/skiaui/HYSkiaEngine;II)V");
+                                                   "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
         javaWebView = jniEnv->NewGlobalRef(jniEnv->NewObject(javaWebViewPlugin, javaConstructor,
                                                              javaSkiaEngine, this->width,
-                                                             this->height));
+                                                             this->height,
+                                                             reinterpret_cast<long>(this)));
         if (!this->url.empty()) {
             auto jStr = jniEnv->NewStringUTF(this->url.c_str());
             jniEnv->CallVoidMethod(javaWebView, loadUrlMethodId, jStr);
@@ -78,6 +79,16 @@ bool WebView::onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
 
 bool WebView::onInterceptTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
     return true;
+}
+
+void WebView::setProgress(int progress) {
+    if (progressCallback != nullptr) {
+        progressCallback(progress);
+    }
+}
+
+void WebView::setProgressCallback(std::function<void(int)> &&callback) {
+    progressCallback = std::move(callback);
 }
 
 }

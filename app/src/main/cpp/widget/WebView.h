@@ -22,6 +22,10 @@ public:
 
     bool onInterceptTouchEvent(HYSkiaUI::TouchEvent *touchEvent) override;
 
+    void setProgress(int progress);
+
+    void setProgressCallback(std::function<void(int)> &&callback);
+
 private:
 
     SkRect dstRect;
@@ -44,6 +48,7 @@ private:
 
     std::string url;
 
+    std::function<void(int)> progressCallback = nullptr;
 };
 
 }

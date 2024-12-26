@@ -14,7 +14,8 @@ import android.widget.FrameLayout
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 
-class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int) {
+class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, webViewPtr: Long) :
+    IWebViewCallback {
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
@@ -28,7 +29,10 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int) {
 
     private var skImagePtr: Long = 0L
 
+    private var webViewPtr: Long = 0L
+
     init {
+        this.webViewPtr = webViewPtr
         imageReader = ImageReader.newInstance(
             width, height, ImageFormat.PRIVATE, 2, HardwareBuffer.USAGE_GPU_SAMPLED_IMAGE
         )
@@ -38,6 +42,7 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int) {
             webView = PlatformWebView(engine.view.context)
             webView?.setPlatformRenderer(this)
             container?.addView(webView, ViewGroup.LayoutParams(width, height))
+            webView?.callback = this
         }
     }
 
@@ -74,6 +79,9 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int) {
             webView?.destroy()
             webView = null
         }
+        engine.postToSkiaUI {
+            webViewPtr = 0L
+        }
     }
 
     fun lockCanvas(): Canvas? {
@@ -100,6 +108,14 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int) {
 
     companion object {
         const val TAG = "HYWebView"
+    }
+
+    override fun onProgressChanged(progress: Int) {
+        engine.postToSkiaUI {
+            if (webViewPtr != 0L) {
+                engine.webViewProgressChange(webViewPtr, progress)
+            }
+        }
     }
 
 }

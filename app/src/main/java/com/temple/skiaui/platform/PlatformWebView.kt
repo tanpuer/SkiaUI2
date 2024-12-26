@@ -12,10 +12,12 @@ class PlatformWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : WebView(context, attrs) {
 
+    var callback: IWebViewCallback? = null
+
     init {
         settings.javaScriptEnabled = true
         webViewClient = HYWebViewClient()
-        webChromeClient = WebChromeClient()
+        webChromeClient = HYWebChromeClient()
     }
 
     private var render: PlatformWebViewPlugin? = null
@@ -30,7 +32,7 @@ class PlatformWebView @JvmOverloads constructor(
         render?.unLockCanvas(glCanvas)
     }
 
-    inner class HYWebViewClient: WebViewClient() {
+    inner class HYWebViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(
             view: WebView?,
             request: WebResourceRequest?
@@ -40,6 +42,13 @@ class PlatformWebView @JvmOverloads constructor(
                 return false
             }
             return true
+        }
+    }
+
+    inner class HYWebChromeClient : WebChromeClient() {
+        override fun onProgressChanged(view: WebView?, newProgress: Int) {
+            super.onProgressChanged(view, newProgress)
+            callback?.onProgressChanged(newProgress)
         }
     }
 

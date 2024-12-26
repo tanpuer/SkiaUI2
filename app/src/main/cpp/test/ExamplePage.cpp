@@ -23,7 +23,7 @@
 #include "InputView.h"
 #include "SwiperView.h"
 #include "RecyclerViewPage.h"
-#include "WebView.h"
+#include "WebViewPage.h"
 
 namespace HYSkiaUI {
 
@@ -59,19 +59,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
-//
-//    {
-//        auto webView = new WebView();
-//        webView->setContext(this->context);
-//        webView->setWidth(width);
-//        webView->setHeight(1200);
-//        webView->loadUrl("https://m.bilibili.com/");
-//        webView->setStyle(SkPaint::kStroke_Style);
-//        webView->setBackgroundColor(SK_ColorTRANSPARENT);
-//        webView->setStrokeWidth(0);
-//        webView->setMargin({0, 0, 0, 50});
-//        scrollView->addView(webView);
-//    }
 
     {
         auto inputView = new InputView();
@@ -122,6 +109,10 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
 //            page->init(context, width, height);
 //            context->getPageStackManager()->push(page);
 //            page->enterFromRight(Page::EnterExitInfo(width, 0));
+            auto page = new WebViewPage();
+            page->init(context, width, height);
+            context->getPageStackManager()->push(page);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
 
         auto loadingView = new LoadingView();
