@@ -31,6 +31,8 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
 
     private var webViewPtr: Long = 0L
 
+    private var downTime: Long = 0L
+
     init {
         this.webViewPtr = webViewPtr
         imageReader = ImageReader.newInstance(
@@ -58,9 +60,12 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
 
     fun sendTouchEvent(type: Int, x: Float, y: Float) {
         mainHandler.post {
+            if (type == MotionEvent.ACTION_DOWN) {
+                downTime = System.currentTimeMillis()
+            }
             val eventTime = System.currentTimeMillis()
             val motionEvent = MotionEvent.obtain(
-                eventTime,
+                downTime,
                 eventTime,
                 type,
                 x,
@@ -84,6 +89,10 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
         }
     }
 
+    fun deleteSkImage(ptr: Long) {
+        engine.deleteSkImage(ptr)
+    }
+
     fun lockCanvas(): Canvas? {
         return surface?.lockHardwareCanvas()
     }
@@ -92,6 +101,9 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
         surface?.unlockCanvasAndPost(canvas)
         val hardwareBuffer = getLatestHardwareBuffer() ?: return
         engine.makeHardwareBufferToSkImage(hardwareBuffer) {
+            if (skImagePtr != 0L) {
+                deleteSkImage(skImagePtr)
+            }
             skImagePtr = it
         }
     }

@@ -30,8 +30,10 @@ void WebView::draw(SkCanvas *canvas) {
     if (skImagePtr != lastSkImagePtr) {
         if (skImagePtr != 0L) {
             auto image = reinterpret_cast<SkImage *>(skImagePtr);
+            SkSafeUnref(skImage);
             skImage = SkSafeRef(image);
         } else {
+            SkSafeUnref(skImage);
             skImage = nullptr;
         }
         lastSkImagePtr = skImagePtr;
@@ -53,6 +55,7 @@ void WebView::layout(int l, int t, int r, int b) {
         loadUrlMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "loadUrl",
                                               "(Ljava/lang/String;)V");
         sendTouchEventMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "sendTouchEvent", "(IFF)V");
+        deleteSkImageMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "deleteSkImage", "(J)V");
         auto javaConstructor = jniEnv->GetMethodID(javaWebViewPlugin, "<init>",
                                                    "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();

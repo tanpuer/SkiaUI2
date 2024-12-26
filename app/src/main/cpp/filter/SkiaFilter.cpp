@@ -98,9 +98,8 @@ long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBu
 void SkiaFilter::deleteSkImage(JNIEnv *env, long skImagePtr) {
     auto skImage = reinterpret_cast<SkImage *>(skImagePtr);
     if (skImage != nullptr) {
-        while (skImage->getRefCnt2() > 0) {
-            skImage->unref();
-        }
+        ALOGD("textureId is deleteSkImage: refCount: %d", skImage->getRefCnt2())
+        SkSafeUnref(skImage);
     }
 }
 

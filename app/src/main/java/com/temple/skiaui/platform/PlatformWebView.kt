@@ -2,7 +2,10 @@ package com.temple.skiaui.platform
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.util.AttributeSet
+import android.util.Log
+import android.view.MotionEvent
 import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
@@ -28,8 +31,14 @@ class PlatformWebView @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         val glCanvas = render?.lockCanvas() ?: return
+        glCanvas.drawColor(Color.WHITE)
         super.onDraw(glCanvas)
         render?.unLockCanvas(glCanvas)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        Log.d(TAG, "${event?.action}  ${event?.x}  ${event?.y}")
+        return super.onTouchEvent(event)
     }
 
     inner class HYWebViewClient : WebViewClient() {
@@ -50,6 +59,10 @@ class PlatformWebView @JvmOverloads constructor(
             super.onProgressChanged(view, newProgress)
             callback?.onProgressChanged(newProgress)
         }
+    }
+
+    companion object {
+        private const val TAG = "PlatformWebView"
     }
 
 }

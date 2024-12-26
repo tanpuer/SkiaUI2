@@ -44,6 +44,8 @@ private:
 
     jmethodID sendTouchEventMethodId = nullptr;
 
+    jmethodID deleteSkImageMethodId = nullptr;
+
     jobject javaWebView = nullptr;
 
     std::string url;
