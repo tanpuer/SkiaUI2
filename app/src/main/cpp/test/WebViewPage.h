@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Page.h"
+#include "LinearAnimator.h"
 
 namespace HYSkiaUI {
 
@@ -29,6 +30,16 @@ public:
         }
         this->progress = progress;
         markDirty();
+        if (progress == 100) {
+            auto animator = new LinearAnimator(this, 1.0, 0.0);
+            animator->setDuration(500);
+            animator->setUpdateListener([](View *view, float value) {
+                view->setAlpha(value);
+            });
+            animator->start();
+        } else {
+            setAlpha(1.0f);
+        }
     }
 
 private:
