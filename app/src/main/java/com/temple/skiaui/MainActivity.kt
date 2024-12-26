@@ -9,7 +9,7 @@ import androidx.core.view.WindowInsetsCompat
 class MainActivity : AppCompatActivity(), RenderCallback {
 
     private lateinit var fpsView: TextView
-    private lateinit var surfaceView: HYSkiaSurfaceView
+    private lateinit var skiaView: ISkiaView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,16 +17,16 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         setContentView(R.layout.activity_main)
         val controller = WindowCompat.getInsetsController(window, window.decorView)
         controller.hide(WindowInsetsCompat.Type.statusBars())
-        surfaceView = findViewById(R.id.surfaceView)
+        skiaView = findViewById(R.id.surfaceView)
         val type = intent.getIntExtra("type", 0)
-        surfaceView.initEngine(type)
-        surfaceView.setRenderCallback(this)
+        skiaView.initEngine(type)
+        skiaView.setRenderCallback(this)
         fpsView = findViewById(R.id.tvFps)
         requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO), 101)
     }
 
     override fun onBackPressed() {
-        surfaceView.onBackPressed()
+        skiaView.onBackPressed()
     }
 
     override fun updateFps(value: Int) {
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity(), RenderCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-        surfaceView.release()
+        skiaView.release()
     }
 
 }

@@ -7,16 +7,17 @@ import android.view.*
 
 class HYSkiaTextureView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : TextureView(context, attrs), TextureView.SurfaceTextureListener, Choreographer.FrameCallback{
+) : TextureView(context, attrs), TextureView.SurfaceTextureListener, Choreographer.FrameCallback,
+    ISkiaView {
 
     private lateinit var engine: HYSkiaEngine
-    private var created  = false
+    private var created = false
 
     init {
         surfaceTextureListener = this
     }
 
-    fun initEngine(type: Int) {
+    override fun initEngine(type: Int) {
         engine = HYSkiaEngine(type, this)
     }
 
@@ -54,15 +55,15 @@ class HYSkiaTextureView @JvmOverloads constructor(
         }
     }
 
-    fun setRenderCallback(renderCallback: RenderCallback) {
+    override fun setRenderCallback(renderCallback: RenderCallback) {
         engine.renderCallback = renderCallback
     }
 
-    fun onBackPressed() {
+    override fun onBackPressed() {
         engine.onBackPressed()
     }
 
-    fun release() {
+    override fun release() {
         engine.release()
     }
 

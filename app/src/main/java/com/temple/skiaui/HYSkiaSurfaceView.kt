@@ -6,7 +6,8 @@ import android.view.*
 
 class HYSkiaSurfaceView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : SurfaceView(context, attrs, defStyleAttr), SurfaceHolder.Callback, Choreographer.FrameCallback{
+) : SurfaceView(context, attrs, defStyleAttr), SurfaceHolder.Callback, Choreographer.FrameCallback,
+    ISkiaView {
 
     private lateinit var engine: HYSkiaEngine
     private var created = false
@@ -15,7 +16,7 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
         holder.addCallback(this)
     }
 
-    fun initEngine(type: Int) {
+    override fun initEngine(type: Int) {
         engine = HYSkiaEngine(type, this)
     }
 
@@ -47,15 +48,15 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
         }
     }
 
-    fun setRenderCallback(renderCallback: RenderCallback) {
+    override fun setRenderCallback(renderCallback: RenderCallback) {
         engine.renderCallback = renderCallback
     }
 
-    fun onBackPressed() {
+    override fun onBackPressed() {
         engine.onBackPressed()
     }
 
-    fun release() {
+    override fun release() {
         engine.release()
     }
 

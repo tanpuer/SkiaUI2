@@ -64,8 +64,8 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
 //        auto webView = new WebView();
 //        webView->setContext(this->context);
 //        webView->setWidth(width);
-//        webView->setHeight(500);
-//        webView->loadUrl("https://m.iqiyi.com/");
+//        webView->setHeight(1200);
+//        webView->loadUrl("https://m.bilibili.com/");
 //        webView->setStyle(SkPaint::kStroke_Style);
 //        webView->setBackgroundColor(SK_ColorTRANSPARENT);
 //        webView->setStrokeWidth(0);
