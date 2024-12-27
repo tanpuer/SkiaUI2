@@ -2,7 +2,6 @@ package com.temple.skiaui.platform.webview
 
 import android.view.View
 import com.temple.skiaui.HYSkiaEngine
-import com.temple.skiaui.platform.IWebViewCallback
 import com.temple.skiaui.platform.PlatformBasePlugin
 
 class PlatformWebViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, webViewPtr: Long) :

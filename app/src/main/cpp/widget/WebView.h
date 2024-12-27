@@ -24,8 +24,6 @@ public:
 
 private:
 
-    jmethodID releaseMethodId = nullptr;
-
     jmethodID loadUrlMethodId = nullptr;
 
     std::string url;

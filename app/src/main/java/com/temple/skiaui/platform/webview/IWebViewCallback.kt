@@ -1,4 +1,4 @@
-package com.temple.skiaui.platform
+package com.temple.skiaui.platform.webview
 
 interface IWebViewCallback {
 

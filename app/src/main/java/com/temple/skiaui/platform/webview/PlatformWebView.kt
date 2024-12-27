@@ -11,7 +11,6 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.temple.skiaui.platform.ICanvasProvider
-import com.temple.skiaui.platform.IWebViewCallback
 
 class PlatformWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null

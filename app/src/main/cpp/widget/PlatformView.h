@@ -42,6 +42,8 @@ protected:
 
     jmethodID deleteSkImageMethodId = nullptr;
 
+    jmethodID releaseMethodId = nullptr;
+
 };
 
 }

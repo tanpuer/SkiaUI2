@@ -34,7 +34,7 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         auto editText = new EditText();
         editText->setContext(this->context);
         editText->setWidth(width);
-        editText->setHeight(100);
+        editText->setHeight(200);
         flexboxLayout->addView(editText);
     }
 
@@ -42,12 +42,12 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         auto webView = new WebView();
         webView->setContext(this->context);
         webView->setWidth(width);
-        webView->setHeight(height);
+        webView->setHeight(height - 200);
         webView->setPositionType(YGPositionTypeAbsolute);
         webView->loadUrl("https://m.bilibili.com/");
         webView->setStyle(SkPaint::kStroke_Style);
         webView->setBackgroundColor(SK_ColorTRANSPARENT);
-        webView->setMargin({0, 100, 0, 0});
+        webView->setMargin({0, 200, 0, 0});
         webView->setStrokeWidth(0);
         flexboxLayout->addView(webView);
         webView->setProgressCallback([this](int progress) {
@@ -62,7 +62,7 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         progressView->setContext(this->context);
         progressView->setWidth(width);
         progressView->setHeight(16);
-        progressView->setMargin({0, 100, 0, 0});
+        progressView->setMargin({0, 200, 0, 0});
         progressView->setPositionType(YGPositionTypeAbsolute);
         flexboxLayout->addView(progressView);
     }

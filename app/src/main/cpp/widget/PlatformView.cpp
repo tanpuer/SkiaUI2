@@ -24,6 +24,7 @@ void PlatformView::layout(int l, int t, int r, int b) {
         getSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "getSkImage", "()J");
         sendTouchEventMethodId = jniEnv->GetMethodID(javaPluginClazz, "sendTouchEvent", "(IFF)V");
         deleteSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "deleteSkImage", "(J)V");
+        releaseMethodId = jniEnv->GetMethodID(javaPluginClazz, "release", "()V");
         auto javaConstructor = jniEnv->GetMethodID(javaPluginClazz, "<init>",
                                                    "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
