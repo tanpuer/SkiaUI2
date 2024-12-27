@@ -1,6 +1,7 @@
 #include "WebViewPage.h"
 #include "FlexboxLayout.h"
 #include "WebView.h"
+#include "EditText.h"
 
 namespace HYSkiaUI {
 
@@ -30,6 +31,14 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
     this->addView(flexboxLayout);
 
     {
+        auto editText = new EditText();
+        editText->setContext(this->context);
+        editText->setWidth(width);
+        editText->setHeight(100);
+        flexboxLayout->addView(editText);
+    }
+
+    {
         auto webView = new WebView();
         webView->setContext(this->context);
         webView->setWidth(width);
@@ -38,6 +47,7 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         webView->loadUrl("https://m.bilibili.com/");
         webView->setStyle(SkPaint::kStroke_Style);
         webView->setBackgroundColor(SK_ColorTRANSPARENT);
+        webView->setMargin({0, 100, 0, 0});
         webView->setStrokeWidth(0);
         flexboxLayout->addView(webView);
         webView->setProgressCallback([this](int progress) {
@@ -52,6 +62,7 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         progressView->setContext(this->context);
         progressView->setWidth(width);
         progressView->setHeight(16);
+        progressView->setMargin({0, 100, 0, 0});
         progressView->setPositionType(YGPositionTypeAbsolute);
         flexboxLayout->addView(progressView);
     }

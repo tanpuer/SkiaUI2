@@ -1,10 +1,10 @@
 #pragma once
 
-#include "View.h"
+#include "PlatformView.h"
 
 namespace HYSkiaUI {
 
-class WebView : public View {
+class WebView : public PlatformView {
 
 public:
 
@@ -12,41 +12,21 @@ public:
 
     ~WebView();
 
-    void layout(int l, int t, int r, int b) override;
-
-    void draw(SkCanvas *canvas) override;
-
     void loadUrl(const char *url);
-
-    bool onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) override;
-
-    bool onInterceptTouchEvent(HYSkiaUI::TouchEvent *touchEvent) override;
 
     void setProgress(int progress);
 
     void setProgressCallback(std::function<void(int)> &&callback);
 
+    const char *getJavaPlatformViewName() override;
+
+    void onJavaViewCreated() override;
+
 private:
-
-    SkRect dstRect;
-
-    long lastSkImagePtr = 0L;
-
-    SkImage *skImage = nullptr;
-
-    std::unique_ptr<SkPaint> webPaint;
-
-    jmethodID getSkImageMethodId = nullptr;
 
     jmethodID releaseMethodId = nullptr;
 
     jmethodID loadUrlMethodId = nullptr;
-
-    jmethodID sendTouchEventMethodId = nullptr;
-
-    jmethodID deleteSkImageMethodId = nullptr;
-
-    jobject javaWebView = nullptr;
 
     std::string url;
 

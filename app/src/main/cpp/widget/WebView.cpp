@@ -3,85 +3,26 @@
 namespace HYSkiaUI {
 
 WebView::WebView() {
-    webPaint = std::make_unique<SkPaint>();
-    webPaint->setAntiAlias(true);
 }
 
 WebView::~WebView() {
     auto jniEnv = getContext()->getJniEnv();
-    if (javaWebView != nullptr) {
-        jniEnv->CallVoidMethod(javaWebView, releaseMethodId);
-        jniEnv->DeleteGlobalRef(javaWebView);
+    if (javaView != nullptr) {
+        jniEnv->CallVoidMethod(javaView, releaseMethodId);
     }
 }
 
 void WebView::loadUrl(const char *url) {
     this->url = url;
-    if (javaWebView != nullptr) {
+    if (javaView != nullptr) {
         auto jniEnv = getContext()->getJniEnv();
         auto jStr = jniEnv->NewStringUTF(url);
-        jniEnv->CallVoidMethod(javaWebView, loadUrlMethodId, jStr);
+        jniEnv->CallVoidMethod(javaView, loadUrlMethodId, jStr);
     }
 }
 
-void WebView::draw(SkCanvas *canvas) {
-    auto jniEnv = getContext()->getJniEnv();
-    auto skImagePtr = jniEnv->CallLongMethod(javaWebView, getSkImageMethodId);
-    if (skImagePtr != lastSkImagePtr) {
-        if (skImagePtr != 0L) {
-            auto image = reinterpret_cast<SkImage *>(skImagePtr);
-            SkSafeUnref(skImage);
-            skImage = SkSafeRef(image);
-        } else {
-            SkSafeUnref(skImage);
-            skImage = nullptr;
-        }
-        lastSkImagePtr = skImagePtr;
-    }
-    canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), webPaint.get());
-    markDirty();
-}
-
-void WebView::layout(int l, int t, int r, int b) {
-    View::layout(l, t, r, b);
-    dstRect.setLTRB(static_cast<float >(l), static_cast<float >(t), static_cast<float >(r),
-                    static_cast<float >(b));
-    if (javaWebView == nullptr) {
-        auto jniEnv = getContext()->getJniEnv();
-        auto javaWebViewPlugin = jniEnv->FindClass(
-                "com/temple/skiaui/platform/webview/PlatformWebViewPlugin");
-        getSkImageMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "getSkImage", "()J");
-        releaseMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "release", "()V");
-        loadUrlMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "loadUrl",
-                                              "(Ljava/lang/String;)V");
-        sendTouchEventMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "sendTouchEvent", "(IFF)V");
-        deleteSkImageMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "deleteSkImage", "(J)V");
-        auto javaConstructor = jniEnv->GetMethodID(javaWebViewPlugin, "<init>",
-                                                   "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
-        auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
-        javaWebView = jniEnv->NewGlobalRef(jniEnv->NewObject(javaWebViewPlugin, javaConstructor,
-                                                             javaSkiaEngine, this->width,
-                                                             this->height,
-                                                             reinterpret_cast<long>(this)));
-        if (!this->url.empty()) {
-            auto jStr = jniEnv->NewStringUTF(this->url.c_str());
-            jniEnv->CallVoidMethod(javaWebView, loadUrlMethodId, jStr);
-        }
-    }
-}
-
-bool WebView::onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
-    if (javaWebView != nullptr) {
-        auto jniEnv = getContext()->getJniEnv();
-        jniEnv->CallVoidMethod(javaWebView, sendTouchEventMethodId,
-                               static_cast<int>(touchEvent->action),
-                               touchEvent->x - left, touchEvent->y - top);
-    }
-    return true;
-}
-
-bool WebView::onInterceptTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
-    return true;
+const char *WebView::getJavaPlatformViewName() {
+    return "com/temple/skiaui/platform/webview/PlatformWebViewPlugin";
 }
 
 void WebView::setProgress(int progress) {
@@ -92,6 +33,18 @@ void WebView::setProgress(int progress) {
 
 void WebView::setProgressCallback(std::function<void(int)> &&callback) {
     progressCallback = std::move(callback);
+}
+
+void WebView::onJavaViewCreated() {
+    PlatformView::onJavaViewCreated();
+    auto jniEnv = getContext()->getJniEnv();
+    auto javaWebViewPlugin = jniEnv->FindClass(getJavaPlatformViewName());
+    loadUrlMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "loadUrl",
+                                          "(Ljava/lang/String;)V");
+    if (!this->url.empty()) {
+        auto jStr = jniEnv->NewStringUTF(this->url.c_str());
+        jniEnv->CallVoidMethod(javaView, loadUrlMethodId, jStr);
+    }
 }
 
 }

@@ -1,14 +1,11 @@
 package com.temple.skiaui.platform
 
-import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.ImageFormat
 import android.hardware.HardwareBuffer
 import android.media.ImageReader
 import android.os.Handler
 import android.os.Looper
-import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
@@ -41,7 +38,7 @@ abstract class PlatformBasePlugin(
 
     init {
         imageReader = ImageReader.newInstance(
-            width, height, ImageFormat.PRIVATE, 2, HardwareBuffer.USAGE_GPU_SAMPLED_IMAGE
+            width, height, ImageFormat.PRIVATE, 1, HardwareBuffer.USAGE_GPU_SAMPLED_IMAGE
         )
         surface = imageReader?.surface
         mainHandler.post {
