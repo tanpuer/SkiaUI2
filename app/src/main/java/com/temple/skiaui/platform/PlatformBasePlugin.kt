@@ -1,25 +1,33 @@
 package com.temple.skiaui.platform
 
+import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.ImageFormat
 import android.hardware.HardwareBuffer
 import android.media.ImageReader
 import android.os.Handler
 import android.os.Looper
+import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 
-class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, webViewPtr: Long) :
-    IWebViewCallback {
+abstract class PlatformBasePlugin(
+    val engine: HYSkiaEngine,
+    val width: Int,
+    val height: Int,
+    val viewPtr: Long
+) : ICanvasProvider {
 
-    private val mainHandler = Handler(Looper.getMainLooper())
+    protected val mainHandler = Handler(Looper.getMainLooper())
 
-    private var webView: PlatformWebView? = null
+    protected var targetView: View? = null
 
     private var container: FrameLayout? = null
 
@@ -29,32 +37,33 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
 
     private var skImagePtr: Long = 0L
 
-    private var webViewPtr: Long = 0L
-
     private var downTime: Long = 0L
 
     init {
-        this.webViewPtr = webViewPtr
         imageReader = ImageReader.newInstance(
             width, height, ImageFormat.PRIVATE, 2, HardwareBuffer.USAGE_GPU_SAMPLED_IMAGE
         )
         surface = imageReader?.surface
         mainHandler.post {
             container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
-            webView = PlatformWebView(engine.view.context)
-            webView?.setPlatformRenderer(this)
-            container?.addView(webView, ViewGroup.LayoutParams(width, height))
-            webView?.callback = this
+            targetView = initPlatformView()
+            container?.addView(targetView, ViewGroup.LayoutParams(width, height))
         }
     }
+
+    abstract fun initPlatformView(): View
+
+    abstract fun destroyPlatformView()
 
     fun getSkImage(): Long {
         return skImagePtr
     }
 
-    fun loadUrl(url: String) {
+    fun release() {
         mainHandler.post {
-            webView?.loadUrl(url)
+            container?.removeView(targetView)
+            destroyPlatformView()
+            targetView = null
         }
     }
 
@@ -72,32 +81,17 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
                 y,
                 0
             )
-            Log.d(TAG, "touch-event: $type $x $y")
-            webView?.onTouchEvent(motionEvent)
+            Log.d("PlatformBasePlugin", "touch-event: $type $x $y")
+            targetView?.onTouchEvent(motionEvent)
             motionEvent.recycle()
         }
     }
 
-    fun release() {
-        mainHandler.post {
-            container?.removeView(webView)
-            webView?.destroy()
-            webView = null
-        }
-        engine.postToSkiaUI {
-            webViewPtr = 0L
-        }
-    }
-
-    fun deleteSkImage(ptr: Long) {
-        engine.deleteSkImage(ptr)
-    }
-
-    fun lockCanvas(): Canvas? {
+    override fun lockCanvas(): Canvas? {
         return surface?.lockHardwareCanvas()
     }
 
-    fun unLockCanvas(canvas: Canvas) {
+    override fun unLockCanvas(canvas: Canvas) {
         surface?.unlockCanvasAndPost(canvas)
         val hardwareBuffer = getLatestHardwareBuffer() ?: return
         engine.makeHardwareBufferToSkImage(hardwareBuffer) {
@@ -118,16 +112,7 @@ class PlatformWebViewPlugin(val engine: HYSkiaEngine, width: Int, height: Int, w
         return null
     }
 
-    companion object {
-        const val TAG = "HYWebView"
+    private fun deleteSkImage(ptr: Long) {
+        engine.deleteSkImage(ptr)
     }
-
-    override fun onProgressChanged(progress: Int) {
-        engine.postToSkiaUI {
-            if (webViewPtr != 0L) {
-                engine.webViewProgressChange(webViewPtr, progress)
-            }
-        }
-    }
-
 }

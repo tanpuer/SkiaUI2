@@ -1,4 +1,4 @@
-package com.temple.skiaui.platform
+package com.temple.skiaui.platform.webview
 
 import android.content.Context
 import android.graphics.Canvas
@@ -10,6 +10,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import com.temple.skiaui.platform.ICanvasProvider
+import com.temple.skiaui.platform.IWebViewCallback
 
 class PlatformWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
@@ -23,9 +25,9 @@ class PlatformWebView @JvmOverloads constructor(
         webChromeClient = HYWebChromeClient()
     }
 
-    private var render: PlatformWebViewPlugin? = null
+    private var render: ICanvasProvider? = null
 
-    fun setPlatformRenderer(render: PlatformWebViewPlugin) {
+    fun setCanvasProvider(render: ICanvasProvider) {
         this.render = render
     }
 

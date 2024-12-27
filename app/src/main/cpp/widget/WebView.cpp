@@ -49,7 +49,7 @@ void WebView::layout(int l, int t, int r, int b) {
     if (javaWebView == nullptr) {
         auto jniEnv = getContext()->getJniEnv();
         auto javaWebViewPlugin = jniEnv->FindClass(
-                "com/temple/skiaui/platform/PlatformWebViewPlugin");
+                "com/temple/skiaui/platform/webview/PlatformWebViewPlugin");
         getSkImageMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "getSkImage", "()J");
         releaseMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "release", "()V");
         loadUrlMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "loadUrl",
