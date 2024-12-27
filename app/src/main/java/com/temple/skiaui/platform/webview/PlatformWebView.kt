@@ -31,8 +31,12 @@ class PlatformWebView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        val glCanvas = render?.lockCanvas() ?: return
-        glCanvas.drawColor(Color.WHITE)
+        val glCanvas = render?.lockCanvas()
+        if (glCanvas == null) {
+            invalidate()
+            return
+        }
+        glCanvas.drawColor(Color.TRANSPARENT)
         super.onDraw(glCanvas)
         render?.unLockCanvas(glCanvas)
     }
