@@ -32,6 +32,8 @@ class PlatformCameraView @JvmOverloads constructor(
 
     private var session: CameraCaptureSession? = null
 
+    private var started = false
+
     fun setCanvasProvider(render: ICanvasProvider) {
         this.render = render
     }
@@ -45,11 +47,19 @@ class PlatformCameraView @JvmOverloads constructor(
         glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         super.onDraw(glCanvas)
         render?.unLockCanvas(glCanvas)
+
+        render?.getSurface()?.let {
+            if (!started) {
+                started = true
+                startCamera()
+                openCamera(it)
+            }
+        }
     }
 
     private fun startCamera() {
         cameraManager = HYSkiaUIApp.getInstance().getSystemService(CAMERA_SERVICE) as CameraManager
-        cameraId = cameraManager?.cameraIdList?.getOrNull(0) ?: "" // 使用后置相机
+        cameraId = cameraManager?.cameraIdList?.getOrNull(0) ?: ""
     }
 
     @SuppressLint("MissingPermission")
