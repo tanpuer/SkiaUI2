@@ -14,6 +14,7 @@ class SurfaceObj {
     var height = 0
 
     fun release() {
+        surfaceTexture?.setOnFrameAvailableListener(null)
         surfaceTexture?.release()
         surface?.release()
     }

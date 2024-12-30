@@ -32,11 +32,25 @@ abstract class PlatformBasePlugin(
 
     private var surfaceObj: SurfaceObj? = null
 
+    @Volatile
+    private var show: Boolean = true
+
+    private var index = "platform:${INDEX++}"
+
     init {
         mainHandler.post {
             container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
             targetView = initPlatformView()
             container?.addView(targetView, ViewGroup.LayoutParams(width, height))
+            engine.createListeners[index] = createListener
+        }
+    }
+
+    private val createListener = fun(it: Boolean) {
+        show = it
+        if (!it) {
+            surfaceObj?.release()
+            surfaceObj = null
         }
     }
 
@@ -50,6 +64,7 @@ abstract class PlatformBasePlugin(
 
     fun release() {
         mainHandler.post {
+            engine.createListeners.remove(index)
             container?.removeView(targetView)
             destroyPlatformView()
             targetView = null
@@ -79,6 +94,9 @@ abstract class PlatformBasePlugin(
     }
 
     override fun lockCanvas(originCanvas: Canvas): Canvas? {
+        if (!show) {
+            return null
+        }
         if (surfaceObj == null) {
             surfaceObj = SurfaceObj().apply {
                 this.surfaceTexture = SurfaceTexture(0).apply { detachFromGLContext() }
@@ -93,6 +111,9 @@ abstract class PlatformBasePlugin(
             }
             surfaceTexture.setOnFrameAvailableListener {
                 engine.postToSkiaGL {
+                    if (!this.show) {
+                        return@postToSkiaGL
+                    }
                     surfaceObj?.surfaceTexture?.updateTexImage()
                 }
             }
@@ -109,6 +130,10 @@ abstract class PlatformBasePlugin(
 
     private fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
+    }
+
+    companion object {
+        private var INDEX = 0
     }
 
 }
