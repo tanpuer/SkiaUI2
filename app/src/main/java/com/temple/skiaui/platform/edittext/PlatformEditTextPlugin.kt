@@ -4,8 +4,8 @@ import android.view.View
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.PlatformBasePlugin
 
-class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, webViewPtr: Long) :
-    PlatformBasePlugin(engine, width, height, webViewPtr) {
+class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, editTextPtr: Long) :
+    PlatformBasePlugin(engine, width, height, editTextPtr) {
 
     private var editText: PlatformEditText? = null
 

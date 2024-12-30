@@ -28,7 +28,7 @@ class PlatformEditText @JvmOverloads constructor(
             invalidate()
             return
         }
-        glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         super.onDraw(glCanvas)
         render?.unLockCanvas(glCanvas)
     }

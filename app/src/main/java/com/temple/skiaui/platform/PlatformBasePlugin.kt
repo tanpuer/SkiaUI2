@@ -128,6 +128,10 @@ abstract class PlatformBasePlugin(
         surfaceObj?.surface?.unlockCanvasAndPost(canvas)
     }
 
+    override fun getSurface(): Surface? {
+        return surfaceObj?.surface
+    }
+
     private fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
     }
