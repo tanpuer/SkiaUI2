@@ -23,7 +23,7 @@ class PlatformEditText @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        val glCanvas = render?.lockCanvas()
+        val glCanvas = render?.lockCanvas(canvas)
         if (glCanvas == null) {
             invalidate()
             return

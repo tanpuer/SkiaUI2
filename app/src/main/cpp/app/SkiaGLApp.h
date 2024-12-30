@@ -29,6 +29,8 @@ public:
 
     void deleteSkImage(JNIEnv *env, long skImagePtr);
 
+    long attachSurfaceTexture(JNIEnv* env, int width, int height, jobject surfaceTexture);
+
 private:
 
     std::unique_ptr<EGLCore> mEGLCore;

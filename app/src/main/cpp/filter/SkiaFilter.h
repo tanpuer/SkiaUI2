@@ -10,6 +10,22 @@
 
 namespace HYSkiaUI {
 
+class TextureSurfaceHelper {
+public:
+    TextureSurfaceHelper(GrGLuint texID)
+            : fTexID(texID) {
+        ALOGD("textureId is %d", texID)
+    }
+
+    ~TextureSurfaceHelper() {
+        ALOGD("textureId is delete %d", fTexID)
+        glDeleteTextures(1, &fTexID);
+    }
+
+private:
+    GrGLuint fTexID;
+};
+
 class SkiaFilter : public IFilter {
 
 public:
@@ -25,6 +41,8 @@ public:
     long MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBuffer) override;
 
     void deleteSkImage(JNIEnv *env, long skImagePtr) override;
+
+    long attachSurfaceTexture(JNIEnv *env, int width, int height, jobject surfaceTexture) override;
 
 private:
 

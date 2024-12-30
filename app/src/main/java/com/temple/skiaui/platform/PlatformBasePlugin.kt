@@ -1,9 +1,7 @@
 package com.temple.skiaui.platform
 
 import android.graphics.Canvas
-import android.graphics.ImageFormat
-import android.hardware.HardwareBuffer
-import android.media.ImageReader
+import android.graphics.SurfaceTexture
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -28,19 +26,13 @@ abstract class PlatformBasePlugin(
 
     private var container: FrameLayout? = null
 
-    private var surface: Surface? = null
-
-    private var imageReader: ImageReader? = null
-
     private var skImagePtr: Long = 0L
 
     private var downTime: Long = 0L
 
+    private var surfaceObj: SurfaceObj? = null
+
     init {
-        imageReader = ImageReader.newInstance(
-            width, height, ImageFormat.PRIVATE, 2, HardwareBuffer.USAGE_GPU_SAMPLED_IMAGE
-        )
-        surface = imageReader?.surface
         mainHandler.post {
             container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
             targetView = initPlatformView()
@@ -61,7 +53,9 @@ abstract class PlatformBasePlugin(
             container?.removeView(targetView)
             destroyPlatformView()
             targetView = null
+            surfaceObj?.release()
         }
+        deleteSkImage(skImagePtr)
     }
 
     fun sendTouchEvent(type: Int, x: Float, y: Float) {
@@ -84,32 +78,37 @@ abstract class PlatformBasePlugin(
         }
     }
 
-    override fun lockCanvas(): Canvas? {
-        return surface?.lockHardwareCanvas()
+    override fun lockCanvas(originCanvas: Canvas): Canvas? {
+        if (surfaceObj == null) {
+            surfaceObj = SurfaceObj().apply {
+                this.surfaceTexture = SurfaceTexture(0).apply { detachFromGLContext() }
+                this.surface = Surface(this.surfaceTexture)
+                this.width = originCanvas.width
+                this.height = originCanvas.height
+            }
+            surfaceObj?.setDefaultBufferSize(originCanvas.width, originCanvas.height)
+            val surfaceTexture = surfaceObj?.surfaceTexture ?: return null
+            engine.attachSurfaceTexture(originCanvas.width, originCanvas.height, surfaceTexture) {
+                skImagePtr = it
+            }
+            surfaceTexture.setOnFrameAvailableListener {
+                engine.postToSkiaGL {
+                    surfaceObj?.surfaceTexture?.updateTexImage()
+                }
+            }
+        }
+        if (surfaceObj?.width != originCanvas.width || surfaceObj?.height != originCanvas.height) {
+            surfaceObj?.setDefaultBufferSize(originCanvas.width, originCanvas.height)
+        }
+        return surfaceObj?.surface?.lockHardwareCanvas()
     }
 
     override fun unLockCanvas(canvas: Canvas) {
-        surface?.unlockCanvasAndPost(canvas)
-        val hardwareBuffer = getLatestHardwareBuffer() ?: return
-        engine.makeHardwareBufferToSkImage(hardwareBuffer) {
-            if (skImagePtr != 0L) {
-                deleteSkImage(skImagePtr)
-            }
-            skImagePtr = it
-        }
-    }
-
-    private fun getLatestHardwareBuffer(): HardwareBuffer? {
-        val image = imageReader?.acquireLatestImage()
-        if (image != null) {
-            val hardwareBuffer = image.hardwareBuffer
-            image.close()
-            return hardwareBuffer
-        }
-        return null
+        surfaceObj?.surface?.unlockCanvasAndPost(canvas)
     }
 
     private fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
     }
+
 }

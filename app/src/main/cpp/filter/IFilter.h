@@ -22,6 +22,8 @@ public:
 
     virtual void deleteSkImage(JNIEnv *env, long skImagePtr) = 0;
 
+    virtual long attachSurfaceTexture(JNIEnv* env, int width, int height, jobject surfaceTexture) = 0;
+
 protected:
 
     int width = 0;

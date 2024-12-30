@@ -4,7 +4,7 @@ import android.graphics.Canvas
 
 interface ICanvasProvider {
 
-    fun lockCanvas(): Canvas?
+    fun lockCanvas(originCanvas: Canvas): Canvas?
 
     fun unLockCanvas(canvas: Canvas)
 

@@ -232,6 +232,17 @@ native_WebViewProgressChange(JNIEnv *env, jobject instance, jlong webViewPtr, ji
     }
 }
 
+extern "C" JNIEXPORT jlong JNICALL
+native_AttachSurfaceTexture(JNIEnv *env, jobject instance, jlong javaGLApp, jint width, jint height,
+                            jobject surfaceTexture) {
+    ALOGD("native_AttachSurfaceTexture")
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
+    if (glApp != nullptr) {
+        return glApp->attachSurfaceTexture(env, width, height, surfaceTexture);
+    }
+    return 0L;
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -257,6 +268,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeSetFocus",                      "(JJZ)V",                                       (void *) native_SetFocus},
         {"nativePerformTimeout",                "(JJ)V",                                        (void *) native_PerformTimeout},
         {"nativeWebViewProgressChange",         "(JI)V",                                        (void *) native_WebViewProgressChange},
+        {"nativeAttachSurfaceTexture",          "(JIILandroid/graphics/SurfaceTexture;)J",      (void *) native_AttachSurfaceTexture},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

@@ -3,6 +3,7 @@ package com.temple.skiaui.platform.webview
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
@@ -31,12 +32,12 @@ class PlatformWebView @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
-        val glCanvas = render?.lockCanvas()
+        val glCanvas = render?.lockCanvas(canvas)
         if (glCanvas == null) {
             invalidate()
             return
         }
-        glCanvas.drawColor(Color.TRANSPARENT)
+        glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         super.onDraw(glCanvas)
         render?.unLockCanvas(glCanvas)
     }

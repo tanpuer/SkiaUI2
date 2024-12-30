@@ -58,4 +58,11 @@ void SkiaGLApp::deleteSkImage(JNIEnv *env, long skImagePtr) {
     }
 }
 
+long SkiaGLApp::attachSurfaceTexture(JNIEnv* env, int width, int height, jobject surfaceTexture) {
+    if (mFilter != nullptr) {
+        return mFilter->attachSurfaceTexture(env, width, height, surfaceTexture);
+    }
+    return 0;
+}
+
 }
