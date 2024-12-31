@@ -116,6 +116,7 @@ abstract class PlatformBasePlugin(
                     }
                     surfaceObj?.surfaceTexture?.updateTexImage()
                 }
+                engine.markDirty(viewPtr)
             }
         }
         if (surfaceObj?.width != originCanvas.width || surfaceObj?.height != originCanvas.height) {

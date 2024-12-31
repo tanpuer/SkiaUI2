@@ -243,6 +243,15 @@ native_AttachSurfaceTexture(JNIEnv *env, jobject instance, jlong javaGLApp, jint
     return 0L;
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_MarkDirty(JNIEnv *env, jobject instance, jobject viewPtr) {
+    ALOGD("native_MarkDirty")
+    auto view = reinterpret_cast<View *>(viewPtr);
+    if (view != nullptr) {
+        view->markDirty();
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -269,6 +278,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativePerformTimeout",                "(JJ)V",                                        (void *) native_PerformTimeout},
         {"nativeWebViewProgressChange",         "(JI)V",                                        (void *) native_WebViewProgressChange},
         {"nativeAttachSurfaceTexture",          "(JIILandroid/graphics/SurfaceTexture;)J",      (void *) native_AttachSurfaceTexture},
+        {"nativeMarkDirty",                     "(J)V",                                         (void *) native_MarkDirty},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

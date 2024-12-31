@@ -51,7 +51,6 @@ void PlatformView::draw(SkCanvas *canvas) {
         lastSkImagePtr = skImagePtr;
     }
     canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), platformPaint.get());
-    markDirty();
 }
 
 bool PlatformView::onInterceptTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {

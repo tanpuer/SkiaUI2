@@ -251,12 +251,23 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         nativeWebViewProgressChange(webView, progress)
     }
 
-    fun attachSurfaceTexture(width: Int, height: Int, surfaceTexture: SurfaceTexture, callback: (skImagePtr: Long) -> Unit) {
+    fun attachSurfaceTexture(
+        width: Int,
+        height: Int,
+        surfaceTexture: SurfaceTexture,
+        callback: (skImagePtr: Long) -> Unit
+    ) {
         skiaGLHandler.post {
             val skImagePtr = nativeAttachSurfaceTexture(glApp, width, height, surfaceTexture)
             skiaUIHandler.post {
                 callback(skImagePtr)
             }
+        }
+    }
+
+    fun markDirty(viewPtr: Long) {
+        skiaUIHandler.post {
+            nativeMarkDirty(viewPtr)
         }
     }
 
@@ -269,8 +280,14 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         glApp: Long,
         hardwareBuffer: HardwareBuffer
     ): Long
+
     private external fun nativeDeleteSkImage(glApp: Long, skImagePtr: Long)
-    private external fun nativeAttachSurfaceTexture(glApp: Long, width: Int, height: Int, surfaceTexture: SurfaceTexture): Long
+    private external fun nativeAttachSurfaceTexture(
+        glApp: Long,
+        width: Int,
+        height: Int,
+        surfaceTexture: SurfaceTexture
+    ): Long
 
 
     private external fun nativeUIInit(assets: AssetManager, exampleType: Int): Long
@@ -291,6 +308,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private external fun nativePerformTimeout(uiApp: Long, id: Long)
 
     private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
+    private external fun nativeMarkDirty(viewPtr: Long)
 
     companion object {
         init {
