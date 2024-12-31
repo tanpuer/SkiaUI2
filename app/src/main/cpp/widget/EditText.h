@@ -14,6 +14,8 @@ public:
 
     const char * getJavaPlatformViewName() override;
 
+    const char *name() override;
+
 };
 
 }

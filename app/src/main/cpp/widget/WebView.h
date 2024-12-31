@@ -22,6 +22,8 @@ public:
 
     void onJavaViewCreated() override;
 
+    const char *name() override;
+
 private:
 
     jmethodID loadUrlMethodId = nullptr;

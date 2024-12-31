@@ -123,7 +123,12 @@ abstract class PlatformBasePlugin(
                     }
                     surfaceObj?.surfaceTexture?.updateTexImage()
                 }
-                engine.markDirty(viewPtr)
+                engine.postToSkiaUI {
+                    if (!this.show || this.released) {
+                        return@postToSkiaUI
+                    }
+                    engine.markDirty(viewPtr)
+                }
             }
         }
         if (surfaceObj?.width != originCanvas.width || surfaceObj?.height != originCanvas.height) {

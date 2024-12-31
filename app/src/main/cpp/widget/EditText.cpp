@@ -12,4 +12,8 @@ const char *EditText::getJavaPlatformViewName() {
     return "com/temple/skiaui/platform/edittext/PlatformEditTextPlugin";
 }
 
+const char *EditText::name() {
+    return "EditText";
+}
+
 }

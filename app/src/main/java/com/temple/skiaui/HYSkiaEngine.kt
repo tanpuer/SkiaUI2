@@ -266,9 +266,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     }
 
     fun markDirty(viewPtr: Long) {
-        skiaUIHandler.post {
-            nativeMarkDirty(viewPtr)
-        }
+        nativeMarkDirty(viewPtr)
     }
 
     private external fun nativeGLInit(): Long

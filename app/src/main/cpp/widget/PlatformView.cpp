@@ -9,6 +9,7 @@ PlatformView::PlatformView() {
 
 PlatformView::~PlatformView() {
     auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaView, releaseMethodId);
     if (javaView != nullptr) {
         jniEnv->DeleteGlobalRef(javaView);
     }

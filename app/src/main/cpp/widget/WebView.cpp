@@ -6,10 +6,6 @@ WebView::WebView() {
 }
 
 WebView::~WebView() {
-    auto jniEnv = getContext()->getJniEnv();
-    if (javaView != nullptr) {
-        jniEnv->CallVoidMethod(javaView, releaseMethodId);
-    }
 }
 
 void WebView::loadUrl(const char *url) {
@@ -45,6 +41,10 @@ void WebView::onJavaViewCreated() {
         auto jStr = jniEnv->NewStringUTF(this->url.c_str());
         jniEnv->CallVoidMethod(javaView, loadUrlMethodId, jStr);
     }
+}
+
+const char *WebView::name() {
+    return "WebView";
 }
 
 }
