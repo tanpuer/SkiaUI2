@@ -37,6 +37,9 @@ abstract class PlatformBasePlugin(
 
     private var index = "platform:${INDEX++}"
 
+    @Volatile
+    private var released = false
+
     init {
         mainHandler.post {
             container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
@@ -63,6 +66,7 @@ abstract class PlatformBasePlugin(
     }
 
     fun release() {
+        released = true
         mainHandler.post {
             engine.createListeners.remove(index)
             container?.removeView(targetView)
@@ -110,8 +114,11 @@ abstract class PlatformBasePlugin(
                 skImagePtr = it
             }
             surfaceTexture.setOnFrameAvailableListener {
+                if (this.released) {
+                    return@setOnFrameAvailableListener
+                }
                 engine.postToSkiaGL {
-                    if (!this.show) {
+                    if (!this.show || this.released) {
                         return@postToSkiaGL
                     }
                     surfaceObj?.surfaceTexture?.updateTexImage()
