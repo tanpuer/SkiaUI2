@@ -26,6 +26,7 @@ steps：
    InputView: binding to Java EditText and render it's text.  
    Swiper: just like ViewPager.  
    Other CustomsViews: Loading, Switch, Radio, Picker...  
+   PlatformView: render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.
@@ -33,8 +34,7 @@ steps：
 11. C++: See CppTest.cpp. 
 12. js: See test.js in assets. Import v8 to evaluate javascript. 
 13. kotlin: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
-14. Dirty-Render: markDirty after "draw" if necessary. 
-15. PlatformView: render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter. 
+14. Dirty-Render: markDirty after "draw" if necessary.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
