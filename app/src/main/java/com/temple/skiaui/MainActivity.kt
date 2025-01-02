@@ -2,6 +2,7 @@ package com.temple.skiaui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
 import android.widget.TextView
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         skiaView.setRenderCallback(this)
         fpsView = findViewById(R.id.tvFps)
         requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO), 101)
+        window.setSoftInputMode(SOFT_INPUT_ADJUST_NOTHING)
     }
 
     override fun onBackPressed() {
