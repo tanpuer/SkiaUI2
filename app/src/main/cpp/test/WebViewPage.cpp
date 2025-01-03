@@ -2,6 +2,7 @@
 #include "FlexboxLayout.h"
 #include "WebView.h"
 #include "EditText.h"
+#include "CameraView.h"
 
 namespace HYSkiaUI {
 
@@ -37,6 +38,14 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         editText->setHeight(200);
         flexboxLayout->addView(editText);
     }
+
+//    {
+//        auto camera = new CameraView();
+//        camera->setContext(this->context);
+//        camera->setWidth(width);
+//        camera->setHeight(500);
+//        flexboxLayout->addView(camera);
+//    }
 
     {
         auto webView = new WebView();

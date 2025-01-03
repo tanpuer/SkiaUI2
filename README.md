@@ -27,6 +27,7 @@ steps：
    Swiper: just like ViewPager.  
    Other CustomsViews: Loading, Switch, Radio, Picker...  
    PlatformView: render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
+                 render CameraView by ImageReader/ByteBuffer/SkRuntimeEffect.  
    ...
 8. scrollView: scroll, fling，for more optimizations.
 9. RecyclerView: adapter，ViewHolder，for more optimizations.

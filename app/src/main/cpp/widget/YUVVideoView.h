@@ -52,8 +52,6 @@ private:
 
     SkRect dstRect;
 
-    std::unique_ptr<SkPaint> videoPaint;
-
     std::string src;
 
     sk_sp<SkRuntimeEffect> runtimeEffect = nullptr;

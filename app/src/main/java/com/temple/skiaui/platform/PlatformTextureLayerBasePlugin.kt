@@ -13,7 +13,7 @@ import android.widget.FrameLayout
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 
-abstract class PlatformBasePlugin(
+abstract class PlatformTextureLayerBasePlugin(
     val engine: HYSkiaEngine,
     val width: Int,
     val height: Int,

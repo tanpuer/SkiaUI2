@@ -6,8 +6,6 @@
 namespace HYSkiaUI {
 
 YUVVideoView::YUVVideoView() {
-    videoPaint = std::make_unique<SkPaint>();
-    videoPaint->setAntiAlias(true);
 }
 
 YUVVideoView::~YUVVideoView() {
@@ -94,6 +92,7 @@ void YUVVideoView::draw(SkCanvas *canvas) {
         builder.uniform("heightRatio") = ratio;
         sk_sp<SkShader> shader = builder.makeShader();
         SkPaint skPaint;
+        skPaint.setAntiAlias(true);
         skPaint.setShader(std::move(shader));
         skCanvas->drawRect(SkRect::MakeXYWH(0, 0, width * ratio, height * ratio),
                            skPaint);
