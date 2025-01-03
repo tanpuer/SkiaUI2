@@ -34,7 +34,9 @@ void CameraView::draw(SkCanvas *canvas) {
     static jfieldID bufferYFiend = env->GetFieldID(yuvDataClass, "yData", "Ljava/nio/ByteBuffer;");
     static jfieldID bufferUFiend = env->GetFieldID(yuvDataClass, "uData", "Ljava/nio/ByteBuffer;");
     static jfieldID bufferVFiend = env->GetFieldID(yuvDataClass, "vData", "Ljava/nio/ByteBuffer;");
-    static jfieldID strideField = env->GetFieldID(yuvDataClass, "stride", "I");
+    static jfieldID strideYField = env->GetFieldID(yuvDataClass, "strideY", "I");
+    static jfieldID strideUField = env->GetFieldID(yuvDataClass, "strideU", "I");
+    static jfieldID strideVField = env->GetFieldID(yuvDataClass, "strideV", "I");
     static jfieldID widthField = env->GetFieldID(yuvDataClass, "width", "I");
     static jfieldID heightField = env->GetFieldID(yuvDataClass, "height", "I");
     static jfieldID rotationField = env->GetFieldID(yuvDataClass, "rotation", "I");
@@ -44,28 +46,31 @@ void CameraView::draw(SkCanvas *canvas) {
             env->GetObjectField(yuvData, bufferUFiend)));
     uint8_t *v = static_cast<uint8_t *>(env->GetDirectBufferAddress(
             env->GetObjectField(yuvData, bufferVFiend)));
-    jint stride = env->GetIntField(yuvData, strideField);
+    jint strideY = env->GetIntField(yuvData, strideYField);
+    jint strideU = env->GetIntField(yuvData, strideUField);
+    jint strideV = env->GetIntField(yuvData, strideVField);
     jint width = env->GetIntField(yuvData, widthField);
     jint height = env->GetIntField(yuvData, heightField);
     jint rotation = env->GetIntField(yuvData, rotationField);
-    int ySize = width * height;
-    int uvSize = (width * height) / 4;
+    int ySize = strideY * height;
+    int uSize = (strideU * height) / 2;
+    int vSize = (strideV * height) / 2;
     if (runtimeEffect != nullptr) {
         SkCanvas *skCanvas;
         SkPictureRecorder recorder;
         skCanvas = recorder.beginRecording(width, height);
-        auto y_imageInfo = SkImageInfo::Make(stride, height, SkColorType::kGray_8_SkColorType,
+        auto y_imageInfo = SkImageInfo::Make(strideY, height, kGray_8_SkColorType,
                                              kPremul_SkAlphaType);
-        auto u_imageInfo = SkImageInfo::Make(stride / 2, height / 2, kGray_8_SkColorType,
+        auto u_imageInfo = SkImageInfo::Make(strideU, height / 2, kGray_8_SkColorType,
                                              kPremul_SkAlphaType);
-        auto v_imageInfo = SkImageInfo::Make(stride / 2, height / 2, kGray_8_SkColorType,
+        auto v_imageInfo = SkImageInfo::Make(strideV, height / 2, kGray_8_SkColorType,
                                              kPremul_SkAlphaType);
         sk_sp<SkData> y_data = SkData::MakeWithCopy(y, ySize);
-        sk_sp<SkData> u_data = SkData::MakeWithCopy(u, uvSize);
-        sk_sp<SkData> v_data = SkData::MakeWithCopy(v, uvSize);
-        auto y_image = SkImages::RasterFromData(y_imageInfo, y_data, stride);
-        auto u_image = SkImages::RasterFromData(u_imageInfo, u_data, stride / 2);
-        auto v_image = SkImages::RasterFromData(v_imageInfo, v_data, stride / 2);
+        sk_sp<SkData> u_data = SkData::MakeWithCopy(u, uSize);
+        sk_sp<SkData> v_data = SkData::MakeWithCopy(v, vSize);
+        auto y_image = SkImages::RasterFromData(y_imageInfo, y_data, strideY);
+        auto u_image = SkImages::RasterFromData(u_imageInfo, u_data, strideU);
+        auto v_image = SkImages::RasterFromData(v_imageInfo, v_data, strideV);
         SkRuntimeShaderBuilder builder(runtimeEffect);
         builder.child("y_tex") = y_image->makeShader(SkSamplingOptions());
         builder.child("u_tex") = u_image->makeShader(SkSamplingOptions());
@@ -75,7 +80,7 @@ void CameraView::draw(SkCanvas *canvas) {
         float ratio = std::min(widthRatio, heightRatio);
         builder.uniform("widthRatio") = ratio;
         builder.uniform("heightRatio") = ratio;
-        builder.uniform("rotation") = rotation;
+        builder.uniform("rotation") = SK_ScalarPI / 180.0f * rotation;
         sk_sp<SkShader> shader = builder.makeShader();
         SkPaint skPaint;
         skPaint.setAntiAlias(true);
@@ -84,7 +89,8 @@ void CameraView::draw(SkCanvas *canvas) {
                            skPaint);
         auto picture = recorder.finishRecordingAsPicture();
         canvas->save();
-        canvas->translate(left, top);
+        canvas->translate(left, top + (this->height - height *ratio) / 2);
+        canvas->rotate(rotation, this->width / 2.0, height * ratio / 2.0);
         canvas->drawPicture(picture);
         canvas->restore();
     }

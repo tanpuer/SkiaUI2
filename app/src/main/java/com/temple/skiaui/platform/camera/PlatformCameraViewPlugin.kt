@@ -50,6 +50,9 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
         }
     }
 
+    /**
+     * it is hard to adapt may yuv formats!
+     */
     override fun copyYUVData(planes: Array<Plane>, width: Int, height: Int): ImageReaderYUVData {
         return CameraYUVData().apply {
             yData = ByteBuffer.allocateDirect(planes[0].buffer.capacity()).put(planes[0].buffer)
@@ -58,7 +61,9 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
                 .rewind() as ByteBuffer
             vData = ByteBuffer.allocateDirect(planes[2].buffer.capacity()).put(planes[2].buffer)
                 .rewind() as ByteBuffer
-            stride = planes[0].rowStride
+            strideY = planes[0].rowStride
+            strideU = planes[1].rowStride
+            strideV = planes[2].rowStride
             this.rotation = this@PlatformCameraViewPlugin.rotation
             this.width = width
             this.height = height

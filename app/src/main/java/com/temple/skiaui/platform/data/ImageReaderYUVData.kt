@@ -14,7 +14,11 @@ open class ImageReaderYUVData {
 
     var height = 0
 
-    var stride = 0
+    var strideY = 0
+
+    var strideU = 0
+
+    var strideV = 0
 
     var rotation = 0
 }
