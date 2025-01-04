@@ -5,6 +5,11 @@
 
 namespace HYSkiaUI {
 
+enum class YUVFormat {
+    YUV420,
+    NV12,
+};
+
 class CameraView : public View {
 
 public:
@@ -27,6 +32,8 @@ public:
 
 private:
 
+    void initShader(YUVFormat format);
+
     jclass javaCameraClass = nullptr;
 
     jmethodID javaCameraConstructor = nullptr;
@@ -47,6 +54,7 @@ private:
 
     bool inited = false;
 
+    YUVFormat yuvFormat = YUVFormat::YUV420;
 };
 
 }

@@ -74,6 +74,7 @@ abstract class PlatformImageReaderBasePlugin(
     }
 
     open fun getImageFormat(): Int {
+        //Android simulator: yuv420，iQoo neo7: plane[0] + plane[1] = NV12, plane[0] + plane[2] = NV21
         return ImageFormat.YUV_420_888
     }
 
