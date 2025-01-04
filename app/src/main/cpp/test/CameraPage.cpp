@@ -1,6 +1,7 @@
 #include "CameraPage.h"
 #include "FlexboxLayout.h"
 #include "CameraView.h"
+#include "Button.h"
 
 namespace HYSkiaUI {
 
@@ -31,9 +32,24 @@ void CameraPage::initChildren(ViewGroup *root, int width, int height) {
     {
         auto camera = new CameraView();
         camera->setContext(this->context);
-        camera->setWidth(1080);
-        camera->setHeight(960);
+        camera->setWidth(width);
+        camera->setHeight(width);
         flexboxLayout->addView(camera);
+    }
+    {
+        auto button = new Button();
+        button->setContext(this->context);
+        button->setText(SkString("Capture"));
+        button->setWidth(540);
+        button->setHeight(100);
+        button->setTextSize(60);
+        button->setCornerRadius(20);
+        button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+        button->setMargin({50, 0, 50, 100});
+        flexboxLayout->addView(button);
+        button->setOnClickListener([](View *view) {
+            ALOGD("setOnClickListener perform %s", view->name())
+        });
     }
 }
 

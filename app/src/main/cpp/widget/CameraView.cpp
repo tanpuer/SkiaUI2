@@ -89,6 +89,7 @@ void CameraView::draw(SkCanvas *canvas) {
                            skPaint);
         auto picture = recorder.finishRecordingAsPicture();
         canvas->save();
+//        canvas->translate(left, top);
         canvas->translate(left, top + (this->height - height *ratio) / 2);
         canvas->rotate(rotation, this->width / 2.0, height * ratio / 2.0);
         canvas->drawPicture(picture);
