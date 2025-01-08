@@ -2,6 +2,7 @@
 #include "FlexboxLayout.h"
 #include "WebView.h"
 #include "EditText.h"
+#include "TextView.h"
 
 namespace HYSkiaUI {
 
@@ -29,6 +30,17 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
     flexboxLayout->setAlignItems(YGAlignCenter);
     flexboxLayout->setFlex(1);
     this->addView(flexboxLayout);
+
+    {
+        auto textView = new TextView();
+        textView->setContext(this->context);
+        textView->setText(SkString("This is native EditText && WebView"));
+        textView->setTextColor(SK_ColorBLACK);
+        textView->setTextSize(50);
+        textView->setBackgroundColor(SK_ColorTRANSPARENT);
+        textView->setStyle(SkPaint::kStroke_Style);
+        flexboxLayout->addView(textView);
+    }
 
     {
         auto editText = new EditText();
