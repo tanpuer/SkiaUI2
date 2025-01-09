@@ -43,3 +43,5 @@ steps：
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example3.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example4.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example5.png)
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example6.png)
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example7.png)
