@@ -63,6 +63,8 @@ public:
 
     bool onTouchEvent(TouchEvent *touchEvent) override;
 
+    void setSkImage(sk_sp<SkImage> image);
+
 private:
 
     sk_sp<SkImage> skImage;

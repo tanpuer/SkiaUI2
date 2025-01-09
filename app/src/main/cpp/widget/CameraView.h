@@ -30,6 +30,8 @@ public:
 
     void onHide() override;
 
+    void capture(std::function<void(sk_sp<SkImage>)> &&captureCallback);
+
 private:
 
     void initShader(YUVFormat format);
@@ -55,6 +57,10 @@ private:
     bool inited = false;
 
     YUVFormat yuvFormat = YUVFormat::YUV420;
+
+    std::function<void(sk_sp<SkImage>)> captureCallback;
+
+    bool captureInNextDraw = false;
 };
 
 }

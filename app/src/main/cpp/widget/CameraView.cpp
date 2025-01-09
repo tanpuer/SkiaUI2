@@ -1,6 +1,7 @@
 #include "CameraView.h"
 #include "core/SkPictureRecorder.h"
 #include "core/SkPicture.h"
+#include "core/SkColorSpace.h"
 
 namespace HYSkiaUI {
 
@@ -53,21 +54,24 @@ void CameraView::draw(SkCanvas *canvas) {
     jint height = env->GetIntField(yuvData, heightField);
     jint rotation = env->GetIntField(yuvData, rotationField);
     if (runtimeEffect == nullptr) {
-        yuvFormat = strideY == strideU ? YUVFormat::NV12: YUVFormat::YUV420;
+        yuvFormat = strideY == strideU ? YUVFormat::NV12 : YUVFormat::YUV420;
         initShader(yuvFormat);
     }
     if (runtimeEffect != nullptr) {
         SkCanvas *skCanvas;
         SkPictureRecorder recorder;
-        skCanvas = recorder.beginRecording(width, height);
+        float widthRatio = this->width * 1.0f / width;
+        float heightRatio = this->height * 1.0f / height;
+        float ratio = std::min(widthRatio, heightRatio);
+        skCanvas = recorder.beginRecording(width * ratio, height * ratio);
         SkRuntimeShaderBuilder builder(runtimeEffect);
         if (yuvFormat == YUVFormat::NV12) {
             int ySize = strideY * height;
-            int uSize = (strideU * height) / 2;
-            int vSize = (strideV * height) / 2;
             int uvSize = strideU * height / 2;
-            auto y_imageInfo = SkImageInfo::Make(strideY, height, kGray_8_SkColorType, kPremul_SkAlphaType);
-            auto uv_imageInfo = SkImageInfo::Make(strideU / 2, height / 2, kR8G8_unorm_SkColorType, kPremul_SkAlphaType);
+            auto y_imageInfo = SkImageInfo::Make(strideY, height, kGray_8_SkColorType,
+                                                 kPremul_SkAlphaType);
+            auto uv_imageInfo = SkImageInfo::Make(strideU / 2, height / 2, kR8G8_unorm_SkColorType,
+                                                  kPremul_SkAlphaType);
             sk_sp<SkData> y_data = SkData::MakeWithCopy(y, ySize);
             sk_sp<SkData> uv_data = SkData::MakeWithCopy(u, uvSize);
             if (!uv_data) {
@@ -110,11 +114,8 @@ void CameraView::draw(SkCanvas *canvas) {
             builder.child("u_tex") = u_image->makeShader(SkSamplingOptions());
             builder.child("v_tex") = v_image->makeShader(SkSamplingOptions());
         }
-        float widthRatio = this->width * 1.0f / width;
-        float heightRatio = this->height * 1.0f / height;
-        float ratio = std::min(widthRatio, heightRatio);
-        builder.uniform("widthRatio") = ratio;
-        builder.uniform("heightRatio") = ratio;
+        builder.uniform("widthRatio") = 1.0f;
+        builder.uniform("heightRatio") = 1.0f;
         builder.uniform("rotation") = SK_ScalarPI / 180.0f * rotation;
         sk_sp<SkShader> shader = builder.makeShader();
         SkPaint skPaint;
@@ -123,9 +124,21 @@ void CameraView::draw(SkCanvas *canvas) {
         skCanvas->drawRect(SkRect::MakeXYWH(0, 0, width * ratio, height * ratio),
                            skPaint);
         auto picture = recorder.finishRecordingAsPicture();
+        if (captureInNextDraw) {
+            captureInNextDraw = false;
+            sk_sp<SkImage> skImage = SkImages::DeferredFromPicture(
+                    picture,
+                    SkISize::Make(width, height),
+                    nullptr,
+                    nullptr,
+                    SkImages::BitDepth::kU8, SkColorSpace::MakeSRGB()
+            );
+            if (captureCallback != nullptr) {
+                captureCallback(skImage);
+            }
+        }
         canvas->save();
-//        canvas->translate(left, top);
-        canvas->translate(left, top + (this->height - height *ratio) / 2);
+        canvas->translate(left, top + (this->height - height * ratio) / 2);
         canvas->rotate(rotation, this->width / 2.0, height * ratio / 2.0);
         canvas->drawPicture(picture);
         canvas->restore();
@@ -185,6 +198,11 @@ void CameraView::initShader(YUVFormat format) {
         return;
     }
     runtimeEffect = effect;
+}
+
+void CameraView::capture(std::function<void(sk_sp<SkImage>)> &&captureCallback) {
+    this->captureCallback = std::move(captureCallback);
+    captureInNextDraw = true;
 }
 
 }

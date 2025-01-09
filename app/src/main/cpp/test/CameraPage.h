@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Page.h"
+#include "ImageView.h"
+#include "CameraView.h"
 
 namespace HYSkiaUI {
 
@@ -13,6 +15,10 @@ public:
 private:
 
     void initChildren(ViewGroup *root, int width, int height);
+
+    ImageView *previewImageView = nullptr;
+
+    CameraView *cameraView = nullptr;
 
 };
 

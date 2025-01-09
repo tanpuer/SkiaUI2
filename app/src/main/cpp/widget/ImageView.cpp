@@ -236,4 +236,10 @@ bool ImageView::onTouchEvent(TouchEvent *touchEvent) {
     return true;
 }
 
+void ImageView::setSkImage(sk_sp<SkImage> image) {
+    this->skImage = image;
+    srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
+    markDirty();
+}
+
 }
