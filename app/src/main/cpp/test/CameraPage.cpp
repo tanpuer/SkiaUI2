@@ -49,18 +49,17 @@ void CameraPage::initChildren(ViewGroup *root, int width, int height) {
             ALOGD("setOnClickListener perform %s", view->name())
             this->cameraView->capture([this](sk_sp<SkImage> image){
                 if (previewImageView != nullptr) {
-                    previewImageView->setSkImage(image);
-                    previewImageView->setWidth(image->width() / 4);
-                    previewImageView->setHeight(image->height() / 4);
-                    previewImageView->rotateZ = 90;
+                    previewImageView->setImage(image);
+                    previewImageView->setWidth(image->height() / 4);
+                    previewImageView->setHeight(image->width() / 4);
+                    previewImageView->setRotateZ(90);
                 }
             });
         });
     }
     {
-        previewImageView = new ImageView();
+        previewImageView = new CameraPreviewImage();
         previewImageView->setContext(this->context);
-        previewImageView->setScaleType(ImageView::ScaleType::FitCenter);
         previewImageView->setStyle(SkPaint::kStroke_Style);
         previewImageView->setBackgroundColor(SK_ColorRED);
         previewImageView->setStrokeWidth(2);

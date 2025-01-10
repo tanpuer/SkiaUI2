@@ -128,7 +128,7 @@ void CameraView::draw(SkCanvas *canvas) {
             captureInNextDraw = false;
             sk_sp<SkImage> skImage = SkImages::DeferredFromPicture(
                     picture,
-                    SkISize::Make(width, height),
+                    SkISize::Make(width * ratio, height * ratio),
                     nullptr,
                     nullptr,
                     SkImages::BitDepth::kU8, SkColorSpace::MakeSRGB()

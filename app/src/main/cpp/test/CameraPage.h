@@ -3,6 +3,7 @@
 #include "Page.h"
 #include "ImageView.h"
 #include "CameraView.h"
+#include "CameraPreviewImage.h"
 
 namespace HYSkiaUI {
 
@@ -16,7 +17,7 @@ private:
 
     void initChildren(ViewGroup *root, int width, int height);
 
-    ImageView *previewImageView = nullptr;
+    CameraPreviewImage *previewImageView = nullptr;
 
     CameraView *cameraView = nullptr;
 
