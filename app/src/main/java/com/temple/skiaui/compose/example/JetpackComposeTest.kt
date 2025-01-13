@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
+import com.temple.skiaui.compose.core.Camera
 import com.temple.skiaui.compose.core.Column
 import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
@@ -26,6 +27,7 @@ import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
 import com.temple.skiaui.compose.foundation.setWidth
+import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.random.Random
 
@@ -64,6 +66,11 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
                 )
+                Camera(Modifier(context).setSize(width, width), object : CameraCallback {
+                    override fun onImageCaptured(imagePtr: Long) {
+
+                    }
+                })
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)

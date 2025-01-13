@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         skiaView.initEngine(type)
         skiaView.setRenderCallback(this)
         fpsView = findViewById(R.id.tvFps)
-        requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO), 101)
         window.setSoftInputMode(SOFT_INPUT_ADJUST_NOTHING)
     }
 

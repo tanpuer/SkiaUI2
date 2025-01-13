@@ -13,6 +13,8 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
+import com.temple.skiaui.compose.widget.CameraCallback
+import com.temple.skiaui.compose.widget.HYComposeCamera
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
 import com.temple.skiaui.compose.widget.HYComposeIcon
 import com.temple.skiaui.compose.widget.HYComposeImage
@@ -204,6 +206,18 @@ fun Switch(modifier: Modifier, enable: Boolean = true, color: String = "#ff00ff"
             }
             set(color) {
                 setColor(color)
+            }
+        }
+    )
+}
+
+@Composable
+fun Camera(modifier: Modifier, callback: CameraCallback) {
+    ComposeNode<HYComposeCamera, HYComposeApplier>(
+        factory = { HYComposeCamera(modifier) },
+        update = {
+            set(callback) {
+                capture(callback)
             }
         }
     )

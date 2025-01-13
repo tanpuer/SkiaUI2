@@ -26,6 +26,12 @@ class HYSkiaExampleActivity : AppCompatActivity() {
         kotlinBtn.setOnClickListener {
             goToMainActivity(2)
         }
+        requestPermissions(
+            arrayOf(
+                android.Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.CAMERA
+            ), 101
+        )
     }
 
     private fun goToMainActivity(exampleType: Int) {

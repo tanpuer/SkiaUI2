@@ -10,6 +10,7 @@
 #include "Icon.h"
 #include "Switch.h"
 #include "YUVVideoView.h"
+#include "CameraView.h"
 
 using namespace HYSkiaUI;
 
@@ -40,6 +41,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"Image",         []() -> View * { return new ImageView(); }},
             {"Icon",          []() -> View * { return new Icon(); }},
             {"Switch",        []() -> View * { return new Switch(); }},
+            {"Camera",        []() -> View * { return new CameraView(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {

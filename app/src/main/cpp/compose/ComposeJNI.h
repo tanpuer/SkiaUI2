@@ -14,6 +14,7 @@
 #include "ComposeImageJNI.h"
 #include "ComposeIconJNI.h"
 #include "ComposeSwitchJNI.h"
+#include "ComposeCameraJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -31,6 +32,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeImageMethods(jniEnv);
     RegisterComposeIconMethods(jniEnv);
     RegisterComposeSwitchMethods(jniEnv);
+    RegisterComposeCameraMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -47,4 +49,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeImageMethods(jniEnv);
     UnRegisterComposeIconMethods(jniEnv);
     UnRegisterComposeSwitchMethods(jniEnv);
+    UnRegisterComposeCameraMethods(jniEnv);
 }
