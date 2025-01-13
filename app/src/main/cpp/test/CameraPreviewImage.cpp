@@ -45,9 +45,4 @@ void CameraPreviewImage::setRotateZ(int rotateZ) {
     markDirty();
 }
 
-void CameraPreviewImage::layout(int l, int t, int r, int b) {
-    View::layout(l, t, r, b);
-    dstRect.setLTRB(l, t, r, b);
-}
-
 }

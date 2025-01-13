@@ -14,15 +14,11 @@ public:
 
     void setImage(sk_sp<SkImage> image);
 
-    void layout(int l, int t, int r, int b) override;
-
     void draw(SkCanvas *canvas) override;
 
     void setRotateZ(int rotateZ);
 
 private:
-
-    SkRect dstRect;
 
     sk_sp<SkImage> skImage = nullptr;
 
