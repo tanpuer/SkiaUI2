@@ -9,6 +9,8 @@ import android.os.Looper
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
+import android.view.ViewConfiguration
+import androidx.core.math.MathUtils.clamp
 import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -156,10 +158,12 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
                 val lastTime = touchTimes.last()
                 val dt = lastTime - firstTime
                 if (dt > 0) {
+                    val velocityX = (lastTouch.x - firstTouch.x) * 1000 / dt
+                    val velocityY = (lastTouch.y - firstTouch.y) * 1000 / dt
+                    val clampedVelocityX = clamp(velocityX, -MAX_FLING_VELOCITY, MAX_FLING_VELOCITY)
+                    val clampedVelocityY = clamp(velocityY, -MAX_FLING_VELOCITY, MAX_FLING_VELOCITY)
                     nativeSetVelocity(
-                        uiApp,
-                        (lastTouch.x - firstTouch.x) * 1000 / dt,
-                        (lastTouch.y - firstTouch.y) * 1000 / dt,
+                        uiApp, clampedVelocityX, clampedVelocityY
                     )
                 }
             }
@@ -314,6 +318,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
 
         private const val TAG = "SkiaUI"
+        private val MAX_FLING_VELOCITY = ViewConfiguration.get(HYSkiaUIApp.getInstance()).scaledMaximumFlingVelocity.toFloat()
     }
 
 }
