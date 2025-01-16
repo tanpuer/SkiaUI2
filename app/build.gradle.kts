@@ -34,6 +34,9 @@ android {
             )
         }
     }
+    androidResources {
+        noCompress += "filamat"
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -54,10 +57,11 @@ android {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
     implementation("org.java-websocket:Java-WebSocket:1.5.6")
     implementation("androidx.media3:media3-exoplayer:1.4.1")
-    implementation("androidx.compose.runtime:runtime:1.7.4")
+    implementation("androidx.compose.runtime:runtime:1.7.6")
     implementation("androidx.compose.compiler:compiler:1.5.15")
-    implementation("androidx.compose.foundation:foundation-android:1.7.4")
+    implementation("androidx.compose.foundation:foundation-android:1.7.6")
+    implementation("com.google.android.filament:filament-android:1.56.0")
 }

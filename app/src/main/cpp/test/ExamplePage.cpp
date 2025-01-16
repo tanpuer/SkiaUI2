@@ -25,6 +25,7 @@
 #include "RecyclerViewPage.h"
 #include "WebViewPage.h"
 #include "CameraPage.h"
+#include "FilamentView.h"
 
 namespace HYSkiaUI {
 
@@ -60,6 +61,18 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
+
+//    {
+//        auto filament = new FilamentView();
+//        filament->setContext(this->context);
+//        filament->setWidth(width);
+//        filament->setHeight(500);
+//        filament->setStyle(SkPaint::kStroke_Style);
+//        filament->setBackgroundColor(SK_ColorTRANSPARENT);
+//        filament->setStrokeWidth(0);
+//        filament->setMargin({0, 0, 0, 50});
+//        scrollView->addView(filament);
+//    }
 
     {
         auto inputView = new InputView();

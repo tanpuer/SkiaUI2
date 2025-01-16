@@ -21,4 +21,13 @@ open class ImageReaderYUVData {
     var strideV = 0
 
     var rotation = 0
+
+    lateinit var rData: ByteBuffer
+
+    lateinit var gData: ByteBuffer
+
+    lateinit var bData: ByteBuffer
+
+    lateinit var aData: ByteBuffer
+
 }
