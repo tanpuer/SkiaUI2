@@ -65,6 +65,7 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     open fun release() {
+        Choreographer.getInstance().removeFrameCallback(this)
         released = true
         pluginHandler.post {
             surfaceObj?.surfaceTexture?.setOnFrameAvailableListener(null)
