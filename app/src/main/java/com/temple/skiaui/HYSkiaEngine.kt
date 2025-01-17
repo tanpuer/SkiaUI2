@@ -52,6 +52,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private val skImageList = mutableListOf<Long>()
     private val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val executors = Executors.newFixedThreadPool(2)
+    private var createdFlag = false
 
     data class Velocity(val x: Float, val y: Float)
 
@@ -78,9 +79,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         skiaGLHandler.post {
             nativeGLCreated(glApp, surface)
         }
-        createListeners.forEach {
-            it.value.invoke(true)
-        }
+        createdFlag = true
     }
 
     fun changeSurfaceSize(width: Int, height: Int) {
@@ -90,6 +89,12 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         skiaUIHandler.post {
             nativeUIChanged(uiApp, width, height, System.currentTimeMillis() / 1000)
             pic.set(nativeUIDoFrame(uiApp, System.currentTimeMillis() - start))
+        }
+        if (createdFlag) {
+            createdFlag = false
+            createListeners.forEach {
+                it.value.invoke(true)
+            }
         }
     }
 
