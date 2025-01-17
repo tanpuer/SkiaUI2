@@ -45,7 +45,7 @@ abstract class PlatformTextureLayerBasePlugin(
             container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
             targetView = initPlatformView()
             container?.addView(targetView, ViewGroup.LayoutParams(width, height))
-            engine.createListeners[index] = createListener
+            engine.addSkiaSurfaceListener(index, createListener)
         }
     }
 
@@ -68,7 +68,7 @@ abstract class PlatformTextureLayerBasePlugin(
     fun release() {
         released = true
         mainHandler.post {
-            engine.createListeners.remove(index)
+            engine.removeSurfaceListener(index)
             container?.removeView(targetView)
             destroyPlatformView()
             targetView = null

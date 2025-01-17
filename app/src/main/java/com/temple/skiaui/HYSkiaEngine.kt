@@ -50,7 +50,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private var glApp = 0L
     private var uiApp = 0L
     private val skImageList = mutableListOf<Long>()
-    val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
+    private val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val executors = Executors.newFixedThreadPool(2)
 
     data class Velocity(val x: Float, val y: Float)
@@ -103,6 +103,14 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         createListeners.forEach {
             it.value.invoke(false)
         }
+    }
+
+    fun addSkiaSurfaceListener(key: String, callback: (enable: Boolean) -> Unit) {
+        createListeners[key] = callback
+    }
+
+    fun removeSurfaceListener(key: String) {
+        createListeners.remove(key)
     }
 
     fun doFrame(time: Long) {

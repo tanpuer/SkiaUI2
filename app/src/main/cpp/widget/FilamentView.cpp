@@ -8,7 +8,12 @@ FilamentView::FilamentView() {
 }
 
 FilamentView::~FilamentView() {
-
+    if (javaFilament != nullptr) {
+        auto jniEnv = getContext()->getJniEnv();
+        jniEnv->CallVoidMethod(javaFilament, releaseMethod);
+        jniEnv->DeleteGlobalRef(javaFilament);
+        javaFilament = nullptr;
+    }
 }
 
 void FilamentView::layout(int l, int t, int r, int b) {

@@ -2,7 +2,7 @@ package com.temple.skiaui.platform
 
 import android.graphics.SurfaceTexture
 import android.os.Handler
-import android.os.Looper
+import android.os.HandlerThread
 import android.util.Log
 import android.view.Choreographer
 import android.view.MotionEvent
@@ -14,9 +14,7 @@ abstract class SurfaceTextureBasePlugin(
     val width: Int,
     val height: Int,
     val viewPtr: Long
-) : Choreographer.FrameCallback {
-
-    protected val mainHandler = Handler(Looper.getMainLooper())
+) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener {
 
     private var skImagePtr: Long = 0L
 
@@ -29,25 +27,33 @@ abstract class SurfaceTextureBasePlugin(
 
     private var index = "surface-texture:${INDEX++}"
 
-    @Volatile
-    private var released = false
-
-    init {
-        mainHandler.post {
-            engine.createListeners[index] = createListener
-        }
-        Choreographer.getInstance().postFrameCallback(this)
+    private val pluginThread = HandlerThread(index).apply {
+        start()
     }
+
+    protected val pluginHandler = Handler(pluginThread.looper)
+
+    @Volatile
+    protected var released = false
 
     private val createListener = fun(it: Boolean) {
         show = it
-        if (!it) {
-            skiaSurfaceDestroyed()
-            surfaceObj?.release()
-            surfaceObj = null
-        } else {
-            skiaSurfaceCreated()
+        pluginHandler.post {
+            if (!it) {
+                skiaSurfaceDestroyed()
+                surfaceObj?.release()
+                surfaceObj = null
+            } else {
+                skiaSurfaceCreated()
+            }
         }
+    }
+
+    init {
+        pluginHandler.post {
+            engine.addSkiaSurfaceListener(index, createListener)
+        }
+        Choreographer.getInstance().postFrameCallback(this)
     }
 
     abstract fun skiaSurfaceCreated()
@@ -60,11 +66,14 @@ abstract class SurfaceTextureBasePlugin(
 
     open fun release() {
         released = true
-        mainHandler.post {
-            engine.createListeners.remove(index)
+        pluginHandler.post {
+            surfaceObj?.surfaceTexture?.setOnFrameAvailableListener(null)
+            engine.removeSurfaceListener(index)
             surfaceObj?.release()
         }
         deleteSkImage(skImagePtr)
+        skImagePtr = 0L
+        pluginThread.quitSafely()
     }
 
     open fun onShow() {
@@ -87,7 +96,7 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     fun sendTouchEvent(type: Int, x: Float, y: Float) {
-        mainHandler.post {
+        pluginHandler.post {
             if (type == MotionEvent.ACTION_DOWN) {
                 downTime = System.currentTimeMillis()
             }
@@ -122,23 +131,25 @@ abstract class SurfaceTextureBasePlugin(
             engine.attachSurfaceTexture(width, height, surfaceTexture) {
                 skImagePtr = it
             }
-            surfaceTexture.setOnFrameAvailableListener {
-                if (this.released) {
-                    return@setOnFrameAvailableListener
-                }
-                engine.postToSkiaGL {
-                    if (!this.show || this.released) {
-                        return@postToSkiaGL
-                    }
-                    surfaceObj?.surfaceTexture?.updateTexImage()
-                }
-                engine.postToSkiaUI {
-                    if (!this.show || this.released) {
-                        return@postToSkiaUI
-                    }
-                    engine.markDirty(viewPtr)
-                }
+            surfaceTexture.setOnFrameAvailableListener(this)
+        }
+    }
+
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+        if (this.released) {
+            return
+        }
+        engine.postToSkiaGL {
+            if (!this.show || this.released) {
+                return@postToSkiaGL
             }
+            surfaceObj?.surfaceTexture?.updateTexImage()
+        }
+        engine.postToSkiaUI {
+            if (!this.show || this.released) {
+                return@postToSkiaUI
+            }
+            engine.markDirty(viewPtr)
         }
     }
 

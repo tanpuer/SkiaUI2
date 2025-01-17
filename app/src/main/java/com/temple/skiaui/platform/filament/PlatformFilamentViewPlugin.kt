@@ -55,23 +55,43 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
     private val animator = ValueAnimator.ofFloat(0.0f, 360.0f)
 
     init {
-        skiaSurfaceCreated()
+        pluginHandler.post {
+            skiaSurfaceCreated()
+        }
     }
 
     override fun skiaSurfaceCreated() {
-        createSurface()
-        if (swapChain != null) {
-            return
-        }
-        surfaceObj?.surface?.let {
-            initEngine()
-            swapChain = filamentEngine.createSwapChain(it)
+        pluginHandler.post {
+            createSurface()
+            if (swapChain != null) {
+                return@post
+            }
+            surfaceObj?.surface?.let {
+                initEngine()
+                swapChain = filamentEngine.createSwapChain(it)
+            }
         }
     }
 
     override fun skiaSurfaceDestroyed() {
-        swapChain?.apply {
-            filamentEngine.destroySwapChain(this)
+        pluginHandler.post {
+            if (swapChain == null) {
+                return@post
+            }
+            animator.cancel()
+            // Cleanup all resources
+            filamentEngine.destroyEntity(renderable)
+            filamentEngine.destroyRenderer(renderer)
+            filamentEngine.destroyVertexBuffer(vertexBuffer)
+            filamentEngine.destroyIndexBuffer(indexBuffer)
+            filamentEngine.destroyMaterial(material)
+            filamentEngine.destroyView(view)
+            filamentEngine.destroyScene(scene)
+            filamentEngine.destroyCameraComponent(camera.entity)
+            val entityManager = EntityManager.get()
+            entityManager.destroy(renderable)
+            entityManager.destroy(camera.entity)
+            filamentEngine.destroy()
             swapChain = null
         }
     }
@@ -84,10 +104,12 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
     }
 
     override fun drawOneFrame(frameTimeNanos: Long) {
-        swapChain?.let {
-            if (renderer.beginFrame(it, System.currentTimeMillis())) {
-                renderer.render(view)
-                renderer.endFrame()
+        pluginHandler.post {
+            swapChain?.let {
+                if (renderer.beginFrame(it, System.currentTimeMillis())) {
+                    renderer.render(view)
+                    renderer.endFrame()
+                }
             }
         }
     }
@@ -98,11 +120,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
 
     override fun release() {
         super.release()
-        mainHandler.post {
-            swapChain?.apply {
-                filamentEngine.destroySwapChain(this)
-            }
-        }
+        skiaSurfaceDestroyed()
     }
 
     override fun onShow() {
@@ -260,6 +278,9 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
         animator.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
             val transformMatrix = FloatArray(16)
             override fun onAnimationUpdate(a: ValueAnimator) {
+                if (released) {
+                    return
+                }
                 Matrix.setRotateM(transformMatrix, 0, -(a.animatedValue as Float), 0.0f, 0.0f, 1.0f)
                 val tcm = filamentEngine.transformManager
                 tcm.setTransform(tcm.getInstance(renderable), transformMatrix)

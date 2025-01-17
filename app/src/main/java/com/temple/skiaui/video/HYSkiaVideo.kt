@@ -92,7 +92,7 @@ class HYSkiaVideo internal constructor(
             this.initializeReader()
         }
         decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
-        engine.createListeners[threadName] = createListener
+        engine.addSkiaSurfaceListener(threadName, createListener)
         playAudio()
     }
 
@@ -234,7 +234,7 @@ class HYSkiaVideo internal constructor(
         }
         decodeThread.quitSafely()
         audioTracker?.release()
-        engine.createListeners.remove(threadName)
+        engine.removeSurfaceListener(threadName)
     }
 
     fun start() {
