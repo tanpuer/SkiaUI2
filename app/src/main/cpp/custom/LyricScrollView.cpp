@@ -74,12 +74,17 @@ void LyricScrollView::draw(SkCanvas *canvas) {
     auto start = 0L;
     auto end = 0L;
     auto index = -1;
+    lastIndexFlag = false;
     for (int i = 0; i < result.size(); ++i) {
         auto item = result[i];
         start = item.timeMills.front();
         end = item.timeMills.back();
         if (start <= duration && end >= duration) {
             index = i;
+            break;
+        } else if (start > duration) {
+            index = i - 1;
+            lastIndexFlag = true;
             break;
         }
     }
@@ -122,8 +127,13 @@ void LyricScrollView::draw(SkCanvas *canvas) {
                           (item.timeMills[jIndex] - item.timeMills[jIndex - 1]) *
                           item.contentList[jIndex - 1].length();
         auto percent = gradientLength * 1.0f / totalLength;
-        textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
-                                  {0.0, percent, percent, 1.0});
+        if (lastIndexFlag) {
+            textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
+                                      {0.0, 1.0, 1.0, 1.0});
+        } else {
+            textView->setTextGradient({SK_ColorGREEN, SK_ColorGREEN, SK_ColorWHITE, SK_ColorWHITE},
+                                      {0.0, percent, percent, 1.0});
+        }
         textView->setTextSize(80);
     }
 }

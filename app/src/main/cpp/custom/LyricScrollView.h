@@ -47,6 +47,8 @@ private:
 
     bool paused = false;
 
+    bool lastIndexFlag = false;
+
 };
 
 }
