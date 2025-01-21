@@ -15,6 +15,7 @@ import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeCamera
+import com.temple.skiaui.compose.widget.HYComposeFilament
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
 import com.temple.skiaui.compose.widget.HYComposeIcon
 import com.temple.skiaui.compose.widget.HYComposeImage
@@ -219,6 +220,16 @@ fun Camera(modifier: Modifier, callback: CameraCallback) {
             set(callback) {
                 capture(callback)
             }
+        }
+    )
+}
+
+@Composable
+fun Filament(modifier: Modifier) {
+    ComposeNode<HYComposeFilament, HYComposeApplier>(
+        factory = { HYComposeFilament(modifier) },
+        update = {
+
         }
     )
 }

@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Camera
 import com.temple.skiaui.compose.core.Column
+import com.temple.skiaui.compose.core.Filament
 import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.LazyColumn
@@ -71,6 +72,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
 
                     }
                 })
+                Filament(modifier = Modifier(context).setSize(width, 500))
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)
