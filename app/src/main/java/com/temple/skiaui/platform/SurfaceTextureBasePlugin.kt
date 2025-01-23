@@ -23,7 +23,10 @@ abstract class SurfaceTextureBasePlugin(
     protected var surfaceObj: SurfaceObj? = null
 
     @Volatile
-    private var show: Boolean = true
+    protected var show: Boolean = true
+
+    @Volatile
+    protected var skiaShow: Boolean = true
 
     private var index = "surface-texture:${INDEX++}"
 
@@ -37,7 +40,7 @@ abstract class SurfaceTextureBasePlugin(
     protected var released = false
 
     private val createListener = fun(it: Boolean) {
-        show = it
+        skiaShow = it
         pluginHandler.post {
             if (!it) {
                 skiaSurfaceDestroyed()
@@ -117,7 +120,7 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     fun createSurface() {
-        if (!show) {
+        if (!show || !skiaShow) {
             return
         }
         if (surfaceObj == null) {

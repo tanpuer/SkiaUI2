@@ -26,6 +26,7 @@
 #include "WebViewPage.h"
 #include "CameraPage.h"
 #include "FilamentPage.h"
+#include "ExoPlayerView.h"
 
 namespace HYSkiaUI {
 
@@ -98,7 +99,16 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->setMargin({0, 0, 0, 50});
         scrollView->addView(flexboxLayout);
 
-        auto videoView = new YUVVideoView();
+//        auto videoView = new YUVVideoView();
+//        videoView->setContext(this->context);
+//        videoView->setWidthPercent(100);
+//        videoView->setHeightPercent(100);
+//        videoView->setSource("yiluxiangbei.mp4");
+//        videoView->setStyle(SkPaint::kStroke_Style);
+//        videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+//        flexboxLayout->addView(videoView);
+
+        auto videoView = new ExoPlayerView();
         videoView->setContext(this->context);
         videoView->setWidthPercent(100);
         videoView->setHeightPercent(100);
@@ -106,6 +116,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         videoView->setStyle(SkPaint::kStroke_Style);
         videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         flexboxLayout->addView(videoView);
+
         videoView->setOnClickListener([this, width, height](View *view) {
 //            auto page = new RecyclerViewPage();
 //            page->init(context, width, height);

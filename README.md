@@ -23,15 +23,17 @@ steps：
    YUVVideoView: render video by MediaCodec/SkRuntimeEffect.  
    LyricView: parse .lrc/.srt files, use RecyclerView to render lyric.  
    MovingArea: intercept TouchEvents by default and can move.  
+   scrollView: scroll, fling，for more optimizations.  
+   RecyclerView: adapter，ViewHolder，for more optimizations.  
    InputView: binding to Java EditText and render it's text.  
    Swiper: just like ViewPager.  
    Other CustomsViews: Loading, Switch, Radio, Picker...  
-   PlatformView: render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
+   **PlatformView**:  
+                 render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
                  render CameraView by ImageReader/ByteBuffer/SkRuntimeEffect.  
                  render 3D View by Filament(other engines can also supported)/SurfaceTexture/SkImage.  
+                 render Video by ExoPlayer/SurfaceTexture/SkImage.  
    ...
-8. scrollView: scroll, fling，for more optimizations.
-9. RecyclerView: adapter，ViewHolder，for more optimizations.
 10. Page: act as the same role as Activity.
 11. C++: See CppTest.cpp. 
 12. js: See test.js in assets. Import v8 to evaluate javascript. 

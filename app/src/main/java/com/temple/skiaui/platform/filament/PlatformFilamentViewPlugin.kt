@@ -119,8 +119,8 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
     }
 
     override fun release() {
-        super.release()
         skiaSurfaceDestroyed()
+        super.release()
     }
 
     override fun onShow() {
