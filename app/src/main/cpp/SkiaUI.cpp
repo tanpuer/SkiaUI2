@@ -245,7 +245,7 @@ native_AttachSurfaceTexture(JNIEnv *env, jobject instance, jlong javaGLApp, jint
 
 extern "C" JNIEXPORT void JNICALL
 native_MarkDirty(JNIEnv *env, jobject instance, jobject viewPtr) {
-    ALOGD("native_MarkDirty")
+//    ALOGD("native_MarkDirty")
     auto view = reinterpret_cast<PlatformView *>(viewPtr);
     if (view != nullptr) {
         view->markDirty();

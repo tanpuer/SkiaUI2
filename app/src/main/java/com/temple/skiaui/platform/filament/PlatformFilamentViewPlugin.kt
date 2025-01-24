@@ -1,6 +1,7 @@
 package com.temple.skiaui.platform.filament
 
 import android.animation.ValueAnimator
+import android.graphics.SurfaceTexture
 import android.opengl.Matrix
 import android.os.Handler
 import android.os.Looper
@@ -56,12 +57,6 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
 
     init {
         pluginHandler.post {
-            skiaSurfaceCreated()
-        }
-    }
-
-    override fun skiaSurfaceCreated() {
-        pluginHandler.post {
             createSurface()
             if (swapChain != null) {
                 return@post
@@ -71,6 +66,9 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
                 swapChain = filamentEngine.createSwapChain(it)
             }
         }
+    }
+
+    override fun skiaSurfaceCreated() {
     }
 
     override fun skiaSurfaceDestroyed() {
@@ -95,6 +93,8 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
             swapChain = null
         }
     }
+
+    override fun type(): String = "FilamentView"
 
     private fun initEngine() {
         setupFilament()
@@ -125,10 +125,24 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
 
     override fun onShow() {
         super.onShow()
+        pluginHandler.post {
+            createSurface()
+            if (swapChain != null) {
+                return@post
+            }
+            surfaceObj?.surface?.let {
+                initEngine()
+                swapChain = filamentEngine.createSwapChain(it)
+            }
+        }
     }
 
     override fun onHide() {
         super.onHide()
+    }
+
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+        super.onFrameAvailable(surfaceTexture)
     }
 
     private fun setupFilament() {

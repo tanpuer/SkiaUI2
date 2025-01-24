@@ -20,21 +20,20 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     private var exoPlayer: ExoPlayer? = null
     private var assetsPath: String = ""
+    private var currentPosition: Long = 0L
 
     override fun skiaSurfaceCreated() {
-        pluginHandler.post {
-            if (show && skiaShow) {
-                createSurface()
-                exoPlayer?.setVideoSurface(surfaceObj?.surface)
-                exoPlayer?.play()
-            }
-        }
     }
 
     override fun skiaSurfaceDestroyed() {
         pluginHandler.post {
+            if (exoPlayer == null) {
+                return@post
+            }
+            currentPosition = exoPlayer?.currentPosition?: 0L
             exoPlayer?.setVideoSurface(null)
-            exoPlayer?.pause()
+            exoPlayer?.release()
+            exoPlayer = null
         }
     }
 
@@ -46,6 +45,8 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     }
 
+    override fun type(): String = "ExoPlayerView"
+
     fun setSource(assetsPath: String) {
         pluginHandler.post {
             this.assetsPath = assetsPath
@@ -56,6 +57,9 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     @OptIn(UnstableApi::class)
     private fun initializeReader() {
+        if (exoPlayer != null) {
+            return
+        }
         exoPlayer = ExoPlayer.Builder(HYSkiaUIApp.getInstance()).build()
         val dataSourceFactory = DataSource.Factory { AssetDataSource(HYSkiaUIApp.getInstance()) }
         val uri = Uri.parse("asset:///$assetsPath")
@@ -79,19 +83,29 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     override fun onShow() {
         super.onShow()
         pluginHandler.post {
+            val exoplayerIsNull = exoPlayer == null
+            if (exoplayerIsNull) {
+                initializeReader()
+            }
             if (surfaceObj?.surface == null) {
                 createSurface()
                 exoPlayer?.setVideoSurface(surfaceObj?.surface)
             }
             exoPlayer?.play()
+            if (exoplayerIsNull) {
+                if (currentPosition != 0L) {
+                    exoPlayer?.seekTo(currentPosition)
+                    currentPosition = 0L
+                }
+            } else {
+                exoPlayer?.seekTo(exoPlayer?.currentPosition?: 0L)
+            }
         }
     }
 
     override fun onHide() {
         super.onHide()
-        pluginHandler.post {
-            exoPlayer?.pause()
-        }
+        skiaSurfaceDestroyed()
     }
 
 }

@@ -63,6 +63,8 @@ abstract class SurfaceTextureBasePlugin(
 
     abstract fun skiaSurfaceDestroyed()
 
+    abstract fun type(): String
+
     fun getSkImage(): Long {
         return skImagePtr
     }
@@ -77,12 +79,16 @@ abstract class SurfaceTextureBasePlugin(
         }
         deleteSkImage(skImagePtr)
         skImagePtr = 0L
-        pluginThread.quitSafely()
+        pluginHandler.post {
+            pluginThread.quitSafely()
+        }
     }
 
     open fun onShow() {
         show = true
         Choreographer.getInstance().postFrameCallback(this)
+        //pop to this page, onFrameAvailable sometimes will never be called
+        onFrameAvailable(surfaceObj?.surfaceTexture)
     }
 
     open fun onHide() {
@@ -144,13 +150,13 @@ abstract class SurfaceTextureBasePlugin(
             return
         }
         engine.postToSkiaGL {
-            if (!this.show || this.released) {
+            if (!this.show || this.released || !skiaShow || surfaceTexture?.isReleased == true) {
                 return@postToSkiaGL
             }
-            surfaceObj?.surfaceTexture?.updateTexImage()
+            surfaceTexture?.updateTexImage()
         }
         engine.postToSkiaUI {
-            if (!this.show || this.released) {
+            if (!this.show || this.released || !skiaShow) {
                 return@postToSkiaUI
             }
             engine.markDirty(viewPtr)
@@ -163,5 +169,6 @@ abstract class SurfaceTextureBasePlugin(
 
     companion object {
         private var INDEX = 0
+        private const val TAG = "SurfaceTextureBase"
     }
 }

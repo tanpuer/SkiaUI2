@@ -168,7 +168,7 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
         }
     }
 
-    fun getCameraRotation(context: Context, cameraId: String): Int {
+    private fun getCameraRotation(context: Context, cameraId: String): Int {
         // 获取 WindowManager
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val rotation = windowManager.defaultDisplay.rotation

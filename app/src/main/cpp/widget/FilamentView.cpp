@@ -71,7 +71,7 @@ void FilamentView::onHide() {
 }
 
 bool FilamentView::onInterceptTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
-    return true;
+    return false;
 }
 
 bool FilamentView::onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {

@@ -27,6 +27,7 @@
 #include "CameraPage.h"
 #include "FilamentPage.h"
 #include "ExoPlayerView.h"
+#include "FilamentView.h"
 
 namespace HYSkiaUI {
 
@@ -99,16 +100,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->setMargin({0, 0, 0, 50});
         scrollView->addView(flexboxLayout);
 
-//        auto videoView = new YUVVideoView();
-//        videoView->setContext(this->context);
-//        videoView->setWidthPercent(100);
-//        videoView->setHeightPercent(100);
-//        videoView->setSource("yiluxiangbei.mp4");
-//        videoView->setStyle(SkPaint::kStroke_Style);
-//        videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
-//        flexboxLayout->addView(videoView);
-
-        auto videoView = new ExoPlayerView();
+        auto videoView = new YUVVideoView();
         videoView->setContext(this->context);
         videoView->setWidthPercent(100);
         videoView->setHeightPercent(100);
@@ -117,11 +109,16 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         flexboxLayout->addView(videoView);
 
+//        auto videoView = new ExoPlayerView();
+//        videoView->setContext(this->context);
+//        videoView->setWidthPercent(100);
+//        videoView->setHeightPercent(100);
+//        videoView->setSource("yiluxiangbei.mp4");
+//        videoView->setStyle(SkPaint::kStroke_Style);
+//        videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
+//        flexboxLayout->addView(videoView);
+
         videoView->setOnClickListener([this, width, height](View *view) {
-//            auto page = new RecyclerViewPage();
-//            page->init(context, width, height);
-//            context->getPageStackManager()->push(page);
-//            page->enterFromRight(Page::EnterExitInfo(width, 0));
             auto page = new WebViewPage();
             page->init(context, width, height);
             context->getPageStackManager()->push(page);
@@ -142,6 +139,18 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             flexboxLayout->removeView(loadingView);
         });
     }
+
+//    {
+//        auto filament = new FilamentView();
+//        filament->setContext(this->context);
+//        filament->setWidth(width);
+//        filament->setHeight(500);
+//        filament->setStyle(SkPaint::kStroke_Style);
+//        filament->setBackgroundColor(SK_ColorTRANSPARENT);
+//        filament->setStrokeWidth(0);
+//        filament->setMargin({0, 0, 0, 50});
+//        scrollView->addView(filament);
+//    }
 
     {
         auto flexboxLayout = new FlexboxLayout();
