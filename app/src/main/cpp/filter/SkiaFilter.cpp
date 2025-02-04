@@ -108,7 +108,7 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
     GrGLuint texID;
     glGenTextures(1, &texID);
 
-    GrGLuint target = GR_GL_TEXTURE_EXTERNAL;
+    GrGLuint target = GR_GL_TEXTURE_2D;
     glBindTexture(target, texID);
     // 设置纹理参数
     glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -150,6 +150,7 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
                 delete helper;
             }, textureSurfaceHelper);
     image->ref();
+    ALOGD("attachSurfaceTexture %d %p", texID, image.get())
     return reinterpret_cast<long >(image.get());
 }
 
