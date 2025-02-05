@@ -21,6 +21,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     private var exoPlayer: ExoPlayer? = null
     private var assetsPath: String = ""
     private var currentPosition: Long = 0L
+    private var renderFirstFrame = false
 
     override fun skiaSurfaceCreated() {
     }
@@ -30,7 +31,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
             if (exoPlayer == null) {
                 return@post
             }
-            currentPosition = exoPlayer?.currentPosition?: 0L
+            currentPosition = exoPlayer?.currentPosition ?: 0L
             exoPlayer?.setVideoSurface(null)
             exoPlayer?.release()
             exoPlayer = null
@@ -45,9 +46,14 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     }
 
+    override fun getSkImage(): Long {
+        return if (renderFirstFrame) skImagePtr else 0
+    }
+
     override fun type(): String = "ExoPlayerView"
 
     fun setSource(assetsPath: String) {
+        renderFirstFrame = false
         pluginHandler.post {
             this.assetsPath = assetsPath
             createSurface()
@@ -70,6 +76,13 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
         exoPlayer?.repeatMode = Player.REPEAT_MODE_ALL
         exoPlayer?.prepare()
         exoPlayer?.play()
+        exoPlayer?.addListener(object : Player.Listener {
+            override fun onRenderedFirstFrame() {
+                engine.postToSkiaUI {
+                    renderFirstFrame = true
+                }
+            }
+        })
     }
 
     override fun release() {
@@ -98,7 +111,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
                     currentPosition = 0L
                 }
             } else {
-                exoPlayer?.seekTo(exoPlayer?.currentPosition?: 0L)
+                exoPlayer?.seekTo(exoPlayer?.currentPosition ?: 0L)
             }
         }
     }

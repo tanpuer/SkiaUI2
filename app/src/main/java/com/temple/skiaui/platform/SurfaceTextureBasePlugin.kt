@@ -16,7 +16,7 @@ abstract class SurfaceTextureBasePlugin(
     val viewPtr: Long
 ) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener {
 
-    private var skImagePtr: Long = 0L
+    protected var skImagePtr: Long = 0L
 
     private var downTime: Long = 0L
 
@@ -65,7 +65,7 @@ abstract class SurfaceTextureBasePlugin(
 
     abstract fun type(): String
 
-    fun getSkImage(): Long {
+    open fun getSkImage(): Long {
         return skImagePtr
     }
 
