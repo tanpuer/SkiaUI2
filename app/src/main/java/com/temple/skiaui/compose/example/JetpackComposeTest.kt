@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Camera
 import com.temple.skiaui.compose.core.Column
+import com.temple.skiaui.compose.core.ExoVideo
 import com.temple.skiaui.compose.core.Filament
 import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
@@ -63,7 +64,25 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                         },
                     color
                 )
+                Text(
+                    modifier = Modifier(context)
+                        .setSize(800, 100)
+                        .setTextSize(50),
+                    content = "这是YUV-Video",
+                    color = "#0000ff",
+                )
                 Video(
+                    modifier = Modifier(context).setSize(width, 360 * width / 640),
+                    "yiluxiangbei.mp4"
+                )
+                Text(
+                    modifier = Modifier(context)
+                        .setSize(800, 100)
+                        .setTextSize(50),
+                    content = "这是ExoPlayer-Video",
+                    color = "#0000ff",
+                )
+                ExoVideo(
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
                 )

@@ -15,6 +15,7 @@ import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeCamera
+import com.temple.skiaui.compose.widget.HYComposeExoVideo
 import com.temple.skiaui.compose.widget.HYComposeFilament
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
 import com.temple.skiaui.compose.widget.HYComposeIcon
@@ -85,6 +86,18 @@ fun LazyColumn(modifier: Modifier, backgroundColor: String, content: @Composable
 fun Video(modifier: Modifier, source: String) {
     ComposeNode<HYComposeVideo, HYComposeApplier>(
         factory = { HYComposeVideo(modifier) },
+        update = {
+            set(source) {
+                setSource(source)
+            }
+        }
+    )
+}
+
+@Composable
+fun ExoVideo(modifier: Modifier, source: String) {
+    ComposeNode<HYComposeExoVideo, HYComposeApplier>(
+        factory = { HYComposeExoVideo(modifier) },
         update = {
             set(source) {
                 setSource(source)

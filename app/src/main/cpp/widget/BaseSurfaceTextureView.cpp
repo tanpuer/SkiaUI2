@@ -25,11 +25,12 @@ void BaseSurfaceTextureView::layout(int l, int t, int r, int b) {
         auto jniEnv = context->getJniEnv();
         javaClass = jniEnv->FindClass(getJavaClassPath());
         javaConstructor = jniEnv->GetMethodID(javaClass, "<init>",
-                                                 "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
+                                              "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
         getSkImageMethodId = jniEnv->GetMethodID(javaClass, "getSkImage", "()J");
         showMethod = jniEnv->GetMethodID(javaClass, "onShow", "()V");
         hideMethod = jniEnv->GetMethodID(javaClass, "onHide", "()V");
         releaseMethod = jniEnv->GetMethodID(javaClass, "release", "()V");
+        sendTouchEventMethodId = jniEnv->GetMethodID(javaClass, "sendTouchEvent", "(IFF)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
         javaInstance = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(javaClass, javaConstructor,
