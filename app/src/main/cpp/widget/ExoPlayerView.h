@@ -1,10 +1,10 @@
 #pragma once
 
-#include "View.h"
+#include "BaseSurfaceTextureView.h"
 
 namespace HYSkiaUI {
 
-class ExoPlayerView : public View {
+class ExoPlayerView : public BaseSurfaceTextureView {
 
 public:
 
@@ -12,43 +12,17 @@ public:
 
     ~ExoPlayerView();
 
-    void layout(int l, int t, int r, int b) override;
+    const char *getJavaClassPath() override;
 
-    void draw(SkCanvas *canvas) override;
+    void initJNI() override;
 
-    void onShow() override;
+    void drawOneFrame() override;
 
-    void onHide() override;
-
-    void setSource(const char* source);
+    void setSource(const char *source);
 
     void setRenderFirstFrameCallback(std::function<void()> &&callback);
 
 private:
-
-    SkRect dstRect;
-
-    bool inited = false;
-
-    jclass javaExoPlayerClass = nullptr;
-
-    jmethodID javaExoConstructor = nullptr;
-
-    jobject javaExoPlayer = nullptr;
-
-    jmethodID getSkImageMethodId = nullptr;
-
-    long lastSkImagePtr = 0L;
-
-    SkImage *skImage = nullptr;
-
-    std::unique_ptr<SkPaint> platformPaint;
-
-    jmethodID releaseMethod = nullptr;
-
-    jmethodID showMethod = nullptr;
-
-    jmethodID hideMethod = nullptr;
 
     jmethodID setSourceMethodId = nullptr;
 

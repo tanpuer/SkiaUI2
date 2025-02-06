@@ -1,5 +1,6 @@
 package com.temple.skiaui.platform.webview
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -13,6 +14,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.temple.skiaui.platform.ICanvasProvider
 
+@SuppressLint("SetJavaScriptEnabled")
 class PlatformWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : WebView(context, attrs) {
