@@ -246,7 +246,7 @@ native_AttachSurfaceTexture(JNIEnv *env, jobject instance, jlong javaGLApp, jint
 extern "C" JNIEXPORT void JNICALL
 native_UpdateTexImage(JNIEnv *env, jobject instance, jlong javaGLApp,
                       jobject surfaceTexture, jlong skImagePtr) {
-    ALOGD("native_UpdateTexImage")
+//    ALOGD("native_UpdateTexImage")
     auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
         return glApp->updateTexImage(env, surfaceTexture, skImagePtr);
