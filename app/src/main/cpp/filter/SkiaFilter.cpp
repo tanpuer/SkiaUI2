@@ -146,7 +146,7 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
     sk_sp<SkImage> image = SkImages::BorrowTextureFrom(
             skiaContext.get(),
             backendTex, kTopLeft_GrSurfaceOrigin, kRGBA_8888_SkColorType,
-            kOpaque_SkAlphaType, nullptr, [](void *ctx) {
+            kPremul_SkAlphaType, nullptr, [](void *ctx) {
                 auto helper = static_cast<TextureSurfaceHelper *>(ctx);
                 delete helper;
             }, textureSurfaceHelper);
