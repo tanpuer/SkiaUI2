@@ -131,7 +131,7 @@ abstract class SurfaceTextureBasePlugin(
         }
         if (surfaceObj == null) {
             surfaceObj = SurfaceObj().apply {
-                this.surfaceTexture = SurfaceTexture(0).apply { detachFromGLContext() }
+                this.surfaceTexture = SurfaceTexture(INDEX).apply { detachFromGLContext() }
                 this.surface = Surface(this.surfaceTexture)
                 this.width = this@SurfaceTextureBasePlugin.width
                 this.height = this@SurfaceTextureBasePlugin.height
@@ -153,7 +153,9 @@ abstract class SurfaceTextureBasePlugin(
             if (!this.show || this.released || !skiaShow || surfaceTexture?.isReleased == true) {
                 return@postToSkiaGL
             }
-            surfaceTexture?.updateTexImage()
+            surfaceObj?.surfaceTexture?.let {
+                engine.updateTexImage(it, skImagePtr)
+            }
         }
         engine.postToSkiaUI {
             if (!this.show || this.released || !skiaShow) {

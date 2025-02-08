@@ -65,4 +65,10 @@ long SkiaGLApp::attachSurfaceTexture(JNIEnv* env, int width, int height, jobject
     return 0;
 }
 
+void SkiaGLApp::updateTexImage(JNIEnv *env, jobject surfaceTexture, long skImagePtr) {
+    if (mFilter != nullptr) {
+        return mFilter->updateTexImage(env, surfaceTexture, skImagePtr);
+    }
+}
+
 }

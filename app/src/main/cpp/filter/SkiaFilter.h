@@ -44,6 +44,8 @@ public:
 
     long attachSurfaceTexture(JNIEnv *env, int width, int height, jobject surfaceTexture) override;
 
+    void updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr) override;
+
 private:
 
     sk_sp<SkSurface> skiaSurface;
@@ -51,6 +53,8 @@ private:
     sk_sp<GrDirectContext> skiaContext;
 
     SkCanvas *skCanvas;
+
+    std::unordered_map<long, GrGLuint> surfaceTextureToTextureIdMap;
 
 };
 

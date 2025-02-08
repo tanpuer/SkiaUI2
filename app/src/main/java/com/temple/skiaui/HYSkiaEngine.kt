@@ -282,6 +282,10 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
     }
 
+    fun updateTexImage(surfaceTexture: SurfaceTexture, skImagePtr: Long) {
+        nativeUpdateTexImage(glApp, surfaceTexture, skImagePtr)
+    }
+
     fun markDirty(viewPtr: Long) {
         nativeMarkDirty(viewPtr)
     }
@@ -303,6 +307,12 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         height: Int,
         surfaceTexture: SurfaceTexture
     ): Long
+
+    private external fun nativeUpdateTexImage(
+        glApp: Long,
+        surfaceTexture: SurfaceTexture,
+        skImagePtr: Long
+    )
 
 
     private external fun nativeUIInit(assets: AssetManager, exampleType: Int): Long
@@ -331,7 +341,8 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
 
         private const val TAG = "SkiaUI"
-        private val MAX_FLING_VELOCITY = ViewConfiguration.get(HYSkiaUIApp.getInstance()).scaledMaximumFlingVelocity.toFloat()
+        private val MAX_FLING_VELOCITY =
+            ViewConfiguration.get(HYSkiaUIApp.getInstance()).scaledMaximumFlingVelocity.toFloat()
     }
 
 }

@@ -31,6 +31,8 @@ public:
 
     long attachSurfaceTexture(JNIEnv* env, int width, int height, jobject surfaceTexture);
 
+    void updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr);
+
 private:
 
     std::unique_ptr<EGLCore> mEGLCore;

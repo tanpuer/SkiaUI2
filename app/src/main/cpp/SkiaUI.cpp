@@ -244,6 +244,16 @@ native_AttachSurfaceTexture(JNIEnv *env, jobject instance, jlong javaGLApp, jint
 }
 
 extern "C" JNIEXPORT void JNICALL
+native_UpdateTexImage(JNIEnv *env, jobject instance, jlong javaGLApp,
+                      jobject surfaceTexture, jlong skImagePtr) {
+    ALOGD("native_UpdateTexImage")
+    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
+    if (glApp != nullptr) {
+        return glApp->updateTexImage(env, surfaceTexture, skImagePtr);
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
 native_MarkDirty(JNIEnv *env, jobject instance, jobject viewPtr) {
 //    ALOGD("native_MarkDirty")
     auto view = reinterpret_cast<PlatformView *>(viewPtr);
@@ -278,6 +288,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativePerformTimeout",                "(JJ)V",                                        (void *) native_PerformTimeout},
         {"nativeWebViewProgressChange",         "(JI)V",                                        (void *) native_WebViewProgressChange},
         {"nativeAttachSurfaceTexture",          "(JIILandroid/graphics/SurfaceTexture;)J",      (void *) native_AttachSurfaceTexture},
+        {"nativeUpdateTexImage",                "(JLandroid/graphics/SurfaceTexture;J)V",       (void *) native_UpdateTexImage},
         {"nativeMarkDirty",                     "(J)V",                                         (void *) native_MarkDirty},
 };
 

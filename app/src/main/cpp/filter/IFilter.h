@@ -24,6 +24,8 @@ public:
 
     virtual long attachSurfaceTexture(JNIEnv* env, int width, int height, jobject surfaceTexture) = 0;
 
+    virtual void updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr) = 0;
+
 protected:
 
     int width = 0;

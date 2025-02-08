@@ -152,7 +152,25 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
             }, textureSurfaceHelper);
     image->ref();
     ALOGD("attachSurfaceTexture %d %p", texID, image.get())
+    surfaceTextureToTextureIdMap.emplace(reinterpret_cast<long>(image.get()), texID);
     return reinterpret_cast<long >(image.get());
+}
+
+void SkiaFilter::updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr) {
+//    skiaContext->flushAndSubmit();
+    skiaContext->resetContext(kAll_GrBackendState);
+    ALOGD("attachSurfaceTexture %ld", skImagePtr)
+    auto itr = surfaceTextureToTextureIdMap.find(skImagePtr);
+    if (itr == surfaceTextureToTextureIdMap.end()) {
+        return;
+    }
+    auto texID = itr->second;
+    GrGLuint target = GR_GL_TEXTURE_EXTERNAL;
+//    glActiveTexture(GL_TEXTURE0 + texID);
+    glBindTexture(target, texID);
+    static auto jClazz = env->GetObjectClass(surfaceTexture);
+    static auto updateTexImage = env->GetMethodID(jClazz, "updateTexImage", "()V");
+    env->CallVoidMethod(surfaceTexture, updateTexImage);
 }
 
 }
