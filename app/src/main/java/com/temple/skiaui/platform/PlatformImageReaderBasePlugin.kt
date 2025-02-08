@@ -7,7 +7,6 @@ import android.media.ImageReader
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.util.Log
 import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine
@@ -22,8 +21,6 @@ abstract class PlatformImageReaderBasePlugin(
     protected var imageReader: ImageReader? = null
 
     protected var surface: Surface? = null
-
-    protected val mainHandler = Handler(Looper.getMainLooper())
 
     protected val imageReaderThread = HandlerThread("${TAG}:${INDEX++}").apply { start() }
 

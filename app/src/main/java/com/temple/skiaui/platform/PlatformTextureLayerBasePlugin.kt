@@ -121,7 +121,6 @@ abstract class PlatformTextureLayerBasePlugin(
                     if (!this.show || this.released) {
                         return@postToSkiaGL
                     }
-
                     surfaceObj?.surfaceTexture?.let {
                         engine.updateTexImage(it, skImagePtr)
                     }
