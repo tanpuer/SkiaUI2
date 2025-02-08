@@ -41,7 +41,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
 
     fun start(width: Int, height: Int): Long {
         return runCompose({
-            var color by remember { mutableStateOf("#ff0000") }
+            var color by remember { mutableStateOf(randomColor()) }
             var shaderSource by remember {
                 mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
             }
@@ -86,12 +86,12 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
                 )
+                Filament(modifier = Modifier(context).setSize(width, 500))
                 Camera(Modifier(context).setSize(width, width), object : CameraCallback {
                     override fun onImageCaptured(imagePtr: Long) {
 
                     }
                 })
-                Filament(modifier = Modifier(context).setSize(width, 500))
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)

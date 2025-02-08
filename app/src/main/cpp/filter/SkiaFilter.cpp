@@ -15,6 +15,7 @@
 #include "GrAHardwareBufferUtils.h"
 #include "android/GrAHardwareBufferUtils.h"
 #include "gpu/ganesh/gl/GrGLDefines.h"
+#include "GLES2/gl2ext.h"
 
 namespace HYSkiaUI {
 
@@ -108,7 +109,7 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
     GrGLuint texID;
     glGenTextures(1, &texID);
 
-    GrGLuint target = GR_GL_TEXTURE_2D;
+    GrGLuint target = GR_GL_TEXTURE_EXTERNAL;
     glBindTexture(target, texID);
     // 设置纹理参数
     glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -129,7 +130,7 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
     env->CallVoidMethod(surfaceTexture, attachToGLContext, texID);
     env->CallVoidMethod(surfaceTexture, updateTexImage);
 
-    GrBackendFormat format = GetGLBackendFormat(skiaContext.get(), GR_GL_RGBA8, false);
+    GrBackendFormat format = GrBackendFormats::MakeGL(GR_GL_RGBA8, target);
     GrGLTextureInfo textureInfo;
     textureInfo.fID = texID;
     textureInfo.fTarget = target;
