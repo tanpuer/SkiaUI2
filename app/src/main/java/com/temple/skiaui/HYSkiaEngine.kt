@@ -10,6 +10,7 @@ import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
 import android.view.ViewConfiguration
+import androidx.annotation.MainThread
 import androidx.core.math.MathUtils.clamp
 import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.Executors
@@ -69,6 +70,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
     }
 
+    @MainThread
     fun createSurface(surface: Surface) {
         pic.set(0L)
         finishDraw.set(true)
@@ -82,6 +84,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         createdFlag = true
     }
 
+    @MainThread
     fun changeSurfaceSize(width: Int, height: Int) {
         skiaGLHandler.post {
             nativeGLChanged(glApp, width, height, System.currentTimeMillis() / 1000)
@@ -98,6 +101,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
     }
 
+    @MainThread
     fun destroySurface() {
         skiaUIHandler.post {
             nativeUIHide(uiApp)
@@ -110,14 +114,17 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
     }
 
+    @MainThread
     fun addSkiaSurfaceListener(key: String, callback: (enable: Boolean) -> Unit) {
         createListeners[key] = callback
     }
 
+    @MainThread
     fun removeSurfaceListener(key: String) {
         createListeners.remove(key)
     }
 
+    @MainThread
     fun doFrame(time: Long) {
         frameCount++
         if (frameCount == refreshRate) {
@@ -149,6 +156,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
     }
 
+    @MainThread
     fun dispatchHYTouchEvent(event: MotionEvent): Boolean {
         val x = event.x
         val y = event.y

@@ -9,6 +9,7 @@ import android.media.MediaFormat
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.util.Log
 import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine
@@ -38,6 +39,8 @@ class HYSkiaVideo internal constructor(
     }
 
     private val decodeHandler = Handler(decodeThread.looper)
+
+    private val mainHandler = Handler(Looper.getMainLooper())
 
     private var skImagePtr = 0L
 
@@ -92,7 +95,9 @@ class HYSkiaVideo internal constructor(
             this.initializeReader()
         }
         decodeHandler.postDelayed(decodeOneFrameRunnable, 100)
-        engine.addSkiaSurfaceListener(threadName, createListener)
+        mainHandler.post {
+            engine.addSkiaSurfaceListener(threadName, createListener)
+        }
         playAudio()
     }
 
@@ -234,7 +239,9 @@ class HYSkiaVideo internal constructor(
         }
         decodeThread.quitSafely()
         audioTracker?.release()
-        engine.removeSurfaceListener(threadName)
+        mainHandler.post {
+            engine.removeSurfaceListener(threadName)
+        }
     }
 
     fun start() {

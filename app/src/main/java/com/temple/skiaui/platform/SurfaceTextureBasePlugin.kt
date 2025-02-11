@@ -3,6 +3,7 @@ package com.temple.skiaui.platform
 import android.graphics.SurfaceTexture
 import android.os.Handler
 import android.os.HandlerThread
+import android.os.Looper
 import android.util.Log
 import android.view.Choreographer
 import android.view.MotionEvent
@@ -36,6 +37,8 @@ abstract class SurfaceTextureBasePlugin(
 
     protected val pluginHandler = Handler(pluginThread.looper)
 
+    protected val mainHandler = Handler(Looper.getMainLooper())
+
     @Volatile
     protected var released = false
 
@@ -53,7 +56,7 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     init {
-        pluginHandler.post {
+        mainHandler.post {
             engine.addSkiaSurfaceListener(index, createListener)
         }
         Choreographer.getInstance().postFrameCallback(this)
@@ -74,8 +77,10 @@ abstract class SurfaceTextureBasePlugin(
         released = true
         pluginHandler.post {
             surfaceObj?.surfaceTexture?.setOnFrameAvailableListener(null)
-            engine.removeSurfaceListener(index)
             surfaceObj?.release()
+        }
+        mainHandler.post {
+            engine.removeSurfaceListener(index)
         }
         deleteSkImage(skImagePtr)
         skImagePtr = 0L
