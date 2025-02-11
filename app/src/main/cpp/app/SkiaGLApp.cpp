@@ -24,6 +24,8 @@ void SkiaGLApp::change(int width, int height, long time) {
     mWidth = width;
     mHeight = height;
     glViewport(0, 0, width, height);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     mFilter->setWindowSize(width, height);
     mEGLCore->swapBuffer();
 }
