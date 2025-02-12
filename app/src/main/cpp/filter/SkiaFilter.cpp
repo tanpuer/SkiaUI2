@@ -157,9 +157,11 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
 }
 
 void SkiaFilter::updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr) {
+    if (skiaContext == nullptr) {
+        return;
+    }
 //    skiaContext->flushAndSubmit();
     skiaContext->resetContext(kAll_GrBackendState);
-//    ALOGD("attachSurfaceTexture %ld", skImagePtr)
     auto itr = surfaceTextureToTextureIdMap.find(skImagePtr);
     if (itr == surfaceTextureToTextureIdMap.end()) {
         return;
