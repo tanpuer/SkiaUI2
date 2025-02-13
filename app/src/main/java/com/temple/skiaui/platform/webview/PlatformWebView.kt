@@ -40,7 +40,10 @@ class PlatformWebView @JvmOverloads constructor(
             return
         }
         glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
+        glCanvas.save()
+        glCanvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
         super.onDraw(glCanvas)
+        glCanvas.restore()
         render?.unLockCanvas(glCanvas)
     }
 
