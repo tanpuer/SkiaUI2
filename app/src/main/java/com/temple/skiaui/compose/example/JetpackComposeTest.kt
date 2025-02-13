@@ -20,6 +20,7 @@ import com.temple.skiaui.compose.core.Switch
 import com.temple.skiaui.compose.core.Text
 import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
+import com.temple.skiaui.compose.core.Web
 import com.temple.skiaui.compose.core.runCompose
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
@@ -63,17 +64,6 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                             color = randomColor()
                         },
                     color
-                )
-                Text(
-                    modifier = Modifier(context)
-                        .setSize(800, 100)
-                        .setTextSize(50),
-                    content = "这是YUV-Video",
-                    color = "#0000ff",
-                )
-                Video(
-                    modifier = Modifier(context).setSize(width, 360 * width / 640),
-                    "yiluxiangbei.mp4"
                 )
                 Text(
                     modifier = Modifier(context)
@@ -147,6 +137,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                     Icon(modifier = Modifier(context), 0xe61f)
                 }
                 Switch(Modifier(context))
+                Web(Modifier(context).setSize(width, 1200), "https://m.bilibili.com/")
             }
         }, width, height, engine, context)
     }

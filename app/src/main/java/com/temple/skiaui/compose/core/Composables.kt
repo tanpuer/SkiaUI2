@@ -29,6 +29,7 @@ import com.temple.skiaui.compose.widget.HYComposeSwitch
 import com.temple.skiaui.compose.widget.HYComposeText
 import com.temple.skiaui.compose.widget.HYComposeVideo
 import com.temple.skiaui.compose.widget.HYComposeView
+import com.temple.skiaui.compose.widget.HYComposeWeb
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
@@ -243,6 +244,18 @@ fun Filament(modifier: Modifier) {
         factory = { HYComposeFilament(modifier) },
         update = {
 
+        }
+    )
+}
+
+@Composable
+fun Web(modifier: Modifier, url: String) {
+    ComposeNode<HYComposeWeb, HYComposeApplier>(
+        factory = { HYComposeWeb(modifier) },
+        update = {
+            set(url) {
+                loadUrl(url)
+            }
         }
     )
 }
