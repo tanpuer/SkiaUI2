@@ -16,6 +16,7 @@
 #include "android/GrAHardwareBufferUtils.h"
 #include "gpu/ganesh/gl/GrGLDefines.h"
 #include "GLES2/gl2ext.h"
+#include <android/surface_texture_jni.h>
 
 namespace HYSkiaUI {
 
@@ -123,12 +124,9 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
         return 0L;
     }
 
-    static auto jClazz = env->GetObjectClass(surfaceTexture);
-    static auto attachToGLContext = env->GetMethodID(jClazz, "attachToGLContext", "(I)V");
-    static auto updateTexImage = env->GetMethodID(jClazz, "updateTexImage", "()V");
-
-    env->CallVoidMethod(surfaceTexture, attachToGLContext, texID);
-    env->CallVoidMethod(surfaceTexture, updateTexImage);
+    auto nativeSurfaceTexture = ASurfaceTexture_fromSurfaceTexture(env, surfaceTexture);
+    ASurfaceTexture_attachToGLContext(nativeSurfaceTexture, texID);
+    ASurfaceTexture_updateTexImage(nativeSurfaceTexture);
 
     GrBackendFormat format = GrBackendFormats::MakeGL(GR_GL_RGBA8, target);
     GrGLTextureInfo textureInfo;
@@ -170,9 +168,8 @@ void SkiaFilter::updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImag
     GrGLuint target = GR_GL_TEXTURE_EXTERNAL;
 //    glActiveTexture(GL_TEXTURE0 + texID);
     glBindTexture(target, texID);
-    static auto jClazz = env->GetObjectClass(surfaceTexture);
-    static auto updateTexImage = env->GetMethodID(jClazz, "updateTexImage", "()V");
-    env->CallVoidMethod(surfaceTexture, updateTexImage);
+    auto nativeSurfaceTexture = ASurfaceTexture_fromSurfaceTexture(env, surfaceTexture);
+    ASurfaceTexture_updateTexImage(nativeSurfaceTexture);
 }
 
 }
