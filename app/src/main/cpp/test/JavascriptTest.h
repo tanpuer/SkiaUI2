@@ -17,11 +17,17 @@ public:
 
     void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
+    std::shared_ptr<V8Runtime>& getV8Runtime();
+
 public:
 
     int FRAME_INDEX = 0;
 
     std::map<int, v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>> frameCallbackMap;
+
+    int TIMER_INDEX = 0;
+
+    std::map<int, v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>> timerCallbackMap;
 
 private:
 
@@ -32,6 +38,8 @@ private:
     void injectFrameCallback();
 
     void injectPerformance();
+
+    void injectTimer();
 
 private:
 

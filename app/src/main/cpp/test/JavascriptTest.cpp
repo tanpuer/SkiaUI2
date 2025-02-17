@@ -3,6 +3,7 @@
 #include "animationFrame.h"
 #include "MeasureTime.h"
 #include "performance.h"
+#include "timer.h"
 
 namespace HYSkiaUI {
 
@@ -13,6 +14,7 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         context->setV8Runtime(v8Runtime);
         injectConsole();
         injectFrameCallback();
+        injectTimer();
         injectViews();
 
         createRoot(width, height);
@@ -87,6 +89,15 @@ void JavascriptTest::injectPerformance() {
             }
     );
     v8Runtime->injectObject(v8Runtime->global(), "performance", performanceMap, {});
+}
+
+void JavascriptTest::injectTimer() {
+    v8Runtime->injectFunction("setTimeout", setTimeout, this);
+    v8Runtime->injectFunction("clearTimeout", clearTimeout, this);
+}
+
+std::shared_ptr<V8Runtime> &JavascriptTest::getV8Runtime() {
+    return v8Runtime;
 }
 
 }
