@@ -20,6 +20,10 @@ public:
 
     void setSource(const char *source);
 
+    const char* getSource();
+
+    const char * name() override;
+
     void setRenderFirstFrameCallback(std::function<void()> &&callback);
 
 private:

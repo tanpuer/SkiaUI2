@@ -39,4 +39,12 @@ void ExoPlayerView::drawOneFrame() {
     }
 }
 
+const char *ExoPlayerView::getSource() {
+    return source.c_str();
+}
+
+const char *ExoPlayerView::name() {
+    return "ExoPlayerView";
+}
+
 }
