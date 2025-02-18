@@ -12,7 +12,7 @@ auto handleConsole = [](const v8::FunctionCallbackInfo<v8::Value> &args) -> std:
         v8::Local<v8::Value> arg = args[i];
         v8::String::Utf8Value value(isolate, arg);
         auto logInfo = std::string(*value, value.length());
-        result += logInfo;
+        result += " " + logInfo;
     }
     return result;
 };

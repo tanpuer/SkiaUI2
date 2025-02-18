@@ -15,7 +15,7 @@ public:
 
     ~JavascriptTest() override = default;
 
-    void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
+    virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
     std::shared_ptr<V8Runtime>& getV8Runtime();
 
@@ -29,9 +29,7 @@ public:
 
     std::map<int, v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>> timerCallbackMap;
 
-private:
-
-    void injectNodeApi();
+protected:
 
     void injectConsole();
 
@@ -41,7 +39,9 @@ private:
 
     void injectTimer();
 
-private:
+    bool injected = false;
+
+protected:
 
     void injectViews();
 
@@ -49,9 +49,7 @@ private:
 
     void invokeFrameCallback();
 
-    void createRoot(int width, int height);
-
-private:
+protected:
 
     std::shared_ptr<V8Runtime> v8Runtime;
 

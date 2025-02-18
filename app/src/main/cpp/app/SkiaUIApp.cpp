@@ -7,8 +7,9 @@
 #include "SkiaUIContext.h"
 #include "CppTest.h"
 #include "PageStackManager.h"
-#include "JavascriptTest.h"
+#include "SimpleJavascriptTest.h"
 #include "JetpackComposeTest.h"
+#include "ReactjsTest.h"
 
 namespace HYSkiaUI {
 
@@ -20,9 +21,11 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
     if (exampleType == 1) {
-        testDraw = std::make_unique<JavascriptTest>();
+        testDraw = std::make_unique<SimpleJavascriptTest>();
     } else if (exampleType == 2) {
         testDraw = std::make_unique<JetpackComposeTest>(env);
+    } else if (exampleType == 3) {
+        testDraw = std::make_unique<ReactjsTest>();
     } else {
         testDraw = std::make_unique<CppTest>();
     }
