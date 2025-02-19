@@ -37,8 +37,9 @@ steps：
 10. Page: act as the same role as Activity.
 11. C++: See CppTest.cpp. 
 12. js: See test.js in assets. Import v8 to evaluate javascript. 
-13. kotlin: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
-14. Dirty-Render: markDirty after "draw" if necessary.
+13. **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
+14. **React**: See react_bundle.js in assets. Import react/react-reconciler to run. 
+15. Dirty-Render: markDirty after "draw" if necessary.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
