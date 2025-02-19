@@ -6,6 +6,7 @@
 #include "ports/SkFontMgr_android.h"
 #include "effects/SkGradientShader.h"
 #include "skparagraph/include/TypefaceFontProvider.h"
+#include "color_util.h"
 
 namespace HYSkiaUI {
 
@@ -221,6 +222,17 @@ void TextView::setEllipsis(const char *ellipsis) {
     this->ellipsis = ellipsis;
     markDirty();
     markMeasure();
+}
+
+void TextView::setTextColor(const std::string &hexColor) {
+    textColor = hexColor;
+    int r, g, b, a;
+    hexToRGBA(hexColor, r, g, b, a);
+    setTextColor(SkColorSetARGB(a, r, g, b));
+}
+
+const char *TextView::getTextColor() {
+    return textColor.c_str();
 }
 
 }

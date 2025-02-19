@@ -83,6 +83,37 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
     };
     textTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "textSize"),
                                                   textSizeGetter, textSizeSetter);
+    auto textColorSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                             const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsString()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for textColor; expected a string");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (textView) {
+            v8::String::Utf8Value utf8(value);
+            textView->setTextColor(std::string(*utf8, utf8.length()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto textColorGetter = [](v8::Local<v8::String> property,
+                             const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (textView) {
+            info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), textView->getTextColor()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    textTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "textColor"),
+                                                  textColorGetter, textColorSetter);
     v8::Local<v8::Function> constructor = textTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "TextView"), constructor);
     return textTemplate;

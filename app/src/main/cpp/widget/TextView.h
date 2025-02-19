@@ -62,6 +62,10 @@ public:
 
     virtual void setTextColor(SkColor color);
 
+    virtual void setTextColor(const std::string &hexColor);
+
+    virtual const char *getTextColor();
+
     virtual void setTextSize(SkScalar textSize);
 
     virtual void setTextAlign(TextAlign textAlign);
@@ -148,6 +152,9 @@ protected:
     TextAlign textAlign = TextAlign::kLeft;
 
     SkString ellipsis = SkString("\u2026");
+
+    std::string textColor;
+
 };
 
 }
