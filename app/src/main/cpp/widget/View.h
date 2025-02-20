@@ -141,6 +141,22 @@ public:
 
     virtual void setPadding(std::vector<int> paddings);
 
+    virtual void setMarginTop(int marginTop);
+
+    virtual int getMarginTop();
+
+    virtual void setMarginLeft(int marginLeft);
+
+    virtual int getMarginLeft();
+
+    virtual void setMarginRight(int marginRight);
+
+    virtual int getMarginRight();
+
+    virtual void setMarginBottom(int marginBottom);
+
+    virtual int getMarginBottom();
+
     std::unique_ptr<SkPaint> paint;
 
     int marginLeft, marginTop, marginRight, marginBottom;

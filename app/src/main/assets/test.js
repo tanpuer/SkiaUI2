@@ -47,6 +47,7 @@ function createFirstRoot() {
     let lottieView = new LottieView();
     lottieView.width = 375;
     lottieView.height = 240;
+    lottieView.marginTop = 50;
     lottieView.src = "WorkspacePlanet.json";
     let lottieFlag = true;
     lottieView.setOnClickListener((_view) => {
@@ -81,6 +82,7 @@ function createFirstRoot() {
     button.textSize = 60;
     button.width = 260;
     button.height = 100;
+    button.marginTop = 50;
     button.setOnClickListener((view) => {
         console.log("button is clicked!");
         createSecondPage();
@@ -114,14 +116,16 @@ function createFirstRoot() {
     svgView.src = "tiger.svg";
     svgView.width = 600;
     svgView.height = 600;
+    svgView.marginTop = 50;
     scrollView.addView(svgView);
 
     let progressBar = new ProgressBar();
-    progressBar.width = 800
+    progressBar.width = SkiaUI.innerWidth - 100;
     progressBar.height = 60;
-    progressBar.backgroundColor = "#ffffff66";
+    progressBar.backgroundColor = "#00ff00";
     progressBar.barType = "linear";
     progressBar.barColor = "#ff0000";
+    progressBar.marginTop = 50;
     progressBar.autoMode = false;
     scrollView.addView(progressBar);
 
@@ -135,10 +139,13 @@ function createFirstRoot() {
         icon.color = "#ff00ff"
         iconContainer.addView(icon);
     });
+    iconContainer.marginTop = 50;
     scrollView.addView(iconContainer);
 
     let switchView = new Switch();
     switchView.enable = true;
+    switchView.marginTop = 50;
+    switchView.marginBottom = 50;
     switchView.setOnChangeListener((enable) => {
         console.log("switch enable ", enable);
     });

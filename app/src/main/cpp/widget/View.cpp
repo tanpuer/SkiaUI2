@@ -463,4 +463,44 @@ void View::clearMeasure() {
     needToMeasure = false;
 }
 
+void View::setMarginTop(int marginTop) {
+    this->marginTop = marginTop;
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeTop, marginTop);
+    markDirty();
+}
+
+int View::getMarginTop() {
+    return marginTop;
+}
+
+void View::setMarginLeft(int marginLeft) {
+    this->marginLeft = marginLeft;
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeLeft, marginLeft);
+    markDirty();
+}
+
+int View::getMarginLeft() {
+    return marginLeft;
+}
+
+void View::setMarginRight(int marginRight) {
+    this->marginRight = marginRight;
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeRight, marginRight);
+    markDirty();
+}
+
+int View::getMarginRight() {
+    return marginRight;
+}
+
+void View::setMarginBottom(int marginBottom) {
+    this->marginBottom = marginBottom;
+    YGNodeStyleSetMargin(node, YGEdge::YGEdgeBottom, marginBottom);
+    markDirty();
+}
+
+int View::getMarginBottom() {
+    return marginBottom;
+}
+
 }

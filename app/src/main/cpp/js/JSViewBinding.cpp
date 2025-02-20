@@ -148,6 +148,134 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             v8::String::NewFromUtf8(isolate, "flex"),
             viewFlexGetter,
             viewFlexSetter);
+    auto marginTopSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                             const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsNumber()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for flex; expected a number");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            view->setMarginTop(value->Int32Value());
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto marginTopGetter = [](v8::Local<v8::String> property,
+                             const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->getMarginTop()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "marginTop"),
+            marginTopGetter,
+            marginTopSetter);
+    auto marginLeftSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                              const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsNumber()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for flex; expected a number");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            view->setMarginLeft(value->Int32Value());
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto marginLeftGetter = [](v8::Local<v8::String> property,
+                              const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->getMarginLeft()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "marginLeft"),
+            marginLeftGetter,
+            marginLeftSetter);
+    auto marginRightSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                               const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsNumber()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for flex; expected a number");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            view->setMarginRight(value->Int32Value());
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto marginRightGetter = [](v8::Local<v8::String> property,
+                               const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->getMarginRight()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "marginRight"),
+            marginRightGetter,
+            marginRightSetter);
+    auto marginBottomSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                                const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsNumber()) {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
+                                                 "Invalid value for flex; expected a number");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            return;
+        }
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            view->setMarginBottom(value->Int32Value());
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    auto marginBottomGetter = [](v8::Local<v8::String> property,
+                                const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
+                info.Holder()->GetInternalField(0))->Value());
+        if (view) {
+            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->getMarginBottom()));
+        } else {
+            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
+            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        }
+    };
+    viewTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "marginBottom"),
+            marginBottomGetter,
+            marginBottomSetter);
     auto viewNameGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
         auto view = static_cast<View *>(v8::Local<v8::External>::Cast(
