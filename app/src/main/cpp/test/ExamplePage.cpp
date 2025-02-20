@@ -41,7 +41,6 @@ void ExamplePage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     setAlignItems(YGAlignCenter);
     setAlignContent(YGAlignCenter);
     setStyle(SkPaint::kFill_Style);
-    setBackgroundColor(SK_ColorTRANSPARENT);
     if (blackWhiteMode) {
         setBlackWhiteMode();
     }

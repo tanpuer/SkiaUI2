@@ -1,17 +1,5 @@
-let page = null;
-
-requestAnimationFrame(() => {
-    if (page != null) {
-        page.measure();
-        page.layout(0, 0, SkiaUI.innerWidth, SkiaUI.innerHeight);
-        page.draw();
-    }
-});
-
-let encoder = new TextEncoder();
-
-function createRoot() {
-    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, YUVVideoView, SVGView, Button,
+function createFirstRoot() {
+    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
         ProgressBar, Page, EnterExitInfo, Icon, FlexboxLayout, Switch
     } = SkiaUI;
     page = new Page();
@@ -28,7 +16,7 @@ function createRoot() {
         console.log("page onHide!");
     });
 
-    page.backgroundColor = "#ffffff";
+    page.backgroundColor = "#ffffff00";
     page.width = SkiaUI.innerWidth;
     page.height = SkiaUI.innerHeight;
 
@@ -37,7 +25,7 @@ function createRoot() {
     scrollView.flexWrap = "nowrap";
     scrollView.justifyContent = "flex-start";
     scrollView.alignItems = "center";
-    scrollView.backgroundColor = "#00000033";
+    scrollView.backgroundColor = "#ffffffff";
     scrollView.flexDirection = "column";
 
     let view = new View();
@@ -95,6 +83,7 @@ function createRoot() {
     button.height = 100;
     button.setOnClickListener((view) => {
         console.log("button is clicked!");
+        createSecondPage();
     });
     scrollView.addView(button);
 
@@ -115,7 +104,7 @@ function createRoot() {
     });
     scrollView.addView(imageView);
 
-    let videoView = new YUVVideoView();
+    let videoView = new VideoView();
     videoView.width = 1080;
     videoView.height = 360 * 1080 / 640;
     videoView.src = "yiluxiangbei.mp4";
@@ -160,3 +149,41 @@ function createRoot() {
     page.push(new EnterExitInfo(SkiaUI.innerWidth, 0));
     return page;
 }
+
+function createSecondPage() {
+    const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, VideoView, SVGView, Button,
+        ProgressBar, Page, EnterExitInfo, Icon, FlexboxLayout, Switch
+    } = SkiaUI;
+    page = new Page();
+    page.backgroundColor = "#ffffff00";
+    page.width = SkiaUI.innerWidth;
+    page.height = SkiaUI.innerHeight;
+
+    let scrollView = new ScrollView();
+    scrollView.flex = 1;
+    scrollView.flexWrap = "nowrap";
+    scrollView.justifyContent = "flex-start";
+    scrollView.alignItems = "center";
+    scrollView.backgroundColor = "#ffffffff";
+    scrollView.flexDirection = "column";
+
+    let view = new View();
+    view.width = 200;
+    console.log("View width is", view.width);
+    view.height = 200;
+    view.backgroundColor = "#ff0000";
+    view.setOnClickListener((_view) => {
+        const red = Math.floor(Math.random() * 256);
+        const green = Math.floor(Math.random() * 256);
+        const blue = Math.floor(Math.random() * 256);
+        const redHex = (red < 16 ? '0' : '') + red.toString(16);
+        const greenHex = (green < 16 ? '0' : '') + green.toString(16);
+        const blueHex = (blue < 16 ? '0' : '') + blue.toString(16);
+        view.backgroundColor = `#${redHex}${greenHex}${blueHex}`;
+    });
+    scrollView.addView(view);
+    page.addView(scrollView);
+    page.push(new EnterExitInfo(SkiaUI.innerWidth, 0));
+}
+
+createFirstRoot();

@@ -22,6 +22,7 @@ void Page::setContext(std::shared_ptr<SkiaUIContext> context) {
     if (runtime != nullptr && !createCallback.IsEmpty()) {
         runtime->performFunction(createCallback, 0, {});
     }
+    setBackgroundColor(SK_ColorTRANSPARENT);
 }
 
 Page::~Page() {
@@ -104,6 +105,7 @@ void Page::layout(int l, int t, int r, int b) {
     if (!visible) {
         return;
     }
+    ALOGD("CWTest animTranslateX: %f", animTranslateX)
     View::layout(l, t, r, b);
     SkASSERT(children.size() == 1);
     auto root = children[0];

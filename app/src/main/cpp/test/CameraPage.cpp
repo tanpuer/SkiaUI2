@@ -14,7 +14,6 @@ void CameraPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int he
     setAlignItems(YGAlignCenter);
     setAlignContent(YGAlignCenter);
     setStyle(SkPaint::kFill_Style);
-    setBackgroundColor(SK_ColorTRANSPARENT);
     initChildren(this, width, height);
 }
 

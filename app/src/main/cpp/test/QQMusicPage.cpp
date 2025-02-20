@@ -12,7 +12,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     setWidth(width);
     setHeight(height);
     setStyle(SkPaint::kFill_Style);
-    setBackgroundColor(SK_ColorTRANSPARENT);
 
     auto flexboxLayout = new FlexboxLayout();
     flexboxLayout->setContext(this->context);

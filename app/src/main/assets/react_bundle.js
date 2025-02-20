@@ -7034,160 +7034,6 @@ if (true) {
 
 /***/ }),
 
-/***/ 672:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-"use strict";
-var __webpack_unused_export__;
-/**
- * @license React
- * react-dom.production.js
- *
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-
-
-
-var React = __webpack_require__(43);
-function formatProdErrorMessage(code) {
-  var url = "https://react.dev/errors/" + code;
-  if (1 < arguments.length) {
-    url += "?args[]=" + encodeURIComponent(arguments[1]);
-    for (var i = 2; i < arguments.length; i++) url += "&args[]=" + encodeURIComponent(arguments[i]);
-  }
-  return "Minified React error #" + code + "; visit " + url + " for the full message or use the non-minified dev environment for full errors and additional helpful warnings.";
-}
-function noop() {}
-var Internals = {
-    d: {
-      f: noop,
-      r: function () {
-        throw Error(formatProdErrorMessage(522));
-      },
-      D: noop,
-      C: noop,
-      L: noop,
-      m: noop,
-      X: noop,
-      S: noop,
-      M: noop
-    },
-    p: 0,
-    findDOMNode: null
-  },
-  REACT_PORTAL_TYPE = Symbol.for("react.portal");
-function createPortal$1(children, containerInfo, implementation) {
-  var key = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : null;
-  return {
-    $$typeof: REACT_PORTAL_TYPE,
-    key: null == key ? null : "" + key,
-    children: children,
-    containerInfo: containerInfo,
-    implementation: implementation
-  };
-}
-var ReactSharedInternals = React.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE;
-function getCrossOriginStringAs(as, input) {
-  if ("font" === as) return "";
-  if ("string" === typeof input) return "use-credentials" === input ? input : "";
-}
-__webpack_unused_export__ = Internals;
-__webpack_unused_export__ = function (children, container) {
-  var key = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : null;
-  if (!container || 1 !== container.nodeType && 9 !== container.nodeType && 11 !== container.nodeType) throw Error(formatProdErrorMessage(299));
-  return createPortal$1(children, container, null, key);
-};
-exports.flushSync = function (fn) {
-  var previousTransition = ReactSharedInternals.T,
-    previousUpdatePriority = Internals.p;
-  try {
-    if (ReactSharedInternals.T = null, Internals.p = 2, fn) return fn();
-  } finally {
-    ReactSharedInternals.T = previousTransition, Internals.p = previousUpdatePriority, Internals.d.f();
-  }
-};
-__webpack_unused_export__ = function (href, options) {
-  "string" === typeof href && (options ? (options = options.crossOrigin, options = "string" === typeof options ? "use-credentials" === options ? options : "" : void 0) : options = null, Internals.d.C(href, options));
-};
-__webpack_unused_export__ = function (href) {
-  "string" === typeof href && Internals.d.D(href);
-};
-__webpack_unused_export__ = function (href, options) {
-  if ("string" === typeof href && options && "string" === typeof options.as) {
-    var as = options.as,
-      crossOrigin = getCrossOriginStringAs(as, options.crossOrigin),
-      integrity = "string" === typeof options.integrity ? options.integrity : void 0,
-      fetchPriority = "string" === typeof options.fetchPriority ? options.fetchPriority : void 0;
-    "style" === as ? Internals.d.S(href, "string" === typeof options.precedence ? options.precedence : void 0, {
-      crossOrigin: crossOrigin,
-      integrity: integrity,
-      fetchPriority: fetchPriority
-    }) : "script" === as && Internals.d.X(href, {
-      crossOrigin: crossOrigin,
-      integrity: integrity,
-      fetchPriority: fetchPriority,
-      nonce: "string" === typeof options.nonce ? options.nonce : void 0
-    });
-  }
-};
-__webpack_unused_export__ = function (href, options) {
-  if ("string" === typeof href) if ("object" === typeof options && null !== options) {
-    if (null == options.as || "script" === options.as) {
-      var crossOrigin = getCrossOriginStringAs(options.as, options.crossOrigin);
-      Internals.d.M(href, {
-        crossOrigin: crossOrigin,
-        integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-        nonce: "string" === typeof options.nonce ? options.nonce : void 0
-      });
-    }
-  } else null == options && Internals.d.M(href);
-};
-__webpack_unused_export__ = function (href, options) {
-  if ("string" === typeof href && "object" === typeof options && null !== options && "string" === typeof options.as) {
-    var as = options.as,
-      crossOrigin = getCrossOriginStringAs(as, options.crossOrigin);
-    Internals.d.L(href, as, {
-      crossOrigin: crossOrigin,
-      integrity: "string" === typeof options.integrity ? options.integrity : void 0,
-      nonce: "string" === typeof options.nonce ? options.nonce : void 0,
-      type: "string" === typeof options.type ? options.type : void 0,
-      fetchPriority: "string" === typeof options.fetchPriority ? options.fetchPriority : void 0,
-      referrerPolicy: "string" === typeof options.referrerPolicy ? options.referrerPolicy : void 0,
-      imageSrcSet: "string" === typeof options.imageSrcSet ? options.imageSrcSet : void 0,
-      imageSizes: "string" === typeof options.imageSizes ? options.imageSizes : void 0,
-      media: "string" === typeof options.media ? options.media : void 0
-    });
-  }
-};
-__webpack_unused_export__ = function (href, options) {
-  if ("string" === typeof href) if (options) {
-    var crossOrigin = getCrossOriginStringAs(options.as, options.crossOrigin);
-    Internals.d.m(href, {
-      as: "string" === typeof options.as && "script" !== options.as ? options.as : void 0,
-      crossOrigin: crossOrigin,
-      integrity: "string" === typeof options.integrity ? options.integrity : void 0
-    });
-  } else Internals.d.m(href);
-};
-__webpack_unused_export__ = function (form) {
-  Internals.d.r(form);
-};
-__webpack_unused_export__ = function (fn, a) {
-  return fn(a);
-};
-__webpack_unused_export__ = function (action, initialState, permalink) {
-  return ReactSharedInternals.H.useFormState(action, initialState, permalink);
-};
-__webpack_unused_export__ = function () {
-  return ReactSharedInternals.H.useHostTransitionStatus();
-};
-__webpack_unused_export__ = "19.0.0";
-
-/***/ }),
-
 /***/ 777:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -7205,7 +7051,7 @@ var StyleUtils = __webpack_require__(935);
 ;// ./src/render/PropsUtils.js
 function convertProps(view,props){if(props.onClick){view.setOnClickListener(_view=>{props.onClick();});}}function convertLottieProps(lottieView,props){if(props.src){lottieView.src=props.src;}convertProps(lottieView,props);}function convertVideoProps(videoView,props){if(props.src){videoView.src=props.src;}convertProps(videoView,props);}function convertShaderProps(shaderView,props){if(props.path){shaderView.setShaderPath(props.path,props.textures||[]);}convertProps(shaderView,props);}function convertButtonProps(buttonView,props){if(props.text){buttonView.text=props.text;}convertProps(buttonView,props);}function convertSVGProps(svgView,props){if(props.src){svgView.src=props.src;}convertProps(svgView,props);}function convertPageProps(page,props){if(props.onCreate){page.onCreate(props.onCreate);}if(props.onDestroy){page.onDestroy(props.onDestroy);}if(props.onShow){page.onShow(props.onShow);}if(props.onHide){page.onHide(props.onHide);}}function convertTextProps(textView,props){if(props.text){textView.text=props.text;}}
 ;// ./src/render/ViewFactory.js
-const{View,ScrollView,LottieView,YUVVideoView,Page,EnterExitInfo,innerWidth: ViewFactory_innerWidth,ShaderView,Button,SVGView,TextView}=SkiaUI;function createView(type,props){if(type==="view"){let view=new View();(0,StyleUtils.convertStyles)(view,props.style);convertProps(view,props);return view;}else if(type==="page"){let page=new Page();(0,StyleUtils.convertStyles)(page,props.style);convertPageProps(page,props);page.push(new EnterExitInfo(ViewFactory_innerWidth,0));return page;}else if(type==="scroll"){let scrollView=new ScrollView();(0,StyleUtils.convertStyles)(scrollView,props.style);return scrollView;}else if(type==="lottie"){let lottieView=new LottieView();(0,StyleUtils.convertStyles)(lottieView,props.style);convertLottieProps(lottieView,props);return lottieView;}else if(type==="video"){let videoView=new YUVVideoView();(0,StyleUtils.convertStyles)(videoView,props.style);convertVideoProps(videoView,props);return videoView;}else if(type==="shader"){let shaderView=new ShaderView();(0,StyleUtils.convertStyles)(shaderView,props.style);convertShaderProps(shaderView,props);return shaderView;}else if(type==="button"){let button=new Button();(0,StyleUtils.convertStyles)(button,props.style);convertButtonProps(button,props);return button;}else if(type==="svg"){let svgView=new SVGView();(0,StyleUtils.convertStyles)(svgView,props.style);convertSVGProps(svgView,props);return svgView;}else if(type==="text"){let textView=new TextView();(0,StyleUtils.convertStyles)(textView,props.style);convertTextProps(textView,props);return textView;}}
+const{View,ScrollView,LottieView,VideoView,Page,EnterExitInfo,innerWidth: ViewFactory_innerWidth,ShaderView,Button,SVGView,TextView}=SkiaUI;function createView(type,props){if(type==="view"){let view=new View();(0,StyleUtils.convertStyles)(view,props.style);convertProps(view,props);return view;}else if(type==="page"){let page=new Page();(0,StyleUtils.convertStyles)(page,props.style);convertPageProps(page,props);page.push(new EnterExitInfo(ViewFactory_innerWidth,0));return page;}else if(type==="scroll"){let scrollView=new ScrollView();(0,StyleUtils.convertStyles)(scrollView,props.style);return scrollView;}else if(type==="lottie"){let lottieView=new LottieView();(0,StyleUtils.convertStyles)(lottieView,props.style);convertLottieProps(lottieView,props);return lottieView;}else if(type==="video"){let videoView=new VideoView();(0,StyleUtils.convertStyles)(videoView,props.style);convertVideoProps(videoView,props);return videoView;}else if(type==="shader"){let shaderView=new ShaderView();(0,StyleUtils.convertStyles)(shaderView,props.style);convertShaderProps(shaderView,props);return shaderView;}else if(type==="button"){let button=new Button();(0,StyleUtils.convertStyles)(button,props.style);convertButtonProps(button,props);return button;}else if(type==="svg"){let svgView=new SVGView();(0,StyleUtils.convertStyles)(svgView,props.style);convertSVGProps(svgView,props);return svgView;}else if(type==="text"){let textView=new TextView();(0,StyleUtils.convertStyles)(textView,props.style);convertTextProps(textView,props);return textView;}}
 
 /***/ }),
 
@@ -7544,36 +7390,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 function convertStyles(view,styles){Object.keys(styles).forEach(key=>{view[key]=styles[key];});}function comparePrevStylesAndNextStyles(view,prevStyles,nextStyles){Object.keys(nextStyles).forEach(key=>{if(nextStyles[key]!==prevStyles[key]){view[key]=nextStyles[key];}});}
 
-/***/ }),
-
-/***/ 950:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-
-
-function checkDCE() {
-  /* global __REACT_DEVTOOLS_GLOBAL_HOOK__ */
-  if (typeof __REACT_DEVTOOLS_GLOBAL_HOOK__ === 'undefined' || typeof __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE !== 'function') {
-    return;
-  }
-  if (false) {}
-  try {
-    // Verify that the code above has been dead code eliminated (DCE'd).
-    __REACT_DEVTOOLS_GLOBAL_HOOK__.checkDCE(checkDCE);
-  } catch (err) {
-    // DevTools shouldn't crash React, no matter what.
-    // We should still report in case we break this code.
-    console.error(err);
-  }
-}
-if (true) {
-  // DCE check should happen before ReactDOM bundle executes so that
-  // DevTools can report bad minification during injection.
-  checkDCE();
-  module.exports = __webpack_require__(672);
-} else {}
-
 /***/ })
 
 /******/ 	});
@@ -7794,7 +7610,7 @@ function createMemoryHistory() {
   };
   return history;
 }
-function chunk_HA7DTUK3_createBrowserHistory() {
+function createBrowserHistory() {
   let options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   function createBrowserLocation(window2, globalHistory) {
     let {
@@ -7849,7 +7665,7 @@ function createHashHistory() {
   }
   return getUrlBasedHistory(createHashLocation, createHashHref, validateHashLocation, options);
 }
-function chunk_HA7DTUK3_invariant(value, message) {
+function invariant(value, message) {
   if (value === false || value === null || typeof value === "undefined") {
     throw new Error(message);
   }
@@ -7997,7 +7813,7 @@ function getUrlBasedHistory(getLocation, createHref2, validateLocation) {
     let base = window2.location.origin !== "null" ? window2.location.origin : window2.location.href;
     let href2 = typeof to === "string" ? to : createPath(to);
     href2 = href2.replace(/ $/, "%20");
-    chunk_HA7DTUK3_invariant(base, `No window.location.(origin|href) available to create URL for href: ${href2}`);
+    invariant(base, `No window.location.(origin|href) available to create URL for href: ${href2}`);
     return new URL(href2, base);
   }
   let history = {
@@ -8050,8 +7866,8 @@ function convertRoutesToDataRoutes(routes, mapRouteProperties2) {
   return routes.map((route, index) => {
     let treePath = [...parentPath, String(index)];
     let id = typeof route.id === "string" ? route.id : treePath.join("-");
-    chunk_HA7DTUK3_invariant(route.index !== true || !route.children, `Cannot specify children on an index route`);
-    chunk_HA7DTUK3_invariant(!manifest[id], `Found a route id collision on id "${id}".  Route id's must be globally unique within Data Router usages`);
+    invariant(route.index !== true || !route.children, `Cannot specify children on an index route`);
+    invariant(!manifest[id], `Found a route id collision on id "${id}".  Route id's must be globally unique within Data Router usages`);
     if (isIndexRoute(route)) {
       let indexRoute = {
         ...route,
@@ -8075,7 +7891,7 @@ function convertRoutesToDataRoutes(routes, mapRouteProperties2) {
     }
   });
 }
-function chunk_HA7DTUK3_matchRoutes(routes, locationArg) {
+function matchRoutes(routes, locationArg) {
   let basename = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "/";
   return matchRoutesImpl(routes, locationArg, basename, false);
 }
@@ -8120,13 +7936,13 @@ function flattenRoutes(routes) {
       route
     };
     if (meta.relativePath.startsWith("/")) {
-      chunk_HA7DTUK3_invariant(meta.relativePath.startsWith(parentPath), `Absolute route path "${meta.relativePath}" nested under path "${parentPath}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`);
+      invariant(meta.relativePath.startsWith(parentPath), `Absolute route path "${meta.relativePath}" nested under path "${parentPath}" is not valid. An absolute child route path must start with the combined path of all its parent routes.`);
       meta.relativePath = meta.relativePath.slice(parentPath.length);
     }
     let path = joinPaths([parentPath, meta.relativePath]);
     let routesMeta = parentsMeta.concat(meta);
     if (route.children && route.children.length > 0) {
-      chunk_HA7DTUK3_invariant(
+      invariant(
       // Our types know better, but runtime JS may not!
       // @ts-expect-error
       route.index !== true, `Index routes must not have child routes. Please remove all child routes from route path "${path}".`);
@@ -8263,7 +8079,7 @@ function generatePath(originalPath) {
     if (keyMatch) {
       const [, key, optional] = keyMatch;
       let param = params[key];
-      chunk_HA7DTUK3_invariant(optional === "?" || param != null, `Missing ":${key}" param`);
+      invariant(optional === "?" || param != null, `Missing ":${key}" param`);
       return stringify(param);
     }
     return segment.replace(/\?$/g, "");
@@ -8398,9 +8214,9 @@ function resolveTo(toArg, routePathnames, locationPathname) {
     to = {
       ...toArg
     };
-    chunk_HA7DTUK3_invariant(!to.pathname || !to.pathname.includes("?"), getInvalidPathError("?", "pathname", "search", to));
-    chunk_HA7DTUK3_invariant(!to.pathname || !to.pathname.includes("#"), getInvalidPathError("#", "pathname", "hash", to));
-    chunk_HA7DTUK3_invariant(!to.search || !to.search.includes("#"), getInvalidPathError("#", "search", "hash", to));
+    invariant(!to.pathname || !to.pathname.includes("?"), getInvalidPathError("?", "pathname", "search", to));
+    invariant(!to.pathname || !to.pathname.includes("#"), getInvalidPathError("#", "pathname", "hash", to));
+    invariant(!to.search || !to.search.includes("#"), getInvalidPathError("#", "search", "hash", to));
   }
   let isEmptyPath = toArg === "" || to.pathname === "";
   let toPathname = isEmptyPath ? "/" : to.pathname;
@@ -8527,10 +8343,10 @@ var defaultMapRouteProperties = route => ({
 });
 var TRANSITIONS_STORAGE_KEY = "remix-router-transitions";
 var ResetLoaderDataSymbol = Symbol("ResetLoaderData");
-function chunk_HA7DTUK3_createRouter(init) {
+function createRouter(init) {
   const routerWindow = init.window ? init.window : typeof window !== "undefined" ? window : void 0;
   const isBrowser2 = typeof routerWindow !== "undefined" && typeof routerWindow.document !== "undefined" && typeof routerWindow.document.createElement !== "undefined";
-  chunk_HA7DTUK3_invariant(init.routes.length > 0, "You must provide a non-empty routes array to createRouter");
+  invariant(init.routes.length > 0, "You must provide a non-empty routes array to createRouter");
   let mapRouteProperties2 = init.mapRouteProperties || defaultMapRouteProperties;
   let manifest = {};
   let dataRoutes = convertRoutesToDataRoutes(init.routes, mapRouteProperties2, void 0, manifest);
@@ -8547,7 +8363,7 @@ function chunk_HA7DTUK3_createRouter(init) {
   let getScrollRestorationKey2 = null;
   let getScrollPosition = null;
   let initialScrollRestored = init.hydrationData != null;
-  let initialMatches = chunk_HA7DTUK3_matchRoutes(dataRoutes, init.history.location, basename);
+  let initialMatches = matchRoutes(dataRoutes, init.history.location, basename);
   let initialMatchesIsFOW = false;
   let initialErrors = null;
   if (initialMatches == null && !patchRoutesOnNavigationImpl) {
@@ -8922,7 +8738,7 @@ function chunk_HA7DTUK3_createRouter(init) {
     let loadingNavigation = opts && opts.overrideNavigation;
     let matches = opts?.initialHydration && state.matches && state.matches.length > 0 && !initialMatchesIsFOW ?
     // `matchRoutes()` has already been called if we're in here via `router.initialize()`
-    state.matches : chunk_HA7DTUK3_matchRoutes(routesToUse, location, basename);
+    state.matches : matchRoutes(routesToUse, location, basename);
     let flushSync = (opts && opts.flushSync) === true;
     if (matches && state.initialized && !isRevalidationRequired && isHashChangeOnly(state.location, location) && !(opts && opts.submission && isMutationMethod(opts.submission.formMethod))) {
       completeNavigation(location, {
@@ -9275,7 +9091,7 @@ function chunk_HA7DTUK3_createRouter(init) {
     let flushSync = (opts && opts.flushSync) === true;
     let routesToUse = inFlightDataRoutes || dataRoutes;
     let normalizedPath = normalizeTo(state.location, state.matches, basename, href2, routeId, opts?.relative);
-    let matches = chunk_HA7DTUK3_matchRoutes(routesToUse, normalizedPath, basename);
+    let matches = matchRoutes(routesToUse, normalizedPath, basename);
     let fogOfWar = checkFogOfWar(matches, routesToUse, normalizedPath);
     if (fogOfWar.active && fogOfWar.matches) {
       matches = fogOfWar.matches;
@@ -9399,8 +9215,8 @@ function chunk_HA7DTUK3_createRouter(init) {
     let nextLocation = state.navigation.location || state.location;
     let revalidationRequest = createClientSideRequest(init.history, nextLocation, abortController.signal);
     let routesToUse = inFlightDataRoutes || dataRoutes;
-    let matches = state.navigation.state !== "idle" ? chunk_HA7DTUK3_matchRoutes(routesToUse, state.navigation.location, basename) : state.matches;
-    chunk_HA7DTUK3_invariant(matches, "Didn't find any matches after fetcher action");
+    let matches = state.navigation.state !== "idle" ? matchRoutes(routesToUse, state.navigation.location, basename) : state.matches;
+    invariant(matches, "Didn't find any matches after fetcher action");
     let loadId = ++incrementingLoadId;
     fetchReloadIds.set(key, loadId);
     let loadFetcher = getLoadingFetcher(submission, actionResult.data);
@@ -9455,7 +9271,7 @@ function chunk_HA7DTUK3_createRouter(init) {
     }
     abortStaleFetchLoads(loadId);
     if (state.navigation.state === "loading" && loadId > pendingNavigationLoadId) {
-      chunk_HA7DTUK3_invariant(pendingAction, "Expected pending action");
+      invariant(pendingAction, "Expected pending action");
       pendingNavigationController && pendingNavigationController.abort();
       completeNavigation(state.navigation.location, {
         matches,
@@ -9543,7 +9359,7 @@ function chunk_HA7DTUK3_createRouter(init) {
       isRevalidationRequired = true;
     }
     let location = redirect2.response.headers.get("Location");
-    chunk_HA7DTUK3_invariant(location, "Expected a Location header on the redirect Response");
+    invariant(location, "Expected a Location header on the redirect Response");
     location = normalizeRedirectLocation(location, new URL(request.url), basename);
     let redirectLocation = createLocation(state.location, location, {
       _isRedirect: true
@@ -9737,7 +9553,7 @@ function chunk_HA7DTUK3_createRouter(init) {
     let updatedFetchers = false;
     for (let key of fetchRedirectIds) {
       let fetcher = state.fetchers.get(key);
-      chunk_HA7DTUK3_invariant(fetcher, `Expected fetcher: ${key}`);
+      invariant(fetcher, `Expected fetcher: ${key}`);
       if (fetcher.state === "loading") {
         fetchRedirectIds.delete(key);
         doneKeys.push(key);
@@ -9752,7 +9568,7 @@ function chunk_HA7DTUK3_createRouter(init) {
     for (let [key, id] of fetchReloadIds) {
       if (id < landedId) {
         let fetcher = state.fetchers.get(key);
-        chunk_HA7DTUK3_invariant(fetcher, `Expected fetcher: ${key}`);
+        invariant(fetcher, `Expected fetcher: ${key}`);
         if (fetcher.state === "loading") {
           abortFetcher(key);
           fetchReloadIds.delete(key);
@@ -9776,7 +9592,7 @@ function chunk_HA7DTUK3_createRouter(init) {
   }
   function updateBlocker(key, newBlocker) {
     let blocker = state.blockers.get(key) || IDLE_BLOCKER;
-    chunk_HA7DTUK3_invariant(blocker.state === "unblocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "proceeding" || blocker.state === "blocked" && newBlocker.state === "unblocked" || blocker.state === "proceeding" && newBlocker.state === "unblocked", `Invalid blocker state transition: ${blocker.state} -> ${newBlocker.state}`);
+    invariant(blocker.state === "unblocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "blocked" || blocker.state === "blocked" && newBlocker.state === "proceeding" || blocker.state === "blocked" && newBlocker.state === "unblocked" || blocker.state === "proceeding" && newBlocker.state === "unblocked", `Invalid blocker state transition: ${blocker.state} -> ${newBlocker.state}`);
     let blockers = new Map(state.blockers);
     blockers.set(key, newBlocker);
     updateState({
@@ -9927,7 +9743,7 @@ function chunk_HA7DTUK3_createRouter(init) {
           type: "aborted"
         };
       }
-      let newMatches = chunk_HA7DTUK3_matchRoutes(routesToUse, pathname, basename);
+      let newMatches = matchRoutes(routesToUse, pathname, basename);
       if (newMatches) {
         return {
           type: "success",
@@ -9997,7 +9813,7 @@ function chunk_HA7DTUK3_createRouter(init) {
   return router;
 }
 function createStaticHandler(routes, opts) {
-  chunk_HA7DTUK3_invariant(routes.length > 0, "You must provide a non-empty routes array to createStaticHandler");
+  invariant(routes.length > 0, "You must provide a non-empty routes array to createStaticHandler");
   let manifest = {};
   let basename = (opts ? opts.basename : null) || "/";
   let mapRouteProperties2 = opts?.mapRouteProperties || defaultMapRouteProperties;
@@ -10011,7 +9827,7 @@ function createStaticHandler(routes, opts) {
     let url = new URL(request.url);
     let method = request.method;
     let location = createLocation("", createPath(url), null, "default");
-    let matches = chunk_HA7DTUK3_matchRoutes(dataRoutes, location, basename);
+    let matches = matchRoutes(dataRoutes, location, basename);
     if (!isValidMethod(method) && method !== "HEAD") {
       let error = getInternalRouterError(405, {
         method
@@ -10074,7 +9890,7 @@ function createStaticHandler(routes, opts) {
     let url = new URL(request.url);
     let method = request.method;
     let location = createLocation("", createPath(url), null, "default");
-    let matches = chunk_HA7DTUK3_matchRoutes(dataRoutes, location, basename);
+    let matches = matchRoutes(dataRoutes, location, basename);
     if (!isValidMethod(method) && method !== "HEAD" && method !== "OPTIONS") {
       throw getInternalRouterError(405, {
         method
@@ -10112,7 +9928,7 @@ function createStaticHandler(routes, opts) {
     return void 0;
   }
   async function queryImpl(request, location, matches, requestContext, dataStrategy, skipLoaderErrorBubbling, routeMatch) {
-    chunk_HA7DTUK3_invariant(request.signal, "query()/queryRoute() requests must contain an AbortController signal");
+    invariant(request.signal, "query()/queryRoute() requests must contain an AbortController signal");
     try {
       if (isMutationMethod(request.method)) {
         let result2 = await submit(request, matches, routeMatch || getTargetMatch(matches, location), requestContext, dataStrategy, skipLoaderErrorBubbling, routeMatch != null);
@@ -10412,7 +10228,7 @@ function normalizeNavigateOptions(isFetcher, path, opts) {
       }
     }
   }
-  chunk_HA7DTUK3_invariant(typeof FormData === "function", "FormData is not available in this environment");
+  invariant(typeof FormData === "function", "FormData is not available in this environment");
   let searchParams;
   let formData;
   if (opts.formData) {
@@ -10517,7 +10333,7 @@ function getMatchesToLoad(history, state, matches, submission, location, initial
     if (initialHydration || !matches.some(m => m.route.id === f.routeId) || fetchersQueuedForDeletion.has(key)) {
       return;
     }
-    let fetcherMatches = chunk_HA7DTUK3_matchRoutes(routesToUse, f.path, basename);
+    let fetcherMatches = matchRoutes(routesToUse, f.path, basename);
     if (!fetcherMatches) {
       revalidatingFetchers.push({
         key,
@@ -10613,7 +10429,7 @@ function patchRoutesImpl(routeId, children, routesToUse, manifest, mapRoutePrope
   let childrenToPatch;
   if (routeId) {
     let route = manifest[routeId];
-    chunk_HA7DTUK3_invariant(route, `No route found to patch children into: routeId = ${routeId}`);
+    invariant(route, `No route found to patch children into: routeId = ${routeId}`);
     if (!route.children) {
       route.children = [];
     }
@@ -10646,7 +10462,7 @@ async function loadLazyRouteModule(route, mapRouteProperties2, manifest) {
     return;
   }
   let routeToUpdate = manifest[route.id];
-  chunk_HA7DTUK3_invariant(routeToUpdate, "No route found in manifest");
+  invariant(routeToUpdate, "No route found in manifest");
   let routeUpdates = {};
   for (let lazyRouteProperty in lazyRoute) {
     let staticRouteValue = routeToUpdate[lazyRouteProperty];
@@ -10878,7 +10694,7 @@ async function convertDataStrategyResultToDataResult(dataStrategyResult) {
 }
 function normalizeRelativeRoutingRedirectResponse(response, request, routeId, matches, basename) {
   let location = response.headers.get("Location");
-  chunk_HA7DTUK3_invariant(location, "Redirects returned/thrown from loaders/actions must have a Location header");
+  invariant(location, "Redirects returned/thrown from loaders/actions must have a Location header");
   if (!ABSOLUTE_URL_REGEX.test(location)) {
     let trimmedMatches = matches.slice(0, matches.findIndex(m => m.route.id === routeId) + 1);
     location = normalizeTo(new URL(request.url), trimmedMatches, basename, location);
@@ -10952,7 +10768,7 @@ function processRouteLoaderData(matches, results, pendingActionResult) {
     }
     let id = match.route.id;
     let result = results[id];
-    chunk_HA7DTUK3_invariant(!isRedirectResult(result), "Cannot handle redirect results in processLoaderData");
+    invariant(!isRedirectResult(result), "Cannot handle redirect results in processLoaderData");
     if (isErrorResult(result)) {
       let error = result.error;
       if (pendingError !== void 0) {
@@ -11013,7 +10829,7 @@ function processLoaderData(state, matches, results, pendingActionResult, revalid
       controller
     } = rf;
     let result = fetcherResults[key];
-    chunk_HA7DTUK3_invariant(result, "Did not find corresponding fetcher result");
+    invariant(result, "Did not find corresponding fetcher result");
     if (controller && controller.signal.aborted) {
       return;
     } else if (isErrorResult(result)) {
@@ -11026,7 +10842,7 @@ function processLoaderData(state, matches, results, pendingActionResult, revalid
       }
       state.fetchers.delete(key);
     } else if (isRedirectResult(result)) {
-      chunk_HA7DTUK3_invariant(false, "Unhandled fetcher revalidation redirect");
+      invariant(false, "Unhandled fetcher revalidation redirect");
     } else {
       let doneFetcher = getDoneFetcher(result.data);
       state.fetchers.set(key, doneFetcher);
@@ -11417,7 +11233,7 @@ function useHref(to) {
   let {
     relative
   } = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-  chunk_HA7DTUK3_invariant(useInRouterContext(),
+  invariant(useInRouterContext(),
   // TODO: This error is probably because they somehow have 2 versions of the
   // router loaded. We can help them understand how to avoid that.
   `useHref() may be used only in the context of a <Router> component.`);
@@ -11446,7 +11262,7 @@ function useInRouterContext() {
   return react.useContext(LocationContext) != null;
 }
 function useLocation() {
-  chunk_HA7DTUK3_invariant(useInRouterContext(),
+  invariant(useInRouterContext(),
   // TODO: This error is probably because they somehow have 2 versions of the
   // router loaded. We can help them understand how to avoid that.
   `useLocation() may be used only in the context of a <Router> component.`);
@@ -11456,7 +11272,7 @@ function useNavigationType() {
   return React2.useContext(LocationContext).navigationType;
 }
 function useMatch(pattern) {
-  chunk_HA7DTUK3_invariant(useInRouterContext(),
+  invariant(useInRouterContext(),
   // TODO: This error is probably because they somehow have 2 versions of the
   // router loaded. We can help them understand how to avoid that.
   `useMatch() may be used only in the context of a <Router> component.`);
@@ -11479,7 +11295,7 @@ function useNavigate() {
   return isDataRoute ? useNavigateStable() : useNavigateUnstable();
 }
 function useNavigateUnstable() {
-  chunk_HA7DTUK3_invariant(useInRouterContext(),
+  invariant(useInRouterContext(),
   // TODO: This error is probably because they somehow have 2 versions of the
   // router loaded. We can help them understand how to avoid that.
   `useNavigate() may be used only in the context of a <Router> component.`);
@@ -11552,7 +11368,7 @@ function useRoutes(routes, locationArg) {
   return useRoutesImpl(routes, locationArg);
 }
 function useRoutesImpl(routes, locationArg, dataRouterState, future) {
-  chunk_HA7DTUK3_invariant(useInRouterContext(),
+  invariant(useInRouterContext(),
   // TODO: This error is probably because they somehow have 2 versions of the
   // router loaded. We can help them understand how to avoid that.
   `useRoutes() may be used only in the context of a <Router> component.`);
@@ -11578,7 +11394,7 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
   let location;
   if (locationArg) {
     let parsedLocationArg = typeof locationArg === "string" ? parsePath(locationArg) : locationArg;
-    chunk_HA7DTUK3_invariant(parentPathnameBase === "/" || parsedLocationArg.pathname?.startsWith(parentPathnameBase), `When overriding the location using \`<Routes location>\` or \`useRoutes(routes, location)\`, the location pathname must begin with the portion of the URL pathname that was matched by all parent routes. The current pathname base is "${parentPathnameBase}" but pathname "${parsedLocationArg.pathname}" was given in the \`location\` prop.`);
+    invariant(parentPathnameBase === "/" || parsedLocationArg.pathname?.startsWith(parentPathnameBase), `When overriding the location using \`<Routes location>\` or \`useRoutes(routes, location)\`, the location pathname must begin with the portion of the URL pathname that was matched by all parent routes. The current pathname base is "${parentPathnameBase}" but pathname "${parsedLocationArg.pathname}" was given in the \`location\` prop.`);
     location = parsedLocationArg;
   } else {
     location = locationFromContext;
@@ -11590,7 +11406,7 @@ Please change the parent <Route path="${parentPath}"> to <Route path="${parentPa
     let segments = pathname.replace(/^\//, "").split("/");
     remainingPathname = "/" + segments.slice(parentSegments.length).join("/");
   }
-  let matches = !isStatic && dataRouterState && dataRouterState.matches && dataRouterState.matches.length > 0 ? dataRouterState.matches : chunk_HA7DTUK3_matchRoutes(routes, {
+  let matches = !isStatic && dataRouterState && dataRouterState.matches && dataRouterState.matches.length > 0 ? dataRouterState.matches : matchRoutes(routes, {
     pathname: remainingPathname
   });
   if (ENABLE_DEV_WARNINGS) {
@@ -11728,7 +11544,7 @@ function _renderMatches(matches) {
   let errors = dataRouterState?.errors;
   if (errors != null) {
     let errorIndex = renderedMatches.findIndex(m => m.route.id && errors?.[m.route.id] !== void 0);
-    chunk_HA7DTUK3_invariant(errorIndex >= 0, `Could not find a matching route for errors on route IDs: ${Object.keys(errors).join(",")}`);
+    invariant(errorIndex >= 0, `Could not find a matching route for errors on route IDs: ${Object.keys(errors).join(",")}`);
     renderedMatches = renderedMatches.slice(0, Math.min(renderedMatches.length, errorIndex + 1));
   }
   let renderFallback = false;
@@ -11819,23 +11635,23 @@ function getDataRouterConsoleError(hookName) {
 }
 function useDataRouterContext(hookName) {
   let ctx = react.useContext(DataRouterContext);
-  chunk_HA7DTUK3_invariant(ctx, getDataRouterConsoleError(hookName));
+  invariant(ctx, getDataRouterConsoleError(hookName));
   return ctx;
 }
 function useDataRouterState(hookName) {
   let state = react.useContext(DataRouterStateContext);
-  chunk_HA7DTUK3_invariant(state, getDataRouterConsoleError(hookName));
+  invariant(state, getDataRouterConsoleError(hookName));
   return state;
 }
 function useRouteContext(hookName) {
   let route = react.useContext(RouteContext);
-  chunk_HA7DTUK3_invariant(route, getDataRouterConsoleError(hookName));
+  invariant(route, getDataRouterConsoleError(hookName));
   return route;
 }
 function useCurrentRouteId(hookName) {
   let route = useRouteContext(hookName);
   let thisRoute = route.matches[route.matches.length - 1];
-  chunk_HA7DTUK3_invariant(thisRoute.route.id, `${hookName} can only be used on routes that contain a unique "id"`);
+  invariant(thisRoute.route.id, `${hookName} can only be used on routes that contain a unique "id"`);
   return thisRoute.route.id;
 }
 function useRouteId() {
@@ -11980,7 +11796,7 @@ function warnOnce(condition, message) {
 
 // lib/components.tsx
 var ENABLE_DEV_WARNINGS2 = true;
-function chunk_HA7DTUK3_mapRouteProperties(route) {
+function mapRouteProperties(route) {
   let updates = {
     // Note: this check also occurs in createRoutesFromChildren so update
     // there if you change this -- please and thank you!
@@ -12022,7 +11838,7 @@ function chunk_HA7DTUK3_mapRouteProperties(route) {
   return updates;
 }
 function createMemoryRouter(routes, opts) {
-  return chunk_HA7DTUK3_createRouter({
+  return createRouter({
     basename: opts?.basename,
     future: opts?.future,
     history: createMemoryHistory({
@@ -12031,7 +11847,7 @@ function createMemoryRouter(routes, opts) {
     }),
     hydrationData: opts?.hydrationData,
     routes,
-    mapRouteProperties: chunk_HA7DTUK3_mapRouteProperties,
+    mapRouteProperties,
     dataStrategy: opts?.dataStrategy,
     patchRoutesOnNavigation: opts?.patchRoutesOnNavigation
   }).initialize();
@@ -12060,16 +11876,16 @@ function RouterProvider(_ref10) {
     router,
     flushSync: reactDomFlushSyncImpl
   } = _ref10;
-  let [state, setStateImpl] = react.useState(router.state);
-  let [pendingState, setPendingState] = react.useState();
-  let [vtContext, setVtContext] = react.useState({
+  let [state, setStateImpl] = React3.useState(router.state);
+  let [pendingState, setPendingState] = React3.useState();
+  let [vtContext, setVtContext] = React3.useState({
     isTransitioning: false
   });
-  let [renderDfd, setRenderDfd] = react.useState();
-  let [transition, setTransition] = react.useState();
-  let [interruption, setInterruption] = react.useState();
-  let fetcherData = react.useRef(/* @__PURE__ */new Map());
-  let setState = react.useCallback((newState, _ref11) => {
+  let [renderDfd, setRenderDfd] = React3.useState();
+  let [transition, setTransition] = React3.useState();
+  let [interruption, setInterruption] = React3.useState();
+  let fetcherData = React3.useRef(/* @__PURE__ */new Map());
+  let setState = React3.useCallback((newState, _ref11) => {
     let {
       deletedFetchers,
       flushSync,
@@ -12088,7 +11904,7 @@ function RouterProvider(_ref10) {
       if (reactDomFlushSyncImpl && flushSync) {
         reactDomFlushSyncImpl(() => setStateImpl(newState));
       } else {
-        react.startTransition(() => setStateImpl(newState));
+        React3.startTransition(() => setStateImpl(newState));
       }
       return;
     }
@@ -12139,18 +11955,18 @@ function RouterProvider(_ref10) {
       });
     }
   }, [router.window, reactDomFlushSyncImpl, transition, renderDfd]);
-  react.useLayoutEffect(() => router.subscribe(setState), [router, setState]);
-  react.useEffect(() => {
+  React3.useLayoutEffect(() => router.subscribe(setState), [router, setState]);
+  React3.useEffect(() => {
     if (vtContext.isTransitioning && !vtContext.flushSync) {
       setRenderDfd(new Deferred());
     }
   }, [vtContext]);
-  react.useEffect(() => {
+  React3.useEffect(() => {
     if (renderDfd && pendingState && router.window) {
       let newState = pendingState;
       let renderPromise = renderDfd.promise;
       let transition2 = router.window.document.startViewTransition(async () => {
-        react.startTransition(() => setStateImpl(newState));
+        React3.startTransition(() => setStateImpl(newState));
         await renderPromise;
       });
       transition2.finished.finally(() => {
@@ -12164,12 +11980,12 @@ function RouterProvider(_ref10) {
       setTransition(transition2);
     }
   }, [pendingState, renderDfd, router.window]);
-  react.useEffect(() => {
+  React3.useEffect(() => {
     if (renderDfd && pendingState && state.location.key === pendingState.location.key) {
       renderDfd.resolve();
     }
   }, [renderDfd, transition, state.location, pendingState]);
-  react.useEffect(() => {
+  React3.useEffect(() => {
     if (!vtContext.isTransitioning && interruption) {
       setPendingState(interruption.state);
       setVtContext({
@@ -12181,7 +11997,7 @@ function RouterProvider(_ref10) {
       setInterruption(void 0);
     }
   }, [vtContext.isTransitioning, interruption]);
-  let navigator2 = react.useMemo(() => {
+  let navigator2 = React3.useMemo(() => {
     return {
       createHref: router.createHref,
       encodeLocation: router.encodeLocation,
@@ -12198,26 +12014,26 @@ function RouterProvider(_ref10) {
     };
   }, [router]);
   let basename = router.basename || "/";
-  let dataRouterContext = react.useMemo(() => ({
+  let dataRouterContext = React3.useMemo(() => ({
     router,
     navigator: navigator2,
     static: false,
     basename
   }), [router, navigator2, basename]);
-  return /* @__PURE__ */react.createElement(react.Fragment, null, /* @__PURE__ */react.createElement(DataRouterContext.Provider, {
+  return /* @__PURE__ */React3.createElement(React3.Fragment, null, /* @__PURE__ */React3.createElement(DataRouterContext.Provider, {
     value: dataRouterContext
-  }, /* @__PURE__ */react.createElement(DataRouterStateContext.Provider, {
+  }, /* @__PURE__ */React3.createElement(DataRouterStateContext.Provider, {
     value: state
-  }, /* @__PURE__ */react.createElement(FetchersContext.Provider, {
+  }, /* @__PURE__ */React3.createElement(FetchersContext.Provider, {
     value: fetcherData.current
-  }, /* @__PURE__ */react.createElement(ViewTransitionContext.Provider, {
+  }, /* @__PURE__ */React3.createElement(ViewTransitionContext.Provider, {
     value: vtContext
-  }, /* @__PURE__ */react.createElement(Router, {
+  }, /* @__PURE__ */React3.createElement(Router, {
     basename,
     location: state.location,
     navigationType: state.historyAction,
     navigator: navigator2
-  }, /* @__PURE__ */react.createElement(MemoizedDataRoutes, {
+  }, /* @__PURE__ */React3.createElement(MemoizedDataRoutes, {
     routes: router.routes,
     future: router.future,
     state
@@ -12271,7 +12087,7 @@ function Navigate(_ref14) {
     state,
     relative
   } = _ref14;
-  chunk_HA7DTUK3_invariant(useInRouterContext(),
+  invariant(useInRouterContext(),
   // TODO: This error is probably because they somehow have 2 versions of
   // the router loaded. We can help them understand how to avoid that.
   `<Navigate> may be used only in the context of a <Router> component.`);
@@ -12301,7 +12117,7 @@ function Outlet(props) {
   return useOutlet(props.context);
 }
 function Route(_props) {
-  chunk_HA7DTUK3_invariant(false, `A <Route> is only ever to be used as the child of <Routes> element, never rendered directly. Please wrap your <Route> in a <Routes>.`);
+  invariant(false, `A <Route> is only ever to be used as the child of <Routes> element, never rendered directly. Please wrap your <Route> in a <Routes>.`);
 }
 function Router(_ref15) {
   let {
@@ -12312,7 +12128,7 @@ function Router(_ref15) {
     navigator: navigator2,
     static: staticProp = false
   } = _ref15;
-  chunk_HA7DTUK3_invariant(!useInRouterContext(), `You cannot render a <Router> inside another <Router>. You should never have more than one in your app.`);
+  invariant(!useInRouterContext(), `You cannot render a <Router> inside another <Router>. You should never have more than one in your app.`);
   let basename = basenameProp.replace(/^\/*/, "/");
   let navigationContext = react.useMemo(() => ({
     basename,
@@ -12469,8 +12285,8 @@ function createRoutesFromChildren(children) {
       routes.push.apply(routes, createRoutesFromChildren(element.props.children, treePath));
       return;
     }
-    chunk_HA7DTUK3_invariant(element.type === Route, `[${typeof element.type === "string" ? element.type : element.type.name}] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>`);
-    chunk_HA7DTUK3_invariant(!element.props.index || !element.props.children, "An index route cannot have child routes.");
+    invariant(element.type === Route, `[${typeof element.type === "string" ? element.type : element.type.name}] is not a <Route> component. All component children of <Routes> must be a <Route> or <React.Fragment>`);
+    invariant(!element.props.index || !element.props.children, "An index route cannot have child routes.");
     let route = {
       id: element.props.id || treePath.join("-"),
       caseSensitive: element.props.caseSensitive,
@@ -12981,7 +12797,7 @@ function StreamTransfer(_ref19) {
     })));
   }
 }
-function chunk_HA7DTUK3_getSingleFetchDataStrategy(manifest, routeModules, ssr, getRouter) {
+function getSingleFetchDataStrategy(manifest, routeModules, ssr, getRouter) {
   return async _ref20 => {
     let {
       request,
@@ -13196,7 +13012,7 @@ async function fetchAndDecode(url, init) {
   }
   invariant2(res.body, "No response body to decode");
   try {
-    let decoded = await chunk_HA7DTUK3_decodeViaTurboStream(res.body, window);
+    let decoded = await decodeViaTurboStream(res.body, window);
     return {
       status: res.status,
       data: decoded.value
@@ -13205,7 +13021,7 @@ async function fetchAndDecode(url, init) {
     throw new Error("Unable to decode turbo-stream response");
   }
 }
-function chunk_HA7DTUK3_decodeViaTurboStream(body, global2) {
+function decodeViaTurboStream(body, global2) {
   return decode(body, {
     plugins: [function (type) {
       for (var _len = arguments.length, rest = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
@@ -13314,7 +13130,7 @@ function createDeferred2() {
 
 // lib/dom/ssr/errorBoundaries.tsx
 
-var chunk_HA7DTUK3_RemixErrorBoundary = class extends react.Component {
+var RemixErrorBoundary = class extends react.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13524,8 +13340,8 @@ function createServerRoutes(manifest, routeModules, future, isSpaMode) {
     return dataRoute;
   });
 }
-function chunk_HA7DTUK3_createClientRoutesWithHMRRevalidationOptOut(needsRevalidation, manifest, routeModulesCache, initialState, ssr, isSpaMode) {
-  return chunk_HA7DTUK3_createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode, "", groupRoutesByParentId(manifest), needsRevalidation);
+function createClientRoutesWithHMRRevalidationOptOut(needsRevalidation, manifest, routeModulesCache, initialState, ssr, isSpaMode) {
+  return createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode, "", groupRoutesByParentId(manifest), needsRevalidation);
 }
 function preventInvalidServerHandlerCall(type, route) {
   if (type === "loader" && !route.hasLoader || type === "action" && !route.hasAction) {
@@ -13541,7 +13357,7 @@ function noActionDefinedError(type, routeId) {
   console.error(msg);
   throw new ErrorResponseImpl(405, "Method Not Allowed", new Error(msg), true);
 }
-function chunk_HA7DTUK3_createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode) {
+function createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode) {
   let parentId = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : "";
   let routesByParentId = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : groupRoutesByParentId(manifest);
   let needsRevalidation = arguments.length > 7 ? arguments[7] : undefined;
@@ -13633,7 +13449,7 @@ function chunk_HA7DTUK3_createClientRoutes(manifest, routeModulesCache, initialS
           isHydrationRequest = false;
         }
       };
-      dataRoute.loader.hydrate = chunk_HA7DTUK3_shouldHydrateRouteLoader(route, routeModule, isSpaMode);
+      dataRoute.loader.hydrate = shouldHydrateRouteLoader(route, routeModule, isSpaMode);
       dataRoute.action = (_ref24, singleFetch) => {
         let {
           request,
@@ -13761,7 +13577,7 @@ function chunk_HA7DTUK3_createClientRoutes(manifest, routeModulesCache, initialS
         };
       };
     }
-    let children = chunk_HA7DTUK3_createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode, route.id, routesByParentId, needsRevalidation);
+    let children = createClientRoutes(manifest, routeModulesCache, initialState, ssr, isSpaMode, route.id, routesByParentId, needsRevalidation);
     if (children.length > 0) dataRoute.children = children;
     return dataRoute;
   });
@@ -13823,7 +13639,7 @@ function getRouteModuleComponent(routeModule) {
     return routeModule.default;
   }
 }
-function chunk_HA7DTUK3_shouldHydrateRouteLoader(route, routeModule, isSpaMode) {
+function shouldHydrateRouteLoader(route, routeModule, isSpaMode) {
   return isSpaMode && route.id !== "root" || routeModule.clientLoader != null && (routeModule.clientLoader.hydrate === true || route.hasLoader !== true);
 }
 
@@ -13845,7 +13661,7 @@ function getPartialManifest(manifest, router) {
     segments.pop();
   }
   paths.forEach(path => {
-    let matches = chunk_HA7DTUK3_matchRoutes(router.routes, path, router.basename);
+    let matches = matchRoutes(router.routes, path, router.basename);
     if (matches) {
       matches.forEach(m => routeIds.add(m.route.id));
     }
@@ -13858,7 +13674,7 @@ function getPartialManifest(manifest, router) {
     routes: initialRoutes
   };
 }
-function chunk_HA7DTUK3_getPatchRoutesOnNavigationFunction(manifest, routeModules, ssr, isSpaMode, basename) {
+function getPatchRoutesOnNavigationFunction(manifest, routeModules, ssr, isSpaMode, basename) {
   if (!isFogOfWarEnabled(ssr)) {
     return void 0;
   }
@@ -13874,7 +13690,7 @@ function chunk_HA7DTUK3_getPatchRoutesOnNavigationFunction(manifest, routeModule
     await fetchAndApplyManifestPatches([path], manifest, routeModules, ssr, isSpaMode, basename, patch, signal);
   };
 }
-function chunk_HA7DTUK3_useFogOFWarDiscovery(router, manifest, routeModules, ssr, isSpaMode) {
+function useFogOFWarDiscovery(router, manifest, routeModules, ssr, isSpaMode) {
   React8.useEffect(() => {
     if (!isFogOfWarEnabled(ssr) || navigator.connection?.saveData === true) {
       return;
@@ -13958,7 +13774,7 @@ async function fetchAndApplyManifestPatches(paths, manifest, routeModules, ssr, 
       parentIds.add(patch.parentId);
     }
   });
-  parentIds.forEach(parentId => patchRoutes(parentId || null, chunk_HA7DTUK3_createClientRoutes(patches, routeModules, null, ssr, isSpaMode, parentId)));
+  parentIds.forEach(parentId => patchRoutes(parentId || null, createClientRoutes(patches, routeModules, null, ssr, isSpaMode, parentId)));
 }
 function addToFifoQueue(path, queue) {
   if (queue.size >= discoveredPathsMaxSize) {
@@ -13989,15 +13805,15 @@ function useDataRouterStateContext() {
   invariant2(context, "You must render this element inside a <DataRouterStateContext.Provider> element");
   return context;
 }
-var chunk_HA7DTUK3_FrameworkContext = react.createContext(void 0);
-chunk_HA7DTUK3_FrameworkContext.displayName = "FrameworkContext";
+var FrameworkContext = react.createContext(void 0);
+FrameworkContext.displayName = "FrameworkContext";
 function useFrameworkContext() {
-  let context = react.useContext(chunk_HA7DTUK3_FrameworkContext);
+  let context = react.useContext(FrameworkContext);
   invariant2(context, "You must render this element inside a <HydratedRouter> element");
   return context;
 }
 function usePrefetchBehavior(prefetch, theirElementProps) {
-  let frameworkContext = react.useContext(chunk_HA7DTUK3_FrameworkContext);
+  let frameworkContext = react.useContext(FrameworkContext);
   let [maybePrefetch, setMaybePrefetch] = react.useState(false);
   let [shouldPrefetch, setShouldPrefetch] = react.useState(false);
   let {
@@ -14115,7 +13931,7 @@ function PrefetchPageLinks(_ref29) {
   let {
     router
   } = useDataRouterContext2();
-  let matches = react.useMemo(() => chunk_HA7DTUK3_matchRoutes(router.routes, page, router.basename), [router.routes, page, router.basename]);
+  let matches = react.useMemo(() => matchRoutes(router.routes, page, router.basename), [router.routes, page, router.basename]);
   if (!matches) {
     return null;
   }
@@ -14453,22 +14269,22 @@ try {
   }
 } catch (e) {}
 function createBrowserRouter(routes, opts) {
-  return chunk_HA7DTUK3_createRouter({
+  return createRouter({
     basename: opts?.basename,
     future: opts?.future,
-    history: chunk_HA7DTUK3_createBrowserHistory({
+    history: createBrowserHistory({
       window: opts?.window
     }),
     hydrationData: opts?.hydrationData || parseHydrationData(),
     routes,
-    mapRouteProperties: chunk_HA7DTUK3_mapRouteProperties,
+    mapRouteProperties,
     dataStrategy: opts?.dataStrategy,
     patchRoutesOnNavigation: opts?.patchRoutesOnNavigation,
     window: opts?.window
   }).initialize();
 }
 function createHashRouter(routes, opts) {
-  return chunk_HA7DTUK3_createRouter({
+  return createRouter({
     basename: opts?.basename,
     future: opts?.future,
     history: createHashHistory({
@@ -14476,7 +14292,7 @@ function createHashRouter(routes, opts) {
     }),
     hydrationData: opts?.hydrationData || parseHydrationData(),
     routes,
-    mapRouteProperties: chunk_HA7DTUK3_mapRouteProperties,
+    mapRouteProperties,
     dataStrategy: opts?.dataStrategy,
     patchRoutesOnNavigation: opts?.patchRoutesOnNavigation,
     window: opts?.window
@@ -14487,12 +14303,12 @@ function parseHydrationData() {
   if (state && state.errors) {
     state = {
       ...state,
-      errors: chunk_HA7DTUK3_deserializeErrors(state.errors)
+      errors: deserializeErrors(state.errors)
     };
   }
   return state;
 }
-function chunk_HA7DTUK3_deserializeErrors(errors) {
+function deserializeErrors(errors) {
   if (!errors) return null;
   let entries = Object.entries(errors);
   let serialized = {};
@@ -14529,7 +14345,7 @@ function BrowserRouter(_ref32) {
   } = _ref32;
   let historyRef = React10.useRef();
   if (historyRef.current == null) {
-    historyRef.current = chunk_HA7DTUK3_createBrowserHistory({
+    historyRef.current = createBrowserHistory({
       window: window2,
       v5Compat: true
     });
@@ -14796,7 +14612,7 @@ function ScrollRestoration(_ref38) {
     storageKey,
     ...props
   } = _ref38;
-  let remixContext = react.useContext(chunk_HA7DTUK3_FrameworkContext);
+  let remixContext = react.useContext(FrameworkContext);
   let {
     basename
   } = react.useContext(NavigationContext);
@@ -14849,12 +14665,12 @@ function getDataRouterConsoleError2(hookName) {
 }
 function useDataRouterContext3(hookName) {
   let ctx = react.useContext(DataRouterContext);
-  chunk_HA7DTUK3_invariant(ctx, getDataRouterConsoleError2(hookName));
+  invariant(ctx, getDataRouterConsoleError2(hookName));
   return ctx;
 }
 function useDataRouterState2(hookName) {
   let state = react.useContext(DataRouterStateContext);
-  chunk_HA7DTUK3_invariant(state, getDataRouterConsoleError2(hookName));
+  invariant(state, getDataRouterConsoleError2(hookName));
   return state;
 }
 function useLinkClickHandler(to) {
@@ -14956,7 +14772,7 @@ function useFormAction(action) {
     basename
   } = react.useContext(NavigationContext);
   let routeContext = react.useContext(RouteContext);
-  chunk_HA7DTUK3_invariant(routeContext, "useFormAction must be used inside a RouteContext");
+  invariant(routeContext, "useFormAction must be used inside a RouteContext");
   let [match] = routeContext.matches.slice(-1);
   let path = {
     ...useResolvedPath(action ? action : ".", {
@@ -14995,9 +14811,9 @@ function useFetcher() {
   let fetcherData = React10.useContext(FetchersContext);
   let route = React10.useContext(RouteContext);
   let routeId = route.matches[route.matches.length - 1]?.route.id;
-  chunk_HA7DTUK3_invariant(fetcherData, `useFetcher must be used inside a FetchersContext`);
-  chunk_HA7DTUK3_invariant(route, `useFetcher must be used inside a RouteContext`);
-  chunk_HA7DTUK3_invariant(routeId != null, `useFetcher can only be used on routes that contain a unique "id"`);
+  invariant(fetcherData, `useFetcher must be used inside a FetchersContext`);
+  invariant(route, `useFetcher must be used inside a RouteContext`);
+  invariant(routeId != null, `useFetcher can only be used on routes that contain a unique "id"`);
   let defaultKey = React10.useId();
   let [fetcherKey, setFetcherKey] = React10.useState(key || defaultKey);
   if (key && key !== fetcherKey) {
@@ -15008,7 +14824,7 @@ function useFetcher() {
     return () => router.deleteFetcher(fetcherKey);
   }, [router, fetcherKey]);
   let load = React10.useCallback(async (href2, opts) => {
-    chunk_HA7DTUK3_invariant(routeId, "No routeId available for fetcher.load()");
+    invariant(routeId, "No routeId available for fetcher.load()");
     await router.fetch(fetcherKey, routeId, href2, opts);
   }, [fetcherKey, routeId, router]);
   let submitImpl = useSubmit();
@@ -15195,7 +15011,7 @@ function usePrompt(_ref40) {
 function useViewTransitionState(to) {
   let opts = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
   let vtContext = react.useContext(ViewTransitionContext);
-  chunk_HA7DTUK3_invariant(vtContext != null, "`useViewTransitionState` must be used within `react-router-dom`'s `RouterProvider`.  Did you accidentally import `RouterProvider` from `react-router`?");
+  invariant(vtContext != null, "`useViewTransitionState` must be used within `react-router-dom`'s `RouterProvider`.  Did you accidentally import `RouterProvider` from `react-router`?");
   let {
     basename
   } = useDataRouterContext3("useViewTransitionState" /* useViewTransitionState */);
@@ -15246,7 +15062,7 @@ function StaticRouterProvider(_ref42) {
     hydrate = true,
     nonce
   } = _ref42;
-  chunk_HA7DTUK3_invariant(router && context, "You must provide `router` and `context` to <StaticRouterProvider>");
+  invariant(router && context, "You must provide `router` and `context` to <StaticRouterProvider>");
   let dataRouterContext = {
     router,
     navigator: getStatelessNavigator(),
@@ -15354,13 +15170,13 @@ function getStatelessNavigator() {
 function createStaticHandler2(routes, opts) {
   return createStaticHandler(routes, {
     ...opts,
-    mapRouteProperties: chunk_HA7DTUK3_mapRouteProperties
+    mapRouteProperties
   });
 }
 function createStaticRouter(routes, context) {
   let opts = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
   let manifest = {};
-  let dataRoutes = convertRoutesToDataRoutes(routes, chunk_HA7DTUK3_mapRouteProperties, void 0, manifest);
+  let dataRoutes = convertRoutesToDataRoutes(routes, mapRouteProperties, void 0, manifest);
   let matches = context.matches.map(match => {
     let route = manifest[match.route.id] || match.route;
     return {
@@ -15496,12 +15312,12 @@ function ServerRouter(_ref44) {
     let routeId = match.route.id;
     let route = routeModules[routeId];
     let manifestRoute = context.manifest.routes[routeId];
-    if (route && manifestRoute && chunk_HA7DTUK3_shouldHydrateRouteLoader(manifestRoute, route, context.isSpaMode) && (route.HydrateFallback || !manifestRoute.hasLoader)) {
+    if (route && manifestRoute && shouldHydrateRouteLoader(manifestRoute, route, context.isSpaMode) && (route.HydrateFallback || !manifestRoute.hasLoader)) {
       delete context.staticHandlerContext.loaderData[routeId];
     }
   }
   let router = createStaticRouter(routes, context.staticHandlerContext);
-  return /* @__PURE__ */React12.createElement(React12.Fragment, null, /* @__PURE__ */React12.createElement(chunk_HA7DTUK3_FrameworkContext.Provider, {
+  return /* @__PURE__ */React12.createElement(React12.Fragment, null, /* @__PURE__ */React12.createElement(FrameworkContext.Provider, {
     value: {
       manifest,
       routeModules,
@@ -15513,7 +15329,7 @@ function ServerRouter(_ref44) {
       serializeError: context.serializeError,
       renderMeta: context.renderMeta
     }
-  }, /* @__PURE__ */React12.createElement(chunk_HA7DTUK3_RemixErrorBoundary, {
+  }, /* @__PURE__ */React12.createElement(RemixErrorBoundary, {
     location: router.state.location
   }, /* @__PURE__ */React12.createElement(StaticRouterProvider, {
     router,
@@ -15566,7 +15382,7 @@ function createRoutesStub(routes) {
         hydrationData
       });
     }
-    return /* @__PURE__ */React13.createElement(chunk_HA7DTUK3_FrameworkContext.Provider, {
+    return /* @__PURE__ */React13.createElement(FrameworkContext.Provider, {
       value: remixContextRef.current
     }, /* @__PURE__ */React13.createElement(RouterProvider, {
       router: routerRef.current
@@ -15885,7 +15701,7 @@ function serializeErrors2(errors, serverMode) {
 
 // lib/server-runtime/routeMatching.ts
 function matchServerRoutes(routes, pathname, basename) {
-  let matches = chunk_HA7DTUK3_matchRoutes(routes, pathname, basename);
+  let matches = matchRoutes(routes, pathname, basename);
   if (!matches) return null;
   return matches.map(match => ({
     params: match.params,
@@ -15998,7 +15814,7 @@ function createStaticHandlerDataRoutes(manifest, future) {
               controller.close();
             }
           });
-          let decoded = await chunk_HA7DTUK3_decodeViaTurboStream(stream, global);
+          let decoded = await decodeViaTurboStream(stream, global);
           let data2 = decoded.value;
           invariant3(data2 && route.id in data2, "Unable to decode prerendered data");
           let result = data2[route.id];
@@ -16888,172 +16704,14 @@ function deserializeErrors2(errors) {
   return serialized;
 }
 
-// EXTERNAL MODULE: ./node_modules/react-dom/index.js
-var react_dom = __webpack_require__(950);
-;// ./node_modules/react-router/dist/development/dom-export.mjs
-/**
- * react-router v7.2.0
- *
- * Copyright (c) Remix Software Inc.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE.md file in the root directory of this source tree.
- *
- * @license MIT
- */
-
-
-// lib/dom-export/dom-router-provider.tsx
-
-
-function RouterProvider2(props) {
-  return /* @__PURE__ */react.createElement(RouterProvider, {
-    flushSync: react_dom.flushSync,
-    ...props
-  });
-}
-
-// lib/dom-export/hydrated-router.tsx
-
-var ssrInfo = null;
-var router = null;
-function initSsrInfo() {
-  if (!ssrInfo && window.__reactRouterContext && window.__reactRouterManifest && window.__reactRouterRouteModules) {
-    ssrInfo = {
-      context: window.__reactRouterContext,
-      manifest: window.__reactRouterManifest,
-      routeModules: window.__reactRouterRouteModules,
-      stateDecodingPromise: void 0,
-      router: void 0,
-      routerInitialized: false
-    };
-  }
-}
-function createHydratedRouter() {
-  initSsrInfo();
-  if (!ssrInfo) {
-    throw new Error("You must be using the SSR features of React Router in order to skip passing a `router` prop to `<RouterProvider>`");
-  }
-  let localSsrInfo = ssrInfo;
-  if (!ssrInfo.stateDecodingPromise) {
-    let stream = ssrInfo.context.stream;
-    invariant(stream, "No stream found for single fetch decoding");
-    ssrInfo.context.stream = void 0;
-    ssrInfo.stateDecodingPromise = decodeViaTurboStream(stream, window).then(value => {
-      ssrInfo.context.state = value.value;
-      localSsrInfo.stateDecodingPromise.value = true;
-    }).catch(e => {
-      localSsrInfo.stateDecodingPromise.error = e;
-    });
-  }
-  if (ssrInfo.stateDecodingPromise.error) {
-    throw ssrInfo.stateDecodingPromise.error;
-  }
-  if (!ssrInfo.stateDecodingPromise.value) {
-    throw ssrInfo.stateDecodingPromise;
-  }
-  let routes = createClientRoutes(ssrInfo.manifest.routes, ssrInfo.routeModules, ssrInfo.context.state, ssrInfo.context.ssr, ssrInfo.context.isSpaMode);
-  let hydrationData = void 0;
-  let loaderData = ssrInfo.context.state.loaderData;
-  if (ssrInfo.context.isSpaMode) {
-    hydrationData = {
-      loaderData
-    };
-  } else {
-    hydrationData = {
-      ...ssrInfo.context.state,
-      loaderData: {
-        ...loaderData
-      }
-    };
-    let initialMatches = matchRoutes(routes, window.location, window.__reactRouterContext?.basename);
-    if (initialMatches) {
-      for (let match of initialMatches) {
-        let routeId = match.route.id;
-        let route = ssrInfo.routeModules[routeId];
-        let manifestRoute = ssrInfo.manifest.routes[routeId];
-        if (route && manifestRoute && shouldHydrateRouteLoader(manifestRoute, route, ssrInfo.context.isSpaMode) && (route.HydrateFallback || !manifestRoute.hasLoader)) {
-          delete hydrationData.loaderData[routeId];
-        } else if (manifestRoute && !manifestRoute.hasLoader) {
-          hydrationData.loaderData[routeId] = null;
-        }
-      }
-    }
-    if (hydrationData && hydrationData.errors) {
-      hydrationData.errors = deserializeErrors(hydrationData.errors);
-    }
-  }
-  let router2 = createRouter({
-    routes,
-    history: createBrowserHistory(),
-    basename: ssrInfo.context.basename,
-    hydrationData,
-    mapRouteProperties,
-    dataStrategy: getSingleFetchDataStrategy(ssrInfo.manifest, ssrInfo.routeModules, ssrInfo.context.ssr, () => router2),
-    patchRoutesOnNavigation: getPatchRoutesOnNavigationFunction(ssrInfo.manifest, ssrInfo.routeModules, ssrInfo.context.ssr, ssrInfo.context.isSpaMode, ssrInfo.context.basename)
-  });
-  ssrInfo.router = router2;
-  if (router2.state.initialized) {
-    ssrInfo.routerInitialized = true;
-    router2.initialize();
-  }
-  router2.createRoutesForHMR = /* spacer so ts-ignore does not affect the right hand of the assignment */
-  createClientRoutesWithHMRRevalidationOptOut;
-  window.__reactRouterDataRouter = router2;
-  return router2;
-}
-function HydratedRouter() {
-  if (!router) {
-    router = createHydratedRouter();
-  }
-  let [criticalCss, setCriticalCss] = React2.useState( false ? 0 : void 0);
-  if (false) {}
-  let [location, setLocation] = React2.useState(router.state.location);
-  React2.useLayoutEffect(() => {
-    if (ssrInfo && ssrInfo.router && !ssrInfo.routerInitialized) {
-      ssrInfo.routerInitialized = true;
-      ssrInfo.router.initialize();
-    }
-  }, []);
-  React2.useLayoutEffect(() => {
-    if (ssrInfo && ssrInfo.router) {
-      return ssrInfo.router.subscribe(newState => {
-        if (newState.location !== location) {
-          setLocation(newState.location);
-        }
-      });
-    }
-  }, [location]);
-  invariant(ssrInfo, "ssrInfo unavailable for HydratedRouter");
-  useFogOFWarDiscovery(router, ssrInfo.manifest, ssrInfo.routeModules, ssrInfo.context.ssr, ssrInfo.context.isSpaMode);
-  return (
-    // This fragment is important to ensure we match the <ServerRouter> JSX
-    // structure so that useId values hydrate correctly
-    /* @__PURE__ */
-    React2.createElement(React2.Fragment, null, /* @__PURE__ */React2.createElement(FrameworkContext.Provider, {
-      value: {
-        manifest: ssrInfo.manifest,
-        routeModules: ssrInfo.routeModules,
-        future: ssrInfo.context.future,
-        criticalCss,
-        ssr: ssrInfo.context.ssr,
-        isSpaMode: ssrInfo.context.isSpaMode
-      }
-    }, /* @__PURE__ */React2.createElement(RemixErrorBoundary, {
-      location
-    }, /* @__PURE__ */React2.createElement(RouterProvider2, {
-      router
-    }))), /* @__PURE__ */React2.createElement(React2.Fragment, null))
-  );
-}
-
 ;// ./src/index.js
 // 路由配置
-const src_router=createMemoryRouter([{path:'/',element:/*#__PURE__*/(0,jsx_runtime.jsx)(WrapperComponent,{component:SkiaApp})},{path:'/music',element:/*#__PURE__*/(0,jsx_runtime.jsx)(WrapperComponent,{component:MusicApp})}]);// 连接类组件与路由 Hook 的包装器F
-function WrapperComponent(_ref){let{component:Component}=_ref;const location=useLocation();const navigate=useNavigate();return/*#__PURE__*/(0,jsx_runtime.jsx)(Component,{...location,navigate:navigate});}// SkiaUIRenderer.render(<SkiaApp/>);
-SkiaUIRenderer_default().render(/*#__PURE__*/(0,jsx_runtime.jsx)(RouterProvider2,{router:src_router}));
+const router=createMemoryRouter([{path:'/',element:/*#__PURE__*/(0,jsx_runtime.jsx)(WrapperComponent,{component:SkiaApp})},{path:'/music',element:/*#__PURE__*/(0,jsx_runtime.jsx)(WrapperComponent,{component:MusicApp})}]);// 连接类组件与路由 Hook 的包装器F
+function WrapperComponent(_ref){let{component:Component}=_ref;const location=useLocation();const navigate=useNavigate();return/*#__PURE__*/(0,jsx_runtime.jsx)(Component,{...location,navigate:navigate});}SkiaUIRenderer_default().render(/*#__PURE__*/(0,jsx_runtime.jsx)(SkiaApp,{}));setTimeout(()=>{SkiaUIRenderer_default().render(/*#__PURE__*/(0,jsx_runtime.jsx)(MusicApp,{}));},2000);// SkiaUIRenderer.render(
+// 	<RouterProvider router={router}/>
+// );
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=main.cde404fe.js.map
+//# sourceMappingURL=main.ae95efc6.js.map

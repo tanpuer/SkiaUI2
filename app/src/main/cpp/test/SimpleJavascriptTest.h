@@ -4,7 +4,7 @@
 
 namespace HYSkiaUI {
 
-class SimpleJavascriptTest: public JavascriptTest {
+class SimpleJavascriptTest : public JavascriptTest {
 
 public:
 
@@ -16,7 +16,7 @@ public:
 
 private:
 
-    void createRoot(int width, int height);
+    bool createFlag = false;
 
 };
 

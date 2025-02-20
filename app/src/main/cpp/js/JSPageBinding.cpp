@@ -35,7 +35,6 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
         SkASSERT(binding);
         auto page = new Page();
         page->setContext(binding->context);
-        binding->context->getPageStackManager()->push(page);
         args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), page));
         args.GetReturnValue().Set(args.This());
     };
@@ -50,6 +49,7 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
         auto page = static_cast<Page *>(wrap->Value());
         auto info = static_cast<Page::EnterExitInfo *>(v8::Local<v8::External>::Cast(
                 args[0]->ToObject()->GetInternalField(0))->Value());
+        page->getContext()->getPageStackManager()->push(page);
         page->enterFromRight(*info);
     };
     pageTemplate->PrototypeTemplate()->Set(isolate, "push",

@@ -15,7 +15,6 @@ void FilamentPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int 
     setAlignItems(YGAlignCenter);
     setAlignContent(YGAlignCenter);
     setStyle(SkPaint::kFill_Style);
-    setBackgroundColor(SK_ColorTRANSPARENT);
     initChildren(this, width, height);
 }
 
