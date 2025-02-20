@@ -8,6 +8,8 @@ requestAnimationFrame(() => {
     }
 });
 
+let encoder = new TextEncoder();
+
 function createRoot() {
     const { View, ScrollView, LottieView, ShaderView, TextView, ImageView, YUVVideoView, SVGView, Button,
         ProgressBar, Page, EnterExitInfo, Icon, FlexboxLayout, Switch

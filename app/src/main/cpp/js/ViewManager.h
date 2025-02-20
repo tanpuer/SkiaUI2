@@ -21,6 +21,7 @@
 #include "JSYUVVideoViewBinding.h"
 #include "JSIconBinding.h"
 #include "JSSwitchBinding.h"
+#include "JSTextEncodingBinding.h"
 
 namespace HYSkiaUI {
 
@@ -62,6 +63,7 @@ private:
 private:
 
     std::unique_ptr<JSFileBinding> jsFileBinding;
+    std::unique_ptr<JSTextEncodingBinding> jsTextEncodingBinding;
 
 };
 

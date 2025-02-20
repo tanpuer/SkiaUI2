@@ -57,7 +57,8 @@ JSFileBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             v8::FunctionTemplate::New(isolate, read, v8::External::New(isolate, this)));
 
     v8::Local<v8::Function> constructor = fileTemplate->GetFunction();
-    skiaUI->Set(v8::String::NewFromUtf8(isolate, "File"), constructor);
+    v8::Local<v8::Object> global = isolate->GetCurrentContext()->Global();
+    global->Set(v8::String::NewFromUtf8(isolate, "File"), constructor);
     return fileTemplate;
 }
 
