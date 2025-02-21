@@ -33,6 +33,8 @@ void SVGView::draw(SkCanvas *canvas) {
     if (skSVGDom != nullptr) {
         canvas->save();
         canvas->translate(left + x, top + y);
+        //TODO matrix applied in View.cpp
+        canvas->rotate(rotateZ, containerWidth / 2, containerHeight / 2);
         skSVGDom->render(canvas);
         canvas->restore();
     }

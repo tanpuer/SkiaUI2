@@ -15,6 +15,10 @@ public:
 
     void setUpdateListener(std::function<void(View *, float)> &&listener);
 
+public:
+
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> jsUpdateCallback;
+
 private:
 
     float startValue, endValue;

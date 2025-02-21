@@ -288,6 +288,11 @@ private:
 
     jobject globalJavaViewRef = nullptr;
 
+#pragma matrix
+protected:
+
+    SkMatrix viewMatrix;
+
 };
 
 }

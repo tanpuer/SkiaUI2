@@ -16,6 +16,9 @@ void LinearAnimator::update(SkIRect &rect) {
         } else {
             end = true;
             updateInner();
+            if (!jsUpdateCallback.IsEmpty()) {
+                jsUpdateCallback.Reset();
+            }
             return;
         }
     }

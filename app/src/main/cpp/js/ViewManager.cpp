@@ -22,6 +22,7 @@ ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
     jsPageBinding = std::make_unique<JSPageBinding>(context, runtime);
     jsIconBinding = std::make_unique<JSIconBinding>(context, runtime);
     jsSwitchBinding = std::make_unique<JSSwitchBinding>(context, runtime);
+    jsLinearAnimationBinding = std::make_unique<JSLinearAnimationBinding>(context, runtime);
 
     jsFileBinding = std::make_unique<JSFileBinding>(context, runtime);
     jsTextEncodingBinding = std::make_unique<JSTextEncodingBinding>(context, runtime);
@@ -82,12 +83,15 @@ void ViewManager::registerHYViews() {
                 isolate, skiaUI, viewTemplate,
                 v8::External::New(isolate, jsSwitchBinding.get()));
 
-        auto fileTemplate = jsFileBinding->registerJSView(
+        jsFileBinding->registerJSView(
                 isolate, skiaUI, v8::FunctionTemplate::New(isolate),
                 v8::External::New(isolate, jsFileBinding.get()));
-        auto textEncoderTemplate = jsTextEncodingBinding->registerJSView(
+        jsTextEncodingBinding->registerJSView(
                 isolate, skiaUI, v8::FunctionTemplate::New(isolate),
                 v8::External::New(isolate, jsTextEncodingBinding.get()));
+        jsLinearAnimationBinding->registerJSView(
+                isolate, skiaUI, v8::FunctionTemplate::New(isolate),
+                v8::External::New(isolate, jsLinearAnimationBinding.get()));
     });
 }
 

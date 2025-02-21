@@ -18,7 +18,7 @@ View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadi
                marginLeft(0), marginTop(0), marginRight(0), marginBottom(0),
                paddingLeft(0), paddingTop(0), paddingRight(0), paddingBottom(0),
                isDirty(false),
-               widthPercent(0.0f), heightPercent(0.0f) {
+               widthPercent(0.0f), heightPercent(0.0f), viewMatrix(SkMatrix::I()) {
     viewId = VIEW_ID++;
     paint = std::make_unique<SkPaint>();
     paint->setAntiAlias(true);

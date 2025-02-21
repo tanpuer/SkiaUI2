@@ -22,6 +22,7 @@
 #include "JSIconBinding.h"
 #include "JSSwitchBinding.h"
 #include "JSTextEncodingBinding.h"
+#include "JSLinearAnimationBinding.h"
 
 namespace HYSkiaUI {
 
@@ -59,6 +60,7 @@ private:
     std::unique_ptr<JSPageBinding> jsPageBinding;
     std::unique_ptr<JSIconBinding> jsIconBinding;
     std::unique_ptr<JSSwitchBinding> jsSwitchBinding;
+    std::unique_ptr<JSLinearAnimationBinding> jsLinearAnimationBinding;
 
 private:
 
