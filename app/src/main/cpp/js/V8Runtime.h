@@ -40,6 +40,8 @@ public:
 
     void injectFunction(const char *name, v8::FunctionCallback callback, void *any);
 
+    void injectFunctionToSkiaUI(const char *name, v8::FunctionCallback callback, void *any);
+
     v8::Local<v8::Value>
     performFunction(
             v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> function,

@@ -4,6 +4,7 @@
 #include "MeasureTime.h"
 #include "performance.h"
 #include "timer.h"
+#include "backPressed.h"
 
 namespace HYSkiaUI {
 
@@ -72,7 +73,19 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         injectTimer();
         injectViews();
         injectSize(width, height);
+        injectBackPressedCallback();
     }
+}
+
+void JavascriptTest::injectBackPressedCallback() {
+    v8Runtime->injectFunctionToSkiaUI("setBackPressedCallback", backPressedCallback, this);
+    getContext()->setBackPressedInterceptor([this]() {
+        for (auto &item: backPressCallbackMap) {
+            const int argc = 0;
+            v8::Local<v8::Value> argv[argc] = {};
+            v8Runtime->performFunction(item.second, argc, argv);
+        }
+    });
 }
 
 }

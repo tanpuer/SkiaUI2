@@ -29,6 +29,10 @@ public:
 
     std::map<int, v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>> timerCallbackMap;
 
+    int BACK_PRESSED_INDEX = 0;
+
+    std::map<int, v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>> backPressCallbackMap;
+
 protected:
 
     void injectConsole();
@@ -48,6 +52,8 @@ protected:
     void injectSize(int width, int height);
 
     void invokeFrameCallback();
+
+    void injectBackPressedCallback();
 
 protected:
 

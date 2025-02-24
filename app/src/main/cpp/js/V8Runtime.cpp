@@ -270,4 +270,18 @@ v8::Platform *V8Runtime::getPlatform() {
     return mPlatform.get();
 }
 
+void V8Runtime::injectFunctionToSkiaUI(const char *name, v8::FunctionCallback callback, void *any) {
+    v8::Locker locker(mIsolate);
+    v8::Isolate::Scope scopedIsolate(mIsolate);
+    v8::HandleScope scopedHandle(mIsolate);
+    v8::Context::Scope scopedContext(mContext.Get(mIsolate));
+    v8::Local<v8::External> external_context_data = v8::External::New(mIsolate, any);
+    v8::Local<v8::FunctionTemplate> funcTemplate = v8::FunctionTemplate::New(mIsolate, callback,
+                                                                             external_context_data);
+    v8::Local<v8::Function> function = funcTemplate->GetFunction();
+    v8::Local<v8::String> funcName = v8::String::NewFromUtf8(mIsolate, name);
+    auto result = skiaUI.Get(mIsolate)->Set(funcName, function);
+    ALOGD("global set function: %s result: %d", name, result)
+}
+
 }

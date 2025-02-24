@@ -188,6 +188,14 @@ public:
         }
     }
 
+    void setBackPressedInterceptor(std::function<void()>&& callback) {
+        this->backPressedInterceptor = std::move(callback);
+    }
+
+    std::function<void()>& getBackPressedInterceptor() {
+        return this->backPressedInterceptor;
+    }
+
 public:
     std::shared_ptr<ResourcesLoader> resourcesLoader;
 
@@ -224,6 +232,8 @@ private:
     jmethodID setTimeoutMethodId = nullptr;
 
     long timerId = 0;
+
+    std::function<void()> backPressedInterceptor = nullptr;
 
 };
 
