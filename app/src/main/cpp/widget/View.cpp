@@ -388,7 +388,6 @@ void View::setContext(std::shared_ptr<SkiaUIContext> context) {
     this->config = context->getConfig();
     //todo setConfig之后才会进行node的创建
     node = YGNodeNewWithConfig(config);
-    setBackgroundColor(SK_ColorTRANSPARENT);
 }
 
 void View::setBackgroundColor(const std::string &hexColor) {
