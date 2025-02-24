@@ -1,5 +1,6 @@
 #include "JSTextViewBinding.h"
 #include "TextView.h"
+#include "color_util.h"
 
 namespace HYSkiaUI {
 
@@ -114,6 +115,33 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
     };
     textTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "textColor"),
                                                   textColorGetter, textColorSetter);
+    auto setTextGradient = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 2 && args[0]->IsArray() && args[1]->IsArray());
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto textView = static_cast<TextView *>(wrap->Value());
+        if (textView != nullptr) {
+            auto colorsArray = v8::Local<v8::Array>::Cast(args[0]);
+            std::vector<SkColor> colors;
+            for (uint32_t i = 0; i < colorsArray->Length(); ++i) {
+                v8::Local item = colorsArray->Get(i);
+                v8::String::Utf8Value utf8(isolate, item);
+                int r, g, b, a;
+                hexToRGBA(std::string(*utf8, utf8.length()), r, g, b, a);
+                colors.push_back(SkColorSetARGB(a, r, g, b));
+            }
+            auto posArray = v8::Local<v8::Array>::Cast(args[1]);
+            std::vector<float> positions;
+            for (uint32_t i = 0; i < posArray->Length(); ++i) {
+                v8::Local item = posArray->Get(i);
+                positions.push_back(item->NumberValue());
+            }
+            textView->setTextGradient(colors, positions);
+        }
+    };
+    textTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "setTextGradient"),
+            v8::FunctionTemplate::New(isolate, setTextGradient, v8::External::New(isolate, this)));
     v8::Local<v8::Function> constructor = textTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "TextView"), constructor);
     return textTemplate;

@@ -26,6 +26,7 @@ ViewManager::ViewManager(std::shared_ptr<SkiaUIContext> &context,
 
     jsFileBinding = std::make_unique<JSFileBinding>(context, runtime);
     jsTextEncodingBinding = std::make_unique<JSTextEncodingBinding>(context, runtime);
+    jsAudioPlayerBinding = std::make_unique<JSAudioPlayerBinding>(context, runtime);
 }
 
 ViewManager::~ViewManager() {
@@ -92,6 +93,9 @@ void ViewManager::registerHYViews() {
         jsLinearAnimationBinding->registerJSView(
                 isolate, skiaUI, v8::FunctionTemplate::New(isolate),
                 v8::External::New(isolate, jsLinearAnimationBinding.get()));
+        jsAudioPlayerBinding->registerJSView(
+                isolate, skiaUI, v8::FunctionTemplate::New(isolate),
+                v8::External::New(isolate, jsAudioPlayerBinding.get()));
     });
 }
 

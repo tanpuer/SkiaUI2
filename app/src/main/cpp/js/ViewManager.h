@@ -23,6 +23,7 @@
 #include "JSSwitchBinding.h"
 #include "JSTextEncodingBinding.h"
 #include "JSLinearAnimationBinding.h"
+#include "JSAudioPlayerBinding.h"
 
 namespace HYSkiaUI {
 
@@ -66,6 +67,7 @@ private:
 
     std::unique_ptr<JSFileBinding> jsFileBinding;
     std::unique_ptr<JSTextEncodingBinding> jsTextEncodingBinding;
+    std::unique_ptr<JSAudioPlayerBinding> jsAudioPlayerBinding;
 
 };
 

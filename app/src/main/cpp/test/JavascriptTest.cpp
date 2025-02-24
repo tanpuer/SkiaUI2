@@ -50,7 +50,7 @@ void JavascriptTest::injectPerformance() {
                     {"now", nowCallback}
             }
     );
-    v8Runtime->injectObject(v8Runtime->global(), "performance", performanceMap, {});
+    v8Runtime->injectObject(v8Runtime->global(), "performance", performanceMap, {}, this);
 }
 
 void JavascriptTest::injectTimer() {
@@ -68,7 +68,7 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         v8Runtime = std::make_shared<V8Runtime>();
         context->setV8Runtime(v8Runtime);
         injectConsole();
-//        injectPerformance();
+        injectPerformance();
         injectFrameCallback();
         injectTimer();
         injectViews();
