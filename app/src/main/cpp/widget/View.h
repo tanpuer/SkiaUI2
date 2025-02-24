@@ -69,6 +69,8 @@ public:
 
     virtual void setPositionType(YGPositionType type);
 
+    YGPositionType getPositionType();
+
     virtual void setDisplay(YGDisplay display);
 
     virtual void setFlexGrow(float grow);

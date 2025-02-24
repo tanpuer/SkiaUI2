@@ -96,3 +96,23 @@ static const char *scaleTypeToW3c(const ImageView::ScaleType scaleType) {
         return "";
     }
 }
+
+static YGPositionType W3CToYGPosition(const std::string &value) {
+    if (value == "absolute") {
+        return YGPositionType::YGPositionTypeAbsolute;
+    } else if (value == "static") {
+        return YGPositionType ::YGPositionTypeStatic;
+    } else {
+        return YGPositionType::YGPositionTypeRelative;
+    }
+}
+
+static const char *YGPositionToW3C(YGPositionType type) {
+    if (type == YGPositionType::YGPositionTypeAbsolute) {
+        return "absolute";
+    } else if (type == YGPositionType::YGPositionTypeStatic) {
+        return "static";
+    } else {
+        return "relative";
+    }
+}
