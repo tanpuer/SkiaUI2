@@ -62,8 +62,35 @@ JSLinearAnimationBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Obj
         auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
         linearAnimator->start();
     };
-    linearAnimatorTemplate->PrototypeTemplate()->Set(isolate, "start",
-                                                     v8::FunctionTemplate::New(isolate, start));
+    linearAnimatorTemplate->PrototypeTemplate()->Set(
+            isolate, "start", v8::FunctionTemplate::New(isolate, start));
+    auto pause = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        linearAnimator->pause();
+    };
+    linearAnimatorTemplate->PrototypeTemplate()->Set(
+            isolate, "pause", v8::FunctionTemplate::New(isolate, pause));
+    auto resume = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        linearAnimator->resume();
+    };
+    linearAnimatorTemplate->PrototypeTemplate()->Set(
+            isolate, "resume", v8::FunctionTemplate::New(isolate, resume));
+    auto stop = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        linearAnimator->stop();
+    };
+    linearAnimatorTemplate->PrototypeTemplate()->Set(
+            isolate, "stop", v8::FunctionTemplate::New(isolate, stop));
 
     auto setUpdateListener = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
@@ -77,10 +104,13 @@ JSLinearAnimationBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Obj
             if (linearAnimator->jsUpdateCallback.IsEmpty()) {
                 return;
             }
-            view->getContext()->getRuntime()->enterContext([view, linearAnimator, value](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI){
-                v8::Local<v8::Value> argv[1] = {v8::Number::New(isolate, value)};
-                view->getContext()->getRuntime()->performFunction(linearAnimator->jsUpdateCallback, 1, argv);
-            });
+            view->getContext()->getRuntime()->enterContext(
+                    [view, linearAnimator, value](v8::Isolate *isolate,
+                                                  v8::Local<v8::Object> skiaUI) {
+                        v8::Local<v8::Value> argv[1] = {v8::Number::New(isolate, value)};
+                        view->getContext()->getRuntime()->performFunction(
+                                linearAnimator->jsUpdateCallback, 1, argv);
+                    });
         });
     };
     linearAnimatorTemplate->PrototypeTemplate()->Set(

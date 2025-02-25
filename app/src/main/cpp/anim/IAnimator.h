@@ -40,6 +40,8 @@ public:
 
     virtual void resume();
 
+    virtual void stop();
+
     virtual uint32_t getAnimatorId();
 
 protected:

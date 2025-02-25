@@ -63,4 +63,8 @@ uint32_t IAnimator::getAnimatorId() {
     return animatorId;
 }
 
+void IAnimator::stop() {
+    end = true;
+}
+
 }
