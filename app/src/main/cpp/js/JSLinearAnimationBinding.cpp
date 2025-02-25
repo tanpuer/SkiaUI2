@@ -27,13 +27,9 @@ JSLinearAnimationBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Obj
     auto durationSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsNumber()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for source; expected a string");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for duration; expected a number");
         }
-        auto animator = static_cast<LinearAnimator *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
+        auto animator = GetTargetView<LinearAnimator>(info);
         animator->setDuration(value->NumberValue());
     };
     linearAnimatorTemplate->InstanceTemplate()->SetAccessor(
@@ -42,13 +38,10 @@ JSLinearAnimationBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Obj
     auto loopSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                          const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsNumber()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for source; expected a string");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            throwInvalidError(info.GetIsolate(), "Invalid value for loop; expected a number");
             return;
         }
-        auto animator = static_cast<LinearAnimator *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
+        auto animator = GetTargetView<LinearAnimator>(info);
         animator->setLoopCount(value->Int32Value());
     };
     linearAnimatorTemplate->InstanceTemplate()->SetAccessor(
@@ -56,37 +49,29 @@ JSLinearAnimationBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Obj
             nullptr, loopSetter);
 
     auto start = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        auto linearAnimator = GetTargetView<LinearAnimator>(args);
         linearAnimator->start();
     };
     linearAnimatorTemplate->PrototypeTemplate()->Set(
             isolate, "start", v8::FunctionTemplate::New(isolate, start));
     auto pause = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        auto linearAnimator = GetTargetView<LinearAnimator>(args);
         linearAnimator->pause();
     };
     linearAnimatorTemplate->PrototypeTemplate()->Set(
             isolate, "pause", v8::FunctionTemplate::New(isolate, pause));
     auto resume = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        auto linearAnimator = GetTargetView<LinearAnimator>(args);
         linearAnimator->resume();
     };
     linearAnimatorTemplate->PrototypeTemplate()->Set(
             isolate, "resume", v8::FunctionTemplate::New(isolate, resume));
     auto stop = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        auto linearAnimator = GetTargetView<LinearAnimator>(args);
         linearAnimator->stop();
     };
     linearAnimatorTemplate->PrototypeTemplate()->Set(
@@ -95,9 +80,8 @@ JSLinearAnimationBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Obj
     auto setUpdateListener = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() && args[0]->IsFunction());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
         auto callback = args[0].As<v8::Function>();
-        auto linearAnimator = static_cast<LinearAnimator *>(wrap->Value());
+        auto linearAnimator = GetTargetView<LinearAnimator>(args);
         linearAnimator->jsUpdateCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
                 isolate, callback);
         linearAnimator->setUpdateListener([linearAnimator](View *view, float value) {

@@ -16,92 +16,46 @@ JSIconBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     auto iconSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                          const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsNumber()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for icon; expected a number");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for icon; expected a number");
         }
-        auto icon = static_cast<Icon *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (icon) {
-            icon->setIcon(value->Int32Value());
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto icon = GetTargetView<Icon>(info);
+        icon->setIcon(value->Int32Value());
     };
     auto iconGetter = [](v8::Local<v8::String> property,
                          const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto icon = static_cast<Icon *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (icon) {
-            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), icon->getIcon()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto icon = GetTargetView<Icon>(info);
+        info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), icon->getIcon()));
     };
     iconTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "icon"),
                                                   iconGetter, iconSetter);
     auto colorSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                           const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for text; expected a string");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for color; expected a string");
         }
-        auto icon = static_cast<Icon *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (icon) {
-            v8::String::Utf8Value utf8(value);
-            icon->setIconColor(std::string(*utf8, utf8.length()).c_str());
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto icon = GetTargetView<Icon>(info);
+        v8::String::Utf8Value utf8(value);
+        icon->setIconColor(std::string(*utf8, utf8.length()).c_str());
     };
     auto colorGetter = [](v8::Local<v8::String> property,
                           const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto icon = static_cast<Icon *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (icon) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), icon->getIconColor()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto icon = GetTargetView<Icon>(info);
+        info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), icon->getIconColor()));
     };
     iconTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "color"),
                                                   colorGetter, colorSetter);
     auto sizeSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                          const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsNumber()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for textSize; expected a number");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for size; expected a number");
         }
-        auto icon = static_cast<Icon *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (icon) {
-            icon->setIconSize(value->Int32Value());
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto icon = GetTargetView<Icon>(info);
+        icon->setIconSize(value->Int32Value());
     };
     auto sizeGetter = [](v8::Local<v8::String> property,
                          const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto icon = static_cast<Icon *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (icon) {
-            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), icon->getIconSize()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto icon = GetTargetView<Icon>(info);
+        info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), icon->getIconSize()));
     };
     iconTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "size"),
                                                   sizeGetter, sizeSetter);

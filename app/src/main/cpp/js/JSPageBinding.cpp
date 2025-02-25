@@ -43,10 +43,8 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     pageTemplate->InstanceTemplate()->SetInternalFieldCount(1);
     pageTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "Page"));
     auto push = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsObject());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto page = static_cast<Page *>(wrap->Value());
+        auto page = GetTargetView<Page>(args);
         auto info = static_cast<Page::EnterExitInfo *>(v8::Local<v8::External>::Cast(
                 args[0]->ToObject()->GetInternalField(0))->Value());
         page->getContext()->getPageStackManager()->push(page);
@@ -55,10 +53,8 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     pageTemplate->PrototypeTemplate()->Set(isolate, "push",
                                            v8::FunctionTemplate::New(isolate, push));
     auto pop = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsObject());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto page = static_cast<Page *>(wrap->Value());
+        auto page = GetTargetView<Page>(args);
         auto info = static_cast<Page::EnterExitInfo *>(v8::Local<v8::External>::Cast(
                 args[0]->ToObject()->GetInternalField(0))->Value());
         page->exitToLeft(*info);
@@ -67,8 +63,7 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     auto onShow = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsFunction());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto page = static_cast<Page *>(wrap->Value());
+        auto page = GetTargetView<Page>(args);
         auto callback = args[0].As<v8::Function>();
         page->showCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
                 isolate, callback);
@@ -78,8 +73,7 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     auto onHide = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsFunction());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto page = static_cast<Page *>(wrap->Value());
+        auto page = GetTargetView<Page>(args);
         auto callback = args[0].As<v8::Function>();
         page->hideCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
                 isolate, callback);
@@ -89,8 +83,7 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     auto onCreate = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsFunction());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto page = static_cast<Page *>(wrap->Value());
+        auto page = GetTargetView<Page>(args);
         auto callback = args[0].As<v8::Function>();
         page->createCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
                 isolate, callback);
@@ -100,8 +93,7 @@ JSPageBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     auto onDestroy = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsFunction());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto page = static_cast<Page *>(wrap->Value());
+        auto page = GetTargetView<Page>(args);
         auto callback = args[0].As<v8::Function>();
         page->destroyCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
                 isolate, callback);

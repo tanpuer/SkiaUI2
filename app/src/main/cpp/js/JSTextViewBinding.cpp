@@ -16,101 +16,55 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
     auto textSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                          const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for text; expected a string");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for text; expected a string");
         }
-        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (textView) {
-            v8::String::Utf8Value utf8(value);
-            textView->setText(SkString(std::string(*utf8, utf8.length())));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto textView = GetTargetView<TextView>(info);
+        v8::String::Utf8Value utf8(value);
+        textView->setText(SkString(std::string(*utf8, utf8.length())));
     };
     auto textGetter = [](v8::Local<v8::String> property,
                          const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (textView) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), textView->getText().c_str()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto textView = GetTargetView<TextView>(info);
+        info.GetReturnValue().Set(
+                v8::String::NewFromUtf8(info.GetIsolate(), textView->getText().c_str()));
     };
     textTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "text"),
                                                   textGetter, textSetter);
     auto textSizeSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsNumber()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for textSize; expected a number");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for textSize; expected a number");
         }
-        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (textView) {
-            textView->setTextSize(value->Int32Value());
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto textView = GetTargetView<TextView>(info);
+        textView->setTextSize(value->Int32Value());
     };
     auto textSizeGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (textView) {
-            info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), textView->getTextSize()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto textView = GetTargetView<TextView>(info);
+        info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), textView->getTextSize()));
     };
     textTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "textSize"),
                                                   textSizeGetter, textSizeSetter);
     auto textColorSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for textColor; expected a string");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for textColor; expected a string");
         }
-        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (textView) {
-            v8::String::Utf8Value utf8(value);
-            textView->setTextColor(std::string(*utf8, utf8.length()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto textView = GetTargetView<TextView>(info);
+        v8::String::Utf8Value utf8(value);
+        textView->setTextColor(std::string(*utf8, utf8.length()));
     };
     auto textColorGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto textView = static_cast<TextView *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (textView) {
-            info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), textView->getTextColor()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto textView = GetTargetView<TextView>(info);
+        info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), textView->getTextColor()));
     };
     textTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "textColor"),
                                                   textColorGetter, textColorSetter);
     auto setTextGradient = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 2 && args[0]->IsArray() && args[1]->IsArray());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto textView = static_cast<TextView *>(wrap->Value());
+        auto textView = GetTargetView<TextView>(args);
         if (textView != nullptr) {
             auto colorsArray = v8::Local<v8::Array>::Cast(args[0]);
             std::vector<SkColor> colors;

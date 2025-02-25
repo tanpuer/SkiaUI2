@@ -29,33 +29,18 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     auto flexWrapSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for flexWrap; expected a String");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for flexWrap; expected a string");
         }
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            v8::String::Utf8Value utf8(info.GetIsolate(), value);
-            auto flexWrap = std::string(*utf8, utf8.length());
-            viewGroup->setFlexWrap(W3CToYGWrap(flexWrap));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        v8::String::Utf8Value utf8(info.GetIsolate(), value);
+        auto flexWrap = std::string(*utf8, utf8.length());
+        viewGroup->setFlexWrap(W3CToYGWrap(flexWrap));
     };
     auto flexWrapGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getFLexWrap()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        info.GetReturnValue().Set(
+                v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getFLexWrap()));
     };
     viewGroupTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "flexWrap"),
                                                        flexWrapGetter, flexWrapSetter);
@@ -63,33 +48,19 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     auto justifyContentSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                                    const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for justifyContent; expected a String");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(),
+                              "Invalid value for justifyContent; expected a string");
         }
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            v8::String::Utf8Value utf8(info.GetIsolate(), value);
-            auto justify = std::string(*utf8, utf8.length());
-            viewGroup->setJustifyContent(W3CToYGJustify(justify));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        v8::String::Utf8Value utf8(info.GetIsolate(), value);
+        auto justify = std::string(*utf8, utf8.length());
+        viewGroup->setJustifyContent(W3CToYGJustify(justify));
     };
     auto justifyContentGetter = [](v8::Local<v8::String> property,
                                    const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getJustifyContent()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        info.GetReturnValue().Set(
+                v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getJustifyContent()));
     };
     viewGroupTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "justifyContent"), justifyContentGetter,
@@ -98,33 +69,18 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     auto alignItemsSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                                const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for alignItems; expected a String");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for alignItems; expected a string");
         }
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            v8::String::Utf8Value utf8(info.GetIsolate(), value);
-            auto align = std::string(*utf8, utf8.length());
-            viewGroup->setAlignItems(W3CToYGAlign(align));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        v8::String::Utf8Value utf8(info.GetIsolate(), value);
+        auto align = std::string(*utf8, utf8.length());
+        viewGroup->setAlignItems(W3CToYGAlign(align));
     };
     auto alignItemsGetter = [](v8::Local<v8::String> property,
                                const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getAlignItems()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        info.GetReturnValue().Set(
+                v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getAlignItems()));
     };
     viewGroupTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "alignItems"), alignItemsGetter,
@@ -133,33 +89,19 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     auto flexDirectionSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                                   const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for flexDirection; expected a String");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(),
+                              "Invalid value for flexDirection; expected a string");
         }
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            v8::String::Utf8Value utf8(info.GetIsolate(), value);
-            auto direction = std::string(*utf8, utf8.length());
-            viewGroup->setFlexDirection(W3CToYGFlexDirection(direction));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        v8::String::Utf8Value utf8(info.GetIsolate(), value);
+        auto direction = std::string(*utf8, utf8.length());
+        viewGroup->setFlexDirection(W3CToYGFlexDirection(direction));
     };
     auto flexDirectionGetter = [](v8::Local<v8::String> property,
                                   const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto viewGroup = static_cast<ViewGroup *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (viewGroup) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getFlexDirection()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto viewGroup = GetTargetView<ViewGroup>(info);
+        info.GetReturnValue().Set(
+                v8::String::NewFromUtf8(info.GetIsolate(), viewGroup->getFlexDirection()));
     };
     viewGroupTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "flexDirection"),

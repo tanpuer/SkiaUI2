@@ -15,8 +15,7 @@ JSShaderViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
     auto shaderSetPath = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 2 && args[0]->IsString() && args[1]->IsArray());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto shaderView = static_cast<ShaderView *>(wrap->Value());
+        auto shaderView = GetTargetView<ShaderView>(args);
         v8::String::Utf8Value utf8(isolate, args[0]);
         auto path = std::string(*utf8, utf8.length());
         v8::Local<v8::Array> inputArray = v8::Local<v8::Array>::Cast(args[1]);

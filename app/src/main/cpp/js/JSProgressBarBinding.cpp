@@ -15,45 +15,30 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
     auto barTypeSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                             const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for barType; expected a string");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for barType; expected a string");
         }
-        auto progressBar = static_cast<ProgressBar *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (progressBar) {
-            v8::String::Utf8Value utf8(value);
-            auto type = std::string(*utf8, utf8.length());
-            if (type == "circle") {
-                progressBar->setType(ProgressBar::ProgressBarType::CIRCLE);
-            } else if (type == "linear") {
-                progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
-            } else {
-                ALOGE("unsupported barType %s", type.c_str());
-            }
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        v8::String::Utf8Value utf8(value);
+        auto type = std::string(*utf8, utf8.length());
+        if (type == "circle") {
+            progressBar->setType(ProgressBar::ProgressBarType::CIRCLE);
+        } else if (type == "linear") {
+            progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
         } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+            ALOGE("unsupported barType %s", type.c_str());
         }
     };
     auto barTypeGetter = [](v8::Local<v8::String> property,
                             const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto progressBar = static_cast<ProgressBar *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (progressBar) {
-            auto type = progressBar->getType();
-            auto barType = "";
-            if (type == ProgressBar::ProgressBarType::CIRCLE) {
-                barType = "circle";
-            } else if (type == ProgressBar::ProgressBarType::LINEAR) {
-                barType = "linear";
-            }
-            info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), barType));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        auto type = progressBar->getType();
+        auto barType = "";
+        if (type == ProgressBar::ProgressBarType::CIRCLE) {
+            barType = "circle";
+        } else if (type == ProgressBar::ProgressBarType::LINEAR) {
+            barType = "linear";
         }
+        info.GetReturnValue().Set(v8::String::NewFromUtf8(info.GetIsolate(), barType));
     };
     progressBarTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "barType"), barTypeGetter, barTypeSetter);
@@ -62,33 +47,18 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
     auto barColorSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsString()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for barColor; expected a number");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for barColor; expected a string");
         }
-        auto progressBar = static_cast<ProgressBar *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (progressBar) {
-            v8::String::Utf8Value utf8(info.GetIsolate(), value);
-            auto hexColor = std::string(*utf8, utf8.length());
-            progressBar->setBarColor(hexColor);
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        v8::String::Utf8Value utf8(info.GetIsolate(), value);
+        auto hexColor = std::string(*utf8, utf8.length());
+        progressBar->setBarColor(hexColor);
     };
     auto barColorGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto progressBar = static_cast<ProgressBar *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (progressBar) {
-            info.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(info.GetIsolate(), progressBar->getBarColor()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        info.GetReturnValue().Set(
+                v8::String::NewFromUtf8(info.GetIsolate(), progressBar->getBarColor()));
     };
     progressBarTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "barColor"),
@@ -98,31 +68,15 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
     auto autoModeSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
         if (!value->IsBoolean()) {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(),
-                                                 "Invalid value for autoMode; expected a number");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-            return;
+            throwInvalidError(info.GetIsolate(), "Invalid value for barColor; expected a bool");
         }
-        auto progressBar = static_cast<ProgressBar *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (progressBar) {
-            progressBar->setAutoMode(value->BooleanValue());
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        progressBar->setAutoMode(value->BooleanValue());
     };
     auto autoModeGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
-        auto progressBar = static_cast<ProgressBar *>(v8::Local<v8::External>::Cast(
-                info.Holder()->GetInternalField(0))->Value());
-        if (progressBar) {
-            info.GetReturnValue().Set(
-                    v8::Boolean::New(info.GetIsolate(), progressBar->getAutoMode()));
-        } else {
-            auto error = v8::String::NewFromUtf8(info.GetIsolate(), "Invalid object");
-            info.GetIsolate()->ThrowException(v8::Exception::TypeError(error));
-        }
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        info.GetReturnValue().Set(v8::Boolean::New(info.GetIsolate(), progressBar->getAutoMode()));
     };
     progressBarTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "autoMode"),
