@@ -8,16 +8,7 @@ v8::Local<v8::FunctionTemplate>
 JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                   v8::Local<v8::FunctionTemplate> inherit,
                                   v8::Local<v8::External> external) {
-    auto textViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        SkASSERT(args.IsConstructCall() && args.Length() == 0);
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSTextViewBinding *>(data->Value());
-        SkASSERT(binding);
-        auto textView = new TextView();
-        textView->setContext(binding->context);
-        args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), textView));
-        args.GetReturnValue().Set(args.This());
-    };
+    auto textViewConstructor = MakeJSViewConstructor<TextView, JSTextViewBinding>();
     auto textTemplate = v8::FunctionTemplate::New(isolate, textViewConstructor, external);
     textTemplate->Inherit(inherit);
     textTemplate->InstanceTemplate()->SetInternalFieldCount(1);

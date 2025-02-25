@@ -7,16 +7,7 @@ v8::Local<v8::FunctionTemplate>
 JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                      v8::Local<v8::FunctionTemplate> inherit,
                                      v8::Local<v8::External> external) {
-    auto progressBarConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        SkASSERT(args.IsConstructCall() && args.Length() == 0);
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSProgressBarBinding *>(data->Value());
-        SkASSERT(binding);
-        auto progressBar = new ProgressBar();
-        progressBar->setContext(binding->context);
-        args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), progressBar));
-        args.GetReturnValue().Set(args.This());
-    };
+    auto progressBarConstructor = MakeJSViewConstructor<ProgressBar, JSProgressBarBinding>();
     auto progressBarTemplate = v8::FunctionTemplate::New(isolate, progressBarConstructor, external);
     progressBarTemplate->Inherit(inherit);
     progressBarTemplate->InstanceTemplate()->SetInternalFieldCount(1);

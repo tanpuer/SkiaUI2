@@ -7,16 +7,7 @@ v8::Local<v8::FunctionTemplate>
 JSLottieViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                     v8::Local<v8::FunctionTemplate> inherit,
                                     v8::Local<v8::External> external) {
-    auto lottieViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        SkASSERT(args.IsConstructCall() && args.Length() == 0);
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSLottieViewBinding *>(data->Value());
-        SkASSERT(binding);
-        auto lottieView = new LottieView();
-        lottieView->setContext(binding->context);
-        args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), lottieView));
-        args.GetReturnValue().Set(args.This());
-    };
+    auto lottieViewConstructor = MakeJSViewConstructor<LottieView, JSLottieViewBinding>();
     auto lottieTemplate = v8::FunctionTemplate::New(isolate, lottieViewConstructor, external);
     lottieTemplate->Inherit(inherit);
     lottieTemplate->InstanceTemplate()->SetInternalFieldCount(1);

@@ -4,7 +4,7 @@
 
 namespace HYSkiaUI {
 
-class JSShaderViewBinding : JSBinding {
+class JSShaderViewBinding : public JSBinding {
 
 public:
 

@@ -8,16 +8,7 @@ v8::Local<v8::FunctionTemplate>
 JSScrollViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                     v8::Local<v8::FunctionTemplate> inherit,
                                     v8::Local<v8::External> external) {
-    auto scrollViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        SkASSERT(args.IsConstructCall() && args.Length() == 0);
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSScrollViewBinding *>(data->Value());
-        SkASSERT(binding);
-        auto scrollView = new ScrollView();
-        scrollView->setContext(binding->context);
-        args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), scrollView));
-        args.GetReturnValue().Set(args.This());
-    };
+    auto scrollViewConstructor = MakeJSViewConstructor<ScrollView, JSScrollViewBinding>();
     auto scrollTemplate = v8::FunctionTemplate::New(isolate, scrollViewConstructor, external);
     scrollTemplate->Inherit(inherit);
     scrollTemplate->InstanceTemplate()->SetInternalFieldCount(1);

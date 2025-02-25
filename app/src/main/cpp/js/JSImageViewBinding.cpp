@@ -8,16 +8,7 @@ v8::Local<v8::FunctionTemplate>
 JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,
                                    v8::Local<v8::FunctionTemplate> inherit,
                                    v8::Local<v8::External> external) {
-    auto imageViewConstructor = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        SkASSERT(args.IsConstructCall() && args.Length() == 0);
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSImageViewBinding *>(data->Value());
-        SkASSERT(binding);
-        auto imageView = new ImageView();
-        imageView->setContext(binding->context);
-        args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), imageView));
-        args.GetReturnValue().Set(args.This());
-    };
+    auto imageViewConstructor = MakeJSViewConstructor<ImageView, JSImageViewBinding>();
     auto imageTemplate = v8::FunctionTemplate::New(isolate, imageViewConstructor, external);
     imageTemplate->Inherit(inherit);
     imageTemplate->InstanceTemplate()->SetInternalFieldCount(1);
