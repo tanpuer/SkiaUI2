@@ -18,8 +18,7 @@ JSVideoViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             throwInvalidError(info.GetIsolate(), "Invalid value for source; expected a string");
         }
         auto videoView = GetTargetView<ExoPlayerView>(info);
-        v8::String::Utf8Value utf8(value);
-        videoView->setSource(std::string(*utf8, utf8.length()).c_str());
+        videoView->setSource(stdString(info.GetIsolate(), value).c_str());
     };
     auto sourceGetter = [](v8::Local<v8::String> property,
                            const v8::PropertyCallbackInfo<v8::Value> &info) {

@@ -11,8 +11,7 @@ JSFileBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
         SkASSERT(args.IsConstructCall() && args.Length() == 1);
         auto data = v8::Local<v8::External>::Cast(args.Data());
         auto binding = static_cast<JSFileBinding *>(data->Value());
-        v8::String::Utf8Value utf8(args.GetIsolate(), args[0]->ToString());
-        auto path = std::string(*utf8, utf8.length());
+        auto path = stdString(args.GetIsolate(), args[0]);
         SkASSERT(binding);
         auto file = new File(path, binding->context);
         args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), file));
@@ -23,17 +22,9 @@ JSFileBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     fileTemplate->SetClassName(v8::String::NewFromUtf8(isolate, "File"));
 
     auto exist = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
-        auto isolate = args.GetIsolate();
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto targetFile = static_cast<File *>(wrap->Value());
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSFileBinding *>(data->Value());
-        if (targetFile != nullptr) {
-            return args.GetReturnValue().Set(targetFile->exist());
-        } else {
-            ALOGD("View draw failed because view/canvas is nullptr");
-        }
+        auto targetFile = GetTargetView<File>(args);
+        return args.GetReturnValue().Set(targetFile->exist());
     };
     fileTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "exist"),
@@ -41,16 +32,9 @@ JSFileBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     auto read = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto targetFile = static_cast<File *>(wrap->Value());
-        auto data = v8::Local<v8::External>::Cast(args.Data());
-        auto binding = static_cast<JSFileBinding *>(data->Value());
-        if (targetFile != nullptr) {
-            return args.GetReturnValue().Set(
-                    v8::String::NewFromUtf8(isolate, targetFile->read().c_str()));
-        } else {
-            ALOGD("View draw failed because view/canvas is nullptr");
-        }
+        auto targetFile = GetTargetView<File>(args);
+        return args.GetReturnValue().Set(
+                v8::String::NewFromUtf8(isolate, targetFile->read().c_str()));
     };
     fileTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "read"),

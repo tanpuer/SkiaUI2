@@ -17,8 +17,7 @@ JSFlexboxLayoutBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Objec
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsString());
         auto flexboxLayout = GetTargetView<FlexboxLayout>(args);
-        v8::String::Utf8Value utf8(isolate, args[0]);
-        auto flexDirection = W3CToYGFlexDirection(std::string(*utf8, utf8.length()));
+        auto flexDirection = W3CToYGFlexDirection(stdString(isolate, args[0]));
         flexboxLayout->setFlexDirection(flexDirection);
     };
     flexboxTemplate->InstanceTemplate()->Set(

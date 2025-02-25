@@ -32,8 +32,7 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             throwInvalidError(info.GetIsolate(), "Invalid value for flexWrap; expected a string");
         }
         auto viewGroup = GetTargetView<ViewGroup>(info);
-        v8::String::Utf8Value utf8(info.GetIsolate(), value);
-        auto flexWrap = std::string(*utf8, utf8.length());
+        auto flexWrap = stdString(info.GetIsolate(), value);
         viewGroup->setFlexWrap(W3CToYGWrap(flexWrap));
     };
     auto flexWrapGetter = [](v8::Local<v8::String> property,
@@ -52,8 +51,7 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
                               "Invalid value for justifyContent; expected a string");
         }
         auto viewGroup = GetTargetView<ViewGroup>(info);
-        v8::String::Utf8Value utf8(info.GetIsolate(), value);
-        auto justify = std::string(*utf8, utf8.length());
+        auto justify = stdString(info.GetIsolate(), value);
         viewGroup->setJustifyContent(W3CToYGJustify(justify));
     };
     auto justifyContentGetter = [](v8::Local<v8::String> property,
@@ -72,8 +70,7 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             throwInvalidError(info.GetIsolate(), "Invalid value for alignItems; expected a string");
         }
         auto viewGroup = GetTargetView<ViewGroup>(info);
-        v8::String::Utf8Value utf8(info.GetIsolate(), value);
-        auto align = std::string(*utf8, utf8.length());
+        auto align = stdString(info.GetIsolate(), value);
         viewGroup->setAlignItems(W3CToYGAlign(align));
     };
     auto alignItemsGetter = [](v8::Local<v8::String> property,

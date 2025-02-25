@@ -17,23 +17,19 @@ JSScrollViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1 && args[0]->IsString());
         auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto flexboxLayout = static_cast<FlexboxLayout *>(wrap->Value());
-        v8::String::Utf8Value utf8(isolate, args[0]);
-        auto flexDirection = W3CToYGFlexDirection(std::string(*utf8, utf8.length()));
-        flexboxLayout->setFlexDirection(flexDirection);
+        auto scrollView = static_cast<ScrollView *>(wrap->Value());
+        auto flexDirection = W3CToYGFlexDirection(stdString(isolate, args[0]));
+        scrollView->setFlexDirection(flexDirection);
     };
     scrollTemplate->InstanceTemplate()->Set(
             isolate, "setFlexDirection",
             v8::FunctionTemplate::New(isolate, setScrollViewFlexDirection));
     auto getDistanceByIndex = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 1 && args[0]->IsNumber());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto scrollView = static_cast<ScrollView *>(wrap->Value());
-        if (scrollView != nullptr) {
-            args.GetReturnValue().Set(
-                    v8::Number::New(args.GetIsolate(),
-                                    scrollView->getDistanceByIndex(args[0]->Int32Value())));
-        }
+        auto scrollView = GetTargetView<ScrollView>(args);
+        args.GetReturnValue().Set(
+                v8::Number::New(args.GetIsolate(),
+                                scrollView->getDistanceByIndex(args[0]->Int32Value())));
     };
     scrollTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "getDistanceByIndex"),
@@ -41,11 +37,8 @@ JSScrollViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
                                       v8::External::New(isolate, this)));
     auto scrollTo = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 1 && args[0]->IsNumber());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto scrollView = static_cast<ScrollView *>(wrap->Value());
-        if (scrollView != nullptr) {
-            scrollView->scrollTo(args[0]->NumberValue());
-        }
+        auto scrollView = GetTargetView<ScrollView>(args);
+        scrollView->scrollTo(args[0]->NumberValue());
     };
     scrollTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "scrollTo"),

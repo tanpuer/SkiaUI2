@@ -30,6 +30,11 @@ public:
         isolate->ThrowException(v8::Exception::TypeError(error));
     }
 
+    static inline std::string stdString(v8::Isolate *isolate, const v8::Local<v8::Value>& value) {
+        v8::String::Utf8Value utf8(value);
+        return std::string(*utf8, utf8.length()).c_str();
+    }
+
     template<typename T>
     static T* GetTargetView(const v8::PropertyCallbackInfo<v8::Value>& info) {
         auto targetView = static_cast<T*>(v8::Local<v8::External>::Cast(

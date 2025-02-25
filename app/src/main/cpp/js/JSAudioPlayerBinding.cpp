@@ -11,8 +11,7 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
         SkASSERT(args.IsConstructCall() && args.Length() == 1);
         auto data = v8::Local<v8::External>::Cast(args.Data());
         auto binding = static_cast<JSAudioPlayerBinding *>(data->Value());
-        v8::String::Utf8Value utf8(args.GetIsolate(), args[0]->ToString());
-        auto path = std::string(*utf8, utf8.length());
+        auto path = stdString(args.GetIsolate(), args[0]);
         SkASSERT(binding);
         auto audioPlayer = new JSAudioPlayer(binding->context, path);
         args.This()->SetInternalField(0, v8::External::New(args.GetIsolate(), audioPlayer));

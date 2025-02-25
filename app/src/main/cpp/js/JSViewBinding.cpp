@@ -50,8 +50,7 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             throwInvalidError(info.GetIsolate(), "Invalid value for backgroundColor; expected a string");
         }
         auto view = GetTargetView<View>(info);
-        v8::String::Utf8Value utf8(info.GetIsolate(), value);
-        auto hexColor = std::string(*utf8, utf8.length());
+        auto hexColor = stdString(info.GetIsolate(), value);
         view->setBackgroundColor(hexColor);
     };
     auto viewBackgroundColorGetter = [](v8::Local<v8::String> property,

@@ -16,8 +16,7 @@ JSShaderViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
         auto isolate = args.GetIsolate();
         assert(args.Length() == 2 && args[0]->IsString() && args[1]->IsArray());
         auto shaderView = GetTargetView<ShaderView>(args);
-        v8::String::Utf8Value utf8(isolate, args[0]);
-        auto path = std::string(*utf8, utf8.length());
+        auto path = stdString(isolate, args[0]);
         v8::Local<v8::Array> inputArray = v8::Local<v8::Array>::Cast(args[1]);
         uint32_t arrayLength = inputArray->Length();
         std::vector<std::string> images;

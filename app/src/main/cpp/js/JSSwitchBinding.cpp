@@ -35,9 +35,8 @@ JSSwitchBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skia
             throwInvalidError(info.GetIsolate(), "Invalid value for color; expected a string");
         }
         auto view = GetTargetView<Switch>(info);
-        v8::String::Utf8Value utf8(value);
         int r, g, b, a;
-        hexToRGBA(std::string(*utf8, utf8.length()), r, g, b, a);
+        hexToRGBA(stdString(info.GetIsolate(), value), r, g, b, a);
         view->setColor(SkColorSetARGB(a, r, g, b));
     };
     switchTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "color"),

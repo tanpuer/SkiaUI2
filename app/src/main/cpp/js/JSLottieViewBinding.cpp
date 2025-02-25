@@ -18,8 +18,7 @@ JSLottieViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> 
             throwInvalidError(info.GetIsolate(), "Invalid value for src; expected a string");
         }
         auto lottieView = GetTargetView<LottieView>(info);
-        v8::String::Utf8Value utf8(info.GetIsolate(), value);
-        lottieView->setSource(std::string(*utf8, utf8.length()).c_str());
+        lottieView->setSource(stdString(info.GetIsolate(), value).c_str());
     };
     auto srcGetter = [](v8::Local<v8::String> property,
                         const v8::PropertyCallbackInfo<v8::Value> &info) {

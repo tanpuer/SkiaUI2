@@ -19,8 +19,7 @@ JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             throwInvalidError(info.GetIsolate(), "Invalid value for source; expected a string");
         }
         auto imageView = GetTargetView<ImageView>(info);
-        v8::String::Utf8Value utf8(value);
-        imageView->setSource(std::string(*utf8, utf8.length()).c_str());
+        imageView->setSource(stdString(info.GetIsolate(), value).c_str());
     };
     auto sourceGetter = [](v8::Local<v8::String> property,
                            const v8::PropertyCallbackInfo<v8::Value> &info) {
@@ -36,8 +35,7 @@ JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             throwInvalidError(info.GetIsolate(), "Invalid value for objectFit; expected a string");
         }
         auto imageView = GetTargetView<ImageView>(info);
-        v8::String::Utf8Value utf8(value);
-        auto scaleType = W3CToScaleType(std::string(*utf8, utf8.length()).c_str());
+        auto scaleType = W3CToScaleType(stdString(info.GetIsolate(), value).c_str());
         imageView->setScaleType(scaleType);
     };
     auto objectFitGetter = [](v8::Local<v8::String> property,

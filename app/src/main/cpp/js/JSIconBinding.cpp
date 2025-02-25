@@ -34,8 +34,7 @@ JSIconBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             throwInvalidError(info.GetIsolate(), "Invalid value for color; expected a string");
         }
         auto icon = GetTargetView<Icon>(info);
-        v8::String::Utf8Value utf8(value);
-        icon->setIconColor(std::string(*utf8, utf8.length()).c_str());
+        icon->setIconColor(stdString(info.GetIsolate(), value).c_str());
     };
     auto colorGetter = [](v8::Local<v8::String> property,
                           const v8::PropertyCallbackInfo<v8::Value> &info) {

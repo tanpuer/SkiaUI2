@@ -18,8 +18,7 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             throwInvalidError(info.GetIsolate(), "Invalid value for barType; expected a string");
         }
         auto progressBar = GetTargetView<ProgressBar>(info);
-        v8::String::Utf8Value utf8(value);
-        auto type = std::string(*utf8, utf8.length());
+        auto type = stdString(info.GetIsolate(), value);
         if (type == "circle") {
             progressBar->setType(ProgressBar::ProgressBarType::CIRCLE);
         } else if (type == "linear") {
@@ -50,8 +49,7 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             throwInvalidError(info.GetIsolate(), "Invalid value for barColor; expected a string");
         }
         auto progressBar = GetTargetView<ProgressBar>(info);
-        v8::String::Utf8Value utf8(info.GetIsolate(), value);
-        auto hexColor = std::string(*utf8, utf8.length());
+        auto hexColor = stdString(info.GetIsolate(), value);
         progressBar->setBarColor(hexColor);
     };
     auto barColorGetter = [](v8::Local<v8::String> property,

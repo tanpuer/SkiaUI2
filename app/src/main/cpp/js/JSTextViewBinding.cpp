@@ -19,8 +19,7 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
             throwInvalidError(info.GetIsolate(), "Invalid value for text; expected a string");
         }
         auto textView = GetTargetView<TextView>(info);
-        v8::String::Utf8Value utf8(value);
-        textView->setText(SkString(std::string(*utf8, utf8.length())));
+        textView->setText(SkString(stdString(info.GetIsolate(), value)));
     };
     auto textGetter = [](v8::Local<v8::String> property,
                          const v8::PropertyCallbackInfo<v8::Value> &info) {
@@ -51,8 +50,7 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
             throwInvalidError(info.GetIsolate(), "Invalid value for textColor; expected a string");
         }
         auto textView = GetTargetView<TextView>(info);
-        v8::String::Utf8Value utf8(value);
-        textView->setTextColor(std::string(*utf8, utf8.length()));
+        textView->setTextColor(stdString(info.GetIsolate(), value));
     };
     auto textColorGetter = [](v8::Local<v8::String> property,
                              const v8::PropertyCallbackInfo<v8::Value> &info) {
@@ -70,9 +68,8 @@ JSTextViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> sk
             std::vector<SkColor> colors;
             for (uint32_t i = 0; i < colorsArray->Length(); ++i) {
                 v8::Local item = colorsArray->Get(i);
-                v8::String::Utf8Value utf8(isolate, item);
                 int r, g, b, a;
-                hexToRGBA(std::string(*utf8, utf8.length()), r, g, b, a);
+                hexToRGBA(stdString(isolate, item), r, g, b, a);
                 colors.push_back(SkColorSetARGB(a, r, g, b));
             }
             auto posArray = v8::Local<v8::Array>::Cast(args[1]);

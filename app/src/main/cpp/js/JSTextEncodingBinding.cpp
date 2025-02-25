@@ -23,9 +23,7 @@ JSTextEncodingBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object
     auto encode = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         auto isolate = args.GetIsolate();
         assert(args.Length() == 1);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto textEncoding = static_cast<TextEncoding *>(wrap->Value());
-        auto data = v8::Local<v8::External>::Cast(args.Data());
+        auto textEncoding = GetTargetView<TextEncoding>(args);
         if (textEncoding != nullptr) {
             v8::String::Utf8Value utf8(args.GetIsolate(), args[0]->ToString());
             auto value = std::string(*utf8, utf8.length());

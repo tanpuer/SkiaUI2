@@ -18,8 +18,7 @@ JSSVGViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> ski
             throwInvalidError(info.GetIsolate(), "Invalid value for source; expected a string");
         }
         auto svgView = GetTargetView<SVGView>(info);
-        v8::String::Utf8Value utf8(value);
-        svgView->setSource(std::string(*utf8, utf8.length()).c_str());
+        svgView->setSource(stdString(info.GetIsolate(), value).c_str());
     };
     auto sourceGetter = [](v8::Local<v8::String> property,
                            const v8::PropertyCallbackInfo<v8::Value> &info) {
