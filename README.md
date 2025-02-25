@@ -34,12 +34,12 @@ steps：
                  render 3D View by Filament(other engines can also supported)/SurfaceTexture/SkImage.  
                  render Video by ExoPlayer/SurfaceTexture/SkImage.  
    ...
-10. Page: act as the same role as Activity.
-11. C++: See CppTest.cpp. 
-12. js: See test.js in assets. Import v8 to evaluate javascript. 
-13. **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
-14. **React**: See react_bundle.js in assets. Import react/react-reconciler to run. 
-15. Dirty-Render: markDirty after "draw" if necessary.
+8. Page: act as the same role as Activity.
+9. C++: See CppTest.cpp. 
+10. js: See test.js in assets. Import v8 to evaluate javascript. 
+11. **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
+12. **React**: See react_bundle.js in assets. Import react/react-reconciler to run. 
+13. Dirty-Render: markDirty after "draw" if necessary.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)

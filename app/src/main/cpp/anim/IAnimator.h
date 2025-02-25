@@ -32,7 +32,7 @@ public:
 
     virtual void update(SkIRect &rect) = 0;
 
-    virtual void addListener(std::function<void()> finishCallback);
+    virtual void addListener(std::function<void()>&& finishCallback);
 
     virtual void setLoopCount(int count);
 
