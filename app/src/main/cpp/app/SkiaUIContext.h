@@ -49,7 +49,7 @@ public:
         this->intFont();
     }
 
-    std::shared_ptr<AssetManager> getAssetManager() {
+    const std::shared_ptr<AssetManager> &getAssetManager() {
         return assetManager;
     }
 
@@ -69,11 +69,11 @@ public:
         return config;
     }
 
-    const std::shared_ptr<PageStackManager> getPageStackManager() {
+    const std::shared_ptr<PageStackManager> &getPageStackManager() {
         return pageStackManager;
     }
 
-    const std::shared_ptr<PluginManager> getPluginManager() {
+    const std::shared_ptr<PluginManager> &getPluginManager() {
         return pluginManager;
     }
 
@@ -100,11 +100,11 @@ public:
         return canvas;
     }
 
-    void setV8Runtime(std::shared_ptr<V8Runtime> runtime) {
+    void setV8Runtime(std::shared_ptr<V8Runtime> &runtime) {
         this->v8Runtime = runtime;
     }
 
-    std::shared_ptr<V8Runtime> &getRuntime() {
+    const std::shared_ptr<V8Runtime> &getRuntime() {
         return v8Runtime;
     }
 
@@ -138,11 +138,11 @@ public:
         fontCollection->enableFontFallback();
     }
 
-    sk_sp<FontCollection> getFontCollection() {
+    const sk_sp<FontCollection> getFontCollection() {
         return fontCollection;
     }
 
-    sk_sp<SkTypeface> getIconFontTypeFace() {
+    const sk_sp<SkTypeface> getIconFontTypeFace() {
         return iconFontTypeFace;
     }
 
@@ -188,11 +188,11 @@ public:
         }
     }
 
-    void setBackPressedInterceptor(std::function<void()>&& callback) {
+    void setBackPressedInterceptor(std::function<void()> &&callback) {
         this->backPressedInterceptor = std::move(callback);
     }
 
-    std::function<void()>& getBackPressedInterceptor() {
+    std::function<void()> &getBackPressedInterceptor() {
         return this->backPressedInterceptor;
     }
 
