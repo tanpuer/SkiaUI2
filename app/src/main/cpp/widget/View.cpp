@@ -171,6 +171,10 @@ void View::setStrokeWidth(SkScalar _width) {
 
 void View::setAlpha(float alpha) {
     SkASSERT(paint);
+    //if the backgroundColor is transparent, can not set alpha
+    if (SkColorGetA(paint->getColor()) == 0) {
+        return;
+    }
     paint->setAlphaf(alpha);
     markDirty();
 }

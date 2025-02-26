@@ -41,8 +41,6 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
                         if (parent->onInterceptTouchEvent(touchEvent)) {
                             clearTargetView(touchEvent);
                             weakTargetView = parent;
-                            lastAlpha = weakTargetView->getAlpha();
-                            weakTargetView->setAlpha(0.3f);
                             touchEvent->action = TouchEvent::ACTION_DOWN;
                             dispatchToTargetView(touchEvent);
                             touchEvent->action = TouchEvent::ACTION_MOVE;
