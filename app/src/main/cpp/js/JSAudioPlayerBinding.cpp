@@ -35,7 +35,7 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
         assert(args.Length() == 0);
         auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
         if (audioPlayer != nullptr) {
-            audioPlayer->start();
+            audioPlayer->pause();
         }
     };
     audioPlayerTemplate->PrototypeTemplate()->Set(
