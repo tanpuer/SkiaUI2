@@ -41,6 +41,8 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
                         if (parent->onInterceptTouchEvent(touchEvent)) {
                             clearTargetView(touchEvent);
                             weakTargetView = parent;
+                            lastAlpha = weakTargetView->getAlpha();
+                            weakTargetView->setAlpha(0.3f);
                             touchEvent->action = TouchEvent::ACTION_DOWN;
                             dispatchToTargetView(touchEvent);
                             touchEvent->action = TouchEvent::ACTION_MOVE;
@@ -158,6 +160,9 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {
                 ALOGD("findTargetViewTraversal result %s %lld", child->name(), child->viewId)
+                if (child->isScroller()) {
+                    return findTargetViewTraversal(dynamic_cast<ScrollView*>(child), touchEvent);
+                }
                 return child;
             }
         }
