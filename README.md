@@ -38,7 +38,7 @@ steps：
 9. C++: See CppTest.cpp. 
 10. js: See test.js in assets. Import v8 to evaluate javascript. 
 11. **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run. 
-12. **React**: See react_bundle.js in assets. Import react/react-reconciler to run. 
+12. **React**: See react_bundle.js in assets. Import react/react-reconciler to run. pls refer https://github.com/tanpuer/skia-ui-react 
 13. Dirty-Render: markDirty after "draw" if necessary.
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)

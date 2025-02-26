@@ -23,8 +23,7 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
 
     auto start = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto audioPlayer = static_cast<JSAudioPlayer *>(wrap->Value());
+        auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
         if (audioPlayer != nullptr) {
             audioPlayer->start();
         }
@@ -34,10 +33,9 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             v8::FunctionTemplate::New(isolate, start, v8::External::New(isolate, this)));
     auto pause = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto audioPlayer = static_cast<JSAudioPlayer *>(wrap->Value());
+        auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
         if (audioPlayer != nullptr) {
-            audioPlayer->pause();
+            audioPlayer->start();
         }
     };
     audioPlayerTemplate->PrototypeTemplate()->Set(
@@ -45,8 +43,7 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             v8::FunctionTemplate::New(isolate, pause, v8::External::New(isolate, this)));
     auto release = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto audioPlayer = static_cast<JSAudioPlayer *>(wrap->Value());
+        auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
         if (audioPlayer != nullptr) {
             audioPlayer->release();
         }
@@ -56,8 +53,7 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             v8::FunctionTemplate::New(isolate, release, v8::External::New(isolate, this)));
     auto getCurrentPosition = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 0);
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto audioPlayer = static_cast<JSAudioPlayer *>(wrap->Value());
+        auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
         if (audioPlayer != nullptr) {
             args.GetReturnValue().Set(
                     v8::Number::New(args.GetIsolate(), audioPlayer->getCurrPosition()));
