@@ -52,6 +52,10 @@ void TextView::setAlpha(float alpha) {
     markMeasure();
 }
 
+float TextView::getAlpha() {
+    return SkColorGetA(defaultStyle->getColor()) / 255.0f;
+}
+
 void TextView::measure() {
     if (text.isEmpty() && stringBuilders.empty()) {
         setMeasuredDimension(0, 0);

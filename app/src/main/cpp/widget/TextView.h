@@ -74,6 +74,8 @@ public:
 
     virtual void setAlpha(float alpha) override;
 
+    virtual float getAlpha() override;
+
     void setMaxLines(int maxLine);
 
     /**

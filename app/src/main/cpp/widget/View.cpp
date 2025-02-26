@@ -171,14 +171,13 @@ void View::setStrokeWidth(SkScalar _width) {
 
 void View::setAlpha(float alpha) {
     SkASSERT(paint);
-    this->alpha = alpha;
     paint->setAlphaf(alpha);
     markDirty();
 }
 
 float View::getAlpha() {
     SkASSERT(paint);
-    return alpha;
+    return paint->getAlphaf();
 }
 
 void View::setLinearGradient(std::vector<SkColor> colors) {

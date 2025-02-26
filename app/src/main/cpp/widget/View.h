@@ -105,8 +105,6 @@ public:
 
     View *parent = nullptr;
 
-    float alpha = 1.0f;
-
 protected:
 
     int width, height;
