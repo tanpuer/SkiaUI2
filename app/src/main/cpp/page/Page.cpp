@@ -16,7 +16,7 @@ Page::Page() {
 }
 
 
-void Page::setContext(std::shared_ptr<SkiaUIContext> context) {
+void Page::setContext(std::shared_ptr<SkiaUIContext>& context) {
     View::setContext(context);
     auto runtime = context->getRuntime();
     if (runtime != nullptr && !createCallback.IsEmpty()) {

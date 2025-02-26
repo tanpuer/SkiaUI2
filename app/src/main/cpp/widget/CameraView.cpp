@@ -145,7 +145,7 @@ void CameraView::draw(SkCanvas *canvas) {
     }
 }
 
-void CameraView::setContext(std::shared_ptr<SkiaUIContext> context) {
+void CameraView::setContext(std::shared_ptr<SkiaUIContext>& context) {
     View::setContext(context);
 }
 

@@ -263,7 +263,7 @@ void View::performClick() {
     }
 }
 
-std::function<void(View *)> View::getClickListener() {
+const std::function<void(View *)>& View::getClickListener() {
     return viewClickListener;
 }
 
@@ -379,11 +379,11 @@ void View::setAspectRatio(float ratio) {
     markDirty();
 }
 
-const std::shared_ptr<SkiaUIContext> View::getContext() {
+const std::shared_ptr<SkiaUIContext>& View::getContext() {
     return context;
 }
 
-void View::setContext(std::shared_ptr<SkiaUIContext> context) {
+void View::setContext(std::shared_ptr<SkiaUIContext>& context) {
     this->context = context;
     if (this->config != nullptr) {
         ALOGD("multi set config error, pls check")
@@ -451,7 +451,7 @@ void View::checkJavaViewRef(jobject instance) {
     }
 }
 
-jobject View::getJavaViewRef() {
+const jobject View::getJavaViewRef() {
     return globalJavaViewRef;
 }
 

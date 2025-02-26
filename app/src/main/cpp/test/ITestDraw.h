@@ -34,7 +34,7 @@ public:
 
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) = 0;
 
-    virtual void setContext(std::shared_ptr<SkiaUIContext> context) {
+    virtual void setContext(std::shared_ptr<SkiaUIContext>& context) {
         this->context = context;
     }
 

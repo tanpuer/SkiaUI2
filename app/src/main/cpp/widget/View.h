@@ -57,9 +57,9 @@ public:
 
     virtual bool isScroller();
 
-    const std::shared_ptr<SkiaUIContext> getContext();
+    const std::shared_ptr<SkiaUIContext>& getContext();
 
-    virtual void setContext(std::shared_ptr<SkiaUIContext> context);
+    virtual void setContext(std::shared_ptr<SkiaUIContext>& context);
 
     /**
      * 在AlignItems的基础上自定义每个子视图的对齐方式
@@ -251,7 +251,7 @@ public:
 
     virtual void setOnClickListener(std::function<void(View *)> clickListener);
 
-    virtual std::function<void(View *)> getClickListener();
+    virtual const std::function<void(View *)>& getClickListener();
 
     virtual void removeClickListener();
 
@@ -284,7 +284,7 @@ public:
 
     void checkJavaViewRef(jobject instance);
 
-    jobject getJavaViewRef();
+    const jobject getJavaViewRef();
 
 private:
 

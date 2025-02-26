@@ -20,7 +20,7 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
-    void setContext(std::shared_ptr<SkiaUIContext> context) override;
+    void setContext(std::shared_ptr<SkiaUIContext>& context) override;
 
     void setFocus(bool focus);
 

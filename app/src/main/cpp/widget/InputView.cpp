@@ -75,7 +75,7 @@ void InputView::setTextSize(int size) {
     markMeasure();
 }
 
-void InputView::setContext(std::shared_ptr<SkiaUIContext> context) {
+void InputView::setContext(std::shared_ptr<SkiaUIContext>& context) {
     View::setContext(context);
     auto jniEnv = getContext()->getJniEnv();
     auto jClazz = jniEnv->FindClass("com/temple/skiaui/keyboard/HYKeyboard");

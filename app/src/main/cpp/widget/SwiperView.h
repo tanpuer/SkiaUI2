@@ -14,7 +14,7 @@ public:
 
     virtual void setAutoMode(bool flag);
 
-    void setContext(std::shared_ptr<SkiaUIContext> context) override;
+    void setContext(std::shared_ptr<SkiaUIContext>& context) override;
 
     virtual void draw(SkCanvas *canvas) override;
 

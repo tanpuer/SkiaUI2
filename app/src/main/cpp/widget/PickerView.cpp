@@ -18,7 +18,7 @@ PickerView::~PickerView() {
 
 }
 
-void PickerView::setContext(std::shared_ptr<SkiaUIContext> context) {
+void PickerView::setContext(std::shared_ptr<SkiaUIContext>& context) {
     View::setContext(context);
 //    setJustifyContent(YGJustify::YGJustifyCenter);
     setAlignItems(YGAlign::YGAlignCenter);

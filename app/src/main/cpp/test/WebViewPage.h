@@ -14,7 +14,7 @@ public:
         progressRect.setXYWH(0, 0, 0, 0);
     }
 
-    void setContext(std::shared_ptr<SkiaUIContext> context) override {
+    void setContext(std::shared_ptr<SkiaUIContext>& context) override {
         View::setContext(context);
         setStyle(SkPaint::Style::kFill_Style);
     }

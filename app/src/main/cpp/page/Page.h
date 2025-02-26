@@ -42,7 +42,7 @@ public:
 
     ~Page();
 
-    void setContext(std::shared_ptr<SkiaUIContext> context) override;
+    void setContext(std::shared_ptr<SkiaUIContext>& context) override;
 
     void measure() override;
 

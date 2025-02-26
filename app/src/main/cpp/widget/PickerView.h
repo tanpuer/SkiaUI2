@@ -12,7 +12,7 @@ public:
 
     ~PickerView();
 
-    void setContext(std::shared_ptr<SkiaUIContext> context) override;
+    void setContext(std::shared_ptr<SkiaUIContext>& context) override;
 
     void setOnChangeListener(std::function<void(int)> &&callback);
 

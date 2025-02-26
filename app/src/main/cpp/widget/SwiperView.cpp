@@ -57,7 +57,7 @@ void SwiperView::drawIndicators(SkCanvas *canvas) {
     }
 }
 
-void SwiperView::setContext(std::shared_ptr<SkiaUIContext> context) {
+void SwiperView::setContext(std::shared_ptr<SkiaUIContext>& context) {
     View::setContext(context);
     startTime = getContext()->getCurrentTimeMills();
 }
