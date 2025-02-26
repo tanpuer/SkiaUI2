@@ -46,7 +46,6 @@ void TextView::setTextColor(SkColor color) {
 }
 
 void TextView::setAlpha(float alpha) {
-    View::setAlpha(alpha);
     defaultStyle->setColor(SkColorSetARGB(alpha * 255, SkColorGetR(skColor), SkColorGetG(skColor),
                                           SkColorGetB(skColor)));
     markDirty();
@@ -81,7 +80,7 @@ void TextView::measure() {
             }
         } else {
             TextStyle textStyle;
-            textStyle.setColor(skColor);
+            textStyle.setColor(defaultStyle->getColor());
             textStyle.setFontStyle(defaultStyle->getFontStyle());
             textStyle.setFontSize(getTextSize());
             textStyle.setFontFamilies(fontFamily);

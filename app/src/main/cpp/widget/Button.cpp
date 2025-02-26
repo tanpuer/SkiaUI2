@@ -37,4 +37,8 @@ void Button::setContext(std::shared_ptr<SkiaUIContext> context) {
     setTextColor(SK_ColorWHITE);
 }
 
+void Button::setAlpha(float alpha) {
+    View::setAlpha(alpha);
+}
+
 }
