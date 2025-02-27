@@ -9,12 +9,12 @@ steps：
 3. Two threads: ui-thread & render-thread.
 4. Only support FlexboxLayout. Measure/Layout/Draw are triggered by Vsync.
 5. TouchEvents: dispatchTouchEvent/interceptTouchEvent/onTouchEvent.
-6. Animations support scale/rotate/translate，the interpolator will be executed in Layout then update SkRect.
-7. Dirty-Render: markDirty after "draw" if necessary.
+6. Animations support scale/rotate/translate，and will be performed before measure.
+7. Dirty-Render: markDirty if next draw is necessary.
 8. **Supported Widgets**:   
    View, ImageView, TextView, Icon, ProgressBar, SVGView, ShaderView, Lottie, VideoView,
    YUVVideoView, scrollView, MovingArea, RecyclerView, Swiper, Loading, Switch, Radio, Picker,
-   LyricView, InputView, Page...
+   LyricView, InputView, FlexboxLayout, Page...
 9. **PlatformView**:  
    render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
    render CameraView by ImageReader/ByteBuffer/SkRuntimeEffect.  
