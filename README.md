@@ -22,13 +22,12 @@ steps：
    render Video by ExoPlayer/SurfaceTexture/SkImage.  
    ...
 10. **Development**:  
-    C++: See CppTest.cpp.
-    js: See test.js in assets. Import v8 to evaluate javascript.
-    **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run.
-    **React**: See react_bundle.js in assets. Import react/react-reconciler to run. pls
-    refer https://github.com/tanpuer/skia-ui-react
+    C++: See CppTest.cpp.  
+    js: See test.js in assets. Import v8 to evaluate javascript.  
+    **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run.  
+    **React**: See react_bundle.js in assets. Import react/react-reconciler to run. https://github.com/tanpuer/skia-ui-react
 11. **Cross Platform**  
-    ios: https://github.com/tanpuer/HYSkiaUI-iOS
+    ios: https://github.com/tanpuer/HYSkiaUI-iOS  
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
