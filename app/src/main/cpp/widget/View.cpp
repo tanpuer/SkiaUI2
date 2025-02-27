@@ -249,7 +249,7 @@ void View::removeLayoutCallback() {
 }
 
 void View::setOnClickListener(std::function<void(View *)> clickListener) {
-    viewClickListener = clickListener;
+    viewClickListener = std::move(clickListener);
 }
 
 void View::removeClickListener() {

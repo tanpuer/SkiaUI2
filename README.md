@@ -13,7 +13,7 @@ steps：
 7. Dirty-Render: markDirty if next draw is necessary.
 8. **Supported Widgets**:   
    View, ImageView, TextView, Icon, ProgressBar, SVGView, ShaderView, Lottie, VideoView,
-   YUVVideoView, scrollView, MovingArea, RecyclerView, Swiper, Loading, Switch, Radio, Picker,
+   YUVVideoView, ScrollView, MovingArea, RecyclerView, Swiper, Loading, Switch, Radio, Picker,
    LyricView, InputView, FlexboxLayout, Page...
 9. **PlatformView**:  
    render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
