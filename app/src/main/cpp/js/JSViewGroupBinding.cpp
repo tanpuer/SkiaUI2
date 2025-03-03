@@ -15,8 +15,7 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     viewGroupTemplate->Inherit(inherit);
     auto addView = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 1 && args[0]->IsObject());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto parent = static_cast<ViewGroup *>(wrap->Value());
+        auto parent = GetTargetView<ViewGroup>(args);
         auto childWrap = v8::Local<v8::External>::Cast(
                 args[0]->ToObject()->GetInternalField(0));
         auto child = static_cast<View *>(childWrap->Value());
@@ -27,8 +26,7 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             v8::FunctionTemplate::New(isolate, addView));
     auto removeView = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 1 && args[0]->IsObject());
-        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
-        auto parent = static_cast<ViewGroup *>(wrap->Value());
+        auto parent = GetTargetView<ViewGroup>(args);
         auto childWrap = v8::Local<v8::External>::Cast(
                 args[0]->ToObject()->GetInternalField(0));
         auto child = static_cast<View *>(childWrap->Value());
