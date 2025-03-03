@@ -28,6 +28,7 @@
 #include "FilamentPage.h"
 #include "ExoPlayerView.h"
 #include "FilamentView.h"
+#include "GradientCanvasTest.h"
 
 namespace HYSkiaUI {
 
@@ -62,6 +63,18 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
+
+//    {
+//        auto canvasTest = new GradientCanvasTest();
+//        canvasTest->setContext(this->context);
+//        canvasTest->setStyle(SkPaint::kFill_Style);
+//        canvasTest->setBackgroundColor(SK_ColorGRAY);
+//        canvasTest->setWidth(width - 100);
+//        canvasTest->setHeight(500);
+//        canvasTest->setCornerRadius(50);
+//        canvasTest->setMargin({0, 50, 0, 50});
+//        scrollView->addView(canvasTest);
+//    }
 
     {
         auto inputView = new InputView();
