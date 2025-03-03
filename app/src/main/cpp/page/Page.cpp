@@ -204,6 +204,10 @@ void Page::setOnPageSizeChangeListener(std::function<void(int, int)> &&callback)
     pageChangeCallbackList.emplace_back(std::move(callback));
 }
 
+const char *Page::name() {
+    return "Page";
+}
+
 #pragma mark LifeCycle Callback end
 
 }

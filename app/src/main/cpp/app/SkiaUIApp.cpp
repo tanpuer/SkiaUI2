@@ -10,6 +10,7 @@
 #include "SimpleJavascriptTest.h"
 #include "JetpackComposeTest.h"
 #include "ReactjsTest.h"
+#include "VuejsTest.h"
 
 namespace HYSkiaUI {
 
@@ -26,6 +27,8 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
         testDraw = std::make_unique<JetpackComposeTest>(env);
     } else if (exampleType == 3) {
         testDraw = std::make_unique<ReactjsTest>();
+    } else if (exampleType == 4) {
+        testDraw = std::make_unique<VuejsTest>();
     } else {
         testDraw = std::make_unique<CppTest>();
     }

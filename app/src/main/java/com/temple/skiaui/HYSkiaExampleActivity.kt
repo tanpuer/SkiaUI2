@@ -11,6 +11,7 @@ class HYSkiaExampleActivity : AppCompatActivity() {
     private lateinit var jsBtn: Button
     private lateinit var kotlinBtn: Button
     private lateinit var reactjsBtn: Button
+    private lateinit var vuejsBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +31,10 @@ class HYSkiaExampleActivity : AppCompatActivity() {
         reactjsBtn = findViewById(R.id.btn_react)
         reactjsBtn.setOnClickListener {
             goToMainActivity(3)
+        }
+        vuejsBtn = findViewById(R.id.btn_vue)
+        vuejsBtn.setOnClickListener {
+            goToMainActivity(4)
         }
         requestPermissions(
             arrayOf(

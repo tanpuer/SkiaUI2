@@ -74,6 +74,8 @@ public:
 
     void setOnPageSizeChangeListener(std::function<void(int, int)> &&callback);
 
+    const char * name() override;
+
 private:
 
     std::unique_ptr<View> rootView;
