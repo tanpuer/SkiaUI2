@@ -24,9 +24,9 @@ steps：
 10. **Development**:  
     C++: See CppTest.cpp.  
     js: See test.js in assets. Import v8 to evaluate javascript.  
-    **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and Compose-runtime to run.  
+    **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and **Compose-runtime** to run.  
     **React**: See react_bundle.js in assets. Import react/react-reconciler to run. https://github.com/tanpuer/skia-ui-react.  
-    Vue: See vue_bundle.js in assets. Need import CSS-Selector(TODO). difficult to use than react. https://github.com/tanpuer/skia-ui-vue.  
+    **Vue**: See vue_bundle.js in assets. Need import CSS-Selector(TODO). difficult than react. https://github.com/tanpuer/skia-ui-vue.  
 11. **Cross Platform**  
     ios: https://github.com/tanpuer/HYSkiaUI-iOS  
 
