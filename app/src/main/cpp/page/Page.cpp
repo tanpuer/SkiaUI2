@@ -27,8 +27,8 @@ void Page::setContext(std::shared_ptr<SkiaUIContext>& context) {
 
 Page::~Page() {
     auto runtime = context->getRuntime();
-    if (runtime != nullptr && !hideCallback.IsEmpty()) {
-        runtime->performFunction(hideCallback, 0, {});
+    if (runtime != nullptr && !destroyCallback.IsEmpty()) {
+        runtime->performFunction(destroyCallback, 0, {});
     }
     createCallback.Reset();
     destroyCallback.Reset();

@@ -199,6 +199,9 @@ SkScalar TextView::getTextSize() {
 }
 
 void TextView::setTextGradient(std::vector<SkColor> colors, std::vector<float> pos) {
+    if (colors.empty() && textGradientColors.empty()) {
+        return;
+    }
     textGradientColors = std::move(colors);
     textGradientPos = std::move(pos);
     markDirty();
