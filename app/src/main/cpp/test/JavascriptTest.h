@@ -13,7 +13,10 @@ public:
 
     JavascriptTest() = default;
 
-    ~JavascriptTest() override = default;
+    ~JavascriptTest() {
+        auto page = context->getPageStackManager()->back();
+        delete page;
+    };
 
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 

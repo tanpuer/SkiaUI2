@@ -62,13 +62,8 @@ private:
 
 private:
     v8::Isolate *mIsolate = nullptr;
-    std::unique_ptr<v8::ArrayBuffer::Allocator> arrayBufferAllocator_;
     v8::Global<v8::Context> mContext;
-    std::unique_ptr<v8::Platform> mPlatform;
     v8::Global<v8::Object> skiaUI;
-
-public:
-    static v8::Isolate *staticIsolate;
 };
 
 }

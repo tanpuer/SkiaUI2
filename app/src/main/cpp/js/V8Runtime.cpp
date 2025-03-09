@@ -2,27 +2,12 @@
 #include "native_log.h"
 #include <ostream>
 #include <sstream>
+#include "V8Instance.h"
 
 namespace HYSkiaUI {
 
-v8::Isolate *V8Runtime::staticIsolate = nullptr;
-
 V8Runtime::V8Runtime() {
-    if (staticIsolate != nullptr) {
-        mIsolate = staticIsolate;
-    } else {
-        v8::V8::SetFlagsFromString("--nolazy");
-        v8::V8::Initialize();
-        arrayBufferAllocator_.reset(
-                v8::ArrayBuffer::Allocator::NewDefaultAllocator());
-        mPlatform = v8::platform::NewDefaultPlatform();
-        v8::V8::InitializeICU();
-        v8::V8::InitializePlatform(mPlatform.get());
-        v8::Isolate::CreateParams createParams;
-        createParams.array_buffer_allocator = arrayBufferAllocator_.get();
-        mIsolate = v8::Isolate::New(createParams);
-        staticIsolate = mIsolate;
-    }
+    mIsolate = V8Instance::getInstance()->getIsolate();
     v8::Locker locker(mIsolate);
     v8::Isolate::Scope scopedIsolate(mIsolate);
     v8::HandleScope scopedHandle(mIsolate);
@@ -37,6 +22,7 @@ V8Runtime::V8Runtime() {
 }
 
 V8Runtime::~V8Runtime() {
+    ALOGD("~V8Runtime")
     v8::Locker locker(mIsolate);
     v8::Isolate::Scope scopedIsolate(mIsolate);
     v8::HandleScope scopedHandle(mIsolate);
@@ -267,7 +253,7 @@ void V8Runtime::injectNumber(const char *name, int number) {
 }
 
 v8::Platform *V8Runtime::getPlatform() {
-    return mPlatform.get();
+    return V8Instance::getInstance()->getPlatform();
 }
 
 void V8Runtime::injectFunctionToSkiaUI(const char *name, v8::FunctionCallback callback, void *any) {
