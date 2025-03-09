@@ -213,7 +213,7 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
         targetView->clickFunction.Reset(isolate, newCallback);
         assert(binding);
         targetView->setOnClickListener([binding](View *view) {
-            binding->runtime->enterContext(
+            binding->context->getRuntime()->enterContext(
                     [view](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
                         auto external = v8::External::New(isolate, view);
                         v8::Local<v8::Value> argv[1] = {external};

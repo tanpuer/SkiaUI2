@@ -9,7 +9,7 @@
 namespace HYSkiaUI {
 
 void JavascriptTest::injectViews() {
-    viewManager = std::make_unique<ViewManager>(context, v8Runtime);
+    viewManager = std::make_unique<ViewManager>(context);
     viewManager->registerHYViews();
 }
 
@@ -65,8 +65,7 @@ std::shared_ptr<V8Runtime> &JavascriptTest::getV8Runtime() {
 void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (!injected) {
         injected = true;
-        v8Runtime = std::make_shared<V8Runtime>();
-        context->setV8Runtime(v8Runtime);
+        v8Runtime = context->initV8Runtime();
         injectConsole();
         injectPerformance();
         injectFrameCallback();

@@ -61,7 +61,10 @@ void SkiaFilter::setWindowSize(int width, int height) {
 }
 
 void SkiaFilter::render(SkPicture *picture) {
-//    MeasureTime measureTime("SkiaFilter::render");
+    if (skCanvas == nullptr) {
+        ALOGE("skCanvas is nullptr!")
+        return;
+    }
     SkASSERT(skCanvas);
     skCanvas->clear(SK_ColorWHITE);
     picture->playback(skCanvas);

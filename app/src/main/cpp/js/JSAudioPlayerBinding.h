@@ -8,9 +8,7 @@ class JSAudioPlayerBinding : public JSBinding {
 
 public:
 
-    JSAudioPlayerBinding(std::shared_ptr<SkiaUIContext> &context,
-                         std::shared_ptr<V8Runtime> &runtime)
-            : JSBinding(context, runtime) {}
+    explicit JSAudioPlayerBinding(std::shared_ptr<SkiaUIContext> &context): JSBinding(context) {}
 
     v8::Local<v8::FunctionTemplate>
     registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI,

@@ -59,7 +59,7 @@ JSSwitchBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skia
         targetView->changeFunction.Reset(isolate, newCallback);
         assert(binding);
         targetView->setOnChangeListener([binding, targetView](bool enable) {
-            binding->runtime->enterContext(
+            binding->context->getRuntime()->enterContext(
                     [enable, targetView](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
                         v8::Local<v8::Value> argv[1] = {v8::Boolean::New(isolate, enable)};
                         auto callback = targetView->changeFunction.Get(isolate);

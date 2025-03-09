@@ -40,6 +40,7 @@ public:
     }
 
     ~SkiaUIContext() {
+        ALOGD("~SkiaUIContext")
         jniEnv->DeleteGlobalRef(javaSkiaEngine);
     }
 
@@ -100,8 +101,9 @@ public:
         return canvas;
     }
 
-    void setV8Runtime(std::shared_ptr<V8Runtime> &runtime) {
-        this->v8Runtime = runtime;
+    const std::shared_ptr<V8Runtime> & initV8Runtime() {
+        v8Runtime = std::make_shared<V8Runtime>();
+        return v8Runtime;
     }
 
     const std::shared_ptr<V8Runtime> &getRuntime() {

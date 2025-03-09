@@ -31,7 +31,7 @@ class ViewManager {
 
 public:
 
-    ViewManager(std::shared_ptr<SkiaUIContext> &context, std::shared_ptr<V8Runtime> &runtime);
+    explicit ViewManager(std::shared_ptr<SkiaUIContext> &context);
 
     ~ViewManager();
 
@@ -40,8 +40,6 @@ public:
 private:
 
     std::shared_ptr<SkiaUIContext> context;
-
-    std::shared_ptr<V8Runtime> runtime;
 
 private:
 

@@ -59,9 +59,8 @@ public:
         return targetView;
     }
 
-    JSBinding(std::shared_ptr<SkiaUIContext> &context, std::shared_ptr<V8Runtime> &runtime) {
+    JSBinding(std::shared_ptr<SkiaUIContext> &context) {
         this->context = context;
-        this->runtime = runtime;
     };
 
     virtual ~JSBinding() {};
@@ -74,8 +73,6 @@ public:
 protected:
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
-    std::shared_ptr<V8Runtime> runtime = nullptr;
-
 };
 
 }
