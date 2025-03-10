@@ -30,8 +30,8 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         skiaView.onBackPressed()
     }
 
-    override fun updateFps(value: Int) {
-        fpsView.text = "fps: $value"
+    override fun updateFps(draw: Int, render: Int) {
+        fpsView.text = "draw:$draw render:${render}"
     }
 
     override fun onPlatformBackPressed() {

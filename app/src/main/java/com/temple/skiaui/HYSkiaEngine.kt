@@ -38,13 +38,12 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         }
     private val skiaGLHandler = Handler(skiaGLHandlerThread.looper)
 
-    private var finishDraw = AtomicBoolean(true)
-
     private var pic = AtomicLong(0)
 
     private val refreshRate = HYSkiaUIApp.getInstance().getFrameRate()
     private var frameCount = 0
     private var drawCount = AtomicInteger(0)
+    private var renderCount = AtomicInteger(0)
     var renderCallback: RenderCallback? = null
     private val start = System.currentTimeMillis()
     private val pluginManager = PluginManager()
@@ -73,7 +72,6 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     @MainThread
     fun createSurface(surface: Surface) {
         pic.set(0L)
-        finishDraw.set(true)
         drawCount.set(0)
         skiaUIHandler.post {
             nativeUIShow(uiApp)
@@ -128,8 +126,9 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     fun doFrame(time: Long) {
         frameCount++
         if (frameCount == refreshRate) {
-            renderCallback?.updateFps(drawCount.get())
+            renderCallback?.updateFps(drawCount.get(), renderCount.get())
             drawCount.set(0)
+            renderCount.set(0)
             frameCount = 0
         }
         skiaUIHandler.post {
@@ -141,7 +140,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             if (prePic != 0L) {
                 nativeDeleteSkPicture(uiApp, prePic)
             }
-            drawCount.set(drawCount.get() + 1)
+            drawCount.addAndGet(1)
         }
         skiaGLHandler.post {
             val currPic = pic.getAndSet(0L)
@@ -149,6 +148,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
                 return@post
             }
             nativeGLDoFrame(glApp, currPic, time)
+            renderCount.addAndGet(1)
             skImageList.forEach {
                 nativeDeleteSkImage(glApp, it)
             }
