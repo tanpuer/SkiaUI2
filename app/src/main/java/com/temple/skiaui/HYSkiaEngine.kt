@@ -202,7 +202,9 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             glApp = 0L
             executors.shutdown()
             skiaUIHandlerThread.quitSafely()
-            skiaGLHandlerThread.quitSafely()
+            skiaGLHandler.post {
+                skiaGLHandlerThread.quitSafely()
+            }
         }
     }
 
