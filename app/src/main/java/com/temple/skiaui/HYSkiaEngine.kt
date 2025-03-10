@@ -103,14 +103,14 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
 
     @MainThread
     fun destroySurface() {
+        createListeners.forEach {
+            it.value.invoke(false)
+        }
         skiaUIHandler.post {
             nativeUIHide(uiApp)
         }
         skiaGLHandler.post {
             nativeGLDestroyed(glApp)
-        }
-        createListeners.forEach {
-            it.value.invoke(false)
         }
     }
 

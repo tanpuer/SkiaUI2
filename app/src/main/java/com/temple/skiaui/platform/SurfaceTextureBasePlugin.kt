@@ -14,7 +14,8 @@ abstract class SurfaceTextureBasePlugin(
     val engine: HYSkiaEngine,
     val width: Int,
     val height: Int,
-    val viewPtr: Long
+    val viewPtr: Long,
+    val inMainThread: Boolean = false
 ) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener {
 
     protected var skImagePtr: Long = 0L
@@ -35,7 +36,7 @@ abstract class SurfaceTextureBasePlugin(
         start()
     }
 
-    protected val pluginHandler = Handler(pluginThread.looper)
+    protected val pluginHandler = if (inMainThread) Handler(Looper.getMainLooper()) else Handler(pluginThread.looper)
 
     protected val mainHandler = Handler(Looper.getMainLooper())
 
@@ -44,7 +45,7 @@ abstract class SurfaceTextureBasePlugin(
 
     private val createListener = fun(it: Boolean) {
         skiaShow = it
-        pluginHandler.post {
+        val runnable = {
             if (!it) {
                 skiaSurfaceDestroyed()
                 surfaceObj?.release()
@@ -52,6 +53,11 @@ abstract class SurfaceTextureBasePlugin(
             } else {
                 skiaSurfaceCreated()
             }
+        }
+        if (inMainThread) {
+            runnable()
+        } else {
+            pluginHandler.post(runnable)
         }
     }
 
@@ -84,7 +90,7 @@ abstract class SurfaceTextureBasePlugin(
         }
         deleteSkImage(skImagePtr)
         skImagePtr = 0L
-        pluginHandler.post {
+        if (!inMainThread) {
             pluginThread.quitSafely()
         }
     }

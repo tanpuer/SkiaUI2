@@ -1,6 +1,5 @@
 package com.temple.skiaui.platform.video
 
-import android.net.Uri
 import android.view.MotionEvent
 import androidx.annotation.OptIn
 import androidx.media3.common.MediaItem
@@ -14,9 +13,10 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
 import com.temple.skiaui.platform.SurfaceTextureBasePlugin
+import androidx.core.net.toUri
 
 class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, viewPtr: Long) :
-    SurfaceTextureBasePlugin(engine, width, height, viewPtr) {
+    SurfaceTextureBasePlugin(engine, width, height, viewPtr, true) {
 
     private var exoPlayer: ExoPlayer? = null
     private var assetsPath: String = ""
@@ -27,15 +27,13 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     }
 
     override fun skiaSurfaceDestroyed() {
-        pluginHandler.post {
-            if (exoPlayer == null) {
-                return@post
-            }
-            currentPosition = exoPlayer?.currentPosition ?: 0L
-            exoPlayer?.setVideoSurface(null)
-            exoPlayer?.release()
-            exoPlayer = null
+        if (exoPlayer == null) {
+            return
         }
+        currentPosition = exoPlayer?.currentPosition ?: 0L
+        exoPlayer?.setVideoSurface(null)
+        exoPlayer?.release()
+        exoPlayer = null
     }
 
     override fun dispatchTouchEvent(touchEvent: MotionEvent) {
@@ -68,7 +66,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
         }
         exoPlayer = ExoPlayer.Builder(HYSkiaUIApp.getInstance()).build()
         val dataSourceFactory = DataSource.Factory { AssetDataSource(HYSkiaUIApp.getInstance()) }
-        val uri = Uri.parse("asset:///$assetsPath")
+        val uri = "asset:///$assetsPath".toUri()
         val mediaSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
             .createMediaSource(MediaItem.fromUri(uri))
         exoPlayer?.setMediaSource(mediaSource)
@@ -118,7 +116,9 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     override fun onHide() {
         super.onHide()
-        skiaSurfaceDestroyed()
+        pluginHandler.post {
+            skiaSurfaceDestroyed()
+        }
     }
 
 }
