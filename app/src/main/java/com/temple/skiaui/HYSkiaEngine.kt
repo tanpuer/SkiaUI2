@@ -6,6 +6,7 @@ import android.hardware.HardwareBuffer
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
@@ -39,6 +40,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private val skiaGLHandler = Handler(skiaGLHandlerThread.looper)
 
     private var pic = AtomicLong(0)
+    private var picIsNull = AtomicBoolean(false)
 
     private val refreshRate = HYSkiaUIApp.getInstance().getFrameRate()
     private var frameCount = 0
@@ -137,17 +139,28 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
                 return@post
             }
             val prePic = pic.getAndSet(nextPic)
+            if (picIsNull.compareAndSet(true, false)) {
+                performGLDraw(time)
+            }
             if (prePic != 0L) {
                 nativeDeleteSkPicture(uiApp, prePic)
             }
             drawCount.addAndGet(1)
         }
+        performGLDraw(time)
+    }
+
+    private fun performGLDraw(time: Long) {
         skiaGLHandler.post {
+//            val measureStart = System.currentTimeMillis()
             val currPic = pic.getAndSet(0L)
             if (currPic == 0L) {
+                picIsNull.set(true)
                 return@post
             }
             nativeGLDoFrame(glApp, currPic, time)
+//            val costTime = System.currentTimeMillis() - measureStart
+//            Log.d(TAG, "GL cost: $costTime")
             renderCount.addAndGet(1)
             skImageList.forEach {
                 nativeDeleteSkImage(glApp, it)
@@ -350,7 +363,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             System.loadLibrary("skiaui")
         }
 
-        private const val TAG = "SkiaUI"
+        private const val TAG = "SkiaUIEngine"
         private val MAX_FLING_VELOCITY =
             ViewConfiguration.get(HYSkiaUIApp.getInstance()).scaledMaximumFlingVelocity.toFloat()
     }

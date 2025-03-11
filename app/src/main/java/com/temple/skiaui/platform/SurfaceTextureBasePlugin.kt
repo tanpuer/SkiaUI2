@@ -15,7 +15,7 @@ abstract class SurfaceTextureBasePlugin(
     val width: Int,
     val height: Int,
     val viewPtr: Long,
-    val inMainThread: Boolean = false
+    private val inMainThread: Boolean = false
 ) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener {
 
     protected var skImagePtr: Long = 0L

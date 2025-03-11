@@ -285,7 +285,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
     private fun startAnimation() {
         // Animate the triangle
         animator.interpolator = LinearInterpolator()
-        animator.duration = 4000
+        animator.duration = 10000
         animator.repeatMode = ValueAnimator.RESTART
         animator.repeatCount = ValueAnimator.INFINITE
         animator.addUpdateListener(object : ValueAnimator.AnimatorUpdateListener {
