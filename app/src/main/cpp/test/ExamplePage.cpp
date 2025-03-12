@@ -20,7 +20,7 @@
 #include "RichText.h"
 #include "PickerView.h"
 #include "MovingArea.h"
-#include "InputView.h"
+#include "EditText.h"
 #include "SwiperView.h"
 #include "RecyclerViewPage.h"
 #include "WebViewPage.h"
@@ -28,7 +28,6 @@
 #include "FilamentPage.h"
 #include "ExoPlayerView.h"
 #include "FilamentView.h"
-#include "GradientCanvasTest.h"
 
 namespace HYSkiaUI {
 
@@ -64,28 +63,12 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setFlex(1);
     root->addView(scrollView);
 
-//    {
-//        auto canvasTest = new GradientCanvasTest();
-//        canvasTest->setContext(this->context);
-//        canvasTest->setStyle(SkPaint::kFill_Style);
-//        canvasTest->setBackgroundColor(SK_ColorGRAY);
-//        canvasTest->setWidth(width - 100);
-//        canvasTest->setHeight(500);
-//        canvasTest->setCornerRadius(50);
-//        canvasTest->setMargin({0, 50, 0, 50});
-//        scrollView->addView(canvasTest);
-//    }
-
     {
-        auto inputView = new InputView();
-        inputView->setContext(this->context);
-        inputView->setWidth(width);
-        inputView->setStyle(SkPaint::kStroke_Style);
-        inputView->setBackgroundColor(SK_ColorTRANSPARENT);
-        inputView->setStrokeWidth(0);
-        inputView->setPlaceHolder("这是输入框");
-        inputView->setMargin({50, 0, 0, 50});
-        scrollView->addView(inputView);
+        auto editText = new EditText();
+        editText->setContext(this->context);
+        editText->setWidth(width);
+        editText->setHeight(200);
+        scrollView->addView(editText);
     }
 
     {

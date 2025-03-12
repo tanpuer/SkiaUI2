@@ -6,7 +6,6 @@
 #include "app/SkiaUIApp.h"
 #include "PluginManager.h"
 #include "compose/ComposeJNI.h"
-#include "InputView.h"
 #include "WebView.h"
 
 using namespace HYSkiaUI;
@@ -205,16 +204,6 @@ native_RegisterJetpackCompose(JNIEnv *env, jobject instance) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SetFocus(JNIEnv *env, jobject instance, jlong javaUIApp, jlong inputViewPtr,
-                jboolean focus) {
-    ALOGD("native_SetFocus")
-    auto inputView = reinterpret_cast<InputView *>(inputViewPtr);
-    if (inputView != nullptr) {
-        inputView->setFocus(focus);
-    }
-}
-
-extern "C" JNIEXPORT void JNICALL
 native_PerformTimeout(JNIEnv *env, jobject instance, jlong javaUIApp, jlong id) {
     ALOGD("native_PerformTimeout")
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
@@ -284,7 +273,6 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUIHide",                        "(J)V",                                         (void *) native_UIHide},
         {"nativeDeleteSkPicture",               "(JJ)V",                                        (void *) native_DeleteSkPicture},
         {"nativeRegisterJetpackCompose",        "()V",                                          (void *) native_RegisterJetpackCompose},
-        {"nativeSetFocus",                      "(JJZ)V",                                       (void *) native_SetFocus},
         {"nativePerformTimeout",                "(JJ)V",                                        (void *) native_PerformTimeout},
         {"nativeWebViewProgressChange",         "(JI)V",                                        (void *) native_WebViewProgressChange},
         {"nativeAttachSurfaceTexture",          "(JIILandroid/graphics/SurfaceTexture;)J",      (void *) native_AttachSurfaceTexture},

@@ -277,10 +277,6 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         nativeRegisterJetpackCompose()
     }
 
-    fun setFocus(inputView: Long, focus: Boolean) {
-        nativeSetFocus(uiApp, inputView, focus)
-    }
-
     fun setTimeout(id: Long, delay: Long) {
         skiaUIHandler.postDelayed({
             nativePerformTimeout(uiApp, id)
@@ -352,7 +348,6 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private external fun nativeUIHide(uiApp: Long)
     private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
     private external fun nativeRegisterJetpackCompose()
-    private external fun nativeSetFocus(uiApp: Long, inputView: Long, focus: Boolean)
     private external fun nativePerformTimeout(uiApp: Long, id: Long)
 
     private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
