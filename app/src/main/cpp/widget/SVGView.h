@@ -37,6 +37,8 @@ private:
 
     int containerWidth = 0, containerHeight = 0;
 
+    SkMatrix svgMatrix;
+
 };
 
 }
