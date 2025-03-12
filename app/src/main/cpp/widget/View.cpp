@@ -511,4 +511,13 @@ YGPositionType View::getPositionType() {
     return YGNodeStyleGetPositionType(node);
 }
 
+float View::getRotateZ() {
+    return rotateZ;
+}
+
+void View::setRotateZ(float z) {
+    rotateZ = z;
+    markDirty();
+}
+
 }

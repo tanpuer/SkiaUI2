@@ -81,7 +81,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         recordOutAnimator->setDuration(5000);
         recordOutAnimator->setLoopCount(-1);
         recordOutAnimator->setUpdateListener([imageView](View *view, float value) {
-            imageView->rotateZ = value;
+            imageView->setRotateZ(value);
         });
         recordOutAnimator->start();
     }
@@ -104,7 +104,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         recordInnerAnimator->setDuration(5000);
         recordInnerAnimator->setLoopCount(-1);
         recordInnerAnimator->setUpdateListener([imageView](View *view, float value) {
-            imageView->rotateZ = value;
+            imageView->setRotateZ(value);
         });
         recordInnerAnimator->start();
     }
@@ -267,10 +267,10 @@ void QQMusicPage::drawOneFrame(int drawCount) {
 void QQMusicPage::updateArmView(bool play) {
     if (armView != nullptr) {
         auto value = play ? 30.0 : 0.0;
-        auto rotateAnimator = new LinearAnimator(armView, armView->rotateZ, value);
+        auto rotateAnimator = new LinearAnimator(armView, armView->getRotateZ(), value);
         rotateAnimator->setDuration(500);
         rotateAnimator->setUpdateListener([this](View *view, float value) {
-            armView->rotateZ = value;
+            armView->setRotateZ(value);
         });
         rotateAnimator->start();
     }

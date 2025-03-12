@@ -14,7 +14,7 @@ public:
     JavascriptTest() = default;
 
     ~JavascriptTest() {
-        auto page = context->getPageStackManager()->back();
+        auto page = context->getPageStackManager()->pop();
         delete page;
     };
 

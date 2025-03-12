@@ -153,12 +153,12 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
             throwInvalidError(info.GetIsolate(), "Invalid value for rotateZ; expected a number");
         }
         auto view = GetTargetView<View>(info);
-        view->rotateZ = value->Int32Value();
+        view->setRotateZ(value->Int32Value());
     };
     auto rotateZGetter = [](v8::Local<v8::String> property,
                             const v8::PropertyCallbackInfo<v8::Value> &info) {
         auto view = GetTargetView<View>(info);
-        info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->rotateZ));
+        info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), view->getRotateZ()));
     };
     viewTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "rotateZ"),
