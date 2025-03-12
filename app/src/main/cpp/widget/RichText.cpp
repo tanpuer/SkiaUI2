@@ -135,9 +135,9 @@ void RichText::draw(SkCanvas *canvas) {
                 continue;
             }
             auto rect = paragraph->getRectsForPlaceholders()[j].rect;
-            canvas->drawImageRect(item.skImage, SkRect::MakeLTRB(rect.left(),
+            canvas->drawImageRect(item.skImage, SkRect::MakeLTRB(rect.left() + skRect.left(),
                                                                  rect.top() + skRect.top(),
-                                                                 rect.right(),
+                                                                 rect.right() + skRect.left(),
                                                                  rect.bottom() + skRect.top()),
                                   SkSamplingOptions());
             j++;
