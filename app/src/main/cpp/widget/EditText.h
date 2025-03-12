@@ -16,6 +16,18 @@ public:
 
     const char *name() override;
 
+    void onJavaViewCreated() override;
+
+    void clearFocus();
+
+    void requestFocus();
+
+protected:
+
+    jmethodID clearFocusMethodId = nullptr;
+
+    jmethodID requestFocusMethodId = nullptr;
+
 };
 
 }

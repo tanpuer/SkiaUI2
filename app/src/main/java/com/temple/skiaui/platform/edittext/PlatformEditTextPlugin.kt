@@ -20,4 +20,12 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, edit
 
     }
 
+    fun clearFocus() {
+        editText?.clearFocus()
+    }
+
+    fun requestFocus() {
+        editText?.requestFocus()
+    }
+
 }
