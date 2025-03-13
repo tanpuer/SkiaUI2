@@ -168,6 +168,15 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             context->getPageStackManager()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
+        {
+            auto animator = new LinearAnimator(lottieView, 0.0f, 360.0f);
+            animator->setDuration(10000);
+            animator->setLoopCount(-1);
+            animator->setUpdateListener([](View *view, float value) {
+                view->setRotateZ(360.0f - value);
+            });
+            animator->start();
+        }
 
         auto textView = new TextView();
         textView->setContext(this->context);
@@ -177,6 +186,22 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         textView->setBackgroundColor(SK_ColorTRANSPARENT);
         textView->setStyle(SkPaint::kStroke_Style);
         flexboxLayout->addView(textView);
+        textView->setOnClickListener([this, width, height](View *view) {
+            auto page = new QQMusicPage();
+            page->init(context, width, height);
+            context->getPageStackManager()->push(page);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
+        });
+        auto animator = new LinearAnimator(textView, 0.0f, 360.0f);
+        animator->setDuration(10000);
+        animator->setLoopCount(-1);
+        animator->setUpdateListener([](View *view, float value) {
+            view->setRotateZ(value);
+            auto scale = 2.0f - abs(value - 180.0f) / 180.0f;
+            view->setScaleX(scale);
+            view->setScaleY(scale);
+        });
+        animator->start();
     }
 
     {

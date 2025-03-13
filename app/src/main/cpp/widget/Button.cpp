@@ -22,9 +22,14 @@ void Button::draw(SkCanvas *canvas) {
         setCornerRadius(defaultRadius);
     }
     View::draw(canvas);
-    SkASSERT(paragraph);
+    if (paragraph == nullptr) {
+        return;
+    }
+    canvas->save();
+    canvas->setMatrix(viewMatrix);
     paragraph->paint(canvas, skRect.left() + (originWidth > 0 ? 0 : defaultPadding),
                      skRect.top() + defaultPadding);
+    canvas->restore();
 }
 
 const char *Button::name() {

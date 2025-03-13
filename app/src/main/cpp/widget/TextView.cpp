@@ -142,7 +142,10 @@ void TextView::draw(SkCanvas *canvas) {
     if (paragraph == nullptr) {
         return;
     }
+    canvas->save();
+    canvas->setMatrix(viewMatrix);
     paragraph->paint(canvas, skRect.left(), skRect.top());
+    canvas->restore();
 }
 
 void TextView::setTextSize(SkScalar textSize) {

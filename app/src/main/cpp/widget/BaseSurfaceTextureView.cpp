@@ -54,7 +54,10 @@ void BaseSurfaceTextureView::draw(SkCanvas *canvas) {
         lastSkImagePtr = skImagePtr;
         drawOneFrame();
     }
+    canvas->save();
+    canvas->setMatrix(viewMatrix);
     canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), platformPaint.get());
+    canvas->restore();
 }
 
 void BaseSurfaceTextureView::onShow() {

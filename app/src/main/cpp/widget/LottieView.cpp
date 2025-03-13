@@ -36,6 +36,8 @@ void LottieView::draw(SkCanvas *canvas) {
     if (lottieAnimation == nullptr) {
         return;
     }
+    canvas->save();
+    canvas->setMatrix(viewMatrix);
     if (autoPlay) {
         auto currentTime = getContext()->getCurrentTimeMills();
         int totalFrames = lottieAnimation->duration() * lottieAnimation->fps();
@@ -53,6 +55,7 @@ void LottieView::draw(SkCanvas *canvas) {
         }
     }
     lottieAnimation->render(canvas, &lottieRect, Animation::RenderFlag::kDisableTopLevelClipping);
+    canvas->restore();
     if (autoPlay) {
         markDirty();
     }

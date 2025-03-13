@@ -2,7 +2,7 @@
 #include "Page.h"
 #include "PageStackManager.h"
 #include "ExamplePage.h"
-#include "QQMusicPage.h"
+#include "MatrixTestPage.h"
 
 namespace HYSkiaUI {
 
