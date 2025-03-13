@@ -61,7 +61,7 @@ public:
         }
         auto vhStack = vhCache[itemType];
         vhStack->push(vh);
-        ALOGD("RecyclerView push to cache %d %d", itemType, vhStack->size())
+//        ALOGD("RecyclerView push to cache %d %d", itemType, vhStack->size())
     }
 
     virtual RecyclerViewHolder <T> *getViewHolderFromCache(int itemType) {
@@ -71,7 +71,7 @@ public:
             return nullptr;
         }
         auto vhStack = vhCache[itemType];
-        ALOGD("Recyclerview getViewHolderFromCache %d %d", itemType, vhStack->size())
+//        ALOGD("Recyclerview getViewHolderFromCache %d %d", itemType, vhStack->size())
         if (vhStack->empty()) {
             return nullptr;
         } else {
