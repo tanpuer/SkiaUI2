@@ -169,13 +169,13 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
         {
-            auto animator = new LinearAnimator(lottieView, 0.0f, 360.0f);
-            animator->setDuration(10000);
-            animator->setLoopCount(-1);
-            animator->setUpdateListener([](View *view, float value) {
+            lottieAnimator = new LinearAnimator(lottieView, 0.0f, 360.0f);
+            lottieAnimator->setDuration(10000);
+            lottieAnimator->setLoopCount(-1);
+            lottieAnimator->setUpdateListener([](View *view, float value) {
                 view->setRotateZ(360.0f - value);
             });
-            animator->start();
+            lottieAnimator->start();
         }
 
         auto textView = new TextView();
@@ -192,16 +192,18 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             context->getPageStackManager()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
-        auto animator = new LinearAnimator(textView, 0.0f, 360.0f);
-        animator->setDuration(10000);
-        animator->setLoopCount(-1);
-        animator->setUpdateListener([](View *view, float value) {
-            view->setRotateZ(value);
-            auto scale = 2.0f - abs(value - 180.0f) / 180.0f;
-            view->setScaleX(scale);
-            view->setScaleY(scale);
-        });
-        animator->start();
+        {
+            textAnimator = new LinearAnimator(textView, 0.0f, 360.0f);
+            textAnimator->setDuration(10000);
+            textAnimator->setLoopCount(-1);
+            textAnimator->setUpdateListener([](View *view, float value) {
+                view->setRotateZ(value);
+                auto scale = 2.0f - abs(value - 180.0f) / 180.0f;
+                view->setScaleX(scale);
+                view->setScaleY(scale);
+            });
+            textAnimator->start();
+        }
     }
 
     {
@@ -719,6 +721,26 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             fbLayout->addView(textView);
         }
         scrollView->addView(pickerView);
+    }
+}
+
+void ExamplePage::onShow() {
+    Page::onShow();
+    if (lottieAnimator != nullptr) {
+        lottieAnimator->resume();
+    }
+    if (textAnimator != nullptr) {
+        textAnimator->resume();
+    }
+}
+
+void ExamplePage::onHide() {
+    Page::onHide();
+    if (lottieAnimator != nullptr) {
+        lottieAnimator->pause();
+    }
+    if (textAnimator != nullptr) {
+        textAnimator->pause();
     }
 }
 
