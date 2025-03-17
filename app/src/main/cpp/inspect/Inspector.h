@@ -17,9 +17,9 @@ class Inspector {
 public:
     Inspector(std::shared_ptr<SkiaUIContext> &context, int webSocketPort);
 
-    void addListener(V8InspectorListener *listener);
-
     void startAgent();
+
+    void printLogInChrome(std::string& log);
 
 private:
     void onMessage(const std::string &message);
@@ -32,7 +32,6 @@ private:
     std::unique_ptr<WebSocketServer> websocketServer;
     std::unique_ptr<V8InspectorClientImpl> inspectorClient;
     std::vector<std::string> scripts = {};
-    std::list<V8InspectorListener *> listeners;
     std::shared_ptr<V8Runtime> runtime;
     std::shared_ptr<SkiaUIContext> uiContext;
 };

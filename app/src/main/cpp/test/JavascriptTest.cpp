@@ -1,5 +1,6 @@
 #include "JavascriptTest.h"
 #include "Page.h"
+#include "console.h"
 #include "animationFrame.h"
 #include "MeasureTime.h"
 #include "performance.h"
@@ -35,7 +36,7 @@ void JavascriptTest::injectConsole() {
                     {"warn",  warnCallback},
             }
     );
-    v8Runtime->injectObject(v8Runtime->global(), "console", consoleMap, {});
+    v8Runtime->injectObject(v8Runtime->global(), "console", consoleMap, {}, this);
 }
 
 
@@ -77,7 +78,7 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
 //        2. run app
 //        3. open in chrome:
 //              devtools://devtools/bundled/inspector.html?experiments=true&v8only=true&ws=0.0.0.0:8080
-//        inspector = std::make_unique<Inspector>(context, 8080);
+//        inspector = std::make_shared<Inspector>(context, 8080);
 //        inspector->startAgent();
     }
 }
@@ -91,6 +92,10 @@ void JavascriptTest::injectBackPressedCallback() {
             v8Runtime->performFunction(item.second, argc, argv);
         }
     });
+}
+
+std::shared_ptr<Inspector> &JavascriptTest::getInspector() {
+    return inspector;
 }
 
 }

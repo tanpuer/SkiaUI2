@@ -31,7 +31,7 @@ class InspectServer(
     fun sendMessage(message: String?) {
         Log.d(TAG, "broadcast $message")
         if (message?.contains("Debugger.paused") == true) {
-            paused = true;
+            paused = true
         }
         broadcast(message)
     }

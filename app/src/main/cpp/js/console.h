@@ -1,6 +1,7 @@
 #pragma once
 
 #include "v8.h"
+#include "JavascriptTest.h"
 
 using namespace HYSkiaUI;
 
@@ -13,6 +14,12 @@ auto handleConsole = [](const v8::FunctionCallbackInfo<v8::Value> &args) -> std:
         v8::String::Utf8Value value(isolate, arg);
         auto logInfo = std::string(*value, value.length());
         result += " " + logInfo;
+    }
+    auto data = v8::Local<v8::External>::Cast(args.Data());
+    auto app = static_cast<JavascriptTest *>(data->Value());
+    assert(app);
+    if (app->getInspector()) {
+        app->getInspector()->printLogInChrome(result);
     }
     return result;
 };

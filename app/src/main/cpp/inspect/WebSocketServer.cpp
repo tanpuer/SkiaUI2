@@ -19,6 +19,7 @@ WebSocketServer::WebSocketServer(std::shared_ptr<SkiaUIContext> &uiContext, int 
     waitFrontendMessageMethodId = jniEnv->GetMethodID(clazz, "waitFrontendMessage",
                                                       "()Ljava/lang/String;");
     releaseMethodId = jniEnv->GetMethodID(clazz, "release", "()V");
+    printLogInChromeMethodId = jniEnv->GetMethodID(clazz, "printLogInChrome", "(Ljava/lang/String;)V");
     auto engine = uiContext->getJavaSkiaEngine();
     javaWSServer = jniEnv->NewGlobalRef(
             jniEnv->NewObject(clazz, javaConstructor, engine, reinterpret_cast<long >(this), port));
@@ -87,6 +88,11 @@ void WebSocketServer::waitFrontendMessage() {
 
 void WebSocketServer::receiveMessage(const std::string &message) {
     onMessage(std::move(message));
+}
+
+void WebSocketServer::printLogInChrome(std::string &log) {
+    auto jniEnv = uiContext->getJniEnv();
+    jniEnv->CallVoidMethod(javaWSServer, printLogInChromeMethodId, jniEnv->NewStringUTF(log.c_str()));
 }
 
 }

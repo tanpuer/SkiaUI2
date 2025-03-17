@@ -2,7 +2,6 @@
 
 #include "ITestDraw.h"
 #include "V8Runtime.h"
-#include "console.h"
 #include "ViewManager.h"
 #include "inspect/Inspector.h"
 
@@ -22,6 +21,8 @@ public:
     virtual void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 
     std::shared_ptr<V8Runtime>& getV8Runtime();
+
+    std::shared_ptr<Inspector>& getInspector();
 
 public:
 
@@ -65,7 +66,7 @@ protected:
 
     std::shared_ptr<ViewManager> viewManager;
 
-    std::unique_ptr<Inspector> inspector;
+    std::shared_ptr<Inspector> inspector;
 
 };
 

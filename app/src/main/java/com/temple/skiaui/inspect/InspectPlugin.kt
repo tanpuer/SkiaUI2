@@ -25,6 +25,7 @@ class InspectPlugin(
 
     private val sendHandler = Handler(sendThread.looper)
 
+    @Volatile
     private var server: InspectServer? = null
 
     fun run() {
@@ -51,11 +52,16 @@ class InspectPlugin(
         return server?.waitFrontendMessage()
     }
 
-    fun release() {
-        pluginHandler.post {
-            server?.stop()
-            pluginThread.quitSafely()
+    fun printLogInChrome(log: String) {
+        sendHandler.post {
+            server?.sendMessage("{\"method\":\"Runtime.consoleAPICalled\",\"params\":{\"type\":\"log\",\"args\":[{\"type\":\"string\",\"value\":\"${log}\"}]}}")
         }
+    }
+
+    fun release() {
+        server?.stop()
+        server = null
+        pluginThread.quitSafely()
         sendThread.quitSafely()
     }
 

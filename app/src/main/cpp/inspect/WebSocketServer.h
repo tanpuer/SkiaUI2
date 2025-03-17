@@ -20,6 +20,8 @@ public:
 
     void waitForFrontendMessageOnPause();
 
+    void printLogInChrome(std::string& log);
+
 private:
     void startListening();
 
@@ -37,6 +39,7 @@ private:
     jmethodID startListeningMethodId = nullptr;
     jmethodID waitFrontendMessageMethodId = nullptr;
     jmethodID releaseMethodId = nullptr;
+    jmethodID printLogInChromeMethodId = nullptr;
     jobject javaWSServer = nullptr;
 
 };

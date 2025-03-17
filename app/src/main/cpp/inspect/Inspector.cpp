@@ -27,19 +27,6 @@ void Inspector::onMessage(const std::string &message) {
     runtime->enterContext([this, message](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
         v8_inspector::StringView protocolMessage = convertToStringView(message);
         inspectorClient->dispatchProtocolMessage(protocolMessage);
-//        v8::Local<v8::Object> jsonObject = parseJson(context, message);
-//        if (!jsonObject.IsEmpty()) {
-//            std::string method = getPropertyFromJson(context->GetIsolate(), jsonObject, "method");
-//            if (method == "Runtime.runIfWaitingForDebugger") {
-//                inspectorClient->schedulePauseOnNextStatement(
-//                        convertToStringView("For testing purpose!"));
-//                inspectorClient->waitFrontendMessageOnPause();
-//                std::for_each(listeners.begin(), listeners.end(),
-//                              [this](V8InspectorListener *listener) {
-//                                  listener->onConnected(context);
-//                              });
-//            }
-//        }
     });
 }
 
@@ -57,8 +44,8 @@ int Inspector::waitForFrontendMessage() {
     return 1;
 }
 
-void Inspector::addListener(V8InspectorListener *listener) {
-    listeners.emplace_back(listener);
+void Inspector::printLogInChrome(std::string &log) {
+    websocketServer->printLogInChrome(log);
 }
 
 }
