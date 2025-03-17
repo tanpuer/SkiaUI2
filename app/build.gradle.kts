@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.temple.skiaui"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.temple.skiaui"
         minSdk = 29
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -57,11 +57,11 @@ android {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.2.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("org.java-websocket:Java-WebSocket:1.5.6")
-    implementation("androidx.media3:media3-exoplayer:1.4.1")
-    implementation("androidx.compose.runtime:runtime:1.7.6")
+    implementation("androidx.media3:media3-exoplayer:1.5.1")
+    implementation("androidx.compose.runtime:runtime:1.7.8")
     implementation("androidx.compose.compiler:compiler:1.5.15")
-    implementation("androidx.compose.foundation:foundation-android:1.7.6")
+    implementation("androidx.compose.foundation:foundation-android:1.7.8")
     implementation("com.google.android.filament:filament-android:1.56.0")
 }

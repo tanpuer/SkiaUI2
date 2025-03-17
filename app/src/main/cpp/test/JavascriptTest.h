@@ -4,6 +4,7 @@
 #include "V8Runtime.h"
 #include "console.h"
 #include "ViewManager.h"
+#include "inspect/Inspector.h"
 
 namespace HYSkiaUI {
 
@@ -63,6 +64,8 @@ protected:
     std::shared_ptr<V8Runtime> v8Runtime;
 
     std::shared_ptr<ViewManager> viewManager;
+
+    std::unique_ptr<Inspector> inspector;
 
 };
 

@@ -3,44 +3,46 @@
 
 namespace HYSkiaUI {
 
-WebSocketServer::WebSocketServer(int port, std::function<void(std::string)> onMessage) {
+WebSocketServer::WebSocketServer(std::shared_ptr<SkiaUIContext> &uiContext, int port,
+                                 std::function<void(std::string)> onMessage) {
+    this->uiContext = uiContext;
     this->port = port;
     this->onMessage = std::move(onMessage);
+
+    auto jniEnv = uiContext->getJniEnv();
+    auto clazz = jniEnv->FindClass("com/temple/skiaui/inspect/InspectPlugin");
+    auto javaConstructor = jniEnv->GetMethodID(clazz, "<init>",
+                                               "(Lcom/temple/skiaui/HYSkiaEngine;JI)V");
+    runMethodId = jniEnv->GetMethodID(clazz, "run", "()V");
+    sendMessageMethodId = jniEnv->GetMethodID(clazz, "sendMessage", "(Ljava/lang/String;)V");
+    startListeningMethodId = jniEnv->GetMethodID(clazz, "startListening", "()V");
+    waitFrontendMessageMethodId = jniEnv->GetMethodID(clazz, "waitFrontendMessage",
+                                                      "()Ljava/lang/String;");
+    releaseMethodId = jniEnv->GetMethodID(clazz, "release", "()V");
+    auto engine = uiContext->getJavaSkiaEngine();
+    javaWSServer = jniEnv->NewGlobalRef(
+            jniEnv->NewObject(clazz, javaConstructor, engine, reinterpret_cast<long >(this), port));
+}
+
+WebSocketServer::~WebSocketServer() {
+    ALOGD("InspectServer %s", "WebSocketServer::release")
+    auto jniEnv = uiContext->getJniEnv();
+    jniEnv->CallVoidMethod(javaWSServer, releaseMethodId);
+    jniEnv->DeleteGlobalRef(javaWSServer);
 }
 
 void WebSocketServer::run() {
-//    try
-//    {
-//        auto const address = net::ip::make_address("127.0.0.1");
-//        net::io_context ioc{1};
-//        tcp::acceptor acceptor{ioc, {address, static_cast<unsigned short>(port_)}};
-//        printListeningMessage();
-//
-//        tcp::socket socket{ioc};
-//        acceptor.accept(socket);
-//        ws_ = std::unique_ptr<websocket::stream<tcp::socket>>(new websocket::stream<tcp::socket>(std::move(socket)));
-//        startListening();
-//    }
-//    catch (const std::exception& e)
-//    {
-//        std::cerr << "Error: " << e.what() << std::endl;
-//    }
+    ALOGD("InspectServer %s", "WebSocketServer::run")
+    auto jniEnv = uiContext->getJniEnv();
+    jniEnv->CallVoidMethod(javaWSServer, runMethodId);
+    printListeningMessage();
 }
 
 void WebSocketServer::sendMessage(const std::string &message) {
-//    try {
-//        boost::beast::multi_buffer b;
-//        boost::beast::ostream(b) << message;
-//
-//        ws_->text(ws_->got_text());
-//        ws_->write(b.data());
-//    } catch(beast::system_error const& se) {
-//        if (se.code() != websocket::error::closed)
-//            std::cerr << "Error: " << se.code().message() << std::endl;
-//    } catch(std::exception const& e)
-//    {
-//        std::cerr << "Error: " << e.what() << std::endl;
-//    }
+    ALOGD("InspectServer %s %s", "WebSocketServer::sendMessage", message.c_str())
+    auto jniEnv = uiContext->getJniEnv();
+    auto jString = jniEnv->NewStringUTF(message.c_str());
+    jniEnv->CallVoidMethod(javaWSServer, sendMessageMethodId, jString);
 }
 
 void WebSocketServer::startListening() {
@@ -58,8 +60,7 @@ void WebSocketServer::startListening() {
 }
 
 void WebSocketServer::printListeningMessage() {
-    ALOGD("WebSocket based Inspector Agent started");
-    ALOGD("Open the following link in your Chrome/Chromium browser: devtools://devtools/bundled/inspector.html?experiments=true&v8only=true&ws=127.0.0.1:");
+    ALOGD("InspectServer Open the following link in your Chrome/Chromium browser: devtools://devtools/bundled/inspector.html?experiments=true&v8only=true&ws=0.0.0.0:8080");
 }
 
 void WebSocketServer::waitForFrontendMessageOnPause() {
@@ -67,10 +68,25 @@ void WebSocketServer::waitForFrontendMessageOnPause() {
 }
 
 void WebSocketServer::waitFrontendMessage() {
-//    beast::flat_buffer buffer;
-//    ws_->read(buffer);
-//    std::string message = boost::beast::buffers_to_string(buffer.data());
-//    onMessage_(std::move(message));
+    auto jniEnv = uiContext->getJniEnv();
+    auto message = jniEnv->CallObjectMethod(javaWSServer, waitFrontendMessageMethodId);
+    if (message == nullptr) {
+        return;
+    }
+    auto jString = static_cast<jstring>(message);
+    auto result = jniEnv->GetStringUTFChars(jString, nullptr);
+    std::string stringResult = result;
+    if (stringResult.empty()) {
+        jniEnv->ReleaseStringUTFChars(jString, result);
+        return;
+    }
+    ALOGD("InspectServer waitFrontendMessage %s", stringResult.c_str())
+    onMessage(std::move(stringResult));
+    jniEnv->ReleaseStringUTFChars(jString, result);
+}
+
+void WebSocketServer::receiveMessage(const std::string &message) {
+    onMessage(std::move(message));
 }
 
 }

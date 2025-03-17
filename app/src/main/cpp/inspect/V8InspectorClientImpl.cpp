@@ -1,4 +1,6 @@
 #include "V8InspectorClientImpl.h"
+#include "native_log.h"
+#include "WebSocketServer.h"
 
 namespace HYSkiaUI {
 
@@ -34,17 +36,20 @@ void V8InspectorClientImpl::runMessageLoopOnPause(int contextGroupId) {
     }
     terminated = false;
     run_nested_loop = true;
+    ALOGD("InspectServer runMessageLoopOnPause start!!!")
     runtime->enterContext([this](v8::Isolate *isolate,
                                  v8::Local<v8::Object> skiaUI) {
         while (!terminated && onWaitFrontendMessageOnPause()) {
             while (v8::platform::PumpMessageLoop(this->runtime->getPlatform(), isolate)) {}
         }
     });
+    ALOGD("InspectServer runMessageLoopOnPause end!!!")
     terminated = true;
     run_nested_loop = false;
 }
 
 void V8InspectorClientImpl::quitMessageLoopOnPause() {
+    ALOGD("InspectServer quitMessageLoopOnPause")
     terminated = true;
 }
 

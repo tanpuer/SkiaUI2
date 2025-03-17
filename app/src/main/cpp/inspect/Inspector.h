@@ -9,12 +9,13 @@
 #include "V8InspectorListener.h"
 #include "WebSocketServer.h"
 #include "V8InspectorClientImpl.h"
+#include "SkiaUIContext.h"
 
 namespace HYSkiaUI {
 
 class Inspector {
 public:
-    Inspector(std::shared_ptr<V8Runtime> &runtime, int webSocketPort);
+    Inspector(std::shared_ptr<SkiaUIContext> &context, int webSocketPort);
 
     void addListener(V8InspectorListener *listener);
 
@@ -32,7 +33,8 @@ private:
     std::unique_ptr<V8InspectorClientImpl> inspectorClient;
     std::vector<std::string> scripts = {};
     std::list<V8InspectorListener *> listeners;
-    std::shared_ptr<V8Runtime> &runtime;
+    std::shared_ptr<V8Runtime> runtime;
+    std::shared_ptr<SkiaUIContext> uiContext;
 };
 
 }

@@ -23,7 +23,7 @@ steps：
    ...
 10. **Development**:  
     C++: See CppTest.cpp.  
-    js: See test.js in assets. Import v8 to evaluate javascript.  
+    js: See test.js in assets. Import v8 to evaluate javascript.Support **inspect in chrome**.  
     **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and **Compose-runtime** to run.  
     **React**: Import react/react-reconciler to run. https://github.com/tanpuer/skia-ui-react.  
     **Vue**: Import @vue/runtime-core to run. Need import CSS-Selector(TODO). https://github.com/tanpuer/skia-ui-vue.  
@@ -40,3 +40,4 @@ steps：
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example6.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example7.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example8.png)
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example9.jpeg)

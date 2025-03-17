@@ -3,12 +3,14 @@
 
 namespace HYSkiaUI {
 
-Inspector::Inspector(std::shared_ptr<V8Runtime> &runtime, const int webSocketPort)
-        : runtime(runtime) {
+Inspector::Inspector(std::shared_ptr<SkiaUIContext> &context, const int webSocketPort) {
+    runtime = context->getRuntime();
+    uiContext = context;
     runtime->enterContext(
             [this, webSocketPort](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
                 this->context = isolate->GetCurrentContext();
                 websocketServer = std::make_unique<WebSocketServer>(
+                        uiContext,
                         webSocketPort,
                         [this](auto &&PH1) { onMessage(std::forward<decltype(PH1)>(PH1)); }
                 );
@@ -22,26 +24,27 @@ Inspector::Inspector(std::shared_ptr<V8Runtime> &runtime, const int webSocketPor
 
 void Inspector::onMessage(const std::string &message) {
     ALOGD("CDT message: %s", message.c_str());
-    v8_inspector::StringView protocolMessage = convertToStringView(message);
-    inspectorClient->dispatchProtocolMessage(protocolMessage);
-
-    v8::Local<v8::Object> jsonObject = parseJson(context, message);
-    if (!jsonObject.IsEmpty()) {
-        std::string method = getPropertyFromJson(context->GetIsolate(), jsonObject, "method");
-        if (method == "Runtime.runIfWaitingForDebugger") {
-            inspectorClient->schedulePauseOnNextStatement(
-                    convertToStringView("For testing purpose!"));
-            inspectorClient->waitFrontendMessageOnPause();
-            std::for_each(listeners.begin(), listeners.end(),
-                          [this](V8InspectorListener *listener) {
-                              listener->onConnected(context);
-                          });
-        }
-    }
+    runtime->enterContext([this, message](v8::Isolate *isolate, v8::Local<v8::Object> skiaUI) {
+        v8_inspector::StringView protocolMessage = convertToStringView(message);
+        inspectorClient->dispatchProtocolMessage(protocolMessage);
+//        v8::Local<v8::Object> jsonObject = parseJson(context, message);
+//        if (!jsonObject.IsEmpty()) {
+//            std::string method = getPropertyFromJson(context->GetIsolate(), jsonObject, "method");
+//            if (method == "Runtime.runIfWaitingForDebugger") {
+//                inspectorClient->schedulePauseOnNextStatement(
+//                        convertToStringView("For testing purpose!"));
+//                inspectorClient->waitFrontendMessageOnPause();
+//                std::for_each(listeners.begin(), listeners.end(),
+//                              [this](V8InspectorListener *listener) {
+//                                  listener->onConnected(context);
+//                              });
+//            }
+//        }
+    });
 }
 
 void Inspector::sendMessage(const std::string &message) {
-    ALOGD("Message to frontend: %s", message.c_str());
+    ALOGD("InspectServer Message to frontend: %s", message.c_str());
     websocketServer->sendMessage(message);
 }
 

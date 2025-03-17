@@ -7,6 +7,7 @@
 #include "PluginManager.h"
 #include "compose/ComposeJNI.h"
 #include "WebView.h"
+#include "inspect/WebSocketServer.h"
 
 using namespace HYSkiaUI;
 
@@ -251,6 +252,17 @@ native_MarkDirty(JNIEnv *env, jobject instance, jobject viewPtr) {
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_SendInspectMsg(JNIEnv *env, jobject instance, jstring message, jobject ptr) {
+    ALOGD("native_SendInspectMsg")
+    auto server = reinterpret_cast<WebSocketServer *>(ptr);
+    if (server != nullptr) {
+        auto res = env->GetStringUTFChars(message, nullptr);
+        server->receiveMessage(res);
+        env->ReleaseStringUTFChars(message, res);
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -278,6 +290,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeAttachSurfaceTexture",          "(JIILandroid/graphics/SurfaceTexture;)J",      (void *) native_AttachSurfaceTexture},
         {"nativeUpdateTexImage",                "(JLandroid/graphics/SurfaceTexture;J)V",       (void *) native_UpdateTexImage},
         {"nativeMarkDirty",                     "(J)V",                                         (void *) native_MarkDirty},
+        {"nativeSendInspectMsg",                "(Ljava/lang/String;J)V",                       (void *) native_SendInspectMsg},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

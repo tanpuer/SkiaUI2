@@ -73,6 +73,11 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         injectViews();
         injectSize(width, height);
         injectBackPressedCallback();
+//        1. adb forward tcp:8080 tcp:8080
+//        2. run app
+//        3. open devtools://devtools/bundled/inspector.html?experiments=true&v8only=true&ws=0.0.0.0:8080 in chrome
+//        inspector = std::make_unique<Inspector>(context, 8080);
+//        inspector->startAgent();
     }
 }
 
