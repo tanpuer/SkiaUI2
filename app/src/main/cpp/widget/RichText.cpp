@@ -83,8 +83,10 @@ void RichText::measure() {
                                                   TextBaseline::kAlphabetic, 0);
                 auto resourcesLoader = getContext()->resourcesLoader;
                 resourcesLoader->decodeImage(item.src,
-                                             [i, this](sk_sp<SkAnimatedImage> animatedImage) {
-                                                 auto image = animatedImage->getCurrentFrame();
+                                             [i, this](
+                                                     const std::vector<sk_sp<SkImage>> &images,
+                                                     sk_sp<SkAnimatedImage> animatedImage) {
+                                                 auto image = images[0];
                                                  this->nodes[i].skImage = image;
                                                  markDirty();
                                              });

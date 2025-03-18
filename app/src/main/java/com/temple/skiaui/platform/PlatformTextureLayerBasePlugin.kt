@@ -40,20 +40,20 @@ abstract class PlatformTextureLayerBasePlugin(
     @Volatile
     private var released = false
 
-    private val createListener = fun(it: Boolean) {
-        show = it
-        if (!it) {
-            surfaceObj?.release()
-            surfaceObj = null
-        }
-    }
-
     init {
         mainHandler.post {
             container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
             targetView = initPlatformView()
             container?.addView(targetView, ViewGroup.LayoutParams(width, height))
             engine.addSkiaSurfaceListener(index, createListener)
+        }
+    }
+
+    private val createListener = fun(it: Boolean) {
+        show = it
+        if (!it) {
+            surfaceObj?.release()
+            surfaceObj = null
         }
     }
 

@@ -12,8 +12,10 @@ namespace HYSkiaUI {
 
 static int32_t TASK_ID = 0;
 //Todo, post decoding-tasks to thread-pool, then post results to UI-thread.
-static std::unordered_map<int, std::function<void(sk_sp<SkAnimatedImage>)>> imagesCallback;
+static std::unordered_map<int, std::function<void(std::vector<sk_sp<SkImage>>,
+                                                  sk_sp<SkAnimatedImage>)>> imagesCallback;
 static std::unordered_map<int, std::string> pathMap;
+static std::unordered_map<int, std::vector<sk_sp<SkImage>>> imagesMap;
 static std::unordered_map<int, sk_sp<SkAnimatedImage>> animatedImagesMap;
 
 static std::unordered_map<int, std::function<void(sk_sp<skottie::Animation>)>> lottieCallback;
@@ -38,7 +40,8 @@ public:
     ~ResourcesLoader() = default;
 
     void decodeImage(const std::string &path,
-                     std::function<void(sk_sp<SkAnimatedImage>)> &&callback);
+                     std::function<void(std::vector<sk_sp<SkImage>>,
+                                        sk_sp<SkAnimatedImage>)> &&callback);
 
     void decodeLottie(const std::string &path,
                       std::function<void(sk_sp<skottie::Animation>)> &&callback);

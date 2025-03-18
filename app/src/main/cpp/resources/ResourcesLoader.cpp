@@ -9,7 +9,7 @@ namespace HYSkiaUI {
 
 void ResourcesLoader::decodeImage(
         const std::string &path,
-        std::function<void(sk_sp<SkAnimatedImage>)> &&callback) {
+        std::function<void(std::vector<sk_sp<SkImage>>, sk_sp<SkAnimatedImage>)> &&callback) {
     auto taskId = TASK_ID++;
     imagesCallback[taskId] = std::move(callback);
     pathMap[taskId] = path;
@@ -53,13 +53,24 @@ void ResourcesLoader::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
         auto skData = SkData::MakeWithProc(imageData->content, length, nullptr, nullptr);
         auto androidCodec = SkAndroidCodec::MakeFromData(skData);
         auto skAnimatedImage = SkAnimatedImage::Make(std::move(androidCodec));
+        auto frameCount = skAnimatedImage->getFrameCount();
         ALOGD("animated info : %d %d %d", skAnimatedImage->getFrameCount(),
               skAnimatedImage->getRepetitionCount(), skAnimatedImage->currentFrameDuration())
         auto frame = skAnimatedImage->getCurrentFrame();
+        if (skAnimatedImage->currentFrameDuration() > 0) {
+            auto currentFrameDuration = skAnimatedImage->currentFrameDuration();
+        }
         if (frame == nullptr) {
             ALOGE("skImage is null, pls check %s", path.c_str())
             return;
         }
+        std::vector<sk_sp<SkImage>> skImages;
+        skImages.push_back(frame);
+        for (int i = 1; i < frameCount; ++i) {
+            skAnimatedImage->decodeNextFrame();
+            skImages.push_back(skAnimatedImage->getCurrentFrame());
+        }
+        imagesMap[taskId] = skImages;
         skAnimatedImage->reset();
         animatedImagesMap[taskId] = skAnimatedImage;
         env->CallVoidMethod(javaSkiaEngine, postTaskMethod, taskId);
@@ -94,9 +105,11 @@ void ResourcesLoader::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
 void ResourcesLoader::postTask(JNIEnv *env, int taskId) {
     if (imagesCallback.find(taskId) != imagesCallback.end()) {
         auto callback = imagesCallback[taskId];
+        auto images = imagesMap[taskId];
         auto animatedImage = animatedImagesMap[taskId];
-        callback(animatedImage);
+        callback(images, animatedImage);
         imagesCallback.erase(taskId);
+        imagesMap.erase(taskId);
         animatedImagesMap.erase(taskId);
         pathMap.erase(taskId);
     } else if (lottieCallback.find(taskId) != lottieCallback.end()) {

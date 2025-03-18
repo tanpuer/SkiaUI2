@@ -38,13 +38,15 @@ void ImageView::setSource(const char *path) {
     MeasureTime measureTime("ImageView setSource");
     this->source = std::string(path);
     auto resourcesLoader = getContext()->resourcesLoader;
-    resourcesLoader->decodeImage(source, [this](sk_sp<SkAnimatedImage> animatedImage) {
-        skAnimatedImage = std::move(animatedImage);
-        skImage = skAnimatedImage->getCurrentFrame();
+    resourcesLoader->decodeImage(source, [this](const std::vector<sk_sp<SkImage>> &images,
+                                                sk_sp<SkAnimatedImage> animatedImage) {
+        skImage = images[0];
         srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
         ALOGD("decode image success %s %d %d", source.c_str(), skImage->width(), skImage->height())
         startTime = getContext()->getCurrentTimeMills();
-        this->frameCount = skAnimatedImage->getFrameCount();
+        this->skImages = images;
+        this->skAnimatedImage = std::move(animatedImage);
+        this->frameCount = images.size();
         this->duration = this->frameCount * skAnimatedImage->currentFrameDuration();
         endTime = startTime + this->duration;
         markDirty();
@@ -104,17 +106,14 @@ void ImageView::draw(SkCanvas *canvas) {
             startTime = currentTimeMills;
             endTime = startTime + duration;
         }
-        auto index = (currentTimeMills - startTime) * frameCount / duration;
-        if (index != currentFrameIndex) {
-            currentFrameIndex = static_cast<int>(index);
-            if (skAnimatedImage->decodeNextFrame() == SkAnimatedImage::kFinished) {
-                skAnimatedImage->reset();
-            }
-            if (currentFrameIndex == 0 && completeFunc != nullptr) {
+        currentFrameIndex = (currentTimeMills - startTime) * frameCount / duration;
+        if (currentFrameIndex >= skImages.size()) {
+            if (completeFunc != nullptr) {
                 completeFunc(this);
             }
-            skImage = skAnimatedImage->getCurrentFrame();
+            currentFrameIndex = 0;
         }
+        skImage = skImages[currentFrameIndex];
         markDirty();
     }
     canvas->save();
