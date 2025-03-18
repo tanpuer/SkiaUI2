@@ -34,4 +34,9 @@ void EditText::requestFocus() {
     jniEnv->CallVoidMethod(javaView, requestFocusMethodId);
 }
 
+void EditText::onHide() {
+    View::onHide();
+    clearFocus();
+}
+
 }

@@ -9,7 +9,10 @@ LinearAnimator::LinearAnimator(View *view, float startValue, float endValue)
 }
 
 void LinearAnimator::update(SkIRect &rect) {
-    if (currTime > endTime && !paused) {
+    if (paused) {
+        return;
+    }
+    if (currTime > endTime) {
         if (loopCount == -1) {
             startTime = currTime;
             endTime = currTime + duration;

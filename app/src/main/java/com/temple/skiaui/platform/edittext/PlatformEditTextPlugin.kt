@@ -21,11 +21,15 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, edit
     }
 
     fun clearFocus() {
-        editText?.clearFocus()
+        mainHandler.post {
+            editText?.clearFocus()
+        }
     }
 
     fun requestFocus() {
-        editText?.requestFocus()
+        mainHandler.post {
+            editText?.requestFocus()
+        }
     }
 
 }

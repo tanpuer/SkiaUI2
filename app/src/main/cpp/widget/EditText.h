@@ -22,6 +22,8 @@ public:
 
     void requestFocus();
 
+    void onHide() override;
+
 protected:
 
     jmethodID clearFocusMethodId = nullptr;
