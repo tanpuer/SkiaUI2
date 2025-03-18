@@ -18,7 +18,6 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
                      int exampleType) {
     SkGraphics::Init();
     context = std::make_shared<SkiaUIContext>();
-    context->setConfigRef(YGConfigNew());
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
     if (exampleType == 1) {

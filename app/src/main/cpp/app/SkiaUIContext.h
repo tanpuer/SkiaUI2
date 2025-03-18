@@ -36,12 +36,14 @@ class SkiaUIContext {
 public:
 
     SkiaUIContext() {
-
+        ALOGD("SkiaUIContext")
+        config = YGConfigNew();
     }
 
     ~SkiaUIContext() {
         ALOGD("~SkiaUIContext")
         jniEnv->DeleteGlobalRef(javaSkiaEngine);
+        YGConfigFree(config);
     }
 
     void setJavaAssetManager(JNIEnv *env, jobject javaAssetManager) {
@@ -60,10 +62,6 @@ public:
 
     long getCurrentTimeMills() {
         return currentTimeMills;
-    }
-
-    void setConfigRef(YGConfigRef config) {
-        this->config = config;
     }
 
     const YGConfigRef getConfig() {
