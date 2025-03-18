@@ -38,8 +38,7 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
         auto image = images[i];
         context->resourcesLoader->decodeImage(
                 image,
-                [this, i](const std::vector<sk_sp<SkImage>> &images,
-                          sk_sp<SkAnimatedImage> animatedImage) {
+                [this, i](sk_sp<SkAnimatedImage> animatedImage) {
                     auto skImage = animatedImage->getCurrentFrame();
                     auto shader = skImage->makeShader(SkSamplingOptions());
                     skShaders["iChannel" + std::to_string(i)] = std::move(shader);

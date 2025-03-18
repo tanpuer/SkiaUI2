@@ -69,8 +69,6 @@ private:
 
     sk_sp<SkImage> skImage;
 
-    std::vector<sk_sp<SkImage>> skImages;
-
     int currentFrameIndex = 0;
 
     sk_sp<SkAnimatedImage> skAnimatedImage;
