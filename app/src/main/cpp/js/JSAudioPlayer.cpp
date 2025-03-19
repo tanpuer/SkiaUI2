@@ -61,4 +61,20 @@ long JSAudioPlayer::getCurrPosition() {
     return jniEnv->CallLongMethod(audioPlayer, currentPositionMethodID);
 }
 
+void JSAudioPlayer::seek(long position) {
+    if (audioPlayer == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(audioPlayer, seekMethodID, position);
+}
+
+long JSAudioPlayer::getDuration() {
+    if (audioPlayer == nullptr) {
+        return 0L;
+    }
+    auto jniEnv = context->getJniEnv();
+    return jniEnv->CallLongMethod(audioPlayer, getDurationMethodID);
+}
+
 }

@@ -63,6 +63,28 @@ JSAudioPlayerBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             v8::String::NewFromUtf8(isolate, "getCurrentPosition"),
             v8::FunctionTemplate::New(isolate, getCurrentPosition,
                                       v8::External::New(isolate, this)));
+    auto getDuration = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        assert(args.Length() == 0);
+        auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
+        if (audioPlayer != nullptr) {
+            args.GetReturnValue().Set(
+                    v8::Number::New(args.GetIsolate(), audioPlayer->getDuration()));
+        }
+    };
+    audioPlayerTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "getDuration"),
+            v8::FunctionTemplate::New(isolate, getDuration,
+                                      v8::External::New(isolate, this)));
+    auto seek = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        assert(args.Length() == 1 && args[0]->IsNumber());
+        auto audioPlayer = GetTargetView<JSAudioPlayer>(args);
+        if (audioPlayer != nullptr) {
+            audioPlayer->seek(args[0]->Int32Value());
+        }
+    };
+    audioPlayerTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "seek"),
+            v8::FunctionTemplate::New(isolate, seek, v8::External::New(isolate, this)));
 
     v8::Local<v8::Function> constructor = audioPlayerTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "AudioPlayer"), constructor);

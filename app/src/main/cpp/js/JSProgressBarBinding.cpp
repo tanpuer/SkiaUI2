@@ -41,7 +41,6 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
     };
     progressBarTemplate->InstanceTemplate()->SetAccessor(
             v8::String::NewFromUtf8(isolate, "barType"), barTypeGetter, barTypeSetter);
-    v8::Local<v8::Function> constructor = progressBarTemplate->GetFunction();
 
     auto barColorSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
                              const v8::PropertyCallbackInfo<void> &info) {
@@ -81,6 +80,64 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
             autoModeGetter,
             autoModeSetter);
 
+    auto progressSetter = [](v8::Local<v8::String> property, v8::Local<v8::Value> value,
+                             const v8::PropertyCallbackInfo<void> &info) {
+        if (!value->IsNumber()) {
+            throwInvalidError(info.GetIsolate(), "Invalid value for progress; expected a number");
+        }
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        progressBar->setProgress(value->NumberValue());
+    };
+    auto progressGetter = [](v8::Local<v8::String> property,
+                             const v8::PropertyCallbackInfo<v8::Value> &info) {
+        auto progressBar = GetTargetView<ProgressBar>(info);
+        info.GetReturnValue().Set(v8::Number::New(info.GetIsolate(), progressBar->getProgress()));
+    };
+    progressBarTemplate->InstanceTemplate()->SetAccessor(
+            v8::String::NewFromUtf8(isolate, "progress"),
+            progressGetter,
+            progressSetter);
+
+    auto progressChange = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        auto isolate = args.GetIsolate();
+        assert(args.Length() == 1 && (args[0]->IsFunction() || args[0]->IsNullOrUndefined()));
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<ProgressBar *>(wrap->Value());
+        auto function = v8::Local<v8::Function>::Cast(args[0]);
+        auto data = v8::Local<v8::External>::Cast(args.Data());
+        auto binding = static_cast<JSProgressBarBinding *>(data->Value());
+        if (args[0]->IsNullOrUndefined()) {
+            targetView->progressFunction.Reset();
+            targetView->setProgressCallback(nullptr);
+            return;
+        }
+        auto newCallback = v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>>(
+                isolate, function);
+        targetView->progressFunction.Reset(isolate, newCallback);
+        assert(binding);
+        targetView->setProgressCallback([binding, targetView](int progress, bool finished) {
+            binding->context->getRuntime()->enterContext(
+                    [targetView, progress, finished](v8::Isolate *isolate,
+                                                     v8::Local<v8::Object> skiaUI) {
+                        v8::Local<v8::Value> argv[2] = {
+                                v8::Number::New(isolate, progress),
+                                v8::Boolean::New(isolate, finished)
+                        };
+                        auto callback = targetView->progressFunction.Get(isolate);
+                        if (!callback.IsEmpty()) {
+                            callback->Call(isolate->GetCurrentContext(),
+                                           isolate->GetCurrentContext()->Global(), 2, argv);
+                        } else {
+                            ALOGE("error: miss js progress callback for ProgressBar");
+                        }
+                    });
+        });
+    };
+    progressBarTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "setProgressCallback"),
+            v8::FunctionTemplate::New(isolate, progressChange, v8::External::New(isolate, this)));
+
+    v8::Local<v8::Function> constructor = progressBarTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "ProgressBar"), constructor);
     return progressBarTemplate;
 }

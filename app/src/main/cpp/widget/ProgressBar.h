@@ -46,6 +46,8 @@ public:
      */
     virtual void setProgress(float progress);
 
+    virtual float getProgress();
+
     virtual void setAutoMode(bool autoMode);
 
     virtual bool getAutoMode();
@@ -85,9 +87,12 @@ private:
 
     bool setShader;
 
-    SkPaint *backgroundPaint;
+    std::unique_ptr<SkPaint> backgroundPaint;
 
     std::string barColor;
+
+public:
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> progressFunction;
 
 };
 

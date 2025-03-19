@@ -20,6 +20,10 @@ public:
 
     long getCurrPosition();
 
+    long getDuration();
+
+    void seek(long position);
+
 private:
 
     std::shared_ptr<SkiaUIContext> context = nullptr;

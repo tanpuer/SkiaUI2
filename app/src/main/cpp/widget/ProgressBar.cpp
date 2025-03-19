@@ -6,19 +6,19 @@
 namespace HYSkiaUI {
 
 ProgressBar::ProgressBar()
-        : View(), progressRect(SkRect::MakeEmpty()), autoMode(true), progress(0), index(0),
+        : View(), progressRect(SkRect::MakeEmpty()), autoMode(false), progress(0), index(0),
           type(ProgressBarType::CIRCLE), pressed(false), progressCallback(nullptr) {
     paint->setStroke(true);
     gradientColors = std::vector<SkColor>();
     gradientColorSize = 0;
     setShader = false;
-    backgroundPaint = new SkPaint();
+    backgroundPaint = std::make_unique<SkPaint>();
     backgroundPaint->setAntiAlias(true);
     backgroundPaint->setStyle(SkPaint::kStroke_Style);
 }
 
 ProgressBar::~ProgressBar() {
-    delete backgroundPaint;
+    clickFunction.Reset();
 }
 
 void ProgressBar::setBarColor(SkColor color) {
@@ -110,6 +110,10 @@ void ProgressBar::setProgress(float progress) {
     markDirty();
 }
 
+float ProgressBar::getProgress() {
+    return progress;
+}
+
 void ProgressBar::setAutoMode(bool autoMode) {
     this->autoMode = autoMode;
     markDirty();
@@ -185,7 +189,7 @@ bool ProgressBar::onInterceptTouchEvent(TouchEvent *touchEvent) {
 void ProgressBar::setBarColor(const std::string &hexColor) {
     int r, g, b, a;
     hexToRGBA(hexColor, r, g, b, a);
-    setBackgroundColor(SkColorSetARGB(a, r, g, b));
+    setBarColor(SkColorSetARGB(a, r, g, b));
 }
 
 const char *ProgressBar::getBarColor() {

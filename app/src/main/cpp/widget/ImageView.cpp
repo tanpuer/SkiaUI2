@@ -243,7 +243,7 @@ void ImageView::setSkImage(sk_sp<SkImage> image) {
 }
 
 void ImageView::decodeNextFrame() {
-    MeasureTime measureTime("decodeNextFrame");
+//    MeasureTime measureTime("decodeNextFrame");
     if (skAnimatedImage->decodeNextFrame() == SkAnimatedImage::kFinished) {
         skAnimatedImage->reset();
     }
