@@ -3,7 +3,6 @@
 #include <functional>
 #include <vector>
 #include <list>
-#include "utils.h"
 #include "v8-platform.h"
 #include "v8.h"
 #include "V8InspectorListener.h"
