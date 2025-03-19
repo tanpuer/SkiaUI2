@@ -38,15 +38,13 @@ void ImageView::setSource(const char *path) {
     MeasureTime measureTime("ImageView setSource");
     this->source = std::string(path);
     auto resourcesLoader = getContext()->resourcesLoader;
-    resourcesLoader->decodeImage(source, [this](const std::vector<sk_sp<SkImage>> &images,
-                                                sk_sp<SkAnimatedImage> animatedImage) {
-        skImage = images[0];
+    resourcesLoader->decodeImage(source, [this](sk_sp<SkAnimatedImage> animatedImage) {
+        this->skAnimatedImage = std::move(animatedImage);
+        skImage = skAnimatedImage->getCurrentFrame();
         srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
         ALOGD("decode image success %s %d %d", source.c_str(), skImage->width(), skImage->height())
         startTime = getContext()->getCurrentTimeMills();
-        this->skImages = images;
-        this->skAnimatedImage = std::move(animatedImage);
-        this->frameCount = images.size();
+        this->frameCount = skAnimatedImage->getFrameCount();
         this->duration = this->frameCount * skAnimatedImage->currentFrameDuration();
         endTime = startTime + this->duration;
         markDirty();
@@ -106,14 +104,15 @@ void ImageView::draw(SkCanvas *canvas) {
             startTime = currentTimeMills;
             endTime = startTime + duration;
         }
-        currentFrameIndex = (currentTimeMills - startTime) * frameCount / duration;
-        if (currentFrameIndex >= skImages.size()) {
-            if (completeFunc != nullptr) {
+        auto index = (currentTimeMills - startTime) * frameCount / duration;
+        if (currentFrameIndex != index) {
+            currentFrameIndex = index;
+            decodeNextFrame();
+            if (currentFrameIndex == 0 && completeFunc != nullptr) {
                 completeFunc(this);
             }
-            currentFrameIndex = 0;
+            skImage = skAnimatedImage->getCurrentFrame();
         }
-        skImage = skImages[currentFrameIndex];
         markDirty();
     }
     canvas->save();
@@ -241,6 +240,13 @@ void ImageView::setSkImage(sk_sp<SkImage> image) {
     this->skImage = image;
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
     markDirty();
+}
+
+void ImageView::decodeNextFrame() {
+    MeasureTime measureTime("decodeNextFrame");
+    if (skAnimatedImage->decodeNextFrame() == SkAnimatedImage::kFinished) {
+        skAnimatedImage->reset();
+    }
 }
 
 }
