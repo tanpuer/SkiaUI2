@@ -40,4 +40,4 @@ steps：
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example6.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example7.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example8.png)
-![Demo GIF](https://github.com/tanpuer/SkiaUI2/blob/main/app/example9.gif)
+![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example9.gif)
