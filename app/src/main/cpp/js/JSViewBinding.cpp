@@ -273,6 +273,19 @@ JSViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skiaUI
     viewTemplate->PrototypeTemplate()->Set(
             v8::String::NewFromUtf8(isolate, "draw"),
             v8::FunctionTemplate::New(isolate, draw, v8::External::New(isolate, this)));
+    auto removeFromParent = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        assert(args.Length() == 0);
+        auto wrap = v8::Local<v8::External>::Cast(args.Holder()->GetInternalField(0));
+        auto targetView = static_cast<View *>(wrap->Value());
+        if (targetView != nullptr) {
+            targetView->removeFromParent();
+        } else {
+            ALOGD("View removeFromParent failed because view is nullptr");
+        }
+    };
+    viewTemplate->PrototypeTemplate()->Set(
+            v8::String::NewFromUtf8(isolate, "removeFromParent"),
+            v8::FunctionTemplate::New(isolate, removeFromParent, v8::External::New(isolate, this)));
     v8::Local<v8::Function> constructor = viewTemplate->GetFunction();
     skiaUI->Set(v8::String::NewFromUtf8(isolate, "View"), constructor);
     return viewTemplate;

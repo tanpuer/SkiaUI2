@@ -72,7 +72,6 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
         injectFrameCallback();
         injectTimer();
         injectViews();
-        injectSize(width, height);
         injectBackPressedCallback();
 //        1. adb forward tcp:8080 tcp:8080
 //        2. run app
@@ -80,6 +79,11 @@ void JavascriptTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int 
 //              devtools://devtools/bundled/inspector.html?experiments=true&v8only=true&ws=0.0.0.0:8080
 //        inspector = std::make_shared<Inspector>(context, 8080);
 //        inspector->startAgent();
+    }
+    if (this->width != width || this->height != height) {
+        this->width = width;
+        this->height = height;
+        injectSize(width, height);
     }
 }
 

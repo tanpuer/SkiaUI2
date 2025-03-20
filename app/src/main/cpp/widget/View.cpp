@@ -8,6 +8,7 @@
 #include "core/SkMaskFilter.h"
 #include "core/SkBlurTypes.h"
 #include "color_util.h"
+#include "ViewGroup.h"
 
 namespace HYSkiaUI {
 
@@ -463,6 +464,10 @@ const jobject View::getJavaViewRef() {
 
 View *View::getParent() {
     return parent;
+}
+
+void View::removeFromParent() {
+    reinterpret_cast<ViewGroup*>(parent)->removeView(this);
 }
 
 void View::markMeasure() {

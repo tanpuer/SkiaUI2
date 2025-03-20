@@ -24,6 +24,20 @@ JSViewGroupBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
     viewGroupTemplate->PrototypeTemplate()->Set(
             isolate, "addView",
             v8::FunctionTemplate::New(isolate, addView));
+    auto addViewBefore = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
+        assert(args.Length() == 2);
+        auto parent = GetTargetView<ViewGroup>(args);
+        auto childWrap = v8::Local<v8::External>::Cast(
+                args[0]->ToObject()->GetInternalField(0));
+        auto beforeChildWrap = v8::Local<v8::External>::Cast(
+                args[1]->ToObject()->GetInternalField(0));
+        auto child = static_cast<View *>(childWrap->Value());
+        auto beforeChild = static_cast<View *>(beforeChildWrap->Value());
+        parent->addViewBefore(child, beforeChild);
+    };
+    viewGroupTemplate->PrototypeTemplate()->Set(
+            isolate, "addViewBefore",
+            v8::FunctionTemplate::New(isolate, addViewBefore));
     auto removeView = [](const v8::FunctionCallbackInfo<v8::Value> &args) {
         assert(args.Length() == 1 && args[0]->IsObject());
         auto parent = GetTargetView<ViewGroup>(args);

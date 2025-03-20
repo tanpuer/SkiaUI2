@@ -206,7 +206,7 @@ native_RegisterJetpackCompose(JNIEnv *env, jobject instance) {
 
 extern "C" JNIEXPORT void JNICALL
 native_PerformTimeout(JNIEnv *env, jobject instance, jlong javaUIApp, jlong id) {
-    ALOGD("native_PerformTimeout")
+//    ALOGD("native_PerformTimeout")
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         uiApp->performTimeout(id);

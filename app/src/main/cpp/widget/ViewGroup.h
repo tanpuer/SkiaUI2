@@ -47,6 +47,8 @@ public:
 
     virtual bool addViewAt(View *view, uint32_t index);
 
+    virtual bool addViewBefore(View *view, View *beforeView);
+
     virtual bool removeView(View *view);
 
     virtual bool removeViewAt(uint32_t index);

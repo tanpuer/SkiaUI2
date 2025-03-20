@@ -95,13 +95,13 @@ public:
 
     virtual View *getParent();
 
+    virtual void removeFromParent();
+
     YGNodeRef node;
 
     YGConfigRef config = nullptr;
 
     int left, top, right, bottom = 0;
-
-    bool markForDelete = false;
 
     View *parent = nullptr;
 

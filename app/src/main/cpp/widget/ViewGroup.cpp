@@ -40,12 +40,11 @@ bool ViewGroup::removeView(View *view) {
         return false;
     }
     YGNodeRemoveChild(node, view->node);
-    for (auto ite = children.begin(); ite < children.end(); ++ite) {
-        if ((*ite)->viewId == view->viewId) {
-            (*ite)->markForDelete = true;
-            return true;
-        }
+    auto it = std::find(children.begin(), children.end(), view);
+    if (it != children.end()) {
+        children.erase(it);
     }
+    delete view;
     return false;
 }
 
@@ -57,9 +56,7 @@ bool ViewGroup::removeViewAt(uint32_t index) {
     if (view == nullptr) {
         return false;
     }
-    YGNodeRemoveChild(node, view->node);
-    view->markForDelete = true;
-    return true;
+    return removeView(view);
 }
 
 void ViewGroup::removeAllViews() {
@@ -68,8 +65,9 @@ void ViewGroup::removeAllViews() {
         return;
     }
     for (const auto &item: children) {
-        item->markForDelete = true;
+        delete item;
     }
+    children.clear();
     YGNodeRemoveAllChildren(node);
 }
 
@@ -89,16 +87,6 @@ void ViewGroup::draw(SkCanvas *canvas) {
     for (auto child: children) {
         child->draw(canvas);
     }
-    children.erase(std::remove_if(children.begin(),
-                                  children.end(),
-                                  [](View *child) {
-                                      if (child->markForDelete) {
-                                          delete child;
-                                          return true;
-                                      } else {
-                                          return false;
-                                      }
-                                  }), children.end());
 }
 
 void ViewGroup::setAlignItems(YGAlign align) {
@@ -111,33 +99,21 @@ void ViewGroup::setAlignItems(YGAlign align) {
 
 void ViewGroup::setJustifyContent(YGJustify justify) {
     SkASSERT(node);
-    if (node == nullptr) {
-        return;
-    }
     YGNodeStyleSetJustifyContent(node, justify);
 }
 
 void ViewGroup::setAlignContent(YGAlign align) {
     SkASSERT(node);
-    if (node == nullptr) {
-        return;
-    }
     YGNodeStyleSetAlignContent(node, align);
 }
 
 void ViewGroup::setFlexWrap(YGWrap wrap) {
     SkASSERT(node);
-    if (node == nullptr) {
-        return;
-    }
     YGNodeStyleSetFlexWrap(node, wrap);
 }
 
 void ViewGroup::setFlexDirection(YGFlexDirection direction) {
     SkASSERT(node);
-    if (node == nullptr) {
-        return;
-    }
     YGNodeStyleSetFlexDirection(node, direction);
 }
 
@@ -237,6 +213,20 @@ void ViewGroup::performAnimations() {
     for (const auto &item: children) {
         item->performAnimations();
     }
+}
+
+bool ViewGroup::addViewBefore(View *view, View *beforeView) {
+    int index = -1;
+    for (int i = 0; i < children.size(); ++i) {
+        if (children[i] == beforeView) {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1) {
+        return false;
+    }
+    return addViewAt(view, index);
 }
 
 }

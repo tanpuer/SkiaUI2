@@ -132,7 +132,7 @@ void TextView::measure() {
             height = paragraph->getHeight();
         }
         setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
-        ALOGD("TextView setSize %f %f", width, height)
+//        ALOGD("TextView setSize %f %f", width, height)
         clearMeasure();
     }
 }

@@ -33,9 +33,11 @@ void ExoPlayerView::setRenderFirstFrameCallback(std::function<void()> &&callback
 void ExoPlayerView::drawOneFrame() {
     if (firstFrame) {
         firstFrame = false;
-        if (renderFirstFrameCallback != nullptr) {
-            renderFirstFrameCallback();
-        }
+        context->setTimer([this](){
+            if (renderFirstFrameCallback != nullptr) {
+                renderFirstFrameCallback();
+            }
+        }, 0, false);
     }
 }
 
