@@ -22,6 +22,9 @@ namespace HYSkiaUI {
 
 SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
     SkGraphics::Init();
+    auto backendInterface = GrGLMakeNativeInterface();
+    skiaContext = GrDirectContexts::MakeGL(backendInterface);
+    SkASSERT(skiaContext);
 }
 
 SkiaFilter::~SkiaFilter() {
@@ -31,9 +34,6 @@ SkiaFilter::~SkiaFilter() {
 void SkiaFilter::setWindowSize(int width, int height) {
     this->width = width;
     this->height = height;
-    auto backendInterface = GrGLMakeNativeInterface();
-    skiaContext = GrDirectContexts::MakeGL(backendInterface);
-    SkASSERT(skiaContext);
     GLint buffer;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &buffer);
     GLint stencil;
