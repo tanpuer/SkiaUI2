@@ -21,6 +21,9 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                     nativeSetHeight(ref, value as Int)
                 }
 
+                "backgroundColor" -> {
+                    nativeSetBackgroundColor(ref, value as String)
+                }
             }
         }
     }

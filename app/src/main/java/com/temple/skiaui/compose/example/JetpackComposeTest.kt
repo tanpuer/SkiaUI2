@@ -15,6 +15,7 @@ import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
 import com.temple.skiaui.compose.core.Row
+import com.temple.skiaui.compose.core.SVG
 import com.temple.skiaui.compose.core.Shader
 import com.temple.skiaui.compose.core.Switch
 import com.temple.skiaui.compose.core.Text
@@ -26,6 +27,7 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
+import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
@@ -65,10 +67,17 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                         },
                     color
                 )
+                SVG(
+                    modifier = Modifier(context)
+                        .setSize(480, 480)
+                        .setBackgroundColor("#ffffff00"),
+                    source = "jetpack-compose.svg"
+                )
                 Text(
                     modifier = Modifier(context)
                         .setSize(800, 100)
-                        .setTextSize(50),
+                        .setTextSize(50)
+                        .setBackgroundColor("#ffffff00"),
                     content = "这是ExoPlayer-Video",
                     color = "#0000ff",
                 )

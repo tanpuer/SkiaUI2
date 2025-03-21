@@ -23,6 +23,7 @@ import com.temple.skiaui.compose.widget.HYComposeImage
 import com.temple.skiaui.compose.widget.HYComposeLoadingView
 import com.temple.skiaui.compose.widget.HYComposeLottie
 import com.temple.skiaui.compose.widget.HYComposePage
+import com.temple.skiaui.compose.widget.HYComposeSVG
 import com.temple.skiaui.compose.widget.HYComposeScrollView
 import com.temple.skiaui.compose.widget.HYComposeShader
 import com.temple.skiaui.compose.widget.HYComposeSwitch
@@ -122,6 +123,18 @@ fun Loading(modifier: Modifier, color: String = "") {
         update = {
             set(color) {
                 setColor(color)
+            }
+        }
+    )
+}
+
+@Composable
+fun SVG(modifier: Modifier, source: String) {
+    ComposeNode<HYComposeSVG, HYComposeApplier>(
+        factory = { HYComposeSVG(modifier) },
+        update = {
+            set(source) {
+                setSource(source)
             }
         }
     )

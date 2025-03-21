@@ -14,6 +14,7 @@
 #include "FilamentView.h"
 #include "ExoPlayerView.h"
 #include "WebView.h"
+#include "SVGView.h"
 
 using namespace HYSkiaUI;
 
@@ -48,6 +49,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"Filament",      []() -> View * { return new FilamentView(); }},
             {"ExoVideo",      []() -> View * { return new ExoPlayerView(); }},
             {"Web",           []() -> View * { return new WebView(); }},
+            {"SVG",           []() -> View * { return new SVGView(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {
