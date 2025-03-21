@@ -20,6 +20,8 @@ private:
 
     jobject testRef = nullptr;
 
+    bool createFlag = false;
+
 };
 
 }

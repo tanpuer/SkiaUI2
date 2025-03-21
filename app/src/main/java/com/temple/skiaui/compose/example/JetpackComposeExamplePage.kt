@@ -1,28 +1,28 @@
 package com.temple.skiaui.compose.example
 
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Camera
-import com.temple.skiaui.compose.core.Column
 import com.temple.skiaui.compose.core.ExoVideo
 import com.temple.skiaui.compose.core.Filament
 import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
+import com.temple.skiaui.compose.core.JetpackComposeBasePage
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
+import com.temple.skiaui.compose.core.Page
 import com.temple.skiaui.compose.core.Row
 import com.temple.skiaui.compose.core.SVG
 import com.temple.skiaui.compose.core.Shader
 import com.temple.skiaui.compose.core.Switch
 import com.temple.skiaui.compose.core.Text
-import com.temple.skiaui.compose.core.Video
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.core.Web
-import com.temple.skiaui.compose.core.runCompose
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
@@ -36,24 +36,22 @@ import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.random.Random
 
-class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
+class JetpackComposeExamplePage(engine: HYSkiaEngine, context: Long) :
+    JetpackComposeBasePage(engine, context) {
 
-    init {
-        engine.registerJetpackCompose()
-    }
-
-    fun start(width: Int, height: Int): Long {
-        return runCompose({
-            var color by remember { mutableStateOf(randomColor()) }
-            var shaderSource by remember {
-                mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
-            }
-            var epplise by remember {
-                mutableStateOf(true)
-            }
-            var lottiePlay by remember {
-                mutableStateOf(true)
-            }
+    @Composable
+    override fun RunComposable(width: Int, height: Int) {
+        var color by remember { mutableStateOf(randomColor()) }
+        var shaderSource by remember {
+            mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
+        }
+        var ellipsis by remember {
+            mutableStateOf(true)
+        }
+        var lottiePlay by remember {
+            mutableStateOf(true)
+        }
+        Page(modifier = Modifier(context).setSize(width, height)) {
             LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
                     .setAlignItems("flex-start"),
@@ -104,11 +102,11 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                         .setSize(800, 100)
                         .setTextSize(50)
                         .onClick {
-                            epplise = !epplise
+                            ellipsis = !ellipsis
                         },
                     content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
                     color = "#0000ff",
-                    maxLine = if (epplise) 3 else 0,
+                    maxLine = if (ellipsis) 3 else 0,
                     ellipsis = "点击展开"
                 )
                 Lottie(
@@ -148,7 +146,7 @@ class JetpackComposeTest(val engine: HYSkiaEngine, val context: Long) {
                 Switch(Modifier(context))
                 Web(Modifier(context).setSize(width, 1200), "https://m.bilibili.com/")
             }
-        }, width, height, engine, context)
+        }
     }
 
     private fun randomColor(): String {
