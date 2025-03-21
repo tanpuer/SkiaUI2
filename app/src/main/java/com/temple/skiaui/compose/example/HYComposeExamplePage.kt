@@ -11,7 +11,7 @@ import com.temple.skiaui.compose.core.ExoVideo
 import com.temple.skiaui.compose.core.Filament
 import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
-import com.temple.skiaui.compose.core.JetpackComposeBasePage
+import com.temple.skiaui.compose.core.HYComposeBasePage
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
@@ -36,8 +36,8 @@ import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.random.Random
 
-class JetpackComposeExamplePage(engine: HYSkiaEngine, context: Long) :
-    JetpackComposeBasePage(engine, context) {
+class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
+    HYComposeBasePage(engine, context) {
 
     @Composable
     override fun RunComposable(width: Int, height: Int) {

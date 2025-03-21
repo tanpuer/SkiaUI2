@@ -50,6 +50,6 @@ abstract class HYComposeNode(val modifier: Modifier) {
     private external fun nativeAddView(parent: Long, child: Long)
     private external fun nativeCreateView(contextPtr: Long, type: String): Long
     private external fun nativeRemoveViews(parent: Long, index: Int, count: Int)
-    private external fun nativeRemoveAllChildren();
+    private external fun nativeRemoveAllChildren()
 
 }

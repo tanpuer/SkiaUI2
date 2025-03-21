@@ -12,14 +12,14 @@ JetpackComposeTest::~JetpackComposeTest() {
 
 void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (!createFlag) {
-        auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/example/JetpackComposeExamplePage");
+        auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/example/HYComposeExampleApp");
         auto constructor = jniEnv->GetMethodID(jClazz, "<init>",
                                                "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
         auto contextPtr = reinterpret_cast<long>(this);
         testRef = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(jClazz, constructor, javaSkiaEngine, contextPtr));
-        auto startMethod = jniEnv->GetMethodID(jClazz, "start", "(II)V");
+        auto startMethod = jniEnv->GetMethodID(jClazz, "onCreate", "(II)V");
         jniEnv->CallVoidMethod(testRef, startMethod, width,height);
         createFlag = true;
     }

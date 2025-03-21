@@ -12,7 +12,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-object JetPackComposeSDK {
+object HYComposeSDK {
 
     private val frameClock = BroadcastFrameClock()
 
