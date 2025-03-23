@@ -36,7 +36,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
     }
 
     fun clear() {
-        nativeRemoveAllChildren()
+
     }
 
     abstract fun getViewType(): String

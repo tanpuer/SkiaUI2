@@ -10,13 +10,18 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import java.util.Stack
 import kotlin.coroutines.CoroutineContext
 
 object HYComposeSDK {
 
+    private const val TAG = "HYComposeSDK"
+
     private val frameClock = BroadcastFrameClock()
 
-    val reComposer = Recomposer(frameClock)
+    private val reComposer = Recomposer(frameClock)
+
+    private val pageStack = Stack<HYComposeBasePage>()
 
     fun initSDK(engine: HYSkiaEngine) {
         val coroutineContext: CoroutineContext by lazy {
@@ -46,4 +51,27 @@ object HYComposeSDK {
             }
         }
     }
+
+    fun getRecomposer(): Recomposer {
+        return reComposer
+    }
+
+    fun pushPage(page: HYComposeBasePage) {
+        Log.d(TAG, "pushPage")
+        pageStack.push(page)
+    }
+
+    fun popPage(engine: HYSkiaEngine) {
+        engine.onBackPressed()
+    }
+
+    fun onPagePoped() {
+        if (pageStack.empty()) {
+            Log.e(TAG, "popPage failed")
+            return
+        }
+        val page = pageStack.pop()
+        page.dispose()
+    }
+
 }

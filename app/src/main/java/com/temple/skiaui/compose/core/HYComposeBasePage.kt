@@ -13,17 +13,17 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
     @Composable
     abstract fun RunComposable(width: Int, height: Int)
 
-    fun start(width: Int, height: Int) {
+    open fun start(width: Int, height: Int) {
         composition = ControlledComposition(
             applier = HYComposeApplier(HYComposeRoot(Modifier(context))),
-            parent = HYComposeSDK.reComposer
+            parent = HYComposeSDK.getRecomposer()
         )
         composition?.setContent {
             RunComposable(width, height)
         }
     }
 
-    fun dispose() {
+    open fun dispose() {
         composition?.dispose()
     }
 

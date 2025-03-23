@@ -238,7 +238,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         skiaGLHandler.post {
             val skImagePtr = nativeGLMakeHardwareBufferToSkImage(glApp, hardwareBuffer)
             skiaUIHandler.post {
-                callback.invoke(skImagePtr);
+                callback.invoke(skImagePtr)
             }
         }
     }

@@ -14,7 +14,10 @@ class HYComposeExampleApp(engine: HYSkiaEngine, context: Long) :
 
     override fun onCreate(width: Int, height: Int) {
         super.onCreate(width, height)
-        HYComposeExamplePage(engine, context).start(width, height)
+        HYComposeExamplePage(engine, context).apply {
+            start(width, height)
+            HYComposeSDK.pushPage(this)
+        }
     }
 
     override fun onDestroy() {

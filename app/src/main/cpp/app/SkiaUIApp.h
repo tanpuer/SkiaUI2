@@ -56,6 +56,8 @@ private:
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
+    int exampleType = 0;
+
 };
 
 }

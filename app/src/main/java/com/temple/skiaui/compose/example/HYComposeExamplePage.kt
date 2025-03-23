@@ -12,6 +12,7 @@ import com.temple.skiaui.compose.core.Filament
 import com.temple.skiaui.compose.core.Icon
 import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.HYComposeBasePage
+import com.temple.skiaui.compose.core.HYComposeSDK
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
@@ -68,7 +69,13 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                 SVG(
                     modifier = Modifier(context)
                         .setSize(480, 480)
-                        .setBackgroundColor("#ffffff00"),
+                        .setBackgroundColor("#ffffff00")
+                        .onClick {
+                            HYComposeMusicPage(engine, context).apply {
+                                start(width, height)
+                                HYComposeSDK.pushPage(this)
+                            }
+                        },
                     source = "jetpack-compose.svg"
                 )
                 Text(

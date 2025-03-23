@@ -16,6 +16,7 @@ namespace HYSkiaUI {
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine,
                      int exampleType) {
+    this->exampleType = exampleType;
     SkGraphics::Init();
     context = std::make_shared<SkiaUIContext>();
     context->setJavaAssetManager(env, javaAssetManager);
@@ -81,8 +82,18 @@ bool SkiaUIApp::onBackPressed() {
         context->getPluginManager()->invokeMethod("toast", "show", "back error");
         return false;
     }
+    // js
     if (context->getBackPressedInterceptor() != nullptr) {
         context->getBackPressedInterceptor()();
+    }
+    // Compose
+    if (this->exampleType == 2) {
+        auto jniEnv = getContext()->getJniEnv();
+        jclass composeSDK = jniEnv->FindClass("com/temple/skiaui/compose/core/HYComposeSDK");
+        jfieldID instanceField = jniEnv->GetStaticFieldID(composeSDK, "INSTANCE", "Lcom/temple/skiaui/compose/core/HYComposeSDK;");
+        jmethodID onPagePoped = jniEnv->GetMethodID(composeSDK, "onPagePoped", "()V");
+        jobject instance = jniEnv->GetStaticObjectField(composeSDK, instanceField);
+        jniEnv->CallVoidMethod(instance, onPagePoped);
     }
     auto page = context->getPageStackManager()->back();
     if (page != nullptr) {
