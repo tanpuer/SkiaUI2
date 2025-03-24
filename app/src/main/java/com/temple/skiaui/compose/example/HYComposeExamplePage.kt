@@ -102,32 +102,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
                 )
-                Button(
-                    modifier = Modifier(context)
-                        .setSize(540, 100)
-                        .setTextSize(60)
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .onClick {
-                            HYComposeCameraPage(engine, context).apply {
-                                start(width, height)
-                                HYComposeSDK.pushPage(this)
-                            }
-                        },
-                    "Camera Page",
-                )
-                Button(
-                    modifier = Modifier(context)
-                        .setSize(540, 100)
-                        .setTextSize(60)
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .onClick {
-                            HYComposeFilamentPage(engine, context).apply {
-                                start(width, height)
-                                HYComposeSDK.pushPage(this)
-                            }
-                        },
-                    "Filament Page",
-                )
+                ComposeCamera(width, height)
+                ComposeFilament(width, height)
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)
@@ -200,6 +176,40 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                 )
             }
         }
+    }
+
+    @Composable
+    private fun ComposeCamera(width: Int, height: Int) {
+        Button(
+            modifier = Modifier(context)
+                .setSize(540, 100)
+                .setTextSize(60)
+                .setMargins(intArrayOf(0, 50, 0, 0))
+                .onClick {
+                    HYComposeCameraPage(engine, context).apply {
+                        start(width, height)
+                        HYComposeSDK.pushPage(this)
+                    }
+                },
+            "Camera Page",
+        )
+    }
+
+    @Composable
+    private fun ComposeFilament(width: Int, height: Int) {
+        Button(
+            modifier = Modifier(context)
+                .setSize(540, 100)
+                .setTextSize(60)
+                .setMargins(intArrayOf(0, 50, 0, 0))
+                .onClick {
+                    HYComposeFilamentPage(engine, context).apply {
+                        start(width, height)
+                        HYComposeSDK.pushPage(this)
+                    }
+                },
+            "Filament Page",
+        )
     }
 
     private fun randomColor(): String {
