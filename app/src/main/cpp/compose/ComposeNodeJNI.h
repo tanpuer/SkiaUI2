@@ -15,6 +15,7 @@
 #include "ExoPlayerView.h"
 #include "WebView.h"
 #include "SVGView.h"
+#include "Button.h"
 
 using namespace HYSkiaUI;
 
@@ -51,6 +52,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"ExoVideo",      []() -> View * { return new ExoPlayerView(); }},
             {"Web",           []() -> View * { return new WebView(); }},
             {"SVG",           []() -> View * { return new SVGView(); }},
+            {"Button",        []() -> View * { return new Button(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {

@@ -62,7 +62,7 @@ compose_text_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring e
     env->ReleaseStringUTFChars(ellipse, ellipseStr);
 }
 
-static JNINativeMethod g_ComposeVideoViewMethods[] = {
+static JNINativeMethod g_ComposeTextViewMethods[] = {
         {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_text_set_text},
         {"nativeSetTextSize", "(JI)V",                  (void *) compose_text_set_text_size},
         {"nativeSetColor",    "(JLjava/lang/String;)V", (void *) compose_text_set_color},
@@ -77,8 +77,8 @@ static int RegisterComposeTextMethods(JNIEnv *env) {
         ALOGD("RegisterComposeTextMethods fail clazz == null")
         return JNI_FALSE;
     }
-    if (env->RegisterNatives(clazz, g_ComposeVideoViewMethods,
-                             std::size(g_ComposeVideoViewMethods)) < 0) {
+    if (env->RegisterNatives(clazz, g_ComposeTextViewMethods,
+                             std::size(g_ComposeTextViewMethods)) < 0) {
         ALOGD("RegisterComposeTextMethods fail")
         return JNI_FALSE;
     }

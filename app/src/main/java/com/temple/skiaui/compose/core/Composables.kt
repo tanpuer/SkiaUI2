@@ -5,6 +5,7 @@ import androidx.compose.runtime.ComposeNode
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.widget.CameraCallback
+import com.temple.skiaui.compose.widget.HYComposeButton
 import com.temple.skiaui.compose.widget.HYComposeCamera
 import com.temple.skiaui.compose.widget.HYComposeExoVideo
 import com.temple.skiaui.compose.widget.HYComposeFilament
@@ -186,6 +187,25 @@ fun Text(
             }
             set(ellipsis) {
                 setEllipse(ellipsis)
+            }
+        }
+    )
+}
+
+@Composable
+fun Button(
+    modifier: Modifier,
+    content: String,
+    color: String = "#ffffff"
+) {
+    ComposeNode<HYComposeText, HYComposeApplier>(
+        factory = { HYComposeButton(modifier) },
+        update = {
+            set(content) {
+                setText(content)
+            }
+            set(color) {
+                setColor(color)
             }
         }
     )

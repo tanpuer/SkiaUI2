@@ -20,6 +20,7 @@
 #include "ComposeWebJNI.h"
 #include "ComposeSVGJNI.h"
 #include "ComposeViewGroupJNI.h"
+#include "ComposeButtonJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -43,6 +44,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeExoVideoMethods(jniEnv);
     RegisterComposeWebMethods(jniEnv);
     RegisterComposeSVGMethods(jniEnv);
+    RegisterComposeButtonMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -65,4 +67,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeExoVideoMethods(jniEnv);
     UnRegisterComposeWebMethods(jniEnv);
     UnRegisterComposeSVGMethods(jniEnv);
+    UnRegisterComposeButtonMethods(jniEnv);
 }

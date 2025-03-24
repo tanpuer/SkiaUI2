@@ -11,13 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
-import com.temple.skiaui.compose.core.Camera
+import com.temple.skiaui.compose.core.Button
 import com.temple.skiaui.compose.core.ExoVideo
-import com.temple.skiaui.compose.core.Filament
-import com.temple.skiaui.compose.core.Icon
-import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.HYComposeBasePage
 import com.temple.skiaui.compose.core.HYComposeSDK
+import com.temple.skiaui.compose.core.Icon
+import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
@@ -38,7 +37,6 @@ import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
 import com.temple.skiaui.compose.foundation.setWidth
-import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeView
 import kotlin.math.absoluteValue
 import kotlin.random.Random
@@ -103,12 +101,30 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
                 )
-//                Filament(modifier = Modifier(context).setSize(width, 500))
-//                Camera(Modifier(context).setSize(width, width), object : CameraCallback {
-//                    override fun onImageCaptured(imagePtr: Long) {
-//
-//                    }
-//                })
+                Button(
+                    modifier = Modifier(context)
+                        .setSize(540, 100)
+                        .setTextSize(60)
+                        .onClick {
+                            HYComposeCameraPage(engine, context).apply {
+                                start(width, height)
+                                HYComposeSDK.pushPage(this)
+                            }
+                        },
+                    "Camera Page",
+                )
+                Button(
+                    modifier = Modifier(context)
+                        .setSize(540, 100)
+                        .setTextSize(60)
+                        .onClick {
+                            HYComposeFilamentPage(engine, context).apply {
+                                start(width, height)
+                                HYComposeSDK.pushPage(this)
+                            }
+                        },
+                    "Filament Page",
+                )
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)

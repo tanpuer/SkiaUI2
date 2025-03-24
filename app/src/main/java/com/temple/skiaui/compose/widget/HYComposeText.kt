@@ -2,7 +2,7 @@ package com.temple.skiaui.compose.widget
 
 import com.temple.skiaui.compose.foundation.Modifier
 
-class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
+open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
 
     override fun initStyles(modifier: Modifier) {
         super.initStyles(modifier)
