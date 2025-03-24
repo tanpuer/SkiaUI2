@@ -49,12 +49,25 @@ compose_view_set_rotateZ(JNIEnv *env, jobject instance, jlong viewPtr, jfloat ro
     view->setRotateZ(rotateZ);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_margins(JNIEnv *env, jobject instance, jlong viewPtr, jintArray margins) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    jsize length = env->GetArrayLength(margins);
+    jint* marginsArray = env->GetIntArrayElements(margins, nullptr);
+    std::vector<int> marginsVec;
+    marginsVec.reserve(length);
+    marginsVec.assign(marginsArray, marginsArray + length);
+    env->ReleaseIntArrayElements(margins, marginsArray, JNI_ABORT);
+    view->setMargin(marginsVec);
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
         {"nativeSetBackgroundColor", "(JLjava/lang/String;)V", (void *) compose_view_set_background_color},
         {"nativeSetClickCallback",   "(J)V",                   (void *) compose_view_set_click_callback},
         {"nativeSetRotateZ",         "(JF)V",                  (void *) compose_view_set_rotateZ},
+        {"nativeSetMargins",         "(J[I)V",                 (void *) compose_view_set_margins},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

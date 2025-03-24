@@ -39,3 +39,8 @@ fun Modifier.setFlexDirection(value: String): Modifier {
     styles["flexDirection"] = value
     return this
 }
+
+fun Modifier.setMargins(margins: IntArray): Modifier {
+    styles["margins"] = margins
+    return this
+}

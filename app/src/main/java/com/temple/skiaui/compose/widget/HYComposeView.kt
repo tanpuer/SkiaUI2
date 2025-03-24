@@ -24,6 +24,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 "backgroundColor" -> {
                     nativeSetBackgroundColor(ref, value as String)
                 }
+
+                "margins" -> {
+                    nativeSetMargins(ref, value as IntArray)
+                }
             }
         }
     }
@@ -60,6 +64,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         nativeSetRotateZ(ref, rotateZ)
     }
 
+    fun setMargins(margins: IntArray) {
+        nativeSetMargins(ref, margins)
+    }
+
     fun triggerClickEvent() {
         (modifier.events["click"] as? (view: HYComposeView) -> Unit)?.invoke(this)
     }
@@ -71,4 +79,5 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetBackgroundColor(view: Long, color: String)
     private external fun nativeSetClickCallback(view: Long)
     private external fun nativeSetRotateZ(view: Long, rotateZ: Float)
+    private external fun nativeSetMargins(view: Long, margins: IntArray)
 }

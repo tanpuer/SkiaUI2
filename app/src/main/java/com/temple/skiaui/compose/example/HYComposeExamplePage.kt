@@ -34,6 +34,7 @@ import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setJustifyContent
+import com.temple.skiaui.compose.foundation.setMargins
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
 import com.temple.skiaui.compose.foundation.setWidth
@@ -105,6 +106,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context)
                         .setSize(540, 100)
                         .setTextSize(60)
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick {
                             HYComposeCameraPage(engine, context).apply {
                                 start(width, height)
@@ -117,6 +119,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context)
                         .setSize(540, 100)
                         .setTextSize(60)
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick {
                             HYComposeFilamentPage(engine, context).apply {
                                 start(width, height)
@@ -128,6 +131,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick {
                             color = randomColor()
                         },
@@ -137,6 +141,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context)
                         .setSize(800, 100)
                         .setTextSize(50)
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick {
                             ellipsis = !ellipsis
                         },
@@ -148,6 +153,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                 Lottie(
                     modifier = Modifier(context)
                         .setSize(375, 240)
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick {
                             lottiePlay = !lottiePlay
                         },
@@ -155,7 +161,9 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     lottiePlay
                 )
                 Shader(
-                    modifier = Modifier(context).setSize(540, 540)
+                    modifier = Modifier(context)
+                        .setSize(540, 540)
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick { view: HYComposeView ->
                             if (shaderSource.list.isEmpty()) {
                                 shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
@@ -165,11 +173,16 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                         },
                     shaderSource
                 )
-                Image(modifier = Modifier(context).setSize(300, 300), source = "bird.gif")
+                Image(
+                    modifier = Modifier(context)
+                        .setSize(300, 300)
+                        .setMargins(intArrayOf(0, 50, 0, 0)), source = "bird.gif"
+                )
                 Row(
                     modifier = Modifier(context).setWidth(width)
                         .setJustifyContent("space-between")
                         .setAlignItems("center")
+                        .setMargins(intArrayOf(0, 50, 0, 0))
                 ) {
                     Icon(modifier = Modifier(context), 0xe615, color = "#ff0000")
                     Icon(modifier = Modifier(context), 0xe7ce, color = "#ffff00")
@@ -179,8 +192,12 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     Icon(modifier = Modifier(context), 0xe6a2, color = "#000000")
                     Icon(modifier = Modifier(context), 0xe61f)
                 }
-                Switch(Modifier(context))
-                Web(Modifier(context).setSize(width, 1200), "https://m.bilibili.com/")
+                Switch(Modifier(context).setMargins(intArrayOf(0, 50, 0, 0)))
+                Web(
+                    Modifier(context)
+                        .setSize(width, 1200)
+                        .setMargins(intArrayOf(0, 50, 0, 0)), "https://m.bilibili.com/"
+                )
             }
         }
     }
