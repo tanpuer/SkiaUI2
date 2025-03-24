@@ -1,5 +1,10 @@
 package com.temple.skiaui.compose.example
 
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +40,7 @@ import com.temple.skiaui.compose.foundation.setTextSize
 import com.temple.skiaui.compose.foundation.setWidth
 import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeView
+import kotlin.math.absoluteValue
 import kotlin.random.Random
 
 class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
@@ -52,6 +58,12 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
         var lottiePlay by remember {
             mutableStateOf(true)
         }
+        val infiniteTransition = rememberInfiniteTransition()
+        val rotateZ by infiniteTransition.animateFloat(
+            0.0f,
+            360.0f,
+            infiniteRepeatable(tween(5000), RepeatMode.Reverse)
+        )
         Page(modifier = Modifier(context).setSize(width, height)) {
             LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
@@ -76,7 +88,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                                 HYComposeSDK.pushPage(this)
                             }
                         },
-                    source = "jetpack-compose.svg"
+                    source = "jetpack-compose.svg",
+                    rotateZ.absoluteValue
                 )
                 Text(
                     modifier = Modifier(context)

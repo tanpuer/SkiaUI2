@@ -16,6 +16,7 @@ PlatformView::~PlatformView() {
 }
 
 void PlatformView::layout(int l, int t, int r, int b) {
+    auto sizeChanged = width != r - l || height != t - b;
     View::layout(l, t, r, b);
     dstRect.setLTRB(static_cast<float >(l), static_cast<float >(t), static_cast<float >(r),
                     static_cast<float >(b));
@@ -26,6 +27,7 @@ void PlatformView::layout(int l, int t, int r, int b) {
         sendTouchEventMethodId = jniEnv->GetMethodID(javaPluginClazz, "sendTouchEvent", "(IFF)V");
         deleteSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "deleteSkImage", "(J)V");
         releaseMethodId = jniEnv->GetMethodID(javaPluginClazz, "release", "()V");
+        onSizeChangeMethodId = jniEnv->GetMethodID(javaPluginClazz, "onSizeChange", "(II)V");
         auto javaConstructor = jniEnv->GetMethodID(javaPluginClazz, "<init>",
                                                    "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
@@ -34,6 +36,10 @@ void PlatformView::layout(int l, int t, int r, int b) {
                                                           this->height,
                                                           reinterpret_cast<long>(this)));
         onJavaViewCreated();
+    }
+    if (sizeChanged && javaView != nullptr) {
+        auto jniEnv = context->getJniEnv();
+        jniEnv->CallVoidMethod(javaView, onSizeChangeMethodId, width, height);
     }
 }
 

@@ -24,12 +24,15 @@ import com.temple.skiaui.compose.widget.HYComposeView
 import com.temple.skiaui.compose.widget.HYComposeWeb
 
 @Composable
-fun View(modifier: Modifier, backgroundColor: String) {
+fun View(modifier: Modifier, backgroundColor: String, rotateZ: Float = 0.0f) {
     ComposeNode<HYComposeView, HYComposeApplier>(
         factory = { HYComposeView(modifier) },
         update = {
             set(backgroundColor) {
                 this.setBackgroundColor(backgroundColor)
+            }
+            set(rotateZ) {
+                this.setRotateZ(rotateZ)
             }
         }
     )
@@ -120,12 +123,15 @@ fun Loading(modifier: Modifier, color: String = "") {
 }
 
 @Composable
-fun SVG(modifier: Modifier, source: String) {
+fun SVG(modifier: Modifier, source: String, rotateZ: Float = 0.0f) {
     ComposeNode<HYComposeSVG, HYComposeApplier>(
         factory = { HYComposeSVG(modifier) },
         update = {
             set(source) {
                 setSource(source)
+            }
+            set(rotateZ) {
+                setRotateZ(rotateZ)
             }
         }
     )

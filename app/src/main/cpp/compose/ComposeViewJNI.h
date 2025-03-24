@@ -43,11 +43,18 @@ compose_view_set_click_callback(JNIEnv *env, jobject instance, jlong viewPtr) {
     });
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_rotateZ(JNIEnv *env, jobject instance, jlong viewPtr, jfloat rotateZ) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->setRotateZ(rotateZ);
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
         {"nativeSetBackgroundColor", "(JLjava/lang/String;)V", (void *) compose_view_set_background_color},
         {"nativeSetClickCallback",   "(J)V",                   (void *) compose_view_set_click_callback},
+        {"nativeSetRotateZ",         "(JF)V",                  (void *) compose_view_set_rotateZ},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

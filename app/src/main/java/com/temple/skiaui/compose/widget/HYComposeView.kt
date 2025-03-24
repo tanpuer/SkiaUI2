@@ -56,6 +56,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         nativeSetHeight(ref, height)
     }
 
+    fun setRotateZ(rotateZ: Float) {
+        nativeSetRotateZ(ref, rotateZ)
+    }
+
     fun triggerClickEvent() {
         (modifier.events["click"] as? (view: HYComposeView) -> Unit)?.invoke(this)
     }
@@ -66,4 +70,5 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetHeight(view: Long, height: Int)
     private external fun nativeSetBackgroundColor(view: Long, color: String)
     private external fun nativeSetClickCallback(view: Long)
+    private external fun nativeSetRotateZ(view: Long, rotateZ: Float)
 }

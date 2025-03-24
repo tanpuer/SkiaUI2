@@ -44,6 +44,8 @@ protected:
 
     jmethodID releaseMethodId = nullptr;
 
+    jmethodID onSizeChangeMethodId = nullptr;
+
 };
 
 }

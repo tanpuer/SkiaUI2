@@ -97,6 +97,17 @@ abstract class PlatformTextureLayerBasePlugin(
         }
     }
 
+    fun onSizeChange(width: Int, height: Int) {
+//        mainHandler.post {
+//            surfaceObj?.setDefaultBufferSize(width, height)
+//            (targetView?.layoutParams as? FrameLayout.LayoutParams)?.apply {
+//                this.width = width
+//                this.height = height
+//                targetView?.requestLayout()
+//            }
+//        }
+    }
+
     override fun lockCanvas(originCanvas: Canvas): Canvas? {
         if (!show) {
             return null
