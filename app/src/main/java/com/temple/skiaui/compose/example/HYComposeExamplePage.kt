@@ -103,12 +103,12 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
                 )
-                Filament(modifier = Modifier(context).setSize(width, 500))
-                Camera(Modifier(context).setSize(width, width), object : CameraCallback {
-                    override fun onImageCaptured(imagePtr: Long) {
-
-                    }
-                })
+//                Filament(modifier = Modifier(context).setSize(width, 500))
+//                Camera(Modifier(context).setSize(width, width), object : CameraCallback {
+//                    override fun onImageCaptured(imagePtr: Long) {
+//
+//                    }
+//                })
                 Loading(
                     modifier = Modifier(context)
                         .setSize(500, 200)

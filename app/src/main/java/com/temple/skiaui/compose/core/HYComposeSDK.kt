@@ -19,11 +19,13 @@ object HYComposeSDK {
 
     private val frameClock = BroadcastFrameClock()
 
-    private val reComposer = Recomposer(frameClock)
+    private lateinit var reComposer: Recomposer
 
-    private val pageStack = Stack<HYComposeBasePage>()
+    private lateinit var pageStack: Stack<HYComposeBasePage>
 
     fun initSDK(engine: HYSkiaEngine) {
+        reComposer = Recomposer(frameClock)
+        pageStack = Stack<HYComposeBasePage>()
         val coroutineContext: CoroutineContext by lazy {
             val dispatcher = HYComposeUIDispatcher(
                 Choreographer.getInstance(),
@@ -52,6 +54,11 @@ object HYComposeSDK {
         }
     }
 
+    fun DeInitSDK() {
+        reComposer.close()
+        pageStack.clear()
+    }
+
     fun getRecomposer(): Recomposer {
         return reComposer
     }
@@ -72,6 +79,9 @@ object HYComposeSDK {
         }
         val page = pageStack.pop()
         page.dispose()
+        if (pageStack.empty()) {
+            DeInitSDK()
+        }
     }
 
 }
