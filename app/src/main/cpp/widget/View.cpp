@@ -270,7 +270,7 @@ void View::performClick() {
     }
 }
 
-const std::function<void(View *)>& View::getClickListener() {
+const std::function<void(View *)> &View::getClickListener() {
     return viewClickListener;
 }
 
@@ -386,11 +386,11 @@ void View::setAspectRatio(float ratio) {
     markDirty();
 }
 
-const std::shared_ptr<SkiaUIContext>& View::getContext() {
+const std::shared_ptr<SkiaUIContext> &View::getContext() {
     return context;
 }
 
-void View::setContext(std::shared_ptr<SkiaUIContext>& context) {
+void View::setContext(std::shared_ptr<SkiaUIContext> &context) {
     this->context = context;
     if (this->config != nullptr) {
         ALOGD("multi set config error, pls check")
@@ -467,7 +467,7 @@ View *View::getParent() {
 }
 
 void View::removeFromParent() {
-    reinterpret_cast<ViewGroup*>(parent)->removeView(this);
+    reinterpret_cast<ViewGroup *>(parent)->removeView(this);
 }
 
 void View::markMeasure() {

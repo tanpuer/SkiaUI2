@@ -82,7 +82,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                         .setSize(480, 480)
                         .setBackgroundColor("#ffffff00")
                         .onClick {
-                            HYComposeMusicPage(engine, context).apply {
+                            HYComposeAnimationPage(engine, context).apply {
                                 start(width, height)
                                 HYComposeSDK.pushPage(this)
                             }

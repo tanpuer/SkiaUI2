@@ -1,9 +1,10 @@
 package com.temple.skiaui.compose.example
 
 import androidx.compose.animation.Animatable
-import androidx.compose.animation.core.InfiniteRepeatableSpec
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,13 +15,17 @@ import com.temple.skiaui.compose.core.HYComposeBasePage
 import com.temple.skiaui.compose.core.HYComposeSDK
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Page
+import com.temple.skiaui.compose.core.Text
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
+import com.temple.skiaui.compose.foundation.setBackgroundColor
+import com.temple.skiaui.compose.foundation.setMargins
 import com.temple.skiaui.compose.foundation.setSize
+import com.temple.skiaui.compose.foundation.setTextSize
 
-class HYComposeMusicPage(engine: HYSkiaEngine, context: Long) :
+class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
     HYComposeBasePage(engine, context) {
 
     @Composable
@@ -29,7 +34,16 @@ class HYComposeMusicPage(engine: HYSkiaEngine, context: Long) :
         LaunchedEffect(color) {
             color.animateTo(Color.Blue, infiniteRepeatable(tween(5000), RepeatMode.Reverse))
         }
-        Page(modifier = Modifier(context).setSize(width, height)) {
+        val textColor = rememberInfiniteTransition().animateColor(
+            initialValue = Color(0xFF60DDAD),
+            targetValue = Color(0xFF4285F4),
+            animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Reverse),
+        )
+        Page(
+            modifier = Modifier(context)
+                .setSize(width, height)
+                .setBackgroundColor("#ffffff00")
+        ) {
             LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
                     .setAlignItems("center"),
@@ -43,7 +57,14 @@ class HYComposeMusicPage(engine: HYSkiaEngine, context: Long) :
                         },
                     convertColor(color.value)
                 )
-
+                Text(
+                    modifier = Modifier(context)
+                        .setBackgroundColor("#ffffff00")
+                        .setMargins(intArrayOf(0, 50, 0, 0))
+                        .setTextSize(50),
+                    "测试文本",
+                    convertColor(textColor.value)
+                )
             }
         }
     }

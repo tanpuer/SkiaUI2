@@ -12,6 +12,7 @@ JetpackComposeTest::~JetpackComposeTest() {
 
 void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
     if (!createFlag) {
+        MeasureTime measureTime("HYComposeExampleApp new");
         auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/example/HYComposeExampleApp");
         auto constructor = jniEnv->GetMethodID(jClazz, "<init>",
                                                "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
