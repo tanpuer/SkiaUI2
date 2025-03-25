@@ -16,6 +16,7 @@
 #include "WebView.h"
 #include "SVGView.h"
 #include "Button.h"
+#include "EditText.h"
 
 using namespace HYSkiaUI;
 
@@ -53,6 +54,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"Web",           []() -> View * { return new WebView(); }},
             {"SVG",           []() -> View * { return new SVGView(); }},
             {"Button",        []() -> View * { return new Button(); }},
+            {"EditText",      []() -> View * { return new EditText(); }},
     };
     auto result = viewFactory[typeStr]();
     if (result != nullptr) {

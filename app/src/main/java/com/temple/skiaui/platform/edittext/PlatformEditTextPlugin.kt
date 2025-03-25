@@ -32,4 +32,10 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, edit
         }
     }
 
+    fun setHint(hint: String) {
+        mainHandler.post {
+            editText?.hint = hint
+        }
+    }
+
 }

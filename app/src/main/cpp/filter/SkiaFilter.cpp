@@ -61,6 +61,7 @@ void SkiaFilter::setWindowSize(int width, int height) {
 }
 
 void SkiaFilter::render(SkPicture *picture) {
+    MeasureTime measurePlayback("SkiaFilter::playback cost");
     if (skCanvas == nullptr) {
         ALOGE("skCanvas is nullptr!")
         return;
@@ -69,6 +70,7 @@ void SkiaFilter::render(SkPicture *picture) {
     skCanvas->clear(SK_ColorWHITE);
     picture->playback(skCanvas);
     picture->unref();
+    MeasureTime measureFlush("SkiaFilter::flush cost");
     skiaContext->flush();
 }
 

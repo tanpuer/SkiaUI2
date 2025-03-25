@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.Button
+import com.temple.skiaui.compose.core.EditText
 import com.temple.skiaui.compose.core.ExoVideo
 import com.temple.skiaui.compose.core.HYComposeBasePage
 import com.temple.skiaui.compose.core.HYComposeSDK
@@ -101,6 +102,12 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                 ExoVideo(
                     modifier = Modifier(context).setSize(width, 360 * width / 640),
                     "yiluxiangbei.mp4"
+                )
+                EditText(
+                    modifier = Modifier(context).setSize(width, 150)
+                        .setMargins(intArrayOf(0, 50, 0, 0)),
+                    "这是Android原生的EditText融合渲染",
+                    true
                 )
                 ComposeCamera(width, height)
                 ComposeFilament(width, height)

@@ -7,6 +7,7 @@ import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.widget.CameraCallback
 import com.temple.skiaui.compose.widget.HYComposeButton
 import com.temple.skiaui.compose.widget.HYComposeCamera
+import com.temple.skiaui.compose.widget.HYComposeEditText
 import com.temple.skiaui.compose.widget.HYComposeExoVideo
 import com.temple.skiaui.compose.widget.HYComposeFilament
 import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
@@ -289,3 +290,19 @@ fun Web(modifier: Modifier, url: String) {
         }
     )
 }
+
+@Composable
+fun EditText(modifier: Modifier, hint: String, focus: Boolean = false) {
+    ComposeNode<HYComposeEditText, HYComposeApplier>(
+        factory = { HYComposeEditText(modifier, hint) },
+        update = {
+            set(hint) {
+                setHint(hint)
+            }
+            set(focus) {
+                setFocus(focus)
+            }
+        }
+    )
+}
+

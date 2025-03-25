@@ -12,7 +12,7 @@ public:
 
     ~EditText();
 
-    const char * getJavaPlatformViewName() override;
+    const char *getJavaPlatformViewName() override;
 
     const char *name() override;
 
@@ -24,11 +24,19 @@ public:
 
     void onHide() override;
 
+    void setHint(const char *hint);
+
 protected:
 
     jmethodID clearFocusMethodId = nullptr;
 
     jmethodID requestFocusMethodId = nullptr;
+
+    jmethodID setHintMethodId = nullptr;
+
+    std::string hint = "";
+
+    bool focus = false;
 
 };
 

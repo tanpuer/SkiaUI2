@@ -21,6 +21,7 @@
 #include "ComposeSVGJNI.h"
 #include "ComposeViewGroupJNI.h"
 #include "ComposeButtonJNI.h"
+#include "ComposeEditTextJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -45,6 +46,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeWebMethods(jniEnv);
     RegisterComposeSVGMethods(jniEnv);
     RegisterComposeButtonMethods(jniEnv);
+    RegisterComposeEditTextMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -68,4 +70,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeWebMethods(jniEnv);
     UnRegisterComposeSVGMethods(jniEnv);
     UnRegisterComposeButtonMethods(jniEnv);
+    UnRegisterComposeEditTextMethods(jniEnv);
 }
