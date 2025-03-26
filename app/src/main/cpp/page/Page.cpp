@@ -92,7 +92,7 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
 }
 
 void Page::measure() {
-    if (!visible) {
+    if (!visible || children.size() <= 0) {
         return;
     }
     SkASSERT(children.size() == 1);
@@ -102,7 +102,7 @@ void Page::measure() {
 }
 
 void Page::layout(int l, int t, int r, int b) {
-    if (!visible) {
+    if (!visible || children.size() <= 0) {
         return;
     }
     View::layout(l, t, r, b);
@@ -119,7 +119,7 @@ void Page::layout(int l, int t, int r, int b) {
 }
 
 void Page::draw(SkCanvas *canvas) {
-    if (!visible) {
+    if (!visible || children.size() <= 0) {
         return;
     }
     SkPictureRecorder recorder;
