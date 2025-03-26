@@ -16,7 +16,7 @@ class HYComposeApplier(root: HYComposeNode) : AbstractApplier<HYComposeNode>(roo
 
     private val handler = Handler(Looper.myLooper()!!)
     private var runnableList = arrayListOf<Runnable>()
-    private var addImmediately = false
+    private var addImmediately = true
     private val delay = 1000L / HYSkiaUIApp.getInstance().getFrameRate()
 
     init {

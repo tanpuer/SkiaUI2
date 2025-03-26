@@ -68,7 +68,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
             LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
                     .setAlignItems("flex-start"),
-                "#00000066"
+                "#ffffff"
             ) {
                 View(
                     modifier = Modifier(context)
