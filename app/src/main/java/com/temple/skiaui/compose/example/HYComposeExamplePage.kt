@@ -78,25 +78,38 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                         },
                     color
                 )
-                SVG(
-                    modifier = Modifier(context)
-                        .setSize(480, 480)
-                        .setBackgroundColor("#ffffff00")
-                        .onClick {
-                            HYComposeAnimationPage(engine, context).apply {
-                                start(width, height)
-                                HYComposeSDK.pushPage(this)
-                            }
-                        },
-                    source = "jetpack-compose.svg",
-                    rotateZ.absoluteValue
-                )
+                Row(
+                    modifier = Modifier(context).setWidth(width)
+                        .setAlignItems("center")
+                        .setJustifyContent("center")
+                ) {
+                    SVG(
+                        modifier = Modifier(context)
+                            .setSize(480, 480)
+                            .setBackgroundColor("#ffffff00")
+                            .onClick {
+                                HYComposeAnimationPage(engine, context).apply {
+                                    start(width, height)
+                                    HYComposeSDK.pushPage(this)
+                                }
+                            },
+                        source = "jetpack-compose.svg",
+                        rotateZ.absoluteValue
+                    )
+                    Text(
+                        modifier = Modifier(context)
+                            .setTextSize(40)
+                            .setBackgroundColor("#00ffff00"),
+                        content = "rememberInfiniteTransition",
+                        color = "#ff00ff",
+                    )
+                }
                 Text(
                     modifier = Modifier(context)
                         .setSize(800, 100)
                         .setTextSize(50)
                         .setBackgroundColor("#ffffff00"),
-                    content = "这是ExoPlayer-Video",
+                    content = "ExoPlayer-Video",
                     color = "#0000ff",
                 )
                 ExoVideo(
