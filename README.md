@@ -24,12 +24,14 @@ steps：
 10. **Development**:  
     C++: See CppTest.cpp.  
     js: See test.js in assets. Import v8 to evaluate javascript.Support **debug in chrome**.  
-    **kotlin**: See JetpackComposeTest.kt in java. Import kotlin and **Compose-runtime** to run.  
+    **kotlin**: See HYComposeExamplePage.kt in java. Import kotlin and **Compose-runtime** to run.  
     **React**: Import react/react-reconciler to run. https://github.com/tanpuer/skia-ui-react.  
     **Vue**: Import @vue/runtime-core to run. Need import CSS-Selector(TODO). https://github.com/tanpuer/skia-ui-vue.  
     ...
 11. **Cross Platform**  
     ios: https://github.com/tanpuer/HYSkiaUI-iOS  
+12. Performance Problems:  
+    Skia: Shader Compilation jank, cache kSKSL  
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)

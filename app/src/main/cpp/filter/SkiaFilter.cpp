@@ -16,14 +16,18 @@
 #include "android/GrAHardwareBufferUtils.h"
 #include "gpu/ganesh/gl/GrGLDefines.h"
 #include "GLES2/gl2ext.h"
+#include "PersistentCache.h"
 #include <android/surface_texture_jni.h>
 
 namespace HYSkiaUI {
 
-SkiaFilter::SkiaFilter() : skCanvas(nullptr) {
+SkiaFilter::SkiaFilter(JNIEnv *env) : skCanvas(nullptr) {
     SkGraphics::Init();
+    GrContextOptions options;
+    options.fPersistentCache = new PersistentCache(env);
+    options.fShaderCacheStrategy = GrContextOptions::ShaderCacheStrategy::kSkSL;
     auto backendInterface = GrGLMakeNativeInterface();
-    skiaContext = GrDirectContexts::MakeGL(backendInterface);
+    skiaContext = GrDirectContexts::MakeGL(backendInterface, options);
     SkASSERT(skiaContext);
 }
 
@@ -61,7 +65,7 @@ void SkiaFilter::setWindowSize(int width, int height) {
 }
 
 void SkiaFilter::render(SkPicture *picture) {
-    MeasureTime measurePlayback("SkiaFilter::playback cost");
+    MeasureTime measurePlayback("SkiaFilter::render cost", 16);
     if (skCanvas == nullptr) {
         ALOGE("skCanvas is nullptr!")
         return;
@@ -70,7 +74,6 @@ void SkiaFilter::render(SkPicture *picture) {
     skCanvas->clear(SK_ColorWHITE);
     picture->playback(skCanvas);
     picture->unref();
-    MeasureTime measureFlush("SkiaFilter::flush cost");
     skiaContext->flush();
 }
 
@@ -159,7 +162,7 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
     return reinterpret_cast<long >(image.get());
 }
 
-void SkiaFilter::updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr) {
+void SkiaFilter::updateTexImage(JNIEnv *env, jobject surfaceTexture, long skImagePtr) {
     if (skiaContext == nullptr) {
         return;
     }

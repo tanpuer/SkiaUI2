@@ -4,6 +4,7 @@
 namespace HYSkiaUI {
 
 SkiaGLApp::SkiaGLApp(JNIEnv *env) {
+    this->env = env;
 }
 
 SkiaGLApp::~SkiaGLApp() {
@@ -17,7 +18,7 @@ void SkiaGLApp::create(ANativeWindow *window) {
     glClear(GL_COLOR_BUFFER_BIT);
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_BLEND);
-    mFilter = std::make_unique<SkiaFilter>();
+    mFilter = std::make_unique<SkiaFilter>(env);
 }
 
 void SkiaGLApp::change(int width, int height, long time) {

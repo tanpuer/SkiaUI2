@@ -38,6 +38,7 @@ private:
     std::unique_ptr<EGLCore> mEGLCore;
     std::unique_ptr<IFilter> mFilter;
     int mWidth = 0, mHeight = 0;
+    JNIEnv *env = nullptr;
 
 };
 

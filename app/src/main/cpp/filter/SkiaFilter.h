@@ -7,6 +7,7 @@
 #include "gpu/ganesh/GrDirectContext.h"
 #include "core/SkSurface.h"
 #include "core/SkCanvas.h"
+#include "jni.h"
 
 namespace HYSkiaUI {
 
@@ -30,7 +31,7 @@ class SkiaFilter : public IFilter {
 
 public:
 
-    SkiaFilter();
+    SkiaFilter(JNIEnv *env);
 
     ~SkiaFilter();
 
@@ -44,7 +45,7 @@ public:
 
     long attachSurfaceTexture(JNIEnv *env, int width, int height, jobject surfaceTexture) override;
 
-    void updateTexImage(JNIEnv* env, jobject surfaceTexture, long skImagePtr) override;
+    void updateTexImage(JNIEnv *env, jobject surfaceTexture, long skImagePtr) override;
 
 private:
 
