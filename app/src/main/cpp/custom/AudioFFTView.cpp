@@ -25,9 +25,11 @@ void AudioFFTView::setSource(const char *path) {
                                                      "(Ljava/lang/String;Lcom/temple/skiaui/HYSkiaEngine;)V");
     getFFTDataMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getFFTData", "()[F");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
+    auto jPath = jniEnv->NewStringUTF(path);
     audioPlayer = jniEnv->NewGlobalRef(
-            jniEnv->NewObject(javaAudioPlayerClass, javaAudioPlayerConstructor,
-                              jniEnv->NewStringUTF(path), javaSkiaEngine));
+            jniEnv->NewObject(javaAudioPlayerClass, javaAudioPlayerConstructor, jPath,
+                              javaSkiaEngine));
+    jniEnv->DeleteLocalRef(jPath);
     startMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "start", "()V");
     pauseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "pause", "()V");
     currentPositionMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getCurrentPosition",

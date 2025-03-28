@@ -16,10 +16,11 @@ std::string PluginManager::invokeMethod(const std::string &pluginName,
                                         const std::string &methodName,
                                         const std::string &methodParam) {
     if (globalJavaPlugins != nullptr && this->env != nullptr) {
+        auto jPlugin = env->NewStringUTF(pluginName.c_str());
+        auto jMethod = env->NewStringUTF(methodName.c_str());
+        auto jParam = env->NewStringUTF(methodParam.c_str());
         auto result = (jstring) env->CallObjectMethod(globalJavaPlugins, javaInvokeMethod,
-                                                      env->NewStringUTF(pluginName.c_str()),
-                                                      env->NewStringUTF(methodName.c_str()),
-                                                      env->NewStringUTF(methodParam.c_str()));
+                                                      jPlugin, jMethod, jParam);
         return env->GetStringUTFChars(result, nullptr);
     }
     static std::string tmp = "";

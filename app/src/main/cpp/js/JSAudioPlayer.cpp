@@ -10,9 +10,11 @@ JSAudioPlayer::JSAudioPlayer(std::shared_ptr<SkiaUIContext> &context, std::strin
                                                      "(Ljava/lang/String;Lcom/temple/skiaui/HYSkiaEngine;)V");
     getFFTDataMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getFFTData", "()[F");
     auto javaSkiaEngine = context->getJavaSkiaEngine();
+    auto jPath = jniEnv->NewStringUTF(path.c_str());
     audioPlayer = jniEnv->NewGlobalRef(
             jniEnv->NewObject(javaAudioPlayerClass, javaAudioPlayerConstructor,
-                              jniEnv->NewStringUTF(path.c_str()), javaSkiaEngine));
+                              jPath, javaSkiaEngine));
+    jniEnv->DeleteLocalRef(jPath);
     startMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "start", "()V");
     pauseMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "pause", "()V");
     currentPositionMethodID = jniEnv->GetMethodID(javaAudioPlayerClass, "getCurrentPosition",
