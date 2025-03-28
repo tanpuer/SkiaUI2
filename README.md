@@ -21,17 +21,14 @@ steps：
    render 3D View by Filament(other engines can also supported)/SurfaceTexture/SkImage.  
    render Video by ExoPlayer/SurfaceTexture/SkImage.  
    ...
-10. **Development**:  
-    **C++**: See ExamplePage.cpp.  
-    js: See test.js in assets. Import v8 to evaluate javascript.Support **debug in chrome**.  
-    **kotlin**: Import kotlin and **Compose-runtime**.  
-                Support **Live-Edit**, change code and save then ui will refresh.  
-                See HYComposeExamplePage.kt in java.  
-    **React**: Import react/react-reconciler to run.  
-               See Demo: https://github.com/tanpuer/skia-ui-react.  
-    **Vue**: Import @vue/runtime-core to run.  
-             See Demo: https://github.com/tanpuer/skia-ui-vue.  
-             Need import CSS-Selector(TODO).  
+10. **Development**:   
+    |  |  |  |
+    |--------|--------------------------------------|-------------------------------------------------------------------------|
+    | C++    | `Import nothing`                     | See ExamplePage.cpp.
+    | js     | `Import v8 to evaluate javascript`   | See test.js in assets. .Support **debug in chrome**.  
+    | Kotlin | `Import kotlin`<br>`Compose-runtime` | Support **Live-Edit**, change code and save then ui will refresh. See HYComposeExamplePage.kt in java. |                    |
+    | React  | `Import react/react-reconciler`      | demo: https://github.com/tanpuer/skia-ui-react |
+    | Vue    | `Import @vue/runtime-core`           | demo: https://github.com/tanpuer/skia-ui-vue. Need import CSS-Selector(TODO). |
 11. **Cross Platform**  
     ios: https://github.com/tanpuer/HYSkiaUI-iOS  
 12. Performance Problems:  
