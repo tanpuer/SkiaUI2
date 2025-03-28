@@ -24,13 +24,13 @@ steps：
 10. **Development**:  
     **C++**: See ExamplePage.cpp.  
     js: See test.js in assets. Import v8 to evaluate javascript.Support **debug in chrome**.  
-    **kotlin**: Import kotlin and **Compose-runtime**.
-                Support **Live-Edit**, change code and save then ui will refresh.
+    **kotlin**: Import kotlin and **Compose-runtime**.  
+                Support **Live-Edit**, change code and save then ui will refresh.  
                 See HYComposeExamplePage.kt in java.  
-    **React**: Import react/react-reconciler to run.
+    **React**: Import react/react-reconciler to run.  
                See Demo: https://github.com/tanpuer/skia-ui-react.  
-    **Vue**: Import @vue/runtime-core to run.
-             See Demo: https://github.com/tanpuer/skia-ui-vue.
+    **Vue**: Import @vue/runtime-core to run.  
+             See Demo: https://github.com/tanpuer/skia-ui-vue.  
              Need import CSS-Selector(TODO).  
 11. **Cross Platform**  
     ios: https://github.com/tanpuer/HYSkiaUI-iOS  
