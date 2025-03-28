@@ -64,7 +64,7 @@ JSSwitchBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> skia
                         v8::Local<v8::Value> argv[1] = {v8::Boolean::New(isolate, enable)};
                         auto callback = targetView->changeFunction.Get(isolate);
                         if (!callback.IsEmpty()) {
-                            callback->Call(isolate->GetCurrentContext(),
+                            auto returnValue = callback->Call(isolate->GetCurrentContext(),
                                            isolate->GetCurrentContext()->Global(), 1, argv);
                         } else {
                             ALOGE("error: miss js callback for Switch");

@@ -68,7 +68,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
             LazyColumn(
                 modifier = Modifier(context).setSize(width, height)
                     .setAlignItems("flex-start"),
-                "#ffffff"
+                "#00000066"
             ) {
                 View(
                     modifier = Modifier(context)
@@ -82,6 +82,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                     modifier = Modifier(context).setWidth(width)
                         .setAlignItems("center")
                         .setJustifyContent("center")
+                        .setBackgroundColor("#ffffff00")
                 ) {
                     SVG(
                         modifier = Modifier(context)
@@ -179,6 +180,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
                         .setJustifyContent("space-between")
                         .setAlignItems("center")
                         .setMargins(intArrayOf(0, 50, 0, 0))
+                        .setBackgroundColor("#ffffff00")
                 ) {
                     Icon(modifier = Modifier(context), 0xe615, color = "#ff0000")
                     Icon(modifier = Modifier(context), 0xe7ce, color = "#ffff00")

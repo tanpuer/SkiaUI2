@@ -32,7 +32,6 @@ void Icon::measure() {
 }
 
 void Icon::draw(SkCanvas *canvas) {
-    View::draw(canvas);
     if (text == 0) {
         return;
     }

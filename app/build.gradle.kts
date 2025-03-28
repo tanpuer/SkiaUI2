@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.0.21"
 }
 
 android {
@@ -59,7 +60,7 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
     implementation("org.java-websocket:Java-WebSocket:1.5.6")
-    implementation("androidx.media3:media3-exoplayer:1.5.1")
+    implementation("androidx.media3:media3-exoplayer:1.6.0")
     implementation("androidx.compose.runtime:runtime:1.7.8")
     implementation("androidx.compose.compiler:compiler:1.5.15")
     implementation("androidx.compose.foundation:foundation-android:1.7.8")

@@ -125,7 +125,7 @@ JSProgressBarBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object>
                         };
                         auto callback = targetView->progressFunction.Get(isolate);
                         if (!callback.IsEmpty()) {
-                            callback->Call(isolate->GetCurrentContext(),
+                            auto returnValue = callback->Call(isolate->GetCurrentContext(),
                                            isolate->GetCurrentContext()->Global(), 2, argv);
                         } else {
                             ALOGE("error: miss js progress callback for ProgressBar");

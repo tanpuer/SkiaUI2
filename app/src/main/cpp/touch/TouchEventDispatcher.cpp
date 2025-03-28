@@ -142,22 +142,22 @@ void TouchEventDispatcher::clearTargetView(TouchEvent *touchEvent) {
 }
 
 View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent) {
-    ALOGD("findTargetViewTraversal %s %d", viewGroup->name(), viewGroup->children.size())
+    ALOGD("findTargetViewTraversal %s %ld", viewGroup->name(), viewGroup->children.size())
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
         auto left = child->left;
         auto top = child->top;
         auto width = child->getWidth();
         auto height = child->getHeight();
-        ALOGD("findTargetViewTraversal %f %f %f %f %f %f", left, top, width, height, touchEvent->x,
+        ALOGD("findTargetViewTraversal %d %d %d %d %f %f", left, top, width, height, touchEvent->x,
               touchEvent->y)
         if (touchEvent->x >= left && touchEvent->x <= left + width &&
             touchEvent->y >= top && touchEvent->y <= top + height) {
             if (child->isViewGroup() && !child->isScroller()) {
-                ALOGD("findTargetViewTraversal in ViewGroup %s %lld", child->name(), child->viewId)
+                ALOGD("findTargetViewTraversal in ViewGroup %s %ld", child->name(), child->viewId)
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {
-                ALOGD("findTargetViewTraversal result %s %lld", child->name(), child->viewId)
+                ALOGD("findTargetViewTraversal result %s %ld", child->name(), child->viewId)
                 if (child->isScroller()) {
                     return findTargetViewTraversal(dynamic_cast<ScrollView*>(child), touchEvent);
                 }
