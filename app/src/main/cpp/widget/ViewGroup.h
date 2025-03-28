@@ -53,7 +53,7 @@ public:
 
     virtual bool removeViewAt(uint32_t index);
 
-    virtual void removeAllViews();
+    virtual void removeViews(uint32_t index, uint32_t count);
 
     /**
      * 子视图在主轴上的排列对齐方式

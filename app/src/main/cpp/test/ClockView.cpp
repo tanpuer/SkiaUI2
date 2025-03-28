@@ -49,7 +49,7 @@ void ClockView::draw(SkCanvas *canvas) {
 
     std::time_t now = std::time(nullptr);
     std::tm *now_tm = std::localtime(&now);
-    ALOGD("ClockView::currentTime %d %d %d", now_tm->tm_hour, now_tm->tm_min, now_tm->tm_sec)
+//    ALOGD("ClockView::currentTime %d %d %d", now_tm->tm_hour, now_tm->tm_min, now_tm->tm_sec)
     // 时针
     drawClockHand(canvas, (now_tm->tm_hour % 12 * 30) + (now_tm->tm_min * 0.5),
                   skRect.width() * 0.2, 20, SK_ColorBLUE);

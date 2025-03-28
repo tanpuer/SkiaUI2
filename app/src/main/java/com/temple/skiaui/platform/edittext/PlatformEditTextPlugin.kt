@@ -17,7 +17,7 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, edit
     }
 
     override fun destroyPlatformView() {
-
+        editText?.clearFocus()
     }
 
     fun clearFocus() {

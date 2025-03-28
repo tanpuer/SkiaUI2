@@ -84,6 +84,7 @@ abstract class SurfaceTextureBasePlugin(
         pluginHandler.post {
             surfaceObj?.surfaceTexture?.setOnFrameAvailableListener(null)
             surfaceObj?.release()
+            surfaceObj = null
         }
         mainHandler.post {
             engine.removeSurfaceListener(index)

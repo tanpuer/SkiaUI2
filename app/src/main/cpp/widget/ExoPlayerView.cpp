@@ -20,6 +20,7 @@ void ExoPlayerView::initJNI() {
                                             "(Ljava/lang/String;)V");
     auto jstring = jniEnv->NewStringUTF(this->source.c_str());
     jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jstring);
+    jniEnv->DeleteLocalRef(jstring);
 }
 
 void ExoPlayerView::setSource(const char *source) {

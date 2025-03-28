@@ -387,8 +387,12 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     {
         auto progressBar = new ProgressBar();
         progressBar->setContext(this->context);
-        progressBar->setBarColor(SK_ColorRED);
         progressBar->setBackgroundColor(SK_ColorGRAY);
+        auto colors = std::vector<SkColor>();
+        colors.push_back(SK_ColorRED);
+        colors.push_back(SK_ColorBLUE);
+        colors.push_back(SK_ColorGREEN);
+        progressBar->setGradientBarColor(colors.data(), 3);
         progressBar->setStrokeWidth(10.0);
         progressBar->setAutoMode(false);
         progressBar->setType(ProgressBar::ProgressBarType::LINEAR);

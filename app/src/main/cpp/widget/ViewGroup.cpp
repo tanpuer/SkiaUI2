@@ -9,9 +9,6 @@ ViewGroup::ViewGroup() : View() {
 }
 
 ViewGroup::~ViewGroup() {
-    if (node == nullptr) {
-        return;
-    }
     for (auto view: children) {
         delete view;
     }
@@ -57,18 +54,6 @@ bool ViewGroup::removeViewAt(uint32_t index) {
         return false;
     }
     return removeView(view);
-}
-
-void ViewGroup::removeAllViews() {
-    if (node == nullptr) {
-        ALOGE("remove null view, pls check view!")
-        return;
-    }
-    for (const auto &item: children) {
-        delete item;
-    }
-    children.clear();
-    YGNodeRemoveAllChildren(node);
 }
 
 void ViewGroup::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
@@ -227,6 +212,16 @@ bool ViewGroup::addViewBefore(View *view, View *beforeView) {
         return false;
     }
     return addViewAt(view, index);
+}
+
+void ViewGroup::removeViews(uint32_t index, uint32_t count) {
+    ALOGD("CWTest removeViews %d %d %ld", index, count, children.size())
+    for (int i = index; i < index + count; ++i) {
+        auto view = children[i];
+        YGNodeRemoveChild(node, view->node);
+        delete view;
+    }
+    children.erase(children.begin() + index, children.begin() + index + count);
 }
 
 }

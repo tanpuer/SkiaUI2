@@ -85,8 +85,6 @@ private:
 
     int gradientColorSize;
 
-    bool setShader;
-
     std::unique_ptr<SkPaint> backgroundPaint;
 
     std::string barColor;

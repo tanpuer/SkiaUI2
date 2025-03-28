@@ -14,6 +14,7 @@ void WebView::loadUrl(const char *url) {
         auto jniEnv = getContext()->getJniEnv();
         auto jStr = jniEnv->NewStringUTF(url);
         jniEnv->CallVoidMethod(javaView, loadUrlMethodId, jStr);
+        jniEnv->DeleteLocalRef(jStr);
     }
 }
 
@@ -40,6 +41,7 @@ void WebView::onJavaViewCreated() {
     if (!this->url.empty()) {
         auto jStr = jniEnv->NewStringUTF(this->url.c_str());
         jniEnv->CallVoidMethod(javaView, loadUrlMethodId, jStr);
+        jniEnv->DeleteLocalRef(jStr);
     }
 }
 

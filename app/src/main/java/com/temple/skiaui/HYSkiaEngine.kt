@@ -28,7 +28,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         HandlerThread("skia-ui", Thread.MAX_PRIORITY).apply {
             start()
         }
-    private val skiaUIHandler = Handler(skiaUIHandlerThread.looper)
+    private val skiaUIHandler = if (exampleType == 2) Handler(Looper.getMainLooper()) else Handler(skiaUIHandlerThread.looper)
 
     /**
      * 执行渲染逻辑

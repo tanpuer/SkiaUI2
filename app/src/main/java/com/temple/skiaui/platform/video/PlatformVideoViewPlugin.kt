@@ -87,6 +87,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
         pluginHandler.post {
             exoPlayer?.stop()
             exoPlayer?.release()
+            exoPlayer = null
         }
         super.release()
     }

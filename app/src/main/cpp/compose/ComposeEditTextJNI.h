@@ -27,8 +27,8 @@ compose_edit_set_focus(JNIEnv *env, jobject instance, jlong viewPtr, jboolean fo
 }
 
 static JNINativeMethod g_ComposeEditTextMethods[] = {
-        {"nativeSetHint", "(JLjava/lang/String;)V", (void *) compose_edit_set_hint},
-        {"nativeSetFocus", "(JZ)V", (void *) compose_edit_set_focus},
+        {"nativeSetHint",  "(JLjava/lang/String;)V", (void *) compose_edit_set_hint},
+        {"nativeSetFocus", "(JZ)V",                  (void *) compose_edit_set_focus},
 };
 
 static int RegisterComposeEditTextMethods(JNIEnv *env) {

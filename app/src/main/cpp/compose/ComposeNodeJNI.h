@@ -24,7 +24,7 @@ const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
 
 extern "C" JNIEXPORT void JNICALL
 compose_node_add_view(JNIEnv *env, jobject instance, jlong parent, jlong child) {
-    ALOGD("native_AddView")
+    ALOGD("compose_node_add_view")
     auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
     auto view = reinterpret_cast<View *>(child);
     viewGroup->addView(view);
@@ -70,13 +70,12 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
 
 extern "C" JNIEXPORT void JNICALL
 compose_node_remove_views(JNIEnv *env, jobject instance, jlong parent, jint index, jint count) {
+    ALOGD("compose_node_remove_views %d", count)
     auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
     if (viewGroup == nullptr) {
         return;
     }
-    for (int i = 0; i < count; ++i) {
-        viewGroup->removeViewAt(index);
-    }
+    viewGroup->removeViews(index, count);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -85,7 +84,7 @@ compose_node_remove_all_children(JNIEnv *env, jobject instance, jlong parent) {
     if (viewGroup == nullptr) {
         return;
     }
-    viewGroup->removeAllViews();
+    viewGroup->removeViews(0, viewGroup->children.size());
 }
 
 static JNINativeMethod g_ComposeNodeMethods[] = {

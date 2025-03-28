@@ -46,7 +46,7 @@ void Page::enterFromRight(const EnterExitInfo &info) {
     });
     animator->start();
     context->getPageStackManager()->showCurrentPage();
-    context->getPluginManager()->invokeMethod("toast", "show", "push");
+//    context->getPluginManager()->invokeMethod("toast", "show", "push");
     context->markDirty();
 }
 

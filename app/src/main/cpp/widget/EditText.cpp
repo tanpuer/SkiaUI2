@@ -62,7 +62,7 @@ void EditText::setHint(const char *hint) {
     auto jniEnv = getContext()->getJniEnv();
     auto jString = jniEnv->NewStringUTF(hint);
     jniEnv->CallVoidMethod(javaView, setHintMethodId, jString);
-    jniEnv->ReleaseStringUTFChars(jString, hint);
+    jniEnv->DeleteLocalRef(jString);
 }
 
 }
