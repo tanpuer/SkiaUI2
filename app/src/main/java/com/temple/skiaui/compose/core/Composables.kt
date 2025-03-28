@@ -15,7 +15,6 @@ import com.temple.skiaui.compose.widget.HYComposeIcon
 import com.temple.skiaui.compose.widget.HYComposeImage
 import com.temple.skiaui.compose.widget.HYComposeLoadingView
 import com.temple.skiaui.compose.widget.HYComposeLottie
-import com.temple.skiaui.compose.widget.HYComposePage
 import com.temple.skiaui.compose.widget.HYComposeSVG
 import com.temple.skiaui.compose.widget.HYComposeScrollView
 import com.temple.skiaui.compose.widget.HYComposeShader
@@ -96,19 +95,6 @@ fun ExoVideo(modifier: Modifier, source: String) {
                 setSource(source)
             }
         }
-    )
-}
-
-@Composable
-fun Page(modifier: Modifier, content: @Composable () -> Unit) {
-    ComposeNode<HYComposePage, HYComposeApplier>(
-        factory = {
-            val page = HYComposePage(modifier)
-            page.push((modifier.styles["size"] as IntArray)[0])
-            page
-        },
-        update = {},
-        content = content
     )
 }
 

@@ -14,7 +14,6 @@ import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.core.HYComposeBasePage
 import com.temple.skiaui.compose.core.HYComposeSDK
 import com.temple.skiaui.compose.core.LazyColumn
-import com.temple.skiaui.compose.core.Page
 import com.temple.skiaui.compose.core.Text
 import com.temple.skiaui.compose.core.View
 import com.temple.skiaui.compose.foundation.Modifier
@@ -39,33 +38,27 @@ class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
             targetValue = Color(0xFF4285F4),
             animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Reverse),
         )
-        Page(
-            modifier = Modifier(context)
-                .setSize(width, height)
-                .setBackgroundColor("#ffffff00")
+        LazyColumn(
+            modifier = Modifier(context).setSize(width, height)
+                .setAlignItems("center"),
+            "#00000066"
         ) {
-            LazyColumn(
-                modifier = Modifier(context).setSize(width, height)
-                    .setAlignItems("center"),
-                "#00000066"
-            ) {
-                View(
-                    modifier = Modifier(context)
-                        .setSize(200, 200)
-                        .onClick {
-                            HYComposeSDK.popPage(engine)
-                        },
-                    convertColor(color.value)
-                )
-                Text(
-                    modifier = Modifier(context)
-                        .setBackgroundColor("#ffffff00")
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .setTextSize(50),
-                    "测试文本",
-                    convertColor(textColor.value)
-                )
-            }
+            View(
+                modifier = Modifier(context)
+                    .setSize(200, 200)
+                    .onClick {
+                        HYComposeSDK.popPage(engine)
+                    },
+                convertColor(color.value)
+            )
+            Text(
+                modifier = Modifier(context)
+                    .setBackgroundColor("#ffffff00")
+                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .setTextSize(50),
+                "测试文本",
+                convertColor(textColor.value)
+            )
         }
     }
 

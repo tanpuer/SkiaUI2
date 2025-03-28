@@ -21,7 +21,6 @@ import com.temple.skiaui.compose.core.Image
 import com.temple.skiaui.compose.core.LazyColumn
 import com.temple.skiaui.compose.core.Loading
 import com.temple.skiaui.compose.core.Lottie
-import com.temple.skiaui.compose.core.Page
 import com.temple.skiaui.compose.core.Row
 import com.temple.skiaui.compose.core.SVG
 import com.temple.skiaui.compose.core.Shader
@@ -64,139 +63,138 @@ class HYComposeExamplePage(engine: HYSkiaEngine, context: Long) :
             360.0f,
             infiniteRepeatable(tween(5000), RepeatMode.Reverse)
         )
-        Page(modifier = Modifier(context).setSize(width, height)) {
-            LazyColumn(
-                modifier = Modifier(context).setSize(width, height)
-                    .setAlignItems("flex-start"),
-                "#00000066"
+        LazyColumn(
+            modifier = Modifier(context).setSize(width, height)
+                .setAlignItems("flex-start"),
+            "#00000066"
+        ) {
+            View(
+                modifier = Modifier(context)
+                    .setSize(200, 200)
+                    .onClick { view: HYComposeView ->
+                        color = randomColor()
+                    },
+                color
+            )
+            Row(
+                modifier = Modifier(context).setWidth(width)
+                    .setAlignItems("center")
+                    .setJustifyContent("center")
+                    .setBackgroundColor("#ffffff00")
             ) {
-                View(
+                SVG(
                     modifier = Modifier(context)
-                        .setSize(200, 200)
-                        .onClick { view: HYComposeView ->
-                            color = randomColor()
-                        },
-                    color
-                )
-                Row(
-                    modifier = Modifier(context).setWidth(width)
-                        .setAlignItems("center")
-                        .setJustifyContent("center")
+                        .setSize(480, 480)
                         .setBackgroundColor("#ffffff00")
-                ) {
-                    SVG(
-                        modifier = Modifier(context)
-                            .setSize(480, 480)
-                            .setBackgroundColor("#ffffff00")
-                            .onClick {
-                                HYComposeAnimationPage(engine, context).apply {
-                                    start(width, height)
-                                    HYComposeSDK.pushPage(this)
-                                }
-                            },
-                        source = "jetpack-compose.svg",
-                        rotateZ.absoluteValue
-                    )
-                    Text(
-                        modifier = Modifier(context)
-                            .setTextSize(40)
-                            .setBackgroundColor("#00ffff00"),
-                        content = "rememberInfiniteTransition",
-                        color = "#ff00ff",
-                    )
-                }
-                Text(
-                    modifier = Modifier(context)
-                        .setSize(800, 100)
-                        .setTextSize(50)
-                        .setBackgroundColor("#ffffff00"),
-                    content = "ExoPlayer-Video",
-                    color = "#0000ff",
-                )
-                ExoVideo(
-                    modifier = Modifier(context).setSize(width, 360 * width / 640),
-                    "yiluxiangbei.mp4"
-                )
-                EditText(
-                    modifier = Modifier(context).setSize(width, 150)
-                        .setMargins(intArrayOf(0, 50, 0, 0)),
-                    "这是Android原生的EditText融合渲染",
-                    true
-                )
-                ComposeCamera(width, height)
-                ComposeFilament(width, height)
-                Loading(
-                    modifier = Modifier(context)
-                        .setSize(500, 200)
-                        .setMargins(intArrayOf(0, 50, 0, 0))
                         .onClick {
-                            color = randomColor()
-                        },
-                    color = color
-                )
-                Text(
-                    modifier = Modifier(context)
-                        .setSize(800, 100)
-                        .setTextSize(50)
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .onClick {
-                            ellipsis = !ellipsis
-                        },
-                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
-                    color = "#0000ff",
-                    maxLine = if (ellipsis) 3 else 0,
-                    ellipsis = "点击展开"
-                )
-                Lottie(
-                    modifier = Modifier(context)
-                        .setSize(375, 240)
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .onClick {
-                            lottiePlay = !lottiePlay
-                        },
-                    "WorkspacePlanet.json",
-                    lottiePlay
-                )
-                Shader(
-                    modifier = Modifier(context)
-                        .setSize(540, 540)
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .onClick { view: HYComposeView ->
-                            if (shaderSource.list.isEmpty()) {
-                                shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
-                            } else {
-                                shaderSource = ShaderSource("sincos.glsl", arrayOf())
+                            HYComposeAnimationPage(engine, context).apply {
+                                start(width, height)
+                                HYComposeSDK.pushPage(this)
                             }
                         },
-                    shaderSource
+                    source = "jetpack-compose.svg",
+                    rotateZ.absoluteValue
                 )
-                Image(
+                Text(
                     modifier = Modifier(context)
-                        .setSize(300, 300)
-                        .setMargins(intArrayOf(0, 50, 0, 0)), source = "bird.gif"
-                )
-                Row(
-                    modifier = Modifier(context).setWidth(width)
-                        .setJustifyContent("space-between")
-                        .setAlignItems("center")
-                        .setMargins(intArrayOf(0, 50, 0, 0))
-                        .setBackgroundColor("#ffffff00")
-                ) {
-                    Icon(modifier = Modifier(context), 0xe615, color = "#ff0000")
-                    Icon(modifier = Modifier(context), 0xe7ce, color = "#ffff00")
-                    Icon(modifier = Modifier(context), 0xe670)
-                    Icon(modifier = Modifier(context), 0xe67d, color = "#00ff00")
-                    Icon(modifier = Modifier(context), 0xe606, color = "#00ffff")
-                    Icon(modifier = Modifier(context), 0xe6a2, color = "#000000")
-                    Icon(modifier = Modifier(context), 0xe61f)
-                }
-                Switch(Modifier(context).setMargins(intArrayOf(0, 50, 0, 0)))
-                Web(
-                    Modifier(context)
-                        .setSize(width, 1200)
-                        .setMargins(intArrayOf(0, 50, 0, 0)), "https://m.bilibili.com/"
+                        .setTextSize(40)
+                        .setBackgroundColor("#00ffff00"),
+                    content = "rememberInfiniteTransition",
+                    color = "#ff00ff",
                 )
             }
+            Text(
+                modifier = Modifier(context)
+                    .setSize(800, 100)
+                    .setTextSize(50)
+                    .setBackgroundColor("#ffffff00"),
+                content = "ExoPlayer-Video",
+                color = "#0000ff",
+            )
+            ExoVideo(
+                modifier = Modifier(context).setSize(width, 360 * width / 640),
+                "yiluxiangbei.mp4"
+            )
+            EditText(
+                modifier = Modifier(context).setSize(width, 150)
+                    .setMargins(intArrayOf(0, 50, 0, 0)),
+                "这是Android原生的EditText融合渲染",
+                true
+            )
+            ComposeCamera(width, height)
+            ComposeFilament(width, height)
+            Loading(
+                modifier = Modifier(context)
+                    .setSize(500, 200)
+                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .onClick {
+                        color = randomColor()
+                    },
+                color = color
+            )
+            Text(
+                modifier = Modifier(context)
+                    .setSize(800, 100)
+                    .setTextSize(50)
+                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .onClick {
+                        ellipsis = !ellipsis
+                    },
+                content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
+                color = "#0000ff",
+                maxLine = if (ellipsis) 3 else 0,
+                ellipsis = "点击展开"
+            )
+            Lottie(
+                modifier = Modifier(context)
+                    .setSize(375, 240)
+                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .onClick {
+                        lottiePlay = !lottiePlay
+                    },
+                "WorkspacePlanet.json",
+                lottiePlay
+            )
+            Shader(
+                modifier = Modifier(context)
+                    .setSize(540, 540)
+                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .onClick { view: HYComposeView ->
+                        if (shaderSource.list.isEmpty()) {
+                            shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
+                        } else {
+                            shaderSource = ShaderSource("sincos.glsl", arrayOf())
+                        }
+                    },
+                shaderSource
+            )
+            Image(
+                modifier = Modifier(context)
+                    .setSize(300, 300)
+                    .setMargins(intArrayOf(0, 50, 0, 0)), source = "bird.gif"
+            )
+            Row(
+                modifier = Modifier(context).setWidth(width)
+                    .setJustifyContent("space-between")
+                    .setAlignItems("center")
+                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .setBackgroundColor("#ffffff00")
+            ) {
+                Icon(modifier = Modifier(context), 0xe615, color = "#ff0000")
+                Icon(modifier = Modifier(context), 0xe7ce, color = "#ffff00")
+                Icon(modifier = Modifier(context), 0xe670)
+                Icon(modifier = Modifier(context), 0xe67d, color = "#00ff00")
+                Icon(modifier = Modifier(context), 0xe606, color = "#00ffff")
+                Icon(modifier = Modifier(context), 0xe6a2, color = "#000000")
+                Icon(modifier = Modifier(context), 0xe61f)
+            }
+            Switch(Modifier(context).setMargins(intArrayOf(0, 50, 0, 0)))
+            Web(
+                Modifier(context)
+                    .setSize(width, 1200)
+                    .setMargins(intArrayOf(0, 50, 0, 0)),
+                "https://m.bilibili.com/"
+            )
         }
     }
 

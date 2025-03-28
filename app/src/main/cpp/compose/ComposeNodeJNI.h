@@ -35,7 +35,6 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
     ALOGD("nativeCreateView")
     auto typeStr = env->GetStringUTFChars(type, nullptr);
     static std::unordered_map<std::string, std::function<View *()>> viewFactory = {
-            {"Root",          []() -> View * { return nullptr; }},
             {"Page",          []() -> View * { return new Page(); }},
             {"FlexboxLayout", []() -> View * { return new FlexboxLayout(); }},
             {"Video",         []() -> View * { return new YUVVideoView(); }},

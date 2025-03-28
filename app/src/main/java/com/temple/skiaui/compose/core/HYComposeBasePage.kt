@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ControlledComposition
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.foundation.Modifier
-import com.temple.skiaui.compose.widget.HYComposeRoot
+import com.temple.skiaui.compose.foundation.setSize
+import com.temple.skiaui.compose.widget.HYComposePage
 
 abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
 
@@ -15,7 +16,9 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
 
     open fun start(width: Int, height: Int) {
         composition = ControlledComposition(
-            applier = HYComposeApplier(HYComposeRoot(Modifier(context))),
+            applier = HYComposeApplier(HYComposePage(Modifier(context).setSize(width, height)).apply {
+                this.push((modifier.styles["size"] as IntArray)[0])
+            }),
             parent = HYComposeSDK.getRecomposer()
         )
         composition?.setContent {
