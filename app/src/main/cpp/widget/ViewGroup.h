@@ -55,6 +55,8 @@ public:
 
     virtual void removeViews(uint32_t index, uint32_t count);
 
+    virtual void moveViews(uint32_t from, uint32_t to, uint32_t count);
+
     /**
      * 子视图在主轴上的排列对齐方式
      * @param justify

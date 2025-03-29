@@ -215,13 +215,26 @@ bool ViewGroup::addViewBefore(View *view, View *beforeView) {
 }
 
 void ViewGroup::removeViews(uint32_t index, uint32_t count) {
-    ALOGD("CWTest removeViews %d %d %ld", index, count, children.size())
-    for (int i = index; i < index + count; ++i) {
+    for (auto i = index; i < index + count; ++i) {
         auto view = children[i];
         YGNodeRemoveChild(node, view->node);
         delete view;
     }
     children.erase(children.begin() + index, children.begin() + index + count);
+}
+
+void ViewGroup::moveViews(uint32_t from, uint32_t to, uint32_t count) {
+    std::vector<View *> movedViews;
+    for (auto i = from; i < from + count; ++i) {
+        auto view = children[i];
+        movedViews.push_back(view);
+        YGNodeRemoveChild(node, view->node);
+    }
+    children.erase(children.begin() + from, children.begin() + from + count);
+    for (int i = 0; i < movedViews.size(); ++i) {
+        children.insert(children.cbegin() + to - count + i, movedViews[i]);
+        YGNodeInsertChild(node, movedViews[i]->node, to - count + i);
+    }
 }
 
 }

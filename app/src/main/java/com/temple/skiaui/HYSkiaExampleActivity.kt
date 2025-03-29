@@ -19,23 +19,23 @@ class HYSkiaExampleActivity : AppCompatActivity() {
         setContentView(R.layout.activity_example)
         cppBtn = findViewById(R.id.btn_cpp)
         cppBtn.setOnClickListener {
-            goToMainActivity(0)
+            goToMainActivity(HYSkiaEngine.DEVELOPMENT_CPP)
         }
         jsBtn = findViewById(R.id.btn_js)
         jsBtn.setOnClickListener {
-            goToMainActivity(1)
+            goToMainActivity(HYSkiaEngine.DEVELOPMENT_JS)
         }
         kotlinBtn = findViewById(R.id.btn_kotlin)
         kotlinBtn.setOnClickListener {
-            goToMainActivity(2)
+            goToMainActivity(HYSkiaEngine.DEVELOPMENT_COMPOSE)
         }
         reactjsBtn = findViewById(R.id.btn_react)
         reactjsBtn.setOnClickListener {
-            goToMainActivity(3)
+            goToMainActivity(HYSkiaEngine.DEVELOPMENT_REACT)
         }
         vuejsBtn = findViewById(R.id.btn_vue)
         vuejsBtn.setOnClickListener {
-            goToMainActivity(4)
+            goToMainActivity(HYSkiaEngine.DEVELOPMENT_VUE)
         }
         requestPermissions(
             arrayOf(

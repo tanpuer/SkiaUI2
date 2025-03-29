@@ -6,7 +6,6 @@ import android.hardware.HardwareBuffer
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
@@ -28,7 +27,10 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         HandlerThread("skia-ui", Thread.MAX_PRIORITY).apply {
             start()
         }
-    private val skiaUIHandler = if (exampleType == 2) Handler(Looper.getMainLooper()) else Handler(skiaUIHandlerThread.looper)
+    private val skiaUIHandler =
+        if (exampleType == DEVELOPMENT_COMPOSE) Handler(Looper.getMainLooper()) else Handler(
+            skiaUIHandlerThread.looper
+        )
 
     /**
      * 执行渲染逻辑
@@ -368,6 +370,11 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         private const val TAG = "SkiaUIEngine"
         private val MAX_FLING_VELOCITY =
             ViewConfiguration.get(HYSkiaUIApp.getInstance()).scaledMaximumFlingVelocity.toFloat()
+        const val DEVELOPMENT_CPP = 0
+        const val DEVELOPMENT_JS = 1
+        const val DEVELOPMENT_COMPOSE = 2
+        const val DEVELOPMENT_REACT = 3
+        const val DEVELOPMENT_VUE = 4
     }
 
 }

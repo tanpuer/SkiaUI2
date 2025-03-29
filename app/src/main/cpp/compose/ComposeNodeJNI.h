@@ -23,11 +23,11 @@ using namespace HYSkiaUI;
 const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
 
 extern "C" JNIEXPORT void JNICALL
-compose_node_add_view(JNIEnv *env, jobject instance, jlong parent, jlong child) {
+compose_node_add_view(JNIEnv *env, jobject instance, jlong parent, jlong child, jint index) {
     ALOGD("compose_node_add_view")
     auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
     auto view = reinterpret_cast<View *>(child);
-    viewGroup->addView(view);
+    viewGroup->addViewAt(view, index);
 }
 
 extern "C" JNIEXPORT jlong JNICALL
@@ -78,6 +78,17 @@ compose_node_remove_views(JNIEnv *env, jobject instance, jlong parent, jint inde
 }
 
 extern "C" JNIEXPORT void JNICALL
+compose_node_move_views(JNIEnv *env, jobject instance, jlong parent, jint from, jint to,
+                        jint count) {
+    ALOGD("compose_node_remove_views %d", count)
+    auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
+    if (viewGroup == nullptr) {
+        return;
+    }
+    viewGroup->moveViews(from, to, count);
+}
+
+extern "C" JNIEXPORT void JNICALL
 compose_node_remove_all_children(JNIEnv *env, jobject instance, jlong parent) {
     auto viewGroup = reinterpret_cast<ViewGroup *>(parent);
     if (viewGroup == nullptr) {
@@ -87,9 +98,10 @@ compose_node_remove_all_children(JNIEnv *env, jobject instance, jlong parent) {
 }
 
 static JNINativeMethod g_ComposeNodeMethods[] = {
-        {"nativeAddView",           "(JJ)V",                  (void *) compose_node_add_view},
+        {"nativeAddView",           "(JJI)V",                 (void *) compose_node_add_view},
         {"nativeCreateView",        "(JLjava/lang/String;)J", (void *) compose_node_create_view_factory},
         {"nativeRemoveViews",       "(JII)V",                 (void *) compose_node_remove_views},
+        {"nativeMove",              "(JIII)V",                (void *) compose_node_move_views},
         {"nativeRemoveAllChildren", "()V",                    (void *) compose_node_remove_all_children},
 };
 
