@@ -24,7 +24,7 @@ steps：
 10. **Development**:   
     |  |  |  |
     |--------|--------------------------------------|-------------------------------------------------------------------------|
-    | C++    | `Import nothing`                     | See ExamplePage.cpp.
+    | C++    | ``                                   | See ExamplePage.cpp.
     | js     | `Import v8 to evaluate javascript`   | See test.js in assets. .Support **debug in chrome**.  
     | Kotlin | `Import kotlin`<br>`Compose-runtime` | Support **Live-Edit**, save code then ui will refresh. See HYComposeExamplePage.kt in java. |                    |
     | React  | `Import react/react-reconciler`      | demo: https://github.com/tanpuer/skia-ui-react |
