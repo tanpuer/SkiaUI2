@@ -108,10 +108,11 @@ void Page::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
     SkASSERT(children.size() == 1);
     auto root = children[0];
-    auto left = static_cast<int>(YGNodeLayoutGetLeft(root->node));
-    auto top = static_cast<int>(YGNodeLayoutGetTop(root->node));
-    auto width = static_cast<int>(YGNodeLayoutGetWidth(root->node));
-    auto height = static_cast<int>(YGNodeLayoutGetHeight(root->node));
+    auto childNode = root->getNode();
+    auto left = static_cast<int>(YGNodeLayoutGetLeft(childNode));
+    auto top = static_cast<int>(YGNodeLayoutGetTop(childNode));
+    auto width = static_cast<int>(YGNodeLayoutGetWidth(childNode));
+    auto height = static_cast<int>(YGNodeLayoutGetHeight(childNode));
     root->layout(left + animTranslateX,
                  top + animTranslateY,
                  left + animTranslateX + width,

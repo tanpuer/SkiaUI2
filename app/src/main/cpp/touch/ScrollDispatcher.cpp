@@ -52,8 +52,8 @@ void ScrollDispatcher::fling() {
 View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent) {
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
-        auto left = child->left;
-        auto top = child->top;
+        auto left = child->getLeft();
+        auto top = child->getTop();
         auto width = child->getWidth();
         auto height = child->getHeight();
         if (touchEvent->x >= left && touchEvent->x <= left + width &&

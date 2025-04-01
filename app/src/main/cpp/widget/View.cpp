@@ -12,14 +12,8 @@
 
 namespace HYSkiaUI {
 
-View::View() : width(0.0), height(0.0), skRect(SkIRect::MakeEmpty()), cornerRadius(0),
-               skRectWithBorder(SkRect::MakeEmpty()),
-               minWidth(0), minHeight(0),
-               parentId(0),
-               marginLeft(0), marginTop(0), marginRight(0), marginBottom(0),
-               paddingLeft(0), paddingTop(0), paddingRight(0), paddingBottom(0),
-               isDirty(false),
-               widthPercent(0.0f), heightPercent(0.0f), viewMatrix(SkMatrix::I()) {
+View::View() : skRect(SkIRect::MakeEmpty()), skRectWithBorder(SkRect::MakeEmpty()),
+               viewMatrix(SkMatrix::I()) {
     viewId = VIEW_ID++;
     paint = std::make_unique<SkPaint>();
     paint->setAntiAlias(true);
@@ -39,7 +33,9 @@ View::~View() {
     }
 }
 
-#pragma mark yoga
+const char *View::name() {
+    return "View";
+}
 
 void View::measure() {
 
@@ -109,9 +105,6 @@ void View::draw(SkCanvas *canvas) {
 
 void View::setAlignSelf(YGAlign align) {
     SkASSERT(node);
-    if (node == nullptr) {
-        return;
-    }
     YGNodeStyleSetAlignSelf(node, align);
     markDirty();
 }
@@ -124,8 +117,6 @@ bool View::isScroller() {
     return false;
 }
 
-#pragma mark yoga 获取相关
-
 int View::getHeight() {
     return height;
 }
@@ -134,29 +125,43 @@ int View::getWidth() {
     return width;
 }
 
-#pragma mark skia
+int View::getLeft() {
+    return left;
+}
+
+int View::getTop() {
+    return top;
+}
+
+int View::getRight() {
+    return right;
+}
+
+int View::getBottom() {
+    return bottom;
+}
+
+YGNodeRef View::getNode() {
+    return node;
+}
 
 void View::setBackgroundColor(SkColor color) {
-    SkASSERT(paint);
     paint->setColor(color);
     markDirty();
     backgroundColor = SkColorToString(color);
 }
 
 void View::setAntiAlias(bool antiAlias) {
-    SkASSERT(paint);
     paint->setAntiAlias(antiAlias);
     markDirty();
 }
 
 void View::setStyle(SkPaint::Style style) {
-    SkASSERT(paint);
     paint->setStyle(style);
     markDirty();
 }
 
 void View::setCornerRadius(int radius) {
-    SkASSERT(paint);
     if (radius <= 0) {
         ALOGE("radius must > 0")
         return;
@@ -167,7 +172,6 @@ void View::setCornerRadius(int radius) {
 }
 
 void View::setStrokeWidth(SkScalar _width) {
-    SkASSERT(paint);
     if (_width < 0.0f) {
         ALOGE("width must > 0.0")
         return;
@@ -177,7 +181,6 @@ void View::setStrokeWidth(SkScalar _width) {
 }
 
 void View::setAlpha(float alpha) {
-    SkASSERT(paint);
     //if the backgroundColor is transparent, can not set alpha
     if (SkColorGetA(paint->getColor()) == 0) {
         return;
@@ -187,7 +190,6 @@ void View::setAlpha(float alpha) {
 }
 
 float View::getAlpha() {
-    SkASSERT(paint);
     return paint->getAlphaf();
 }
 
@@ -207,8 +209,11 @@ void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     markDirty();
 }
 
+const SkIRect &View::getIRect() {
+    return skRect;
+}
+
 void View::setWidthPercent(float widthPercent) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -218,13 +223,20 @@ void View::setWidthPercent(float widthPercent) {
 }
 
 void View::setHeightPercent(float heightPercent) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
     this->heightPercent = heightPercent;
     YGNodeStyleSetHeightPercent(node, heightPercent);
     markDirty();
+}
+
+void View::setTranslateX(float translateX) {
+    this->translateX = translateX;
+}
+
+void View::setTranslateY(float translateY) {
+    this->translateY = translateY;
 }
 
 bool View::onInterceptTouchEvent(TouchEvent *touchEvent) {
@@ -246,13 +258,11 @@ void View::setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatc
 }
 
 void View::setLayoutCallback(std::function<void(int, int, int, int)> callback) {
-    viewLayoutCallback = callback;
-    markDirty();
+    viewLayoutCallback = std::move(callback);
 }
 
 void View::removeLayoutCallback() {
     viewLayoutCallback = nullptr;
-    markDirty();
 }
 
 void View::setOnClickListener(std::function<void(View *)> clickListener) {
@@ -275,7 +285,6 @@ const std::function<void(View *)> &View::getClickListener() {
 }
 
 void View::setPositionType(YGPositionType type) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -284,7 +293,6 @@ void View::setPositionType(YGPositionType type) {
 }
 
 void View::setDisplay(YGDisplay display) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -293,7 +301,6 @@ void View::setDisplay(YGDisplay display) {
 }
 
 void View::setFlexGrow(float grow) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -302,7 +309,6 @@ void View::setFlexGrow(float grow) {
 }
 
 void View::setGap(const YGGutter gutter, const float gapLength) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -311,7 +317,6 @@ void View::setGap(const YGGutter gutter, const float gapLength) {
 }
 
 void View::setFlex(float flex) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -320,7 +325,6 @@ void View::setFlex(float flex) {
 }
 
 float View::getFlex() {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return 0;
     }
@@ -328,7 +332,6 @@ float View::getFlex() {
 }
 
 void View::setWidth(int width) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -337,7 +340,6 @@ void View::setWidth(int width) {
 }
 
 void View::setHeight(int height) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -346,7 +348,6 @@ void View::setHeight(int height) {
 }
 
 void View::setMargin(std::vector<int> margins) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -362,7 +363,6 @@ void View::setMargin(std::vector<int> margins) {
 }
 
 void View::setPadding(std::vector<int> paddings) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -378,7 +378,6 @@ void View::setPadding(std::vector<int> paddings) {
 }
 
 void View::setAspectRatio(float ratio) {
-    YGAssert(node, "view is null, pls check");
     if (node == nullptr) {
         return;
     }
@@ -470,6 +469,14 @@ void View::removeFromParent() {
     reinterpret_cast<ViewGroup *>(parent)->removeView(this);
 }
 
+void View::setParent(HYSkiaUI::View *parent) {
+    this->parent = parent;
+}
+
+int64_t View::getViewId() {
+    return viewId;
+}
+
 void View::markMeasure() {
     needToMeasure = true;
 }
@@ -521,8 +528,6 @@ int View::getMarginBottom() {
 YGPositionType View::getPositionType() {
     return YGNodeStyleGetPositionType(node);
 }
-
-#pragma mark SkMatrix
 
 float View::getRotateZ() {
     return rotateZ;

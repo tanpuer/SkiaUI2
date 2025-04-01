@@ -27,11 +27,11 @@ public:
 
     virtual void updateTranslateY(float diffY);
 
-    virtual void setTranslateY(float y);
+    virtual void setTranslateY(float y) override;
 
     virtual void updateTranslateX(float diffX);
 
-    virtual void setTranslateX(float x);
+    virtual void setTranslateX(float x) override;
 
     virtual void setFlexWrap(YGWrap wrap) override;
 
@@ -49,7 +49,7 @@ public:
 
     virtual void draw(SkCanvas *canvas) override;
 
-    virtual bool ignoreChildDraw(const View *child);
+    virtual bool ignoreChildDraw(View *child);
 
     virtual void startFling();
 

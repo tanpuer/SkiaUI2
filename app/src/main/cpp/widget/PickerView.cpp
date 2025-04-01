@@ -38,7 +38,7 @@ void PickerView::scrollToNearestChild() {
     auto translate = 0;
     for (int i = 1; i <= fixedIndex; ++i) {
         auto child = children[i];
-        translate += child->getHeight() + child->marginTop + child->marginBottom;
+        translate += child->getHeight() + child->getMarginTop() + child->getMarginBottom();
     }
     scrollTo(-translate);
     if (changeCallback != nullptr) {

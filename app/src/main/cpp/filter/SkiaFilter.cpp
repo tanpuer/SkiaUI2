@@ -120,7 +120,6 @@ long SkiaFilter::attachSurfaceTexture(JNIEnv *env, int width, int height, jobjec
 
     GrGLuint target = GR_GL_TEXTURE_EXTERNAL;
     glBindTexture(target, texID);
-    // 设置纹理参数
     glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);

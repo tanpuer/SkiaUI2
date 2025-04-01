@@ -19,24 +19,22 @@ bool ViewGroup::addView(View *view) {
 }
 
 bool ViewGroup::addViewAt(View *view, uint32_t index) {
-    if (view == nullptr || view->node == nullptr) {
+    if (view == nullptr || view->getNode() == nullptr) {
         ALOGE("add null view, pls check view!")
         return false;
     }
-    YGNodeInsertChild(node, view->node, index);
-    view->parentName = name();
-    view->parentId = viewId;
-    view->parent = this;
+    YGNodeInsertChild(node, view->getNode(), index);
+    view->setParent(this);
     children.insert(children.cbegin() + index, view);
     return true;
 }
 
 bool ViewGroup::removeView(View *view) {
-    if (view == nullptr || view->node == nullptr) {
+    if (view == nullptr || view->getNode() == nullptr) {
         ALOGE("remove null view, pls check view!")
         return false;
     }
-    YGNodeRemoveChild(node, view->node);
+    YGNodeRemoveChild(node, view->getNode());
     auto it = std::find(children.begin(), children.end(), view);
     if (it != children.end()) {
         children.erase(it);
@@ -112,7 +110,7 @@ int ViewGroup::getChildHeightSum() {
     int sum = 0;
     for (auto &child: children) {
         SkASSERT(child != nullptr);
-        sum += child->getHeight() + child->marginTop + child->marginBottom;
+        sum += child->getHeight() + child->getMarginTop() + child->getMarginBottom();
     }
     return sum;
 }
@@ -120,7 +118,7 @@ int ViewGroup::getChildHeightSum() {
 int ViewGroup::getChildWidthSum() {
     int sum = 0;
     for (auto &child: children) {
-        sum += child->getWidth() + child->marginLeft + child->marginRight;
+        sum += child->getWidth() + child->getMarginLeft() + child->getMarginRight();
     }
     return sum;
 }
@@ -217,7 +215,7 @@ bool ViewGroup::addViewBefore(View *view, View *beforeView) {
 void ViewGroup::removeViews(uint32_t index, uint32_t count) {
     for (auto i = index; i < index + count; ++i) {
         auto view = children[i];
-        YGNodeRemoveChild(node, view->node);
+        YGNodeRemoveChild(node, view->getNode());
         delete view;
     }
     children.erase(children.begin() + index, children.begin() + index + count);
@@ -228,12 +226,12 @@ void ViewGroup::moveViews(uint32_t from, uint32_t to, uint32_t count) {
     for (auto i = from; i < from + count; ++i) {
         auto view = children[i];
         movedViews.push_back(view);
-        YGNodeRemoveChild(node, view->node);
+        YGNodeRemoveChild(node, view->getNode());
     }
     children.erase(children.begin() + from, children.begin() + from + count);
     for (int i = 0; i < movedViews.size(); ++i) {
         children.insert(children.cbegin() + to - count + i, movedViews[i]);
-        YGNodeInsertChild(node, movedViews[i]->node, to - count + i);
+        YGNodeInsertChild(node, movedViews[i]->getNode(), to - count + i);
     }
 }
 

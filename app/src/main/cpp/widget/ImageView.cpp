@@ -222,8 +222,8 @@ bool ImageView::onTouchEvent(TouchEvent *touchEvent) {
             auto x = translateX;
             auto y = translateY;
             animator->setUpdateListener([x, y](View *view, float value) {
-                view->translateX = value;
-                view->translateY = value * y / x;
+                view->setTranslateX(value);
+                view->setTranslateY(value * y / x);
             });
             animator->start();
             break;

@@ -33,17 +33,9 @@ public:
 
     virtual ~View();
 
-    virtual const char *name() {
-        return "view";
-    }
+#pragma mark View
 
-    int64_t viewId;
-
-    const char *parentName;
-
-    int64_t parentId;
-
-#pragma mark yoga 设置相关
+    virtual const char *name();
 
     virtual void measure();
 
@@ -57,14 +49,79 @@ public:
 
     virtual bool isScroller();
 
-    const std::shared_ptr<SkiaUIContext>& getContext();
+    const std::shared_ptr<SkiaUIContext> &getContext();
 
-    virtual void setContext(std::shared_ptr<SkiaUIContext>& context);
+    virtual void setContext(std::shared_ptr<SkiaUIContext> &context);
 
-    /**
-     * 在AlignItems的基础上自定义每个子视图的对齐方式
-     * @param align
-     */
+    virtual View *getParent();
+
+    virtual void setParent(View *parent);
+
+    virtual void removeFromParent();
+
+    virtual int64_t getViewId();
+
+    virtual void setLayoutCallback(std::function<void(int, int, int, int)> callback);
+
+    virtual void removeLayoutCallback();
+
+    virtual void setOnClickListener(std::function<void(View *)> clickListener);
+
+    virtual const std::function<void(View *)> &getClickListener();
+
+    virtual void removeClickListener();
+
+    virtual void performClick();
+
+    virtual void setVelocity(float x, float y);
+
+    virtual void onShow();
+
+    virtual void onHide();
+
+    virtual bool onInterceptTouchEvent(TouchEvent *touchEvent);
+
+    virtual bool onTouchEvent(TouchEvent *touchEvent);
+
+    virtual void requestDisallowInterceptTouchEvent(bool disallowIntercept);
+
+    virtual void setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatcher);
+
+    virtual void performAnimations();
+
+    void setAnimator(IAnimator *animator);
+
+    //TODO
+    float animTranslateX = 0.0f;
+    float animTranslateY = 0.0f;
+
+protected:
+
+    View *parent = nullptr;
+
+    int64_t viewId;
+
+    bool needToMeasure = false;
+
+    bool isDirty = false;
+
+    std::function<void(int, int, int, int)> viewLayoutCallback = nullptr;
+
+    std::function<void(View *)> viewClickListener = nullptr;
+
+    std::shared_ptr<SkiaUIContext> context = nullptr;
+
+    float xVelocity = 0.0f;
+    float yVelocity = 0.0f;
+
+    std::unique_ptr<TouchEventDispatcher> touchEventDispatcher;
+
+    std::unordered_map<uint32_t, std::unique_ptr<IAnimator>> animators;
+
+public:
+
+#pragma mark yoga
+
     virtual void setAlignSelf(YGAlign align);
 
     virtual void setPositionType(YGPositionType type);
@@ -93,51 +150,19 @@ public:
 
     virtual void clearMeasure();
 
-    virtual View *getParent();
-
-    virtual void removeFromParent();
-
-    YGNodeRef node;
-
-    YGConfigRef config = nullptr;
-
-    int left, top, right, bottom = 0;
-
-    View *parent = nullptr;
-
-protected:
-
-    int width, height;
-
-    int minWidth, minHeight;
-
-#pragma mark yoga 获取相关
-
-public:
-
     virtual int getHeight();
 
     virtual int getWidth();
 
-#pragma mark skia
+    int getLeft();
 
-    virtual void setBackgroundColor(SkColor color);
+    int getTop();
 
-    virtual void setBackgroundColor(const std::string &hexColor);
+    int getRight();
 
-    virtual const char *getBackgroundColor();
+    int getBottom();
 
-    virtual void setAntiAlias(bool antiAlias);
-
-    virtual void setStyle(SkPaint::Style style);
-
-    virtual void setStrokeWidth(SkScalar _width);
-
-    virtual void setCornerRadius(int radius);
-
-    virtual void setAlpha(float alpha);
-
-    virtual float getAlpha();
+    virtual YGNodeRef getNode();
 
     virtual void setMargin(std::vector<int> margins);
 
@@ -159,146 +184,78 @@ public:
 
     virtual int getMarginBottom();
 
-    std::unique_ptr<SkPaint> paint;
-
-    int marginLeft, marginTop, marginRight, marginBottom;
-
-    int paddingLeft, paddingTop, paddingRight, paddingBottom;
-
-    SkIRect skRect;
-
-    int cornerRadius;
-
-    SkRect skRectWithBorder;
-
-    virtual void setLinearGradient(std::vector<SkColor> colors);
-
-    std::vector<SkColor> linearGradientColors;
-
-    virtual void setSwiperGradient(std::vector<SkColor> colors);
-
-    std::vector<SkColor> swiperGradientColors;
-
-    virtual void setBlurMask(SkBlurStyle style, SkScalar sigma);
-
     virtual void setAspectRatio(float ratio);
-
-public:
 
     virtual void setWidthPercent(float widthPercent);
 
     virtual void setHeightPercent(float heightPercent);
 
-    float widthPercent, heightPercent;
+    virtual void setTranslateX(float translateX);
 
-#pragma mark TouchEvent
-
-public:
-
-    virtual bool onInterceptTouchEvent(TouchEvent *touchEvent);
-
-    virtual bool onTouchEvent(TouchEvent *touchEvent);
-
-    virtual void requestDisallowInterceptTouchEvent(bool disallowIntercept);
-
-    virtual void setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatcher);
+    virtual void setTranslateY(float translateY);
 
 protected:
 
-    std::unique_ptr<TouchEventDispatcher> touchEventDispatcher;
+    YGNodeRef node = nullptr;
 
-#pragma mark moving
+    YGConfigRef config = nullptr;
 
-public:
+    int width = 0;
+    int height = 0;
+
+    int left = 0;
+    int top = 0;
+    int right = 0;
+    int bottom = 0;
+
+    int minWidth = 0;
+    int minHeight = 0;
 
     float translateX = 0.0f;
     float translateY = 0.0f;
 
-#pragma mark Animator
+    float widthPercent = 0.0f;
+    float heightPercent = 0.0f;
+
+    int marginLeft = 0;
+    int marginTop = 0;
+    int marginRight = 0;
+    int marginBottom = 0;
+
+    int paddingLeft = 0;
+    int paddingTop = 0;
+    int paddingRight = 0;
+    int paddingBottom = 0;
 
 public:
 
-    virtual void performAnimations();
+#pragma mark skia
 
-protected:
+    virtual void setBackgroundColor(SkColor color);
 
-    std::unordered_map<uint32_t, std::unique_ptr<IAnimator>> animators;
+    virtual void setBackgroundColor(const std::string &hexColor);
 
-public:
-    float animTranslateX = 0.0f;
-    float animTranslateY = 0.0f;
+    virtual const char *getBackgroundColor();
 
-    void setAnimator(IAnimator *animator);
+    virtual void setAntiAlias(bool antiAlias);
 
-protected:
+    virtual void setStyle(SkPaint::Style style);
 
-    bool isDirty;
+    virtual void setStrokeWidth(SkScalar _width);
 
-    std::string backgroundColor;
+    virtual void setCornerRadius(int radius);
 
-    bool needToMeasure = false;
+    virtual void setAlpha(float alpha);
 
-#pragma mark cakllbacks
+    virtual float getAlpha();
 
-public:
+    virtual void setLinearGradient(std::vector<SkColor> colors);
 
-    virtual void setLayoutCallback(std::function<void(int, int, int, int)> callback);
+    virtual void setSwiperGradient(std::vector<SkColor> colors);
 
-    virtual void removeLayoutCallback();
+    virtual void setBlurMask(SkBlurStyle style, SkScalar sigma);
 
-    virtual void setOnClickListener(std::function<void(View *)> clickListener);
-
-    virtual const std::function<void(View *)>& getClickListener();
-
-    virtual void removeClickListener();
-
-    virtual void performClick();
-
-    virtual void setVelocity(float x, float y);
-
-protected:
-
-    std::function<void(int, int, int, int)> viewLayoutCallback = nullptr;
-
-    std::function<void(View *)> viewClickListener = nullptr;
-
-    std::shared_ptr<SkiaUIContext> context = nullptr;
-
-    float xVelocity = 0.0f, yVelocity = 0.0f;
-
-#pragma mark LifeCycle
-public:
-    virtual void onShow();
-
-    virtual void onHide();
-
-#pragma mark ClickEvent
-public:
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> clickFunction;
-
-#pragma mark Compose
-public:
-
-    void checkJavaViewRef(jobject instance);
-
-    const jobject getJavaViewRef();
-
-private:
-
-    jobject globalJavaViewRef = nullptr;
-
-#pragma mark SkMatrix
-protected:
-
-    SkMatrix viewMatrix;
-
-    float rotateX = 0.0f;
-    float rotateY = 0.0f;
-    float rotateZ = 0.0f;
-    float scaleX = 1.0f;
-    float scaleY = 1.0f;
-
-public:
+    const SkIRect &getIRect();
 
     float getRotateZ();
 
@@ -311,6 +268,46 @@ public:
     float getScaleY();
 
     void setScaleY(float scale);
+
+protected:
+
+    std::unique_ptr<SkPaint> paint;
+
+    SkIRect skRect;
+
+    int cornerRadius = 0;
+
+    SkRect skRectWithBorder;
+
+    std::vector<SkColor> linearGradientColors;
+
+    std::vector<SkColor> swiperGradientColors;
+
+    std::string backgroundColor;
+
+    SkMatrix viewMatrix;
+
+    float rotateX = 0.0f;
+    float rotateY = 0.0f;
+    float rotateZ = 0.0f;
+    float scaleX = 1.0f;
+    float scaleY = 1.0f;
+
+#pragma mark v8
+public:
+
+    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> clickFunction;
+
+#pragma mark Compose
+public:
+
+    void checkJavaViewRef(jobject instance);
+
+    const jobject getJavaViewRef();
+
+private:
+
+    jobject globalJavaViewRef = nullptr;
 
 };
 
