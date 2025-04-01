@@ -35,7 +35,7 @@ public:
 
     ~RichText();
 
-    void setText(SkString jsonValue);
+    void setText(const SkString& jsonValue);
 
     const char *name() override;
 

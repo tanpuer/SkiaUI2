@@ -13,7 +13,7 @@ RichText::~RichText() {
 
 }
 
-void RichText::setText(SkString jsonValue) {
+void RichText::setText(const SkString& jsonValue) {
     std::string err;
     auto json = json11::Json::parse(jsonValue.c_str(), err);
     if (err.length() > 0) {
