@@ -17,6 +17,11 @@ void LinearAnimator::update(SkIRect &rect) {
         if (loopCount == -1 || currLoopCount < loopCount) {
             startTime = currTime;
             endTime = currTime + duration;
+            if (autoReverse) {
+                auto temp = startValue;
+                startValue = endValue;
+                endValue = temp;
+            }
         } else {
             end = true;
             updateInner();

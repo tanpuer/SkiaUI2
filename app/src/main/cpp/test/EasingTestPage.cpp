@@ -66,46 +66,83 @@ void EasingTestPage::initChildren(ViewGroup *root, int width, int height) {
     };
 
     for (auto &item: sEasingMap) {
-        auto flexboxLayout = new FlexboxLayout();
-        flexboxLayout->setContext(this->context);
-        flexboxLayout->setWidth(width);
-        flexboxLayout->setHeight(400);
-        flexboxLayout->setStyle(SkPaint::kStroke_Style);
-        flexboxLayout->setBackgroundColor(SK_ColorWHITE);
-        flexboxLayout->setStrokeWidth(0);
-        flexboxLayout->setMargin({0, 0, 0, 50});
-        flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
-        flexboxLayout->setJustifyContent(YGJustify::YGJustifyFlexStart);
-        flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
-        scrollView->addView(flexboxLayout);
+        {
+            auto flexboxLayout = new FlexboxLayout();
+            flexboxLayout->setContext(this->context);
+            flexboxLayout->setWidth(width);
+            flexboxLayout->setHeight(400);
+            flexboxLayout->setStyle(SkPaint::kStroke_Style);
+            flexboxLayout->setBackgroundColor(SK_ColorWHITE);
+            flexboxLayout->setStrokeWidth(0);
+            flexboxLayout->setMargin({0, 0, 0, 50});
+            flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+            flexboxLayout->setJustifyContent(YGJustify::YGJustifyFlexStart);
+            flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+            scrollView->addView(flexboxLayout);
 
-        auto lottieView = new LottieView();
-        lottieView->setContext(this->context);
-        lottieView->setWidth(375);
-        lottieView->setHeight(240);
-        lottieView->setSource("WorkspacePlanet.json");
-        lottieView->setStyle(SkPaint::kStroke_Style);
-        lottieView->setBackgroundColor(SK_ColorRED);
-        lottieView->setStrokeWidth(2);
-        flexboxLayout->addView(lottieView);
-        auto lottieAnimator = new LinearAnimator(lottieView, 0.0f, 360.0f);
-        lottieAnimator->setDuration(10000);
-        lottieAnimator->setLoopCount(-1);
-        lottieAnimator->setEaseType(item.second);
-        lottieAnimator->setUpdateListener([](View *view, float value) {
-            view->setRotateZ(360.0f - value);
-        });
-        lottieAnimator->start();
+            auto lottieView = new LottieView();
+            lottieView->setContext(this->context);
+            lottieView->setWidth(375);
+            lottieView->setHeight(240);
+            lottieView->setSource("WorkspacePlanet.json");
+            lottieView->setStyle(SkPaint::kStroke_Style);
+            lottieView->setBackgroundColor(SK_ColorRED);
+            lottieView->setStrokeWidth(2);
+            flexboxLayout->addView(lottieView);
+            auto lottieAnimator = new LinearAnimator(lottieView, 0.0f, 360.0f);
+            lottieAnimator->setDuration(10000);
+            lottieAnimator->setLoopCount(-1);
+            lottieAnimator->setEaseType(item.second);
+            lottieAnimator->setUpdateListener([](View *view, float value) {
+                view->setRotateZ(360.0f - value);
+            });
+            lottieAnimator->start();
 
-        auto textView = new TextView();
-        textView->setContext(this->context);
-        textView->setText(item.first.c_str());
-        textView->setTextColor(SK_ColorGREEN);
-        textView->setTextSize(50);
-        textView->setBackgroundColor(SK_ColorRED);
-        textView->setStyle(SkPaint::kStroke_Style);
-        textView->setMargin({50, 50, 50, 50});
-        flexboxLayout->addView(textView);
+            auto textView = new TextView();
+            textView->setContext(this->context);
+            textView->setText(item.first.c_str());
+            textView->setTextColor(SK_ColorGREEN);
+            textView->setTextSize(50);
+            textView->setBackgroundColor(SK_ColorRED);
+            textView->setStyle(SkPaint::kStroke_Style);
+            textView->setMargin({50, 50, 50, 50});
+            flexboxLayout->addView(textView);
+        }
+
+        {
+            auto flexboxLayout = new FlexboxLayout();
+            flexboxLayout->setContext(this->context);
+            flexboxLayout->setWidth(width);
+            flexboxLayout->setHeight(400);
+            flexboxLayout->setStyle(SkPaint::kStroke_Style);
+            flexboxLayout->setBackgroundColor(SK_ColorWHITE);
+            flexboxLayout->setStrokeWidth(0);
+            flexboxLayout->setMargin({0, 0, 0, 50});
+            flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+            flexboxLayout->setJustifyContent(YGJustify::YGJustifyCenter);
+            flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+            scrollView->addView(flexboxLayout);
+
+            auto view = new View();
+            view->setContext(this->context);
+            auto colors = std::vector<SkColor>();
+            colors.push_back(SK_ColorYELLOW);
+            colors.push_back(SK_ColorBLUE);
+            view->setLinearGradient(colors);
+            view->setWidth(200);
+            view->setHeight(200);
+            flexboxLayout->addView(view);
+
+            auto viewAnimator = new LinearAnimator(view, -200, 200);
+            viewAnimator->setLoopCount(-1);
+            viewAnimator->setDuration(4000);
+            viewAnimator->setEaseType(item.second);
+            viewAnimator->setAutoReverse(true);
+            viewAnimator->setUpdateListener([](View *view, float value) {
+                view->setTransX(value);
+            });
+            viewAnimator->start();
+        }
     }
 }
 

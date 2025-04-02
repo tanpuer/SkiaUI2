@@ -81,6 +81,7 @@ void View::layout(int l, int t, int r, int b) {
         paint->setShader(std::move(gradientShader));
     }
     viewMatrix.setIdentity();
+    viewMatrix.preTranslate(transX, transY);
     viewMatrix.preScale(scaleX, scaleY, left + width / 2, top + height / 2);
     viewMatrix.preRotate(rotateZ, left + width / 2, top + height / 2);
 }
@@ -555,6 +556,24 @@ float View::getScaleY() {
 void View::setScaleY(float scale) {
     scaleY = scale;
     markDirty();
+}
+
+float View::getTransX() {
+    return transX;
+}
+
+void View::setTransX(float transX) {
+    this->transX = transX;
+    markDirty();
+}
+
+void View::setTransY(float transY) {
+    this->transY = transY;
+    markDirty();
+}
+
+float View::getTransY() {
+    return transY;
 }
 
 }

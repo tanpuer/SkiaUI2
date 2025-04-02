@@ -47,6 +47,8 @@ public:
 
     virtual void setEaseType(EaseType type);
 
+    virtual void setAutoReverse(bool autoReverse);
+
 protected:
 
     long duration;
@@ -70,6 +72,8 @@ protected:
     float lastInterpolator = 0.0f;
 
     uint8_t easeType = 0;
+
+    bool autoReverse = false;
 
 };
 

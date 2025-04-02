@@ -71,4 +71,8 @@ void IAnimator::setEaseType(EaseType type) {
     this->easeType = static_cast<uint8_t>(type);
 }
 
+void IAnimator::setAutoReverse(bool autoReverse) {
+    this->autoReverse = autoReverse;
+}
+
 }

@@ -269,6 +269,14 @@ public:
 
     void setScaleY(float scale);
 
+    void setTransX(float transX);
+
+    float getTransX();
+
+    void setTransY(float transY);
+
+    float getTransY();
+
 protected:
 
     std::unique_ptr<SkPaint> paint;
@@ -292,6 +300,8 @@ protected:
     float rotateZ = 0.0f;
     float scaleX = 1.0f;
     float scaleY = 1.0f;
+    float transX = 0.0f;
+    float transY = 0.0f;
 
 #pragma mark v8
 public:
