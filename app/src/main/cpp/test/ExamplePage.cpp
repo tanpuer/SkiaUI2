@@ -423,8 +423,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto button = new Button();
         button->setContext(this->context);
         button->setText(SkString("Button"));
-        button->setWidth(540);
-        button->setHeight(100);
         button->setTextSize(60);
         button->setCornerRadius(20);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
@@ -439,8 +437,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto button = new Button();
         button->setContext(this->context);
         button->setText(SkString("Open Camera"));
-        button->setWidth(540);
-        button->setHeight(100);
         button->setTextSize(60);
         button->setCornerRadius(20);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
@@ -458,8 +454,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto button = new Button();
         button->setContext(this->context);
         button->setText(SkString("Filament Preview"));
-        button->setWidth(640);
-        button->setHeight(100);
         button->setTextSize(60);
         button->setCornerRadius(20);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
@@ -477,8 +471,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto button = new Button();
         button->setContext(this->context);
         button->setText(SkString("Native WebView"));
-        button->setWidth(640);
-        button->setHeight(100);
         button->setTextSize(60);
         button->setCornerRadius(20);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
@@ -496,8 +488,8 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         auto button = new Button();
         button->setContext(this->context);
         button->setText(SkString("Blend Test"));
-        button->setWidth(640);
-        button->setHeight(100);
+//        button->setWidth(640);
+//        button->setHeight(100);
         button->setTextSize(60);
         button->setCornerRadius(20);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);

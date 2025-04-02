@@ -31,7 +31,9 @@ private:
 
     int defaultRadius = 20;
 
-    int defaultPadding = 20;
+    int defaultPaddingTop = 20;
+
+    int defaultPaddingLeft = 40;
 
 };
 
