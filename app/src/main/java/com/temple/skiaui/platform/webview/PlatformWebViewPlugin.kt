@@ -1,5 +1,6 @@
 package com.temple.skiaui.platform.webview
 
+import android.os.Looper
 import android.view.View
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.PlatformTextureLayerBasePlugin
@@ -35,6 +36,13 @@ class PlatformWebViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, webVi
         mainHandler.post {
             webView?.loadUrl(url)
         }
+    }
+
+    fun canGoBack(): Boolean {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            return webView?.canGoBack() ?: false
+        }
+        return false
     }
 
 }

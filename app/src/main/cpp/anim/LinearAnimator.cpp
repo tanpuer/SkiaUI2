@@ -35,8 +35,7 @@ void LinearAnimator::setUpdateListener(std::function<void(View *, float)> &&list
 
 void LinearAnimator::updateInner() {
     if (targetView != nullptr && updateListener != nullptr) {
-        auto interpolator = end ? 1.0f : getInterpolation(1.0f);
-        auto value = interpolator * (endValue - startValue) + startValue;
+        auto value = sEaseLst[easeType](static_cast<float >(currTime - startTime), startValue, endValue - startValue, duration);
         updateListener(targetView, value);
         if (!paused) {
             targetView->markDirty();

@@ -26,7 +26,7 @@ bool IAnimator::isEnd() {
     return end;
 }
 
-void IAnimator::addListener(std::function<void()>&& finishCallback) {
+void IAnimator::addListener(std::function<void()> &&finishCallback) {
     this->finishCallback = std::move(finishCallback);
 }
 
@@ -65,6 +65,10 @@ uint32_t IAnimator::getAnimatorId() {
 
 void IAnimator::stop() {
     end = true;
+}
+
+void IAnimator::setEaseType(EaseType type) {
+    this->easeType = static_cast<uint8_t>(type);
 }
 
 }

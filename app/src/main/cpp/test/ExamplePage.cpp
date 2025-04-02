@@ -29,6 +29,7 @@
 #include "ExoPlayerView.h"
 #include "FilamentView.h"
 #include "BlendTestPage.h"
+#include "EasingTestPage.h"
 
 namespace HYSkiaUI {
 
@@ -497,6 +498,23 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         scrollView->addView(button);
         button->setOnClickListener([this, width, height](View *view) {
             auto page = new BlendTestPage();
+            page->init(context, width, height);
+            context->getPageStackManager()->push(page);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
+        });
+    }
+
+    {
+        auto button = new Button();
+        button->setContext(this->context);
+        button->setText(SkString("Easing Test"));
+        button->setTextSize(60);
+        button->setCornerRadius(20);
+        button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+        button->setMargin({50, 50, 50, 50});
+        scrollView->addView(button);
+        button->setOnClickListener([this, width, height](View *view) {
+            auto page = new EasingTestPage();
             page->init(context, width, height);
             context->getPageStackManager()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));
