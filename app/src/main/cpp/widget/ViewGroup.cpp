@@ -131,10 +131,6 @@ const char *ViewGroup::name() {
     return "ViewGroup";
 }
 
-YGConfigRef ViewGroup::getConfig() {
-    return config;
-}
-
 bool ViewGroup::dispatchTouchEvent(TouchEvent *touchEvent) {
     return touchEventDispatcher->dispatchTouchEvent(touchEvent);
 }

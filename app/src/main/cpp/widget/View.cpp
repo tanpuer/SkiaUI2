@@ -25,6 +25,7 @@ View::~View() {
     if (node != nullptr) {
         YGNodeFree(node);
     }
+    animators.clear();
     viewLayoutCallback = nullptr;
     viewClickListener = nullptr;
     clickFunction.Reset();
