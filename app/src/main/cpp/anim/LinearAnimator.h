@@ -21,8 +21,12 @@ public:
 
 private:
 
-    float startValue, endValue;
-    View *targetView;
+    float startValue = 0.0f;
+
+    float endValue = 0.0f;
+
+    View *targetView = nullptr;
+
     std::function<void(View *, float)> updateListener = nullptr;
 
     void updateInner();

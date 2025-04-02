@@ -13,7 +13,8 @@ void LinearAnimator::update(SkIRect &rect) {
         return;
     }
     if (currTime > endTime) {
-        if (loopCount == -1) {
+        currLoopCount++;
+        if (loopCount == -1 || currLoopCount < loopCount) {
             startTime = currTime;
             endTime = currTime + duration;
         } else {

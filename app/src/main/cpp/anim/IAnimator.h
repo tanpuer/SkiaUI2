@@ -54,6 +54,8 @@ protected:
 
     int loopCount = 1;
 
+    int currLoopCount = 0;
+
     std::function<void()> finishCallback = nullptr;
 
     long pausedTime = 0L;
