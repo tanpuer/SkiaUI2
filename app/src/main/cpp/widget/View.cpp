@@ -84,6 +84,16 @@ void View::layout(int l, int t, int r, int b) {
     viewMatrix.preTranslate(transX, transY);
     viewMatrix.preScale(scaleX, scaleY, left + width / 2, top + height / 2);
     viewMatrix.preRotate(rotateZ, left + width / 2, top + height / 2);
+    leftTop.set(left, top);
+    rightTop.set(right, top);
+    leftBottom.set(left, bottom);
+    rightBottom.set(right, bottom);
+    if (!viewMatrix.isIdentity()) {
+        leftTop = viewMatrix.mapPoint(leftTop);
+        rightTop = viewMatrix.mapPoint(rightTop);
+        leftBottom = viewMatrix.mapPoint(leftBottom);
+        rightBottom = viewMatrix.mapPoint(rightBottom);
+    }
 }
 
 void View::draw(SkCanvas *canvas) {
@@ -574,6 +584,31 @@ void View::setTransY(float transY) {
 
 float View::getTransY() {
     return transY;
+}
+
+bool View::isTouchInRect(float x, float y) {
+    if (viewMatrix.isIdentity()) {
+        return x >= left && x <= left + width && y >= top && y <= top + height;
+    } else {
+        SkPoint pt = {x, y};
+        const SkPoint quad[4] = {leftTop, rightTop, rightBottom, leftBottom};
+        int prev_side = 0;
+        for (int i = 0; i < 4; i++) {
+            SkPoint current = quad[i];
+            SkPoint next = quad[(i + 1) % 4];
+            SkVector edge = next - current;
+            SkVector pointVec = pt - current;
+            float cross = edge.x() * pointVec.y() - edge.y() * pointVec.x();
+            if (cross == 0) return true;
+            int current_side = (cross > 0) ? 1 : -1;
+            if (prev_side == 0) {
+                prev_side = current_side;
+            } else if (prev_side != current_side) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
 
 }

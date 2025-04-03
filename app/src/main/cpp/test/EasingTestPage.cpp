@@ -129,6 +129,7 @@ void EasingTestPage::initChildren(ViewGroup *root, int width, int height) {
             colors.push_back(SK_ColorYELLOW);
             colors.push_back(SK_ColorBLUE);
             view->setLinearGradient(colors);
+            view->setCornerRadius(20);
             view->setWidth(200);
             view->setHeight(200);
             flexboxLayout->addView(view);

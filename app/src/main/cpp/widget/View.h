@@ -277,6 +277,8 @@ public:
 
     float getTransY();
 
+    virtual bool isTouchInRect(float x, float y);
+
 protected:
 
     std::unique_ptr<SkPaint> paint;
@@ -302,6 +304,11 @@ protected:
     float scaleY = 1.0f;
     float transX = 0.0f;
     float transY = 0.0f;
+
+    SkPoint leftTop = {0.0f, 0.0f};
+    SkPoint rightTop = {0.0f, 0.0f};
+    SkPoint leftBottom = {0.0f, 0.0f};
+    SkPoint rightBottom = {0.0f, 0.0f};
 
 #pragma mark v8
 public:

@@ -145,21 +145,15 @@ View *TouchEventDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchE
     ALOGD("findTargetViewTraversal %s %ld", viewGroup->name(), viewGroup->children.size())
     for (auto i = viewGroup->children.rbegin(); i != viewGroup->children.rend(); ++i) {
         auto child = *i;
-        auto left = child->getLeft();
-        auto top = child->getTop();
-        auto width = child->getWidth();
-        auto height = child->getHeight();
-        ALOGD("findTargetViewTraversal %d %d %d %d %f %f", left, top, width, height, touchEvent->x,
-              touchEvent->y)
-        if (touchEvent->x >= left && touchEvent->x <= left + width &&
-            touchEvent->y >= top && touchEvent->y <= top + height) {
+        if (child->isTouchInRect(touchEvent->x, touchEvent->y)) {
             if (child->isViewGroup() && !child->isScroller()) {
-                ALOGD("findTargetViewTraversal in ViewGroup %s %ld", child->name(), child->getViewId())
+                ALOGD("findTargetViewTraversal in ViewGroup %s %ld", child->name(),
+                      child->getViewId())
                 return findTargetViewTraversal(dynamic_cast<ViewGroup *>(child), touchEvent);
             } else {
                 ALOGD("findTargetViewTraversal result %s %ld", child->name(), child->getViewId())
                 if (child->isScroller()) {
-                    return findTargetViewTraversal(dynamic_cast<ScrollView*>(child), touchEvent);
+                    return findTargetViewTraversal(dynamic_cast<ScrollView *>(child), touchEvent);
                 }
                 return child;
             }
@@ -176,12 +170,7 @@ bool TouchEventDispatcher::checkTouchInTargetView(TouchEvent *touchEvent) {
     if (weakTargetView->onInterceptTouchEvent(touchEvent)) {
         return true;
     }
-    auto left = weakTargetView->getLeft();
-    auto top = weakTargetView->getTop();
-    auto right = weakTargetView->getRight();
-    auto bottom = weakTargetView->getBottom();
-    return touchEvent->x >= left && touchEvent->x <= right
-           && touchEvent->y >= top && touchEvent->y <= bottom;
+    return weakTargetView->isTouchInRect(touchEvent->x, touchEvent->y);
 }
 
 bool TouchEventDispatcher::dispatchVelocity(Velocity *velocity) {
