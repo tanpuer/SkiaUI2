@@ -1,10 +1,12 @@
 #pragma once
 
 #include "Page.h"
+#include "ExoPlayerView.h"
+#include "ShaderView.h"
 
 namespace HYSkiaUI {
 
-class MatrixTestPage: public Page {
+class MatrixTestPage : public Page {
 
 public:
 
@@ -13,6 +15,10 @@ public:
 private:
 
     void initChildren(ViewGroup *root, int width, int height);
+
+    ExoPlayerView *videoView = nullptr;
+
+    ShaderView *shaderView = nullptr;
 
 };
 

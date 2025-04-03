@@ -31,7 +31,10 @@ void LoadingView::draw(SkCanvas *canvas) {
                      top + height / 2 - rectHeight / 2,
                      loadingWidth,
                      rectHeight);
+        canvas->save();
+        canvas->setMatrix(viewMatrix);
         canvas->drawRect(rect, *paint);
+        canvas->restore();
     }
     markDirty();
 }

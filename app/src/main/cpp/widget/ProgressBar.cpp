@@ -8,7 +8,6 @@ namespace HYSkiaUI {
 ProgressBar::ProgressBar()
         : View(), progressRect(SkRect::MakeEmpty()), autoMode(false), progress(0), index(0),
           type(ProgressBarType::CIRCLE), pressed(false), progressCallback(nullptr) {
-    paint->setStroke(true);
     gradientColors = std::vector<SkColor>();
     gradientColorSize = 0;
     backgroundPaint = std::make_unique<SkPaint>();
@@ -17,11 +16,11 @@ ProgressBar::ProgressBar()
 }
 
 ProgressBar::~ProgressBar() {
-    clickFunction.Reset();
 }
 
 void ProgressBar::setBarColor(SkColor color) {
     paint->setColor(color);
+    markDirty();
 }
 
 void ProgressBar::setGradientBarColor(SkColor colors[], int size) {
@@ -30,14 +29,12 @@ void ProgressBar::setGradientBarColor(SkColor colors[], int size) {
         gradientColors.emplace_back(colors[i]);
     }
     gradientColorSize = size;
+    markDirty();
 }
 
 void ProgressBar::setBackgroundColor(SkColor color) {
     backgroundPaint->setColor(color);
-}
-
-void ProgressBar::measure() {
-    View::measure();
+    markDirty();
 }
 
 void ProgressBar::layout(int l, int t, int r, int b) {
@@ -63,6 +60,8 @@ void ProgressBar::layout(int l, int t, int r, int b) {
 }
 
 void ProgressBar::draw(SkCanvas *canvas) {
+    canvas->save();
+    canvas->setMatrix(viewMatrix);
     if (type == ProgressBarType::CIRCLE) {
         if (autoMode) {
             index += 3;
@@ -91,6 +90,7 @@ void ProgressBar::draw(SkCanvas *canvas) {
         canvas->drawCircle(progressRect.right(), progressRect.centerY(),
                            height / 3 * (pressed ? 1.2f : 1.0f), *paint);
     }
+    canvas->restore();
 }
 
 void ProgressBar::setProgress(float progress) {
@@ -128,7 +128,6 @@ ProgressBar::ProgressBarType ProgressBar::getType() {
 }
 
 bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
-    markDirty();
     if (!autoMode && type == ProgressBarType::LINEAR) {
         switch (touchEvent->action) {
             case TouchEvent::ACTION_DOWN:
@@ -163,6 +162,7 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
                 break;
             }
         }
+        markDirty();
         return true;
     }
     return View::onTouchEvent(touchEvent);
@@ -175,6 +175,7 @@ void ProgressBar::setProgressCallback(std::function<void(int, bool)> progressCal
 void ProgressBar::setStrokeWidth(SkScalar _width) {
     View::setStrokeWidth(_width);
     backgroundPaint->setStrokeWidth(_width);
+    markDirty();
 }
 
 bool ProgressBar::onInterceptTouchEvent(TouchEvent *touchEvent) {
