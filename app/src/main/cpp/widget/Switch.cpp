@@ -6,6 +6,7 @@ namespace HYSkiaUI {
 Switch::Switch() {
     switchPaint = std::make_unique<SkPaint>();
     switchPaint->setAntiAlias(true);
+    switchPaint->setStyle(SkPaint::Style::kStrokeAndFill_Style);
     setOnClickListener([this](View *view) {
         setEnabled(!enable);
     });
@@ -54,10 +55,12 @@ void Switch::draw(SkCanvas *canvas) {
     } else {
         switchPaint->setColor(SK_ColorGRAY);
     }
-    switchPaint->setStyle(SkPaint::Style::kStrokeAndFill_Style);
+    canvas->save();
+    canvas->setMatrix(viewMatrix);
     canvas->drawRoundRect(switchRect, switchRadius, switchRadius, *switchPaint);
     switchPaint->setColor(SK_ColorWHITE);
     canvas->drawRoundRect(highlightRect, switchRadius, switchRadius, *switchPaint);
+    canvas->restore();
 }
 
 void Switch::setWidth(int width) {

@@ -40,8 +40,13 @@ void LinearAnimator::setUpdateListener(std::function<void(View *, float)> &&list
 
 void LinearAnimator::updateInner() {
     if (targetView != nullptr && updateListener != nullptr) {
-        auto value = sEaseLst[easeType](static_cast<float >(currTime - startTime), startValue, endValue - startValue, duration);
-        updateListener(targetView, value);
+        if (end) {
+            updateListener(targetView, endValue);
+        } else {
+            auto value = sEaseLst[easeType](static_cast<float >(currTime - startTime), startValue,
+                                            endValue - startValue, duration);
+            updateListener(targetView, value);
+        }
         if (!paused) {
             targetView->markDirty();
         }
