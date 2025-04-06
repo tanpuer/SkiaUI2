@@ -13,20 +13,19 @@ import android.hardware.camera2.CameraDevice
 import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.CaptureRequest
-import android.media.Image.Plane
 import android.util.Log
+import android.util.SizeF
+import android.view.MotionEvent
 import android.view.Surface
 import android.view.WindowManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
-import com.temple.skiaui.platform.PlatformImageReaderBasePlugin
-import com.temple.skiaui.platform.data.ImageReaderYUVData
-import java.nio.ByteBuffer
+import com.temple.skiaui.platform.SurfaceTextureBasePlugin
 
-class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
-    PlatformImageReaderBasePlugin(engine, width, height) {
+class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, viewPtr: Long) :
+    SurfaceTextureBasePlugin(engine, width, height, viewPtr) {
 
     private var cameraManager: CameraManager? = null
 
@@ -36,7 +35,9 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
 
     private var session: CameraCaptureSession? = null
 
-    private var rotation = 0
+    private var rotation = -1
+    private var cameraWidth = 0
+    private var cameraHeight = 0
 
     init {
         if (ContextCompat.checkSelfPermission(engine.view.context, Manifest.permission.CAMERA)
@@ -50,59 +51,77 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
         }
     }
 
-    /**
-     * it is hard to adapt may yuv formats!
-     */
-    override fun copyYUVData(planes: Array<Plane>, width: Int, height: Int): ImageReaderYUVData {
-        return CameraYUVData().apply {
-            yData = ByteBuffer.allocateDirect(planes[0].buffer.capacity()).put(planes[0].buffer)
-                .rewind() as ByteBuffer
-            uData = ByteBuffer.allocateDirect(planes[1].buffer.capacity()).put(planes[1].buffer)
-                .rewind() as ByteBuffer
-            vData = ByteBuffer.allocateDirect(planes[2].buffer.capacity()).put(planes[2].buffer)
-                .rewind() as ByteBuffer
-            strideY = planes[0].rowStride
-            strideU = planes[1].rowStride
-            strideV = planes[2].rowStride
-            this.rotation = this@PlatformCameraViewPlugin.rotation
-            this.width = width
-            this.height = height
-        }
+    override fun skiaSurfaceCreated() {
+        start()
     }
 
-    override fun innerOnShow() {
-        super.innerOnShow()
-        if (cameraManager == null) {
-            surface?.let {
-                startCamera()
-                openCamera(it)
-            }
-        }
-    }
-
-    override fun innerOnHide() {
-        super.innerOnHide()
+    override fun skiaSurfaceDestroyed() {
         if (cameraManager != null) {
             closeCamera()
         }
     }
 
-    override fun onSurfaceCreated(surface: Surface?) {
-        surface?.let {
-            startCamera()
-            openCamera(it)
+    override fun type(): String = "CameraView"
+
+    override fun dispatchTouchEvent(touchEvent: MotionEvent) {
+    }
+
+    override fun drawOneFrame(frameTimeNanos: Long) {
+
+    }
+
+    fun start() {
+        pluginHandler.post {
+            if (surfaceObj?.surface == null) {
+                createSurface()
+            }
+            val surface = surfaceObj?.surface
+            if (surface == null) {
+                Log.e(TAG, "SurfaceObj is null!")
+                return@post
+            }
+            if (cameraManager == null) {
+                startCamera()
+                openCamera(surface)
+            }
         }
     }
 
-    override fun onSurfaceDestroyed(surface: Surface?) {
-        closeCamera()
+    override fun onShow() {
+        super.onShow()
+        start()
+    }
+
+    override fun onHide() {
+        super.onHide()
+        pluginHandler.post {
+            skiaSurfaceDestroyed()
+        }
+    }
+
+    private fun getRotation(): Int {
+        return rotation
+    }
+
+    private fun getCameraWidth(): Int {
+        return cameraWidth
+    }
+
+    private fun getCameraHeight(): Int {
+        return cameraHeight
     }
 
     private fun startCamera() {
         Log.d(TAG, "startCamera")
         cameraManager = HYSkiaUIApp.getInstance().getSystemService(CAMERA_SERVICE) as CameraManager
-        cameraId = cameraManager?.cameraIdList?.getOrNull(0) ?: ""
-        rotation = getCameraRotation(HYSkiaUIApp.getInstance(), cameraId)
+        cameraId = cameraManager?.cameraIdList?.getOrNull(1) ?: ""
+        val rotation = getCameraRotation(HYSkiaUIApp.getInstance(), cameraId)
+        val sizeF = getCameraSize(HYSkiaUIApp.getInstance(), cameraId)
+        engine.postToSkiaUI {
+            this.rotation = rotation
+            this.cameraWidth = sizeF.width.toInt()
+            this.cameraHeight = sizeF.height.toInt()
+        }
     }
 
     private fun closeCamera() {
@@ -185,8 +204,14 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int) :
             Surface.ROTATION_270 -> 270
             else -> 0
         }
-        // 计算最终的预览角度
         return (sensorOrientation + displayRotation + 360) % 360
+    }
+
+    private fun getCameraSize(context: Context, cameraId: String): SizeF {
+        val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+        val characteristics = cameraManager.getCameraCharacteristics(cameraId)
+        return characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
+            ?: SizeF(width.toFloat(), height.toFloat())
     }
 
     companion object {

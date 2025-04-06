@@ -1,16 +1,10 @@
 #pragma once
 
-#include "View.h"
-#include "effects/SkRuntimeEffect.h"
+#include "BaseSurfaceTextureView.h"
 
 namespace HYSkiaUI {
 
-enum class YUVFormat {
-    YUV420,
-    NV12,
-};
-
-class CameraView : public View {
+class CameraView : public BaseSurfaceTextureView {
 
 public:
 
@@ -18,49 +12,40 @@ public:
 
     ~CameraView();
 
-    const char *name() override;
+    const char *getJavaClassPath() override;
+
+    void initJNI() override;
+
+    const char * name() override;
+
+    void capture(std::function<void(sk_sp<SkImage>)> &&captureCallback);
 
     void layout(int l, int t, int r, int b) override;
 
     void draw(SkCanvas *canvas) override;
 
-    void setContext(std::shared_ptr<SkiaUIContext>& context) override;
-
-    void onShow() override;
-
-    void onHide() override;
-
-    void capture(std::function<void(sk_sp<SkImage>)> &&captureCallback);
-
 private:
 
-    void initShader(YUVFormat format);
+    SkMatrix imageMatrix;
 
-    jclass javaCameraClass = nullptr;
-
-    jmethodID javaCameraConstructor = nullptr;
-
-    jmethodID releaseMethod = nullptr;
-
-    jmethodID showMethod = nullptr;
-
-    jmethodID hideMethod = nullptr;
-
-    jmethodID getYUVDataMethod = nullptr;
-
-    jobject javaCamera = nullptr;
-
-    std::unique_ptr<SkPaint> cameraPaint;
-
-    sk_sp<SkRuntimeEffect> runtimeEffect = nullptr;
-
-    bool inited = false;
-
-    YUVFormat yuvFormat = YUVFormat::YUV420;
+    SkRect srcRect;
 
     std::function<void(sk_sp<SkImage>)> captureCallback;
 
     bool captureInNextDraw = false;
+
+    jmethodID startMethodId = nullptr;
+
+    jmethodID getRotationMethodId = nullptr;
+
+    jmethodID getCameraWidthMethodId = nullptr;
+
+    jmethodID getCameraHeightMethodId = nullptr;
+
+    float cameraRatio = 0.0f;
+
+    float viewRatio = 0.0f;
+
 };
 
 }
