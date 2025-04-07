@@ -90,6 +90,7 @@ void ShaderView::draw(SkCanvas *canvas) {
         skPaint.setShader(std::move(shader));
         skCanvas->drawIRect({0, 0, width, height}, skPaint);
         auto picture = recorder.finishRecordingAsPicture();
+        canvas->setMatrix(viewMatrix);
         canvas->save();
         canvas->translate(left, top);
         canvas->drawPicture(picture);
