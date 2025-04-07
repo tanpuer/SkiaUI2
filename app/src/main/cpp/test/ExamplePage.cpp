@@ -98,15 +98,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->setMargin({0, 0, 0, 50});
         scrollView->addView(flexboxLayout);
 
-//        auto videoView = new YUVVideoView();
-//        videoView->setContext(this->context);
-//        videoView->setWidthPercent(100);
-//        videoView->setHeightPercent(100);
-//        videoView->setSource("yiluxiangbei.mp4");
-//        videoView->setStyle(SkPaint::kStroke_Style);
-//        videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
-//        flexboxLayout->addView(videoView);
-
         auto videoView = new ExoPlayerView();
         videoView->setContext(this->context);
         videoView->setWidthPercent(100);
@@ -130,18 +121,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             flexboxLayout->removeView(loadingView);
         });
     }
-
-//    {
-//        auto filament = new FilamentView();
-//        filament->setContext(this->context);
-//        filament->setWidth(width);
-//        filament->setHeight(500);
-//        filament->setStyle(SkPaint::kStroke_Style);
-//        filament->setBackgroundColor(SK_ColorTRANSPARENT);
-//        filament->setStrokeWidth(0);
-//        filament->setMargin({0, 0, 0, 50});
-//        scrollView->addView(filament);
-//    }
 
     {
         auto flexboxLayout = new FlexboxLayout();
@@ -233,11 +212,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             view->setHeight(200);
             flexboxLayout->addView(view);
             view->setOnClickListener([this, width, height](View *view) {
-                MeasureTime measureTime("pushPage");
-                auto page = new ExamplePage();
-                page->init(context, width, height);
-                context->getPageStackManager()->push(page);
-                page->enterFromRight(Page::EnterExitInfo(width, 0));
+                pushPage(width, height);
             });
 
             auto textView = new TextView();
@@ -248,6 +223,9 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             textView->setBackgroundColor(SK_ColorTRANSPARENT);
             textView->setStyle(SkPaint::kStroke_Style);
             flexboxLayout->addView(textView);
+            textView->setOnClickListener([this, width, height](View *view) {
+                pushPage(width, height);
+            });
         }
 
         {
@@ -263,19 +241,10 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             view->setBlurMask(kNormal_SkBlurStyle, 10);
             view->setWidth(400);
             view->setHeight(400);
-            view->setMargin({100, 50, 0, 0});
+            view->setMargin({100, 50, 0, 50});
             flexboxLayout->addView(view);
             view->setOnClickListener([this, width, height](View *view) {
-                if (context->getPageStackManager()->getPages().size() <= 1) {
-                    return;
-                }
-                auto page = context->getPageStackManager()->back();
-                if (page == nullptr) {
-                    ALOGE("pop failed due to empty pages")
-                    return;
-                }
-                page->exitToLeft(Page::EnterExitInfo(0, width));
-//            page->exitToTop(Page::EnterExitInfo(0, height));
+                popPage(width, height);
             });
 
             auto textView = new TextView();
@@ -286,6 +255,9 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             textView->setBackgroundColor(SK_ColorTRANSPARENT);
             textView->setStyle(SkPaint::kStroke_Style);
             flexboxLayout->addView(textView);
+            textView->setOnClickListener([this, width, height](View *view) {
+                popPage(width, height);
+            });
         }
     }
 
@@ -791,6 +763,26 @@ void ExamplePage::onHide() {
     if (textAnimator != nullptr) {
         textAnimator->pause();
     }
+}
+
+void ExamplePage::pushPage(int width, int height) {
+    MeasureTime measureTime("pushPage");
+    auto page = new ExamplePage();
+    page->init(context, width, height);
+    context->getPageStackManager()->push(page);
+    page->enterFromRight(Page::EnterExitInfo(width, 0));
+}
+
+void ExamplePage::popPage(int width, int height) {
+    if (context->getPageStackManager()->getPages().size() <= 1) {
+        return;
+    }
+    auto page = context->getPageStackManager()->back();
+    if (page == nullptr) {
+        ALOGE("pop failed due to empty pages")
+        return;
+    }
+    page->exitToLeft(Page::EnterExitInfo(0, width));
 }
 
 }

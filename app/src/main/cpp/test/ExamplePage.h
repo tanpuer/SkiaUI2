@@ -2,6 +2,7 @@
 
 #include "Page.h"
 #include "LinearAnimator.h"
+#include "FlexboxLayout.h"
 
 namespace HYSkiaUI {
 
@@ -24,6 +25,10 @@ private:
     LinearAnimator *lottieAnimator = nullptr;
 
     LinearAnimator *textAnimator = nullptr;
+
+    void pushPage(int width, int height);
+
+    void popPage(int width, int height);
 
 };
 

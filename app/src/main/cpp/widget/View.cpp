@@ -88,15 +88,10 @@ void View::layout(int l, int t, int r, int b) {
     rightTop.set(right, top);
     leftBottom.set(left, bottom);
     rightBottom.set(right, bottom);
-    if (!viewMatrix.isIdentity()) {
-        leftTop = viewMatrix.mapPoint(leftTop);
-        rightTop = viewMatrix.mapPoint(rightTop);
-        leftBottom = viewMatrix.mapPoint(leftBottom);
-        rightBottom = viewMatrix.mapPoint(rightBottom);
-    }
 }
 
 void View::draw(SkCanvas *canvas) {
+    multiplyParentViewMatrix();
     canvas->save();
     canvas->setMatrix(viewMatrix);
     if (YGFloatsEqual(paint->getStrokeWidth(), 0.0f)) {
@@ -610,6 +605,18 @@ bool View::isTouchInRect(float x, float y) {
             }
         }
         return true;
+    }
+}
+
+void View::multiplyParentViewMatrix() {
+    if (getParent() != nullptr) {
+        viewMatrix = getParent()->viewMatrix * viewMatrix;
+    }
+    if (!viewMatrix.isIdentity()) {
+        leftTop = viewMatrix.mapPoint(leftTop);
+        rightTop = viewMatrix.mapPoint(rightTop);
+        leftBottom = viewMatrix.mapPoint(leftBottom);
+        rightBottom = viewMatrix.mapPoint(rightBottom);
     }
 }
 

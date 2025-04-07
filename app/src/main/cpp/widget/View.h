@@ -279,6 +279,8 @@ public:
 
     virtual bool isTouchInRect(float x, float y);
 
+    virtual void multiplyParentViewMatrix();
+
 protected:
 
     std::unique_ptr<SkPaint> paint;
