@@ -14,7 +14,7 @@ import android.hardware.camera2.CameraManager
 import android.hardware.camera2.CameraMetadata
 import android.hardware.camera2.CaptureRequest
 import android.util.Log
-import android.util.SizeF
+import android.util.Size
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.WindowManager
@@ -35,9 +35,16 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
 
     private var session: CameraCaptureSession? = null
 
+    private var isBackCamera = true
+
+    @Volatile
     private var rotation = -1
+    @Volatile
     private var cameraWidth = 0
+    @Volatile
     private var cameraHeight = 0
+
+    private var opened = false
 
     init {
         if (ContextCompat.checkSelfPermission(engine.view.context, Manifest.permission.CAMERA)
@@ -72,16 +79,19 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
 
     fun start() {
         pluginHandler.post {
+            if (cameraManager == null) {
+                startCamera()
+            }
             if (surfaceObj?.surface == null) {
-                createSurface()
+                //create surfaceTexture with camera size
+                createSurface(cameraWidth, cameraHeight)
             }
             val surface = surfaceObj?.surface
             if (surface == null) {
                 Log.e(TAG, "SurfaceObj is null!")
                 return@post
             }
-            if (cameraManager == null) {
-                startCamera()
+            if (!opened) {
                 openCamera(surface)
             }
         }
@@ -111,17 +121,23 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         return cameraHeight
     }
 
+    private fun switchCamera() {
+        pluginHandler.post {
+            isBackCamera = !isBackCamera
+            closeCamera()
+            start()
+        }
+    }
+
     private fun startCamera() {
         Log.d(TAG, "startCamera")
         cameraManager = HYSkiaUIApp.getInstance().getSystemService(CAMERA_SERVICE) as CameraManager
-        cameraId = cameraManager?.cameraIdList?.getOrNull(1) ?: ""
+        cameraId = cameraManager?.cameraIdList?.getOrNull(if (isBackCamera) 0 else 1) ?: ""
         val rotation = getCameraRotation(HYSkiaUIApp.getInstance(), cameraId)
-        val sizeF = getCameraSize(HYSkiaUIApp.getInstance(), cameraId)
-        engine.postToSkiaUI {
-            this.rotation = rotation
-            this.cameraWidth = sizeF.width.toInt()
-            this.cameraHeight = sizeF.height.toInt()
-        }
+        val size = getCameraSize(HYSkiaUIApp.getInstance(), cameraId)
+        this.rotation = rotation
+        this.cameraWidth = size.width
+        this.cameraHeight = size.height
     }
 
     private fun closeCamera() {
@@ -131,11 +147,13 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         cameraDevice?.close()
         cameraDevice = null
         cameraManager = null
+        opened = false
     }
 
     @SuppressLint("MissingPermission")
     private fun openCamera(surface: Surface) {
         Log.d(TAG, "openCamera")
+        opened = true
         cameraManager?.openCamera(cameraId, object : CameraDevice.StateCallback() {
             override fun onOpened(camera: CameraDevice) {
                 cameraDevice = camera
@@ -144,10 +162,12 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
 
             override fun onDisconnected(camera: CameraDevice) {
                 camera.close()
+                opened = false
             }
 
             override fun onError(camera: CameraDevice, error: Int) {
                 camera.close()
+                opened = false
             }
         }, null)
     }
@@ -207,11 +227,11 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         return (sensorOrientation + displayRotation + 360) % 360
     }
 
-    private fun getCameraSize(context: Context, cameraId: String): SizeF {
+    private fun getCameraSize(context: Context, cameraId: String): Size {
         val cameraManager = context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
         val characteristics = cameraManager.getCameraCharacteristics(cameraId)
-        return characteristics.get(CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE)
-            ?: SizeF(width.toFloat(), height.toFloat())
+        return characteristics.get(CameraCharacteristics.SENSOR_INFO_PIXEL_ARRAY_SIZE)
+            ?: Size(width, height)
     }
 
     companion object {

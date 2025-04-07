@@ -1,5 +1,6 @@
 #include "CameraPage.h"
 #include "ScrollView.h"
+#include "ProgressBar.h"
 #include "Button.h"
 
 namespace HYSkiaUI {
@@ -26,6 +27,43 @@ void CameraPage::initChildren(ViewGroup *root, int width, int height) {
     flexboxLayout->setAlignItems(YGAlignCenter);
     flexboxLayout->setFlex(1);
     this->addView(flexboxLayout);
+
+    auto progressBar = new ProgressBar();
+    progressBar->setContext(this->context);
+    progressBar->setBackgroundColor(SK_ColorGRAY);
+    progressBar->setBarColor(SK_ColorGREEN);
+    progressBar->setStrokeWidth(10.0);
+    progressBar->setAutoMode(false);
+    progressBar->setType(ProgressBar::ProgressBarType::LINEAR);
+    progressBar->setProgress(50);
+    progressBar->setStyle(SkPaint::kStroke_Style);
+    progressBar->setWidth(width);
+    progressBar->setHeight(60);
+    progressBar->setMargin({50, 50, 50, 50});
+    flexboxLayout->addView(progressBar);
+    progressBar->setProgressCallback([this](int progress, bool finished) {
+        auto height = progress * this->cameraView->getWidth() / 50;
+        cameraView->setHeight(height);
+    });
+
+    auto rotateProgressBar = new ProgressBar();
+    rotateProgressBar->setContext(this->context);
+    rotateProgressBar->setBackgroundColor(SK_ColorGRAY);
+    rotateProgressBar->setBarColor(SK_ColorGREEN);
+    rotateProgressBar->setStrokeWidth(10.0);
+    rotateProgressBar->setAutoMode(false);
+    rotateProgressBar->setType(ProgressBar::ProgressBarType::LINEAR);
+    rotateProgressBar->setProgress(0);
+    rotateProgressBar->setStyle(SkPaint::kStroke_Style);
+    rotateProgressBar->setWidth(width);
+    rotateProgressBar->setHeight(60);
+    rotateProgressBar->setMargin({50, 50, 50, 50});
+    flexboxLayout->addView(rotateProgressBar);
+    rotateProgressBar->setProgressCallback([this](int progress, bool finished) {
+        auto rotateZ = progress / 100.0f * 360.0f;
+        cameraView->setRotateZ(rotateZ);
+    });
+
     {
         cameraView = new CameraView();
         cameraView->setContext(this->context);
@@ -36,33 +74,15 @@ void CameraPage::initChildren(ViewGroup *root, int width, int height) {
     {
         auto button = new Button();
         button->setContext(this->context);
-        button->setText(SkString("Capture"));
-        button->setWidth(540);
-        button->setHeight(100);
+        button->setText(SkString("Switch Front/End Camera"));
         button->setTextSize(60);
         button->setCornerRadius(20);
         button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
-        button->setMargin({50, 0, 50, 100});
+        button->setMargin({0, 50, 0, 0});
         flexboxLayout->addView(button);
         button->setOnClickListener([this](View *view) {
-            ALOGD("setOnClickListener perform %s", view->name())
-            this->cameraView->capture([this](sk_sp<SkImage> image){
-                if (previewImageView != nullptr) {
-                    previewImageView->setImage(image);
-                    previewImageView->setWidth(image->height() / 4);
-                    previewImageView->setHeight(image->width() / 4);
-                    previewImageView->setRotateZ(90);
-                }
-            });
+            cameraView->switchCamera();
         });
-    }
-    {
-        previewImageView = new CameraPreviewImage();
-        previewImageView->setContext(this->context);
-        previewImageView->setStyle(SkPaint::kStroke_Style);
-        previewImageView->setBackgroundColor(SK_ColorRED);
-        previewImageView->setStrokeWidth(2);
-        flexboxLayout->addView(previewImageView);
     }
 }
 

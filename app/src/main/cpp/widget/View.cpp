@@ -349,6 +349,7 @@ void View::setWidth(int width) {
     }
     this->width = width;
     YGNodeStyleSetWidth(node, width);
+    markDirty();
 }
 
 void View::setHeight(int height) {
@@ -357,6 +358,7 @@ void View::setHeight(int height) {
     }
     this->height = height;
     YGNodeStyleSetHeight(node, height);
+    markDirty();
 }
 
 void View::setMargin(std::vector<int> margins) {

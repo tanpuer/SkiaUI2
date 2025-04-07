@@ -137,7 +137,7 @@ abstract class SurfaceTextureBasePlugin(
         }
     }
 
-    fun createSurface() {
+    fun createSurface(width: Int = this.width, height: Int = this.height) {
         if (!show || !skiaShow) {
             return
         }
@@ -145,8 +145,8 @@ abstract class SurfaceTextureBasePlugin(
             surfaceObj = SurfaceObj().apply {
                 this.surfaceTexture = SurfaceTexture(INDEX).apply { detachFromGLContext() }
                 this.surface = Surface(this.surfaceTexture)
-                this.width = this@SurfaceTextureBasePlugin.width
-                this.height = this@SurfaceTextureBasePlugin.height
+                this.width = width
+                this.height = height
             }
             surfaceObj?.setDefaultBufferSize(width, height)
             val surfaceTexture = surfaceObj?.surfaceTexture ?: return

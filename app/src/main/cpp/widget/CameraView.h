@@ -16,13 +16,15 @@ public:
 
     void initJNI() override;
 
-    const char * name() override;
+    const char *name() override;
 
     void capture(std::function<void(sk_sp<SkImage>)> &&captureCallback);
 
     void layout(int l, int t, int r, int b) override;
 
     void draw(SkCanvas *canvas) override;
+
+    void switchCamera();
 
 private:
 
@@ -41,6 +43,8 @@ private:
     jmethodID getCameraWidthMethodId = nullptr;
 
     jmethodID getCameraHeightMethodId = nullptr;
+
+    jmethodID switchCameraMethodId = nullptr;
 
     float cameraRatio = 0.0f;
 

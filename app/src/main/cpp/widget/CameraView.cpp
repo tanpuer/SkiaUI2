@@ -33,6 +33,7 @@ void CameraView::initJNI() {
     getRotationMethodId = jniEnv->GetMethodID(javaClass, "getRotation", "()I");
     getCameraWidthMethodId = jniEnv->GetMethodID(javaClass, "getCameraWidth", "()I");
     getCameraHeightMethodId = jniEnv->GetMethodID(javaClass, "getCameraHeight", "()I");
+    switchCameraMethodId = jniEnv->GetMethodID(javaClass, "switchCamera", "()V");
 }
 
 void CameraView::layout(int l, int t, int r, int b) {
@@ -63,45 +64,49 @@ void CameraView::draw(SkCanvas *canvas) {
     cameraRatio =
             static_cast<float>(cameraWidth) / static_cast<float >(cameraHeight);
     viewRatio = static_cast<float>(width) / static_cast<float>(height);
-
     if (YGFloatsEqual(0.0f, cameraRatio)) {
         return;
     }
     auto recordingWidth = 0.0f;
     auto recordingHeight = 0.0f;
-    if (cameraRatio < viewRatio) {
-        recordingHeight = static_cast<float>(height);
-        recordingWidth = static_cast<float>(height) * cameraRatio;
-    } else {
-        recordingWidth = static_cast<float>(width);
-        recordingHeight = static_cast<float>(width) / cameraRatio;
-    }
+    recordingHeight = static_cast<float>(height);
+    recordingWidth = static_cast<float>(height) * cameraRatio;
     SkCanvas *skCanvas;
     SkPictureRecorder recorder;
     skCanvas = recorder.beginRecording(recordingWidth, recordingHeight);
     SkRect target{0, 0, recordingWidth, recordingHeight};
     imageMatrix.setIdentity();
     if (rotation == 270) {
+        //front camera
         imageMatrix.preScale(-1, 1, target.centerX(), 0);
-//        imageMatrix.preRotate(270, target.centerX(), target.centerY());
-//        if (cameraRatio > viewRatio) {
-//            imageMatrix.postScale(1.0f, viewRatio / cameraRatio, target.centerX(),
-//                                  target.centerY());
-//        } else {
-//            imageMatrix.postScale(cameraRatio / viewRatio, 1.0f, target.centerX(),
-//                                  target.centerY());
-//        }
+        imageMatrix.preRotate(270, target.centerX(), target.centerY());
+        auto rotatedWidth = recordingHeight;
+        auto rotatedHeight = recordingWidth;
+        auto scale = std::min(width / rotatedWidth, height / rotatedHeight);
+        imageMatrix.preScale(scale, scale, target.centerX(), target.centerY());
     } else if (rotation == 90) {
         //back camera
+        imageMatrix.preRotate(90, target.centerX(), target.centerY());
+        auto rotatedWidth = recordingHeight;
+        auto rotatedHeight = recordingWidth;
+        auto scale = std::min(width / rotatedWidth, height / rotatedHeight);
+        imageMatrix.preScale(scale, scale, target.centerX(), target.centerY());
     }
     skCanvas->setMatrix(imageMatrix);
     skCanvas->drawImageRect(skImage, target, SkSamplingOptions());
     auto picture = recorder.finishRecordingAsPicture();
 
+    canvas->setMatrix(viewMatrix);
     canvas->save();
-    canvas->translate(left + (width - recordingWidth) / 2.0f, top + (height - recordingHeight) / 2.0f);
+    canvas->translate(left + (width - recordingWidth) / 2.0f,
+                      top + (height - recordingHeight) / 2.0f);
     canvas->drawPicture(picture);
     canvas->restore();
+}
+
+void CameraView::switchCamera() {
+    auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaInstance, switchCameraMethodId);
 }
 
 }
