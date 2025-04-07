@@ -17,9 +17,8 @@ steps：
    LyricView, InputView, FlexboxLayout, Page...
 9. **PlatformView**:  
    render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
-   render CameraView by ImageReader/ByteBuffer/SkRuntimeEffect.  
    render 3D View by Filament(other engines can also supported)/SurfaceTexture/SkImage.  
-   render Video by ExoPlayer/SurfaceTexture/SkImage.  
+   render Video(ExoPlayer)/Camera by SurfaceTexture/SkImage.  
    ...
 10. **Development**:   
     |  |  |  |

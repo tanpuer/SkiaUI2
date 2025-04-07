@@ -33,6 +33,9 @@ SkiaFilter::SkiaFilter(JNIEnv *env) : skCanvas(nullptr) {
 
 SkiaFilter::~SkiaFilter() {
     skCanvas = nullptr;
+    for (auto &item: surfaceTextureToTextureIdMap) {
+        glDeleteTextures(1, &(item.second));
+    }
 }
 
 void SkiaFilter::setWindowSize(int width, int height) {
@@ -111,6 +114,11 @@ void SkiaFilter::deleteSkImage(JNIEnv *env, long skImagePtr) {
     if (skImage != nullptr) {
         ALOGD("textureId is deleteSkImage: refCount: %d", skImage->getRefCnt2())
         SkSafeUnref(skImage);
+    }
+    auto itr = surfaceTextureToTextureIdMap.find(skImagePtr);
+    if (itr != surfaceTextureToTextureIdMap.end()) {
+        glDeleteTextures(1, &(itr->second));
+        surfaceTextureToTextureIdMap.erase(skImagePtr);
     }
 }
 

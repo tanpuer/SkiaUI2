@@ -267,7 +267,6 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
             flexboxLayout->addView(view);
             view->setOnClickListener([this, width, height](View *view) {
                 if (context->getPageStackManager()->getPages().size() <= 1) {
-                    context->getPluginManager()->invokeMethod("toast", "show", "back error");
                     return;
                 }
                 auto page = context->getPageStackManager()->back();
