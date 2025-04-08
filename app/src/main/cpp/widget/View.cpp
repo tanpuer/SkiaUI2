@@ -276,11 +276,6 @@ void View::setOnClickListener(std::function<void(View *)> clickListener) {
     viewClickListener = std::move(clickListener);
 }
 
-void View::removeClickListener() {
-    viewClickListener = nullptr;
-    markDirty();
-}
-
 void View::performClick() {
     if (viewClickListener != nullptr) {
         viewClickListener(this);
@@ -405,7 +400,6 @@ void View::setContext(std::shared_ptr<SkiaUIContext> &context) {
         return;
     }
     this->config = context->getConfig();
-    //todo setConfig之后才会进行node的创建
     node = YGNodeNewWithConfig(config);
 }
 
@@ -447,16 +441,13 @@ void View::setVelocity(float x, float y) {
 }
 
 void View::performAnimations() {
-    std::vector<uint32_t> needReset;
-    for (const auto &animator: animators) {
-        if (animator.second->isEnd()) {
-            needReset.push_back(animator.first);
+    for (auto itr = animators.begin(); itr != animators.end();) {
+        if (itr->second == nullptr || itr->second->isEnd()) {
+            itr = animators.erase(itr);
         } else {
-            animator.second->update(skRect);
+            itr->second->update(skRect);
+            ++itr;
         }
-    }
-    for (auto &index: needReset) {
-        animators.erase(index);
     }
 }
 

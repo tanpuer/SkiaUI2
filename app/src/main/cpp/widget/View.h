@@ -69,8 +69,6 @@ public:
 
     virtual const std::function<void(View *)> &getClickListener();
 
-    virtual void removeClickListener();
-
     virtual void performClick();
 
     virtual void setVelocity(float x, float y);
