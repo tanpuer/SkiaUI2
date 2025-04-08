@@ -16,9 +16,12 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
 
     open fun start(width: Int, height: Int) {
         composition = ControlledComposition(
-            applier = HYComposeApplier(HYComposePage(Modifier(context).setSize(width, height)).apply {
-                this.push((modifier.styles["size"] as IntArray)[0])
-            }),
+            applier = HYComposeApplier(
+                HYComposePage(
+                    Modifier(context).setSize(width, height)
+                ).apply {
+                    this.push((modifier.styles["size"] as IntArray)[0])
+                }),
             parent = HYComposeSDK.getRecomposer()
         )
         composition?.setContent {

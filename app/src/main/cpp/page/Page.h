@@ -109,6 +109,12 @@ public:
 
     virtual void drawOneFrame(int drawCount) {}
 
+protected:
+
+    jmethodID pageOnShowMethodId = nullptr;
+
+    jmethodID pageOnHideMethodId = nullptr;
+
 };
 
 }

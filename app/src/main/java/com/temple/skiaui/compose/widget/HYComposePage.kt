@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.widget
 
+import android.util.Log
 import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposePage(modifier: Modifier) : HYComposeViewGroup(modifier) {
@@ -12,6 +13,14 @@ class HYComposePage(modifier: Modifier) : HYComposeViewGroup(modifier) {
 
     fun pop() {
         nativePop(ref)
+    }
+
+    private fun onShow() {
+        Log.d("HYComposePage", "onShow")
+    }
+
+    private fun onHide() {
+        Log.d("HYComposePage", "onHide")
     }
 
     private external fun nativePush(page: Long, width: Int)

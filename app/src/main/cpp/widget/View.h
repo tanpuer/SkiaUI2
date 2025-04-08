@@ -322,7 +322,7 @@ public:
 
     const jobject getJavaViewRef();
 
-private:
+protected:
 
     jobject globalJavaViewRef = nullptr;
 

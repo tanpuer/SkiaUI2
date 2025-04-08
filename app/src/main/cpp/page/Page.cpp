@@ -15,8 +15,7 @@ Page::Page() {
     pagePaint = std::make_unique<SkPaint>();
 }
 
-
-void Page::setContext(std::shared_ptr<SkiaUIContext>& context) {
+void Page::setContext(std::shared_ptr<SkiaUIContext> &context) {
     View::setContext(context);
     auto runtime = context->getRuntime();
     if (runtime != nullptr && !createCallback.IsEmpty()) {
@@ -171,12 +170,18 @@ void Page::setBlackWhiteMode() {
     pagePaint->setColorFilter(colorFilter);
 }
 
-#pragma mark LifeCycle Callback start
-
 void Page::onShow() {
     auto runtime = context->getRuntime();
     if (runtime != nullptr && !showCallback.IsEmpty()) {
         runtime->performFunction(showCallback, 0, {});
+    }
+    if (globalJavaViewRef != nullptr) {
+        auto jniEnv = context->getJniEnv();
+        if (pageOnShowMethodId == nullptr) {
+            auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/widget/HYComposePage");
+            pageOnShowMethodId = jniEnv->GetMethodID(jClazz, "onShow", "()V");
+        }
+        jniEnv->CallVoidMethod(globalJavaViewRef, pageOnShowMethodId);
     }
     ViewGroup::onShow();
 }
@@ -185,6 +190,14 @@ void Page::onHide() {
     auto runtime = context->getRuntime();
     if (runtime != nullptr && !hideCallback.IsEmpty()) {
         runtime->performFunction(hideCallback, 0, {});
+    }
+    if (globalJavaViewRef != nullptr) {
+        auto jniEnv = context->getJniEnv();
+        if (pageOnHideMethodId == nullptr) {
+            auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/widget/HYComposePage");
+            pageOnHideMethodId = jniEnv->GetMethodID(jClazz, "onHide", "()V");
+        }
+        jniEnv->CallVoidMethod(globalJavaViewRef, pageOnHideMethodId);
     }
     ViewGroup::onHide();
 }
@@ -208,7 +221,5 @@ void Page::setOnPageSizeChangeListener(std::function<void(int, int)> &&callback)
 const char *Page::name() {
     return "Page";
 }
-
-#pragma mark LifeCycle Callback end
 
 }

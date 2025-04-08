@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.example
 
+import android.util.Log
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
@@ -7,6 +8,7 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -38,6 +40,11 @@ class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
             targetValue = Color(0xFF4285F4),
             animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Reverse),
         )
+        DisposableEffect(engine.getContext()) {
+            onDispose {
+                Log.d(TAG, "onDispose")
+            }
+        }
         LazyColumn(
             modifier = Modifier(context).setSize(width, height)
                 .setAlignItems("center"),
@@ -68,5 +75,9 @@ class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
         val b = (color.blue * 255).toInt()
         val a = (color.alpha * 255).toInt()
         return String.format("#%02X%02X%02X%02X", r, g, b, a)
+    }
+
+    companion object {
+        private const val TAG = "HYComposeAnimationPage"
     }
 }

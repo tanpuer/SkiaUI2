@@ -56,15 +56,11 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"EditText",      []() -> View * { return new EditText(); }},
     };
     auto result = viewFactory[typeStr]();
-    if (result != nullptr) {
-        auto testDraw = reinterpret_cast<ITestDraw *>(contextPtr);
-        result->setContext(testDraw->getContext());
-        env->ReleaseStringUTFChars(type, typeStr);
-        return reinterpret_cast<long >(result);
-    }
+    auto testDraw = reinterpret_cast<ITestDraw *>(contextPtr);
+    result->setContext(testDraw->getContext());
+    result->checkJavaViewRef(instance);
     env->ReleaseStringUTFChars(type, typeStr);
-    ALOGE("UnRegistered View Type:%s", typeStr)
-    return 0L;
+    return reinterpret_cast<long >(result);
 }
 
 extern "C" JNIEXPORT void JNICALL

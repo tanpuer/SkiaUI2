@@ -1,5 +1,6 @@
 package com.temple.skiaui
 
+import android.content.Context
 import android.content.res.AssetManager
 import android.graphics.SurfaceTexture
 import android.hardware.HardwareBuffer
@@ -315,6 +316,11 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         skiaUIHandler.post {
             nativeSendInspectMsg(msg, nativePtr)
         }
+    }
+
+    @MainThread
+    fun getContext(): Context {
+        return view.context
     }
 
     private external fun nativeGLInit(): Long
