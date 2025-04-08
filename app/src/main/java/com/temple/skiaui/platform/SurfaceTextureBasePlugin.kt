@@ -177,7 +177,7 @@ abstract class SurfaceTextureBasePlugin(
         }
     }
 
-    private fun deleteSkImage(ptr: Long) {
+    fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
     }
 

@@ -124,6 +124,11 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
     private fun switchCamera() {
         pluginHandler.post {
             isBackCamera = !isBackCamera
+            surfaceObj?.surfaceTexture?.setOnFrameAvailableListener(null)
+            surfaceObj?.release()
+            surfaceObj = null
+            deleteSkImage(skImagePtr)
+            skImagePtr = 0L
             closeCamera()
             start()
         }
