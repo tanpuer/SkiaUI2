@@ -9,7 +9,8 @@ steps：
 3. Two threads: ui-thread & render-thread.
 4. Only support FlexboxLayout. Measure/Layout/Draw are triggered by Vsync.
 5. TouchEvents: dispatchTouchEvent/interceptTouchEvent/onTouchEvent.
-6. Animations support scale/rotate/translate，and will be performed before measure.
+6. Animations support scale/rotate/translate，and will be performed before measure.  
+   support easing functions: https://easings.net/en
 7. Dirty-Render: markDirty if next draw is necessary.
 8. **Supported Widgets**:   
    View, ImageView, TextView, Icon, ProgressBar, SVGView, ShaderView, Lottie, VideoView,
@@ -24,7 +25,7 @@ steps：
     |  |  |  |
     |--------|--------------------------------------|-------------------------------------------------------------------------|
     | C++    | ``                                   | See ExamplePage.cpp.
-    | js     | `Import v8 to evaluate javascript`   | See test.js in assets. .Support **debug in chrome**.  
+    | js     | `Import v8 to evaluate javascript`   | See test.js in assets. Support **debug in chrome**.  
     | Kotlin | `Import kotlin`<br>`Compose-runtime` | Support **Live-Edit**, save code then ui will refresh. See HYComposeExamplePage.kt in java. |                    |
     | React  | `Import react/react-reconciler`      | demo: https://github.com/tanpuer/skia-ui-react |
     | Vue    | `Import @vue/runtime-core`           | demo: https://github.com/tanpuer/skia-ui-vue. Need import CSS-Selector(TODO). |
