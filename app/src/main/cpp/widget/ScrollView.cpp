@@ -29,10 +29,10 @@ void ScrollView::layout(int l, int t, int r, int b) {
     }
     if (_direction == YGFlexDirectionRow) {
         updateTranslateX(0.0);
-        layoutHorizontal(l + translateX, t, r, b);
+        layoutChildren(l + translateX, t, r, b);
     } else {
         updateTranslateY(0.0);
-        layoutVertical(l, t + translateY, r, b);
+        layoutChildren(l, t + translateY, r, b);
     }
 }
 
@@ -266,12 +266,10 @@ void ScrollView::scrollTo(float value) {
         if (_direction == YGFlexDirectionColumn) {
             if (!YGFloatsEqual(this->translateY, value)) {
                 setTranslateY(value);
-                markDirty();
             }
         } else {
             if (!YGFloatsEqual(this->translateX, value)) {
                 setTranslateX(value);
-                markDirty();
             }
         }
     });

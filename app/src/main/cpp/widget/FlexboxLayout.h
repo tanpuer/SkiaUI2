@@ -24,9 +24,7 @@ public:
 
 protected:
 
-    void layoutVertical(int l, int t, int r, int b);
-
-    void layoutHorizontal(int l, int t, int r, int b);
+    void layoutChildren(int l, int t, int r, int b);
 
 };
 
