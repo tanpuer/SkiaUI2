@@ -1,7 +1,6 @@
 #include "TouchEventDispatcher.h"
 #include <yoga/Yoga.h>
 #include "ViewGroup.h"
-#include "MovingView.h"
 #include "ScrollView.h"
 
 namespace HYSkiaUI {

@@ -55,7 +55,6 @@ void Page::exitToLeft(const EnterExitInfo &info) {
     animator->setDuration(info.duration);
     animator->addListener([this]() {
         this->markDestroyed = true;
-        context->getPageStackManager()->removeDestroyedPage();
     });
     animator->start();
     context->getPageStackManager()->showLastPage();
@@ -82,7 +81,6 @@ void Page::exitToTop(const Page::EnterExitInfo &info) {
     animator->setDuration(info.duration);
     animator->addListener([this]() {
         this->markDestroyed = true;
-        context->getPageStackManager()->removeDestroyedPage();
     });
     animator->start();
     context->getPageStackManager()->showLastPage();
