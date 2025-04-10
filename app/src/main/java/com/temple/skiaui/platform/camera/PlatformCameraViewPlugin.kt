@@ -109,6 +109,10 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         }
     }
 
+    override fun onSizeChange(width: Int, height: Int) {
+        //camera not update surfaceTexture size, keep ratio
+    }
+
     private fun getRotation(): Int {
         return rotation
     }

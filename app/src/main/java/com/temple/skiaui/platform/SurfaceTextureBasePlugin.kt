@@ -109,6 +109,14 @@ abstract class SurfaceTextureBasePlugin(
         Choreographer.getInstance().removeFrameCallback(this)
     }
 
+    open fun onSizeChange(width: Int, height: Int) {
+        pluginHandler.post {
+            if (surfaceObj?.width != width || surfaceObj?.height != height) {
+                surfaceObj?.setDefaultBufferSize(width, height)
+            }
+        }
+    }
+
     abstract fun dispatchTouchEvent(touchEvent: MotionEvent)
 
     abstract fun drawOneFrame(frameTimeNanos: Long)
@@ -180,14 +188,6 @@ abstract class SurfaceTextureBasePlugin(
 
     fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
-    }
-
-    fun onSizeChange(width: Int, height: Int) {
-        pluginHandler.post {
-            if (surfaceObj?.width != width || surfaceObj?.height != height) {
-                surfaceObj?.setDefaultBufferSize(width, height)
-            }
-        }
     }
 
     companion object {

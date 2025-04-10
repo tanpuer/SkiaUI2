@@ -141,6 +141,13 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
         super.onHide()
     }
 
+    override fun onSizeChange(width: Int, height: Int) {
+        super.onSizeChange(width, height)
+        pluginHandler.post {
+            view.viewport = Viewport(0, 0, width, height)
+        }
+    }
+
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
         super.onFrameAvailable(surfaceTexture)
     }
