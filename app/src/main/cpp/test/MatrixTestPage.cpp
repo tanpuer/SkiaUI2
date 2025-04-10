@@ -4,6 +4,7 @@
 #include "ImageView.h"
 #include "ExoPlayerView.h"
 #include "ProgressBar.h"
+#include "Button.h"
 
 namespace HYSkiaUI {
 
@@ -159,6 +160,45 @@ void MatrixTestPage::initChildren(ViewGroup *root, int width, int height) {
         shaderView->setWidth(1080);
         shaderView->setHeight(520);
         scrollView->addView(shaderView);
+    }
+
+    {
+        auto changeSizeProgressBar = new ProgressBar();
+        changeSizeProgressBar->setContext(this->context);
+        changeSizeProgressBar->setBackgroundColor(SK_ColorGRAY);
+        changeSizeProgressBar->setBarColor(SK_ColorGREEN);
+        changeSizeProgressBar->setStrokeWidth(10.0);
+        changeSizeProgressBar->setAutoMode(false);
+        changeSizeProgressBar->setType(ProgressBar::ProgressBarType::LINEAR);
+        changeSizeProgressBar->setProgress(50);
+        changeSizeProgressBar->setStyle(SkPaint::kStroke_Style);
+        changeSizeProgressBar->setWidth(width);
+        changeSizeProgressBar->setHeight(60);
+        changeSizeProgressBar->setMargin({50, 50, 50, 50});
+        scrollView->addView(changeSizeProgressBar);
+        changeSizeProgressBar->setProgressCallback([this](int progress, bool finished) {
+            auto scale = 1.0f;
+            if (progress >= 50) {
+                scale = progress / 50.0f;
+            } else {
+                scale = 0.5f + progress / 100.0f;
+            }
+            if (videoView != nullptr) {
+                videoView->setWidth(1080 * scale);
+                videoView->setHeight(360 * 1080 * scale / 640);
+            }
+        });
+    }
+
+    {
+        auto button = new Button();
+        button->setContext(this->context);
+        button->setText(SkString("VideoView width/height"));
+        button->setTextSize(60);
+        button->setCornerRadius(20);
+        button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+        button->setMargin({50, 50, 50, 50});
+        scrollView->addView(button);
     }
 
 }

@@ -34,6 +34,8 @@ public:
 
     bool onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) override;
 
+    void onSizeChange(int width, int height) override;
+
 protected:
 
     SkRect dstRect;
@@ -61,6 +63,8 @@ protected:
     jmethodID hideMethod = nullptr;
 
     jmethodID sendTouchEventMethodId = nullptr;
+
+    jmethodID onSizeChangeMethodId = nullptr;
 
 };
 

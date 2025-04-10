@@ -26,7 +26,6 @@ View::~View() {
         YGNodeFree(node);
     }
     animators.clear();
-    viewLayoutCallback = nullptr;
     viewClickListener = nullptr;
     clickFunction.Reset();
     if (globalJavaViewRef) {
@@ -50,6 +49,9 @@ void View::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
 }
 
 void View::layout(int l, int t, int r, int b) {
+    if (skRect.width() != r - l || skRect.height() != b - t) {
+        onSizeChange(r - l, b - t);
+    }
     skRect.setLTRB(l, t, r, b);
     left = l;
     top = t;
@@ -58,9 +60,6 @@ void View::layout(int l, int t, int r, int b) {
     width = r - l;
     height = b - t;
 
-    if (viewLayoutCallback != nullptr) {
-        viewLayoutCallback(l, t, r, b);
-    }
     if (!linearGradientColors.empty()) {
         SkPoint points[2]{SkPoint::Make(l, t), SkPoint::Make(r, b)};
         auto gradientShader = SkGradientShader::MakeLinear(
@@ -264,14 +263,6 @@ void View::setCustomTouchEventDispatcher(TouchEventDispatcher *touchEventDispatc
     this->touchEventDispatcher->setWeakView(this);
 }
 
-void View::setLayoutCallback(std::function<void(int, int, int, int)> callback) {
-    viewLayoutCallback = std::move(callback);
-}
-
-void View::removeLayoutCallback() {
-    viewLayoutCallback = nullptr;
-}
-
 void View::setOnClickListener(std::function<void(View *)> clickListener) {
     viewClickListener = std::move(clickListener);
 }
@@ -433,6 +424,10 @@ void View::clearDirty() {
 
 void View::setAnimator(IAnimator *animator) {
     animators[animator->getAnimatorId()] = std::unique_ptr<IAnimator>(animator);
+}
+
+void View::onSizeChange(int width, int height) {
+
 }
 
 void View::setVelocity(float x, float y) {

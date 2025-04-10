@@ -36,7 +36,8 @@ abstract class SurfaceTextureBasePlugin(
         start()
     }
 
-    protected val pluginHandler = if (inMainThread) Handler(Looper.getMainLooper()) else Handler(pluginThread.looper)
+    protected val pluginHandler =
+        if (inMainThread) Handler(Looper.getMainLooper()) else Handler(pluginThread.looper)
 
     protected val mainHandler = Handler(Looper.getMainLooper())
 
@@ -179,6 +180,14 @@ abstract class SurfaceTextureBasePlugin(
 
     fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
+    }
+
+    fun onSizeChange(width: Int, height: Int) {
+        pluginHandler.post {
+            if (surfaceObj?.width != width || surfaceObj?.height != height) {
+                surfaceObj?.setDefaultBufferSize(width, height)
+            }
+        }
     }
 
     companion object {

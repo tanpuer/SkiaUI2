@@ -61,10 +61,6 @@ public:
 
     virtual int64_t getViewId();
 
-    virtual void setLayoutCallback(std::function<void(int, int, int, int)> callback);
-
-    virtual void removeLayoutCallback();
-
     virtual void setOnClickListener(std::function<void(View *)> clickListener);
 
     virtual const std::function<void(View *)> &getClickListener();
@@ -89,6 +85,8 @@ public:
 
     void setAnimator(IAnimator *animator);
 
+    virtual void onSizeChange(int width, int height);
+
     //TODO
     float animTranslateX = 0.0f;
     float animTranslateY = 0.0f;
@@ -102,8 +100,6 @@ protected:
     bool needToMeasure = false;
 
     bool isDirty = false;
-
-    std::function<void(int, int, int, int)> viewLayoutCallback = nullptr;
 
     std::function<void(View *)> viewClickListener = nullptr;
 

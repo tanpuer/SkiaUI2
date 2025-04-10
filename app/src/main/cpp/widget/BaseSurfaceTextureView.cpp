@@ -31,6 +31,7 @@ void BaseSurfaceTextureView::layout(int l, int t, int r, int b) {
         hideMethod = jniEnv->GetMethodID(javaClass, "onHide", "()V");
         releaseMethod = jniEnv->GetMethodID(javaClass, "release", "()V");
         sendTouchEventMethodId = jniEnv->GetMethodID(javaClass, "sendTouchEvent", "(IFF)V");
+        onSizeChangeMethodId = jniEnv->GetMethodID(javaClass, "onSizeChange", "(II)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
         javaInstance = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(javaClass, javaConstructor,
@@ -86,6 +87,13 @@ bool BaseSurfaceTextureView::onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
                                touchEvent->x - left, touchEvent->y - top);
     }
     return true;
+}
+
+void BaseSurfaceTextureView::onSizeChange(int width, int height) {
+    if (javaInstance != nullptr) {
+        auto jniEnv = getContext()->getJniEnv();
+        jniEnv->CallVoidMethod(javaInstance, onSizeChangeMethodId, width, height);
+    }
 }
 
 }

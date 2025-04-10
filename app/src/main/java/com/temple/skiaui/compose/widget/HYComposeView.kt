@@ -69,7 +69,7 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     }
 
     fun triggerClickEvent() {
-        (modifier.events["click"] as? (view: HYComposeView) -> Unit)?.invoke(this)
+        (modifier.events["click"])?.invoke(this, null)
     }
 
     override fun getViewType(): String = "View"
