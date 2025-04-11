@@ -8,7 +8,6 @@
 #include "CanvasTest.h"
 #include "ClockView.h"
 #include "ProgressBar.h"
-#include "MovingView.h"
 #include "Button.h"
 #include "TextView.h"
 #include "QQMusicPage.h"

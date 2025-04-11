@@ -4,7 +4,6 @@
 #include "FlexboxLayout.h"
 #include "TextView.h"
 #include "ImageView.h"
-#include "MovingView.h"
 #include "Page.h"
 
 namespace HYSkiaUI {

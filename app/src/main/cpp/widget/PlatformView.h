@@ -4,6 +4,10 @@
 
 namespace HYSkiaUI {
 
+/**
+ * Android Native Views render to surfaceTexture and than transformed to SkImage.
+ * such as: EditText, WebView...
+ */
 class PlatformView : public View {
 
 public:
