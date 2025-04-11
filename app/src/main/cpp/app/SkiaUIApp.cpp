@@ -88,8 +88,8 @@ bool SkiaUIApp::onBackPressed() {
     // Compose
     if (this->exampleType == 2) {
         auto jniEnv = getContext()->getJniEnv();
-        jclass composeSDK = jniEnv->FindClass("com/temple/skiaui/compose/core/HYComposeSDK");
-        jfieldID instanceField = jniEnv->GetStaticFieldID(composeSDK, "INSTANCE", "Lcom/temple/skiaui/compose/core/HYComposeSDK;");
+        jclass composeSDK = jniEnv->FindClass("com/temple/skiaui/compose/runtime/HYComposeSDK");
+        jfieldID instanceField = jniEnv->GetStaticFieldID(composeSDK, "INSTANCE", "Lcom/temple/skiaui/compose/runtime/HYComposeSDK;");
         jmethodID onPagePoped = jniEnv->GetMethodID(composeSDK, "onPagePoped", "()V");
         jobject instance = jniEnv->GetStaticObjectField(composeSDK, instanceField);
         jniEnv->CallVoidMethod(instance, onPagePoped);

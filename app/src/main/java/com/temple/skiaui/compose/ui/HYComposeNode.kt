@@ -32,7 +32,7 @@ abstract class HYComposeNode(val modifier: Modifier) {
     }
 
     fun move(ref: Long, from: Int, to: Int, count: Int) {
-
+        nativeMove(ref, from, to, count)
     }
 
     fun clear() {
