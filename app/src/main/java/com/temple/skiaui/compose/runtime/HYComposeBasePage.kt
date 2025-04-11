@@ -7,7 +7,7 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.ui.HYComposePage
 
-abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
+abstract class HYComposeBasePage(val engine: HYSkiaEngine) {
 
     private var composition: ControlledComposition? = null
 
@@ -18,7 +18,7 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
         composition = ControlledComposition(
             applier = HYComposeApplier(
                 HYComposePage(
-                    Modifier(context).setSize(width, height)
+                    Modifier().setSize(width, height)
                 ).apply {
                     this.push((modifier.styles["size"] as IntArray)[0])
                 }),

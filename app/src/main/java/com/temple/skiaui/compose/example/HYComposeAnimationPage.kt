@@ -26,8 +26,7 @@ import com.temple.skiaui.compose.foundation.setMargins
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
 
-class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
-    HYComposeBasePage(engine, context) {
+class HYComposeAnimationPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
     override fun RunComposable(width: Int, height: Int) {
@@ -46,12 +45,12 @@ class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
             }
         }
         LazyColumn(
-            modifier = Modifier(context).setSize(width, height)
+            modifier = Modifier().setSize(width, height)
                 .setAlignItems("center"),
             "#00000066"
         ) {
             View(
-                modifier = Modifier(context)
+                modifier = Modifier()
                     .setSize(200, 200)
                     .onClick {
                         HYComposeSDK.popPage(engine)
@@ -59,7 +58,7 @@ class HYComposeAnimationPage(engine: HYSkiaEngine, context: Long) :
                 convertColor(color.value)
             )
             Text(
-                modifier = Modifier(context)
+                modifier = Modifier()
                     .setBackgroundColor("#ffffff00")
                     .setMargins(intArrayOf(0, 50, 0, 0))
                     .setTextSize(50),

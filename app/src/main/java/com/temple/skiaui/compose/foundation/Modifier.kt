@@ -2,7 +2,7 @@ package com.temple.skiaui.compose.foundation
 
 import com.temple.skiaui.compose.ui.HYComposeView
 
-class Modifier(val context: Long) {
+class Modifier {
 
     val styles = mutableMapOf<String, Any>()
 

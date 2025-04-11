@@ -1,4 +1,5 @@
 #include "JetpackComposeTest.h"
+#include "compose/ComposeContext.h"
 
 namespace HYSkiaUI {
 
@@ -6,7 +7,13 @@ JetpackComposeTest::JetpackComposeTest(JNIEnv *jniEnv) {
     this->jniEnv = jniEnv;
 }
 
+void JetpackComposeTest::setContext(std::shared_ptr<SkiaUIContext> &context) {
+    ITestDraw::setContext(context);
+    ComposeContext::getInstance()->saveContext(context);
+}
+
 JetpackComposeTest::~JetpackComposeTest() {
+    ComposeContext::getInstance()->clearContext();
     jniEnv->DeleteGlobalRef(testRef);
 }
 
@@ -15,13 +22,13 @@ void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, 
         MeasureTime measureTime("HYComposeExampleApp new");
         auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/example/HYComposeExampleApp");
         auto constructor = jniEnv->GetMethodID(jClazz, "<init>",
-                                               "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
+                                               "(Lcom/temple/skiaui/HYSkiaEngine;)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
         auto contextPtr = reinterpret_cast<long>(this);
         testRef = jniEnv->NewGlobalRef(
-                jniEnv->NewObject(jClazz, constructor, javaSkiaEngine, contextPtr));
+                jniEnv->NewObject(jClazz, constructor, javaSkiaEngine));
         auto startMethod = jniEnv->GetMethodID(jClazz, "onCreate", "(II)V");
-        jniEnv->CallVoidMethod(testRef, startMethod, width,height);
+        jniEnv->CallVoidMethod(testRef, startMethod, width, height);
         createFlag = true;
     }
     performAnimations(width, height);

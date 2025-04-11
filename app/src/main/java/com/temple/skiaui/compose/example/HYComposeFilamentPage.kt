@@ -9,17 +9,16 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setSize
 
-class HYComposeFilamentPage(engine: HYSkiaEngine, context: Long) :
-    HYComposeBasePage(engine, context) {
+class HYComposeFilamentPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
     override fun RunComposable(width: Int, height: Int) {
         LazyColumn(
-            modifier = Modifier(context).setSize(width, height)
+            modifier = Modifier().setSize(width, height)
                 .setAlignItems("flex-start"),
             "#ffffff"
         ) {
-            Filament(modifier = Modifier(context).setSize(width, 500))
+            Filament(modifier = Modifier().setSize(width, 500))
         }
     }
 }

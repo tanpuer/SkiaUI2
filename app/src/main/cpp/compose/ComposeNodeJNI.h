@@ -17,6 +17,7 @@
 #include "SVGView.h"
 #include "Button.h"
 #include "EditText.h"
+#include "ComposeContext.h"
 
 using namespace HYSkiaUI;
 
@@ -31,7 +32,7 @@ compose_node_add_view(JNIEnv *env, jobject instance, jlong parent, jlong child, 
 }
 
 extern "C" JNIEXPORT jlong JNICALL
-compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr, jstring type) {
+compose_node_create_view_factory(JNIEnv *env, jobject instance, jstring type) {
     ALOGD("nativeCreateView")
     auto typeStr = env->GetStringUTFChars(type, nullptr);
     static std::unordered_map<std::string, std::function<View *()>> viewFactory = {
@@ -56,8 +57,8 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jlong contextPtr
             {"EditText",      []() -> View * { return new EditText(); }},
     };
     auto result = viewFactory[typeStr]();
-    auto testDraw = reinterpret_cast<ITestDraw *>(contextPtr);
-    result->setContext(testDraw->getContext());
+    auto context = ComposeContext::getInstance()->getUIContext();
+    result->setContext(context);
     result->checkJavaViewRef(instance);
     env->ReleaseStringUTFChars(type, typeStr);
     return reinterpret_cast<long >(result);
@@ -94,11 +95,11 @@ compose_node_remove_all_children(JNIEnv *env, jobject instance, jlong parent) {
 }
 
 static JNINativeMethod g_ComposeNodeMethods[] = {
-        {"nativeAddView",           "(JJI)V",                 (void *) compose_node_add_view},
-        {"nativeCreateView",        "(JLjava/lang/String;)J", (void *) compose_node_create_view_factory},
-        {"nativeRemoveViews",       "(JII)V",                 (void *) compose_node_remove_views},
-        {"nativeMove",              "(JIII)V",                (void *) compose_node_move_views},
-        {"nativeRemoveAllChildren", "()V",                    (void *) compose_node_remove_all_children},
+        {"nativeAddView",           "(JJI)V",                (void *) compose_node_add_view},
+        {"nativeCreateView",        "(Ljava/lang/String;)J", (void *) compose_node_create_view_factory},
+        {"nativeRemoveViews",       "(JII)V",                (void *) compose_node_remove_views},
+        {"nativeMove",              "(JIII)V",               (void *) compose_node_move_views},
+        {"nativeRemoveAllChildren", "()V",                   (void *) compose_node_remove_all_children},
 };
 
 static int RegisterComposeNodeMethods(JNIEnv *env) {

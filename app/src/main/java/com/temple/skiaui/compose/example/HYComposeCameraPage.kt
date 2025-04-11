@@ -10,17 +10,16 @@ import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.ui.CameraCallback
 
-class HYComposeCameraPage(engine: HYSkiaEngine, context: Long) :
-    HYComposeBasePage(engine, context) {
+class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
     override fun RunComposable(width: Int, height: Int) {
         LazyColumn(
-            modifier = Modifier(context).setSize(width, height)
+            modifier = Modifier().setSize(width, height)
                 .setAlignItems("flex-start"),
             "#ffffff"
         ) {
-            Camera(Modifier(context).setSize(width, width), object : CameraCallback {
+            Camera(Modifier().setSize(width, width), object : CameraCallback {
                 override fun onImageCaptured(imagePtr: Long) {
 
                 }
