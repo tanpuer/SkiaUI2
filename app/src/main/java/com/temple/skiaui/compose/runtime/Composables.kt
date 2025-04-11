@@ -211,7 +211,7 @@ fun Image(modifier: Modifier, source: String) {
 }
 
 @Composable
-fun Icon(modifier: Modifier, icon: Int, color: String = "#0000ff", size: Int = 100) {
+fun Icon(icon: Int = 0, color: String = "#0000ff", size: Int = 100, modifier: Modifier = Modifier()) {
     ComposeNode<HYComposeIcon, HYComposeApplier>(
         factory = { HYComposeIcon(modifier) },
         update = {

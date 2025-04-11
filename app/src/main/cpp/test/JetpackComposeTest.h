@@ -24,6 +24,10 @@ private:
 
     bool createFlag = false;
 
+    jmethodID composeAppCreateMethodId = nullptr;
+
+    jmethodID composeAppDestroyMethodId = nullptr;
+
 };
 
 }

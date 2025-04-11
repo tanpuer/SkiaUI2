@@ -6,6 +6,8 @@ class HYComposeIcon(modifier: Modifier) : HYComposeView(modifier) {
 
     override fun getViewType(): String = "Icon"
 
+
+
     fun setIcon(icon: Int) {
         nativeSetIcon(ref, icon)
     }

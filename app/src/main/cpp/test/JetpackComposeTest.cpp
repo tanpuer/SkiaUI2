@@ -13,6 +13,7 @@ void JetpackComposeTest::setContext(std::shared_ptr<SkiaUIContext> &context) {
 }
 
 JetpackComposeTest::~JetpackComposeTest() {
+    jniEnv->CallVoidMethod(testRef, composeAppDestroyMethodId);
     ComposeContext::getInstance()->clearContext();
     jniEnv->DeleteGlobalRef(testRef);
 }
@@ -24,11 +25,11 @@ void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, 
         auto constructor = jniEnv->GetMethodID(jClazz, "<init>",
                                                "(Lcom/temple/skiaui/HYSkiaEngine;)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
-        auto contextPtr = reinterpret_cast<long>(this);
         testRef = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(jClazz, constructor, javaSkiaEngine));
-        auto startMethod = jniEnv->GetMethodID(jClazz, "onCreate", "(II)V");
-        jniEnv->CallVoidMethod(testRef, startMethod, width, height);
+        composeAppCreateMethodId = jniEnv->GetMethodID(jClazz, "onCreate", "(II)V");
+        composeAppDestroyMethodId = jniEnv->GetMethodID(jClazz, "onDestroy", "()V");
+        jniEnv->CallVoidMethod(testRef, composeAppCreateMethodId, width, height);
         createFlag = true;
     }
     performAnimations(width, height);
