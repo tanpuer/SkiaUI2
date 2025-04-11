@@ -1,4 +1,4 @@
-package com.temple.skiaui.compose.core
+package com.temple.skiaui.compose.runtime
 
 import android.view.Choreographer
 import androidx.compose.runtime.MonotonicFrameClock

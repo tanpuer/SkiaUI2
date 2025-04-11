@@ -7,7 +7,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeViewGroup = "com/temple/skiaui/compose/widget/HYComposeViewGroup";
+const char *HYComposeViewGroup = "com/temple/skiaui/compose/ui/HYComposeViewGroup";
 
 extern "C" JNIEXPORT void JNICALL
 compose_view_group_set_direction(JNIEnv *env, jobject instance, jlong viewPtr, jstring value) {

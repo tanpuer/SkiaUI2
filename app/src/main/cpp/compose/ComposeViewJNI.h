@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeView = "com/temple/skiaui/compose/widget/HYComposeView";
+const char *HYComposeView = "com/temple/skiaui/compose/ui/HYComposeView";
 
 extern "C" JNIEXPORT void JNICALL
 compose_view_set_width(JNIEnv *env, jobject instance, jlong viewPtr, jint width) {

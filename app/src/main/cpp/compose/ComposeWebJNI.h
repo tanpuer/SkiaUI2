@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeWeb = "com/temple/skiaui/compose/widget/HYComposeWeb";
+const char *HYComposeWeb = "com/temple/skiaui/compose/ui/HYComposeWeb";
 
 extern "C" JNIEXPORT void JNICALL
 compose_web_load_url(JNIEnv *env, jobject instance, jlong viewPtr, jstring url) {

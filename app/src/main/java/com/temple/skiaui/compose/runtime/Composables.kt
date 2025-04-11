@@ -1,28 +1,28 @@
-package com.temple.skiaui.compose.core
+package com.temple.skiaui.compose.runtime
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
-import com.temple.skiaui.compose.widget.CameraCallback
-import com.temple.skiaui.compose.widget.HYComposeButton
-import com.temple.skiaui.compose.widget.HYComposeCamera
-import com.temple.skiaui.compose.widget.HYComposeEditText
-import com.temple.skiaui.compose.widget.HYComposeExoVideo
-import com.temple.skiaui.compose.widget.HYComposeFilament
-import com.temple.skiaui.compose.widget.HYComposeFlexboxLayout
-import com.temple.skiaui.compose.widget.HYComposeIcon
-import com.temple.skiaui.compose.widget.HYComposeImage
-import com.temple.skiaui.compose.widget.HYComposeLoadingView
-import com.temple.skiaui.compose.widget.HYComposeLottie
-import com.temple.skiaui.compose.widget.HYComposeSVG
-import com.temple.skiaui.compose.widget.HYComposeScrollView
-import com.temple.skiaui.compose.widget.HYComposeShader
-import com.temple.skiaui.compose.widget.HYComposeSwitch
-import com.temple.skiaui.compose.widget.HYComposeText
-import com.temple.skiaui.compose.widget.HYComposeVideo
-import com.temple.skiaui.compose.widget.HYComposeView
-import com.temple.skiaui.compose.widget.HYComposeWeb
+import com.temple.skiaui.compose.ui.CameraCallback
+import com.temple.skiaui.compose.ui.HYComposeButton
+import com.temple.skiaui.compose.ui.HYComposeCamera
+import com.temple.skiaui.compose.ui.HYComposeEditText
+import com.temple.skiaui.compose.ui.HYComposeExoVideo
+import com.temple.skiaui.compose.ui.HYComposeFilament
+import com.temple.skiaui.compose.ui.HYComposeFlexboxLayout
+import com.temple.skiaui.compose.ui.HYComposeIcon
+import com.temple.skiaui.compose.ui.HYComposeImage
+import com.temple.skiaui.compose.ui.HYComposeLoadingView
+import com.temple.skiaui.compose.ui.HYComposeLottie
+import com.temple.skiaui.compose.ui.HYComposeSVG
+import com.temple.skiaui.compose.ui.HYComposeScrollView
+import com.temple.skiaui.compose.ui.HYComposeShader
+import com.temple.skiaui.compose.ui.HYComposeSwitch
+import com.temple.skiaui.compose.ui.HYComposeText
+import com.temple.skiaui.compose.ui.HYComposeVideo
+import com.temple.skiaui.compose.ui.HYComposeView
+import com.temple.skiaui.compose.ui.HYComposeWeb
 
 @Composable
 fun View(modifier: Modifier, backgroundColor: String, rotateZ: Float = 0.0f) {

@@ -7,7 +7,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeSwitch = "com/temple/skiaui/compose/widget/HYComposeSwitch";
+const char *HYComposeSwitch = "com/temple/skiaui/compose/ui/HYComposeSwitch";
 
 extern "C" JNIEXPORT void JNICALL
 compose_switch_set_enable(JNIEnv *env, jobject instance, jlong viewPtr, jboolean enable) {

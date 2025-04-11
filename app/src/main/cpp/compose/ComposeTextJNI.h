@@ -7,7 +7,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeText = "com/temple/skiaui/compose/widget/HYComposeText";
+const char *HYComposeText = "com/temple/skiaui/compose/ui/HYComposeText";
 
 extern "C" JNIEXPORT void JNICALL
 compose_text_set_text(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {

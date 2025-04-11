@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeExoVideo = "com/temple/skiaui/compose/widget/HYComposeExoVideo";
+const char *HYComposeExoVideo = "com/temple/skiaui/compose/ui/HYComposeExoVideo";
 
 extern "C" JNIEXPORT void JNICALL
 compose_exo_video_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {

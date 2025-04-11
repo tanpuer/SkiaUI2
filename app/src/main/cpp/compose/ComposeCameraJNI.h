@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeCamera = "com/temple/skiaui/compose/widget/HYComposeCamera";
+const char *HYComposeCamera = "com/temple/skiaui/compose/ui/HYComposeCamera";
 
 extern "C" JNIEXPORT void JNICALL
 compose_camera_capture(JNIEnv *env, jobject instance, jlong viewPtr, jobject callback) {
@@ -22,7 +22,7 @@ compose_camera_capture(JNIEnv *env, jobject instance, jlong viewPtr, jobject cal
 }
 
 static JNINativeMethod g_ComposeCameraViewMethods[] = {
-        {"nativeCapture", "(JLcom/temple/skiaui/compose/widget/CameraCallback;)V",
+        {"nativeCapture", "(JLcom/temple/skiaui/compose/ui/CameraCallback;)V",
          (void *) compose_camera_capture},
 };
 

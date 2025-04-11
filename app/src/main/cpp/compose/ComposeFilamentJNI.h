@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeFilament = "com/temple/skiaui/compose/widget/HYComposeFilament";
+const char *HYComposeFilament = "com/temple/skiaui/compose/ui/HYComposeFilament";
 
 static JNINativeMethod g_ComposeFilamentViewMethods[] = {
 };

@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeShader = "com/temple/skiaui/compose/widget/HYComposeShader";
+const char *HYComposeShader = "com/temple/skiaui/compose/ui/HYComposeShader";
 
 extern "C" JNIEXPORT void JNICALL
 compose_shader_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source,

@@ -13,11 +13,11 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.temple.skiaui.HYSkiaEngine
-import com.temple.skiaui.compose.core.HYComposeBasePage
-import com.temple.skiaui.compose.core.HYComposeSDK
-import com.temple.skiaui.compose.core.LazyColumn
-import com.temple.skiaui.compose.core.Text
-import com.temple.skiaui.compose.core.View
+import com.temple.skiaui.compose.runtime.HYComposeBasePage
+import com.temple.skiaui.compose.runtime.HYComposeSDK
+import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Text
+import com.temple.skiaui.compose.runtime.View
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems

@@ -1,6 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
-import com.temple.skiaui.compose.widget.HYComposeView
+import com.temple.skiaui.compose.ui.HYComposeView
 
 class Modifier(val context: Long) {
 

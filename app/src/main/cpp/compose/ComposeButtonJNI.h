@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeButton = "com/temple/skiaui/compose/widget/HYComposeButton";
+const char *HYComposeButton = "com/temple/skiaui/compose/ui/HYComposeButton";
 
 static JNINativeMethod g_ComposeButtonMethods[] = {
 };

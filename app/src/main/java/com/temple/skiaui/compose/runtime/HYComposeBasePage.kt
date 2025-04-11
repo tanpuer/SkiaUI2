@@ -1,11 +1,11 @@
-package com.temple.skiaui.compose.core
+package com.temple.skiaui.compose.runtime
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ControlledComposition
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.setSize
-import com.temple.skiaui.compose.widget.HYComposePage
+import com.temple.skiaui.compose.ui.HYComposePage
 
 abstract class HYComposeBasePage(val engine: HYSkiaEngine, val context: Long) {
 

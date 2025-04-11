@@ -7,7 +7,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeFlexboxLayout = "com/temple/skiaui/compose/widget/HYComposeFlexboxLayout";
+const char *HYComposeFlexboxLayout = "com/temple/skiaui/compose/ui/HYComposeFlexboxLayout";
 
 static JNINativeMethod g_ComposeFlexboxMethods[] = {
 };

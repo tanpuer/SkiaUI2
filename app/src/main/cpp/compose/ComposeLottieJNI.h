@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeLottie = "com/temple/skiaui/compose/widget/HYComposeLottie";
+const char *HYComposeLottie = "com/temple/skiaui/compose/ui/HYComposeLottie";
 
 extern "C" JNIEXPORT void JNICALL
 compose_lottie_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {

@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeImage = "com/temple/skiaui/compose/widget/HYComposeImage";
+const char *HYComposeImage = "com/temple/skiaui/compose/ui/HYComposeImage";
 
 extern "C" JNIEXPORT void JNICALL
 compose_image_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {

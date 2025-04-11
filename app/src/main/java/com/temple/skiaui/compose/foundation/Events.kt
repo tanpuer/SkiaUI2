@@ -1,6 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
-import com.temple.skiaui.compose.widget.HYComposeView
+import com.temple.skiaui.compose.ui.HYComposeView
 
 fun Modifier.onClick(callback: (view: HYComposeView) -> Unit): Modifier {
     events["click"] = { view, _ ->

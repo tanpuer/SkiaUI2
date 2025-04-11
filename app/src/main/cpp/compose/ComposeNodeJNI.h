@@ -20,7 +20,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeNode = "com/temple/skiaui/compose/widget/HYComposeNode";
+const char *HYComposeNode = "com/temple/skiaui/compose/ui/HYComposeNode";
 
 extern "C" JNIEXPORT void JNICALL
 compose_node_add_view(JNIEnv *env, jobject instance, jlong parent, jlong child, jint index) {

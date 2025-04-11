@@ -1,4 +1,4 @@
-package com.temple.skiaui.compose.core
+package com.temple.skiaui.compose.runtime
 
 import android.util.Log
 import android.view.Choreographer

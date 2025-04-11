@@ -1,8 +1,8 @@
 package com.temple.skiaui.compose.example
 
 import com.temple.skiaui.HYSkiaEngine
-import com.temple.skiaui.compose.core.HYComposeApplication
-import com.temple.skiaui.compose.core.HYComposeSDK
+import com.temple.skiaui.compose.runtime.HYComposeApplication
+import com.temple.skiaui.compose.runtime.HYComposeSDK
 
 class HYComposeExampleApp(engine: HYSkiaEngine, context: Long) :
     HYComposeApplication(engine, context) {

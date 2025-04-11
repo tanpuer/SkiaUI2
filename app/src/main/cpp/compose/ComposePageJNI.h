@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposePage = "com/temple/skiaui/compose/widget/HYComposePage";
+const char *HYComposePage = "com/temple/skiaui/compose/ui/HYComposePage";
 
 extern "C" JNIEXPORT void JNICALL
 compose_page_push(JNIEnv *env, jobject instance, jlong viewPtr, jint width) {

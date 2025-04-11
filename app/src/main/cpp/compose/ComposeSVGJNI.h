@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeSVG = "com/temple/skiaui/compose/widget/HYComposeSVG";
+const char *HYComposeSVG = "com/temple/skiaui/compose/ui/HYComposeSVG";
 
 extern "C" JNIEXPORT void JNICALL
 compose_svg_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {

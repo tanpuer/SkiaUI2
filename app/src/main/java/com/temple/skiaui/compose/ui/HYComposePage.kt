@@ -1,4 +1,4 @@
-package com.temple.skiaui.compose.widget
+package com.temple.skiaui.compose.ui
 
 import android.util.Log
 import com.temple.skiaui.compose.foundation.Modifier

@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeScrollView = "com/temple/skiaui/compose/widget/HYComposeScrollView";
+const char *HYComposeScrollView = "com/temple/skiaui/compose/ui/HYComposeScrollView";
 
 static JNINativeMethod g_ComposeScrollViewMethods[] = {
 };

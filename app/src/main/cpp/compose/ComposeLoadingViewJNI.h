@@ -7,7 +7,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeLoadingView = "com/temple/skiaui/compose/widget/HYComposeLoadingView";
+const char *HYComposeLoadingView = "com/temple/skiaui/compose/ui/HYComposeLoadingView";
 
 extern "C" JNIEXPORT void JNICALL
 compose_loading_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {

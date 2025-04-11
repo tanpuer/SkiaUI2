@@ -6,7 +6,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeEditText = "com/temple/skiaui/compose/widget/HYComposeEditText";
+const char *HYComposeEditText = "com/temple/skiaui/compose/ui/HYComposeEditText";
 
 extern "C" JNIEXPORT void JNICALL
 compose_edit_set_hint(JNIEnv *env, jobject instance, jlong viewPtr, jstring hint) {

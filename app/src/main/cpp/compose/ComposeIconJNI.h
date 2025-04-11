@@ -7,7 +7,7 @@
 
 using namespace HYSkiaUI;
 
-const char *HYComposeIcon = "com/temple/skiaui/compose/widget/HYComposeIcon";
+const char *HYComposeIcon = "com/temple/skiaui/compose/ui/HYComposeIcon";
 
 extern "C" JNIEXPORT void JNICALL
 compose_icon_set_icon(JNIEnv *env, jobject instance, jlong viewPtr, jint iconValue) {
