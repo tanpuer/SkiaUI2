@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.runtime.Button
-import com.temple.skiaui.compose.runtime.EditText
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
@@ -27,7 +26,6 @@ import com.temple.skiaui.compose.runtime.Shader
 import com.temple.skiaui.compose.runtime.Switch
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.runtime.View
-import com.temple.skiaui.compose.runtime.Web
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
@@ -35,9 +33,7 @@ import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setMargins
-import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
-import com.temple.skiaui.compose.foundation.setWidth
 import com.temple.skiaui.compose.ui.HYComposeView
 import kotlin.math.absoluteValue
 import kotlin.random.Random
@@ -111,13 +107,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 modifier = Modifier.setSize(width, 360 * width / 640),
                 "yiluxiangbei.mp4"
             )
-            EditText(
-                modifier = Modifier.setSize(width, 150)
-                    .setMargins(intArrayOf(0, 50, 0, 0)),
-                "这是Android原生的EditText融合渲染",
-                true
-            )
-            ComposeCamera(width, height)
+            ComposeNative(width, height)
             ComposeFilament(width, height)
             Loading(
                 modifier = Modifier.setSize(500, 200)
@@ -182,35 +172,28 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Icon(0xe61f)
             }
             Switch(Modifier.setMargins(intArrayOf(0, 50, 0, 0)))
-            Web(
-                Modifier.setSize(width, 1200)
-                    .setMargins(intArrayOf(0, 50, 0, 0)),
-                "https://m.bilibili.com/"
-            )
         }
     }
 
     @Composable
-    private fun ComposeCamera(width: Int, height: Int) {
+    private fun ComposeNative(width: Int, height: Int) {
         Button(
-            modifier = Modifier.setSize(540, 100)
-                .setTextSize(60)
+            modifier = Modifier.setTextSize(60)
                 .setMargins(intArrayOf(0, 50, 0, 0))
                 .onClick {
-                    HYComposeCameraPage(engine).apply {
+                    HYComposeNativeViewsPage(engine).apply {
                         start(width, height)
                         HYComposeSDK.pushPage(this)
                     }
                 },
-            "Camera Page",
+            "Native Views Page",
         )
     }
 
     @Composable
     private fun ComposeFilament(width: Int, height: Int) {
         Button(
-            modifier = Modifier.setSize(540, 100)
-                .setTextSize(60)
+            modifier = Modifier.setTextSize(60)
                 .setMargins(intArrayOf(0, 50, 0, 0))
                 .onClick {
                     HYComposeFilamentPage(engine).apply {

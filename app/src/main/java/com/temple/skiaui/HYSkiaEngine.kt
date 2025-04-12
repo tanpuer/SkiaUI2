@@ -7,6 +7,7 @@ import android.hardware.HardwareBuffer
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
+import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
@@ -155,15 +156,15 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
 
     private fun performGLDraw(time: Long) {
         skiaGLHandler.post {
-//            val measureStart = System.currentTimeMillis()
+            val measureStart = System.currentTimeMillis()
             val currPic = pic.getAndSet(0L)
             if (currPic == 0L) {
                 picIsNull.set(true)
                 return@post
             }
             nativeGLDoFrame(glApp, currPic, time)
-//            val costTime = System.currentTimeMillis() - measureStart
-//            Log.d(TAG, "GL cost: $costTime")
+            val costTime = System.currentTimeMillis() - measureStart
+            Log.d(TAG, "GL cost: $costTime")
             renderCount.addAndGet(1)
             skImageList.forEach {
                 nativeDeleteSkImage(glApp, it)

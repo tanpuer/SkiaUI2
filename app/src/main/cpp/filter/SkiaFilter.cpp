@@ -25,7 +25,7 @@ SkiaFilter::SkiaFilter(JNIEnv *env) : skCanvas(nullptr) {
     SkGraphics::Init();
     GrContextOptions options;
     options.fPersistentCache = new PersistentCache(env);
-    options.fShaderCacheStrategy = GrContextOptions::ShaderCacheStrategy::kSkSL;
+    options.fShaderCacheStrategy = GrContextOptions::ShaderCacheStrategy::kBackendBinary;
     auto backendInterface = GrGLMakeNativeInterface();
     skiaContext = GrDirectContexts::MakeGL(backendInterface, options);
     SkASSERT(skiaContext);
