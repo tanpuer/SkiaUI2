@@ -18,22 +18,32 @@ class PlatformEditText @JvmOverloads constructor(
 
     private var render: ICanvasProvider? = null
 
+    private var glDirty = true
+
     fun setCanvasProvider(render: ICanvasProvider) {
         this.render = render
     }
 
+    /**
+     * EditText sometimes draw dark, TODO!
+     */
     override fun onDraw(canvas: Canvas) {
         val glCanvas = render?.lockCanvas(canvas)
         if (glCanvas == null) {
             invalidate()
             return
         }
+        glDirty = false
         glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         glCanvas.save()
         glCanvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
         super.onDraw(glCanvas)
         glCanvas.restore()
         render?.unLockCanvas(glCanvas)
+    }
+
+    override fun isDirty(): Boolean {
+        return super.isDirty() || glDirty
     }
 
 }
