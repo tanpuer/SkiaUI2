@@ -32,7 +32,7 @@ steps：
 11. **Cross Platform**  
     ios: https://github.com/tanpuer/HYSkiaUI-iOS  
 12. Performance Problems:  
-    Skia: Shader Compilation jank, cache kSKSL  
+    Skia: Shader Compilation jank, cache GL program binaries.  
 
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example.png)
 ![image](https://github.com/tanpuer/SkiaUI2/blob/main/app/example1.png)
