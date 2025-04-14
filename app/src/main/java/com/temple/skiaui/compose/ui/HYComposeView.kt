@@ -28,6 +28,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 "margins" -> {
                     nativeSetMargins(ref, value as IntArray)
                 }
+
+                "position" -> {
+                    nativeSetPosition(ref, (value as Position).value)
+                }
             }
         }
     }
@@ -80,4 +84,5 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetClickCallback(view: Long)
     private external fun nativeSetRotateZ(view: Long, rotateZ: Float)
     private external fun nativeSetMargins(view: Long, margins: IntArray)
+    private external fun nativeSetPosition(view: Long, position: String)
 }

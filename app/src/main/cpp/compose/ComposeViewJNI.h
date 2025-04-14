@@ -3,6 +3,7 @@
 #include "jni.h"
 #include "View.h"
 #include "native_log.h"
+#include "w3c_util.h"
 
 using namespace HYSkiaUI;
 
@@ -53,12 +54,20 @@ extern "C" JNIEXPORT void JNICALL
 compose_view_set_margins(JNIEnv *env, jobject instance, jlong viewPtr, jintArray margins) {
     auto view = reinterpret_cast<View *>(viewPtr);
     jsize length = env->GetArrayLength(margins);
-    jint* marginsArray = env->GetIntArrayElements(margins, nullptr);
+    jint *marginsArray = env->GetIntArrayElements(margins, nullptr);
     std::vector<int> marginsVec;
     marginsVec.reserve(length);
     marginsVec.assign(marginsArray, marginsArray + length);
     env->ReleaseIntArrayElements(margins, marginsArray, JNI_ABORT);
     view->setMargin(marginsVec);
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_position(JNIEnv *env, jobject instance, jlong viewPtr, jstring position) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    auto positionStr = env->GetStringUTFChars(position, nullptr);
+    view->setBackgroundColor(W3CToYGPosition(positionStr));
+    env->ReleaseStringUTFChars(position, positionStr);
 }
 
 static JNINativeMethod g_ComposeViewMethods[] = {
@@ -68,6 +77,7 @@ static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetClickCallback",   "(J)V",                   (void *) compose_view_set_click_callback},
         {"nativeSetRotateZ",         "(JF)V",                  (void *) compose_view_set_rotateZ},
         {"nativeSetMargins",         "(J[I)V",                 (void *) compose_view_set_margins},
+        {"nativeSetPosition",        "(JLjava/lang/String;)V", (void *) compose_view_set_position},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

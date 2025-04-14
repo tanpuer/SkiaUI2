@@ -5,6 +5,7 @@ import androidx.compose.runtime.ComposeNode
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.CameraCallback
+import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.HYComposeButton
 import com.temple.skiaui.compose.ui.HYComposeCamera
 import com.temple.skiaui.compose.ui.HYComposeEditText
@@ -55,7 +56,7 @@ fun Column(modifier: Modifier, backgroundColor: String, content: @Composable () 
 @Composable
 fun Row(modifier: Modifier, content: @Composable () -> Unit) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
-        factory = { HYComposeFlexboxLayout(modifier).apply { setFlexDirection("row") } },
+        factory = { HYComposeFlexboxLayout(modifier).apply { setFlexDirection(FlexDirection.Row) } },
         update = {},
         content = content
     )

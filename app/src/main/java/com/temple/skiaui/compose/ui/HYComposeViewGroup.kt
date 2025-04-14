@@ -11,30 +11,31 @@ open class HYComposeViewGroup(modifier: Modifier) : HYComposeView(modifier) {
         modifier.styles.forEach { (key, value) ->
             when (key) {
                 "flexDirection" -> {
-                    nativeSetFlexDirection(ref, value as String)
+                    nativeSetFlexDirection(ref, (value as FlexDirection).value)
                 }
 
                 "justifyContent" -> {
-                    nativeSetJustifyContent(ref, value as String)
+                    nativeSetJustifyContent(ref, (value as Justify).value)
                 }
 
                 "alignItems" -> {
-                    nativeSetAlignItems(ref, value as String)
+                    nativeSetAlignItems(ref, (value as Align).value)
                 }
+
             }
         }
     }
 
-    fun setFlexDirection(value: String) {
-        nativeSetFlexDirection(ref, value)
+    fun setFlexDirection(direction: FlexDirection) {
+        nativeSetFlexDirection(ref, direction.value)
     }
 
-    fun setJustifyContent(value: String) {
-        nativeSetJustifyContent(ref, value)
+    fun setJustifyContent(justify: Justify) {
+        nativeSetJustifyContent(ref, justify.value)
     }
 
-    fun nativeSetAlignItems(value: String) {
-        nativeSetAlignItems(ref, value)
+    fun nativeSetAlignItems(align: Align) {
+        nativeSetAlignItems(ref, align.value)
     }
 
     private external fun nativeSetFlexDirection(fbLayout: Long, value: String)

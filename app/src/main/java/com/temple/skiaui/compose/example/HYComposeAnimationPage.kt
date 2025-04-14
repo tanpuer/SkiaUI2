@@ -25,6 +25,7 @@ import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setMargins
 import com.temple.skiaui.compose.foundation.setSize
 import com.temple.skiaui.compose.foundation.setTextSize
+import com.temple.skiaui.compose.ui.Align
 
 class HYComposeAnimationPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
@@ -46,7 +47,7 @@ class HYComposeAnimationPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         }
         LazyColumn(
             modifier = Modifier().setSize(width, height)
-                .setAlignItems("center"),
+                .setAlignItems(Align.Center),
             "#00000066"
         ) {
             View(

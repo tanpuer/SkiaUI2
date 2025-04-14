@@ -22,6 +22,7 @@ import com.temple.skiaui.compose.runtime.EditText
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.LazyColumn
 import com.temple.skiaui.compose.runtime.Web
+import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.CameraCallback
 
 class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
@@ -44,7 +45,7 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
         }
         LazyColumn(
             modifier = Modifier().setSize(width, height)
-                .setAlignItems("center"),
+                .setAlignItems(Align.Center),
             "#00000066"
         ) {
             EditText(

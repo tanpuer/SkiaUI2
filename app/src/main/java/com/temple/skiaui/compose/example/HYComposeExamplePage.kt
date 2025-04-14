@@ -34,7 +34,9 @@ import com.temple.skiaui.compose.foundation.setBackgroundColor
 import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setMargins
 import com.temple.skiaui.compose.foundation.setTextSize
+import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.HYComposeView
+import com.temple.skiaui.compose.ui.Justify
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
@@ -60,7 +62,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         )
         LazyColumn(
             modifier = Modifier.setSize(width, height)
-                .setAlignItems("flex-start"),
+                .setAlignItems(Align.FlexStart),
             "#00000066"
         ) {
             View(
@@ -72,8 +74,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Row(
                 modifier = Modifier.setWidth(width)
-                    .setAlignItems("center")
-                    .setJustifyContent("center")
+                    .setAlignItems(Align.Center)
+                    .setJustifyContent(Justify.Center)
                     .setBackgroundColor("#ffffff00")
             ) {
                 SVG(
@@ -158,8 +160,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Row(
                 modifier = Modifier.setWidth(width)
-                    .setJustifyContent("space-between")
-                    .setAlignItems("center")
+                    .setJustifyContent(Justify.SpaceBetween)
+                    .setAlignItems(Align.Center)
                     .setMargins(intArrayOf(0, 50, 0, 0))
                     .setBackgroundColor("#ffffff00")
             ) {

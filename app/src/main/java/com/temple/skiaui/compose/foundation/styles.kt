@@ -1,5 +1,10 @@
 package com.temple.skiaui.compose.foundation
 
+import com.temple.skiaui.compose.ui.Align
+import com.temple.skiaui.compose.ui.FlexDirection
+import com.temple.skiaui.compose.ui.Justify
+import com.temple.skiaui.compose.ui.Position
+
 fun Modifier.setSize(width: Int, height: Int): Modifier {
     styles["size"] = intArrayOf(width, height)
     return this
@@ -25,18 +30,23 @@ fun Modifier.setTextSize(size: Int): Modifier {
     return this
 }
 
-fun Modifier.setJustifyContent(value: String): Modifier {
+fun Modifier.setJustifyContent(value: Justify): Modifier {
     styles["justifyContent"] = value
     return this
 }
 
-fun Modifier.setAlignItems(value: String): Modifier {
+fun Modifier.setAlignItems(value: Align): Modifier {
     styles["alignItems"] = value
     return this
 }
 
-fun Modifier.setFlexDirection(value: String): Modifier {
+fun Modifier.setFlexDirection(value: FlexDirection): Modifier {
     styles["flexDirection"] = value
+    return this
+}
+
+fun Modifier.setPosition(value: Position): Modifier {
+    styles["position"] = value
     return this
 }
 
