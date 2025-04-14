@@ -86,7 +86,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Badge("10")
                 Badge("99")
                 Badge("100")
-                Badge("1000")
+                Badge("1000+")
             }
             Row(
                 modifier = Modifier.width(width)

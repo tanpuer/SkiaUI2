@@ -8,13 +8,17 @@ import com.temple.skiaui.compose.foundation.paddings
 import com.temple.skiaui.compose.runtime.Text
 
 @Composable
-fun Badge(content: String) {
+fun Badge(
+    content: String,
+    containerColor: String = "#ff00ff",
+    contentColor: String = "#ffffff"
+) {
     val paddingTop = if (content.isEmpty()) 20 else 10
     Text(
         modifier = Modifier.textSize(30)
             .corner(Int.MAX_VALUE)
-            .backgroundColor("#ff0000")
+            .backgroundColor(containerColor)
             .paddings(intArrayOf(20, paddingTop, 20, paddingTop)),
-        content, "#ffffff", 1
+        content, contentColor
     )
 }
