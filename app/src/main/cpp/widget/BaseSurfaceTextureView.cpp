@@ -3,8 +3,6 @@
 namespace HYSkiaUI {
 
 BaseSurfaceTextureView::BaseSurfaceTextureView() {
-    platformPaint = std::make_unique<SkPaint>();
-    platformPaint->setAntiAlias(true);
 }
 
 BaseSurfaceTextureView::~BaseSurfaceTextureView() {
@@ -57,7 +55,11 @@ void BaseSurfaceTextureView::draw(SkCanvas *canvas) {
     }
     canvas->save();
     canvas->setMatrix(viewMatrix);
-    canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), platformPaint.get());
+    if (cornerRadius > 0) {
+        rRect.setRectXY(dstRect, cornerRadius, cornerRadius);
+        canvas->clipRRect(rRect);
+    }
+    canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), paint.get());
     canvas->restore();
 }
 

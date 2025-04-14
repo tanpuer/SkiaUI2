@@ -31,6 +31,7 @@ import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.setAlignItems
 import com.temple.skiaui.compose.foundation.setBackgroundColor
+import com.temple.skiaui.compose.foundation.setCorner
 import com.temple.skiaui.compose.foundation.setJustifyContent
 import com.temple.skiaui.compose.foundation.setMargins
 import com.temple.skiaui.compose.foundation.setTextSize
@@ -106,7 +107,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 color = "#0000ff",
             )
             ExoVideo(
-                modifier = Modifier.setSize(width, 360 * width / 640),
+                modifier = Modifier.setSize(width, 360 * width / 640).setCorner(60),
                 "yiluxiangbei.mp4"
             )
             ComposeNative(width, height)

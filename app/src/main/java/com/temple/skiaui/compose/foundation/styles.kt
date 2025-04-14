@@ -54,3 +54,8 @@ fun Modifier.setMargins(margins: IntArray): Modifier {
     styles["margins"] = margins
     return this
 }
+
+fun Modifier.setCorner(radius: Int): Modifier {
+    styles["corner"] = radius
+    return this
+}

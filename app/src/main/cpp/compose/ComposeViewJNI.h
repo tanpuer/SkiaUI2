@@ -66,8 +66,14 @@ extern "C" JNIEXPORT void JNICALL
 compose_view_set_position(JNIEnv *env, jobject instance, jlong viewPtr, jstring position) {
     auto view = reinterpret_cast<View *>(viewPtr);
     auto positionStr = env->GetStringUTFChars(position, nullptr);
-    view->setBackgroundColor(W3CToYGPosition(positionStr));
+    view->setPositionType(W3CToYGPosition(positionStr));
     env->ReleaseStringUTFChars(position, positionStr);
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_corner_radius(JNIEnv *env, jobject instance, jlong viewPtr, jint radius) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->setCornerRadius(radius);
 }
 
 static JNINativeMethod g_ComposeViewMethods[] = {
@@ -78,6 +84,7 @@ static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetRotateZ",         "(JF)V",                  (void *) compose_view_set_rotateZ},
         {"nativeSetMargins",         "(J[I)V",                 (void *) compose_view_set_margins},
         {"nativeSetPosition",        "(JLjava/lang/String;)V", (void *) compose_view_set_position},
+        {"nativeSetCornerRadius",    "(JI)V",                  (void *) compose_view_set_corner_radius},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

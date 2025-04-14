@@ -40,6 +40,8 @@ protected:
 
     SkRect dstRect;
 
+    SkRRect rRect;
+
     bool inited = false;
 
     jclass javaClass = nullptr;
@@ -53,8 +55,6 @@ protected:
     long lastSkImagePtr = 0L;
 
     SkImage *skImage = nullptr;
-
-    std::unique_ptr<SkPaint> platformPaint;
 
     jmethodID releaseMethod = nullptr;
 

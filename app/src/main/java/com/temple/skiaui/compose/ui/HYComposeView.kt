@@ -32,6 +32,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 "position" -> {
                     nativeSetPosition(ref, (value as Position).value)
                 }
+
+                "corner" -> {
+                    nativeSetCornerRadius(ref, value as Int)
+                }
             }
         }
     }
@@ -85,4 +89,5 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetRotateZ(view: Long, rotateZ: Float)
     private external fun nativeSetMargins(view: Long, margins: IntArray)
     private external fun nativeSetPosition(view: Long, position: String)
+    private external fun nativeSetCornerRadius(view: Long, radius: Int)
 }
