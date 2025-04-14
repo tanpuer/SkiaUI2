@@ -15,7 +15,7 @@ public:
 
     virtual ~TranslateAnimator();
 
-    virtual void update(SkIRect &rect) override;
+    virtual void update(SkRect &rect) override;
 
     virtual void start() override;
 

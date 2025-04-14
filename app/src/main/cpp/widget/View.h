@@ -188,6 +188,8 @@ public:
 
     virtual void setTranslateY(float translateY);
 
+    virtual void setMinSize(int minWidth, int minHeight);
+
 protected:
 
     YGNodeRef node = nullptr;
@@ -249,7 +251,7 @@ public:
 
     virtual void setBlurMask(SkBlurStyle style, SkScalar sigma);
 
-    const SkIRect &getIRect();
+    const SkRect &getRect();
 
     float getRotateZ();
 
@@ -279,7 +281,9 @@ protected:
 
     std::unique_ptr<SkPaint> paint;
 
-    SkIRect skRect;
+    SkRect skRect;
+
+    SkRRect rRect;
 
     int cornerRadius = 0;
 

@@ -131,7 +131,8 @@ void TextView::measure() {
         } else {
             height = paragraph->getHeight();
         }
-        setMeasuredDimension(static_cast<int>(width), static_cast<int>(height));
+        setMeasuredDimension(static_cast<int>(width) + paddingLeft + paddingRight,
+                             static_cast<int>(height) + paddingTop + paddingBottom);
 //        ALOGD("TextView setSize %f %f", width, height)
         clearMeasure();
     }
@@ -144,7 +145,7 @@ void TextView::draw(SkCanvas *canvas) {
     }
     canvas->save();
     canvas->setMatrix(viewMatrix);
-    paragraph->paint(canvas, skRect.left(), skRect.top());
+    paragraph->paint(canvas, skRect.left() + paddingLeft, skRect.top() + paddingBottom);
     canvas->restore();
 }
 

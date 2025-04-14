@@ -5,57 +5,67 @@ import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 
-fun Modifier.setSize(width: Int, height: Int): Modifier {
+fun Modifier.size(width: Int, height: Int): Modifier {
     styles["size"] = intArrayOf(width, height)
     return this
 }
 
-fun Modifier.setBackgroundColor(color: String): Modifier {
+fun Modifier.backgroundColor(color: String): Modifier {
     styles["backgroundColor"] = color
     return this
 }
 
-fun Modifier.setWidth(width: Int): Modifier {
+fun Modifier.width(width: Int): Modifier {
     styles["width"] = width
     return this
 }
 
-fun Modifier.setHeight(height: Int): Modifier {
+fun Modifier.height(height: Int): Modifier {
     styles["height"] = height
     return this
 }
 
-fun Modifier.setTextSize(size: Int): Modifier {
+fun Modifier.textSize(size: Int): Modifier {
     styles["textSize"] = size
     return this
 }
 
-fun Modifier.setJustifyContent(value: Justify): Modifier {
+fun Modifier.justifyContent(value: Justify): Modifier {
     styles["justifyContent"] = value
     return this
 }
 
-fun Modifier.setAlignItems(value: Align): Modifier {
+fun Modifier.alignItems(value: Align): Modifier {
     styles["alignItems"] = value
     return this
 }
 
-fun Modifier.setFlexDirection(value: FlexDirection): Modifier {
+fun Modifier.flexDirection(value: FlexDirection): Modifier {
     styles["flexDirection"] = value
     return this
 }
 
-fun Modifier.setPosition(value: Position): Modifier {
+fun Modifier.position(value: Position): Modifier {
     styles["position"] = value
     return this
 }
 
-fun Modifier.setMargins(margins: IntArray): Modifier {
+fun Modifier.margins(margins: IntArray): Modifier {
     styles["margins"] = margins
     return this
 }
 
-fun Modifier.setCorner(radius: Int): Modifier {
+fun Modifier.paddings(paddings: IntArray): Modifier {
+    styles["paddings"] = paddings
+    return this
+}
+
+fun Modifier.corner(radius: Int): Modifier {
     styles["corner"] = radius
+    return this
+}
+
+fun Modifier.minSize(minWidth: Int, minHeight: Int): Modifier {
+    styles["minSize"] = intArrayOf(minWidth, minHeight)
     return this
 }

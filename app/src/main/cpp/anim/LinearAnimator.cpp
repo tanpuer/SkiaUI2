@@ -8,7 +8,7 @@ LinearAnimator::LinearAnimator(View *view, float startValue, float endValue)
     view->setAnimator(this);
 }
 
-void LinearAnimator::update(SkIRect &rect) {
+void LinearAnimator::update(SkRect &rect) {
     if (paused) {
         return;
     }

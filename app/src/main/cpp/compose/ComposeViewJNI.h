@@ -63,6 +63,18 @@ compose_view_set_margins(JNIEnv *env, jobject instance, jlong viewPtr, jintArray
 }
 
 extern "C" JNIEXPORT void JNICALL
+compose_view_set_paddings(JNIEnv *env, jobject instance, jlong viewPtr, jintArray margins) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    jsize length = env->GetArrayLength(margins);
+    jint *marginsArray = env->GetIntArrayElements(margins, nullptr);
+    std::vector<int> marginsVec;
+    marginsVec.reserve(length);
+    marginsVec.assign(marginsArray, marginsArray + length);
+    env->ReleaseIntArrayElements(margins, marginsArray, JNI_ABORT);
+    view->setPadding(marginsVec);
+}
+
+extern "C" JNIEXPORT void JNICALL
 compose_view_set_position(JNIEnv *env, jobject instance, jlong viewPtr, jstring position) {
     auto view = reinterpret_cast<View *>(viewPtr);
     auto positionStr = env->GetStringUTFChars(position, nullptr);
@@ -76,6 +88,13 @@ compose_view_set_corner_radius(JNIEnv *env, jobject instance, jlong viewPtr, jin
     view->setCornerRadius(radius);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_min_size(JNIEnv *env, jobject instance, jlong viewPtr, jint minWidth,
+                          jint minHeight) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->setMinSize(minWidth, minHeight);
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
@@ -83,8 +102,10 @@ static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetClickCallback",   "(J)V",                   (void *) compose_view_set_click_callback},
         {"nativeSetRotateZ",         "(JF)V",                  (void *) compose_view_set_rotateZ},
         {"nativeSetMargins",         "(J[I)V",                 (void *) compose_view_set_margins},
+        {"nativeSetPaddings",        "(J[I)V",                 (void *) compose_view_set_paddings},
         {"nativeSetPosition",        "(JLjava/lang/String;)V", (void *) compose_view_set_position},
         {"nativeSetCornerRadius",    "(JI)V",                  (void *) compose_view_set_corner_radius},
+        {"nativeSetMinSize",         "(JII)V",                 (void *) compose_view_set_min_size},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

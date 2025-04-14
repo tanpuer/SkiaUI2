@@ -20,7 +20,7 @@ TranslateAnimator::~TranslateAnimator() {
     this->targetView = nullptr;
 }
 
-void TranslateAnimator::update(SkIRect &rect) {
+void TranslateAnimator::update(SkRect &rect) {
     if (currTime > endTime || targetView == nullptr) {
         targetView->animTranslateX = animEndX;
         targetView->animTranslateY = animEndY;

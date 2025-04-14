@@ -12,7 +12,7 @@
 
 namespace HYSkiaUI {
 
-View::View() : skRect(SkIRect::MakeEmpty()), skRectWithBorder(SkRect::MakeEmpty()),
+View::View() : skRect(SkRect::MakeEmpty()), skRectWithBorder(SkRect::MakeEmpty()),
                viewMatrix(SkMatrix::I()) {
     viewId = VIEW_ID++;
     paint = std::make_unique<SkPaint>();
@@ -53,6 +53,7 @@ void View::layout(int l, int t, int r, int b) {
         onSizeChange(r - l, b - t);
     }
     skRect.setLTRB(l, t, r, b);
+    rRect.setRectXY(skRect, cornerRadius, cornerRadius);
     left = l;
     top = t;
     right = r;
@@ -93,10 +94,13 @@ void View::draw(SkCanvas *canvas) {
     multiplyParentViewMatrix();
     canvas->save();
     canvas->setMatrix(viewMatrix);
+    if (cornerRadius > 0) {
+        canvas->clipRRect(rRect);
+    }
     if (YGFloatsEqual(paint->getStrokeWidth(), 0.0f)) {
-        canvas->drawIRect(skRect, *paint);
+        canvas->drawRect(skRect, *paint);
     } else {
-        //view边框，辅助看大小
+        //view border like Android, help to development
         auto diff = (paint->getStrokeWidth()) / 2;
         skRectWithBorder.setLTRB(skRect.left() + diff, skRect.top() + diff, skRect.right() - diff,
                                  skRect.bottom() - diff);
@@ -173,7 +177,6 @@ void View::setCornerRadius(int radius) {
         return;
     }
     cornerRadius = radius;
-    paint->setPathEffect(SkCornerPathEffect::Make(static_cast<SkScalar>(radius)));
     markDirty();
 }
 
@@ -215,7 +218,7 @@ void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     markDirty();
 }
 
-const SkIRect &View::getIRect() {
+const SkRect &View::getRect() {
     return skRect;
 }
 
@@ -243,6 +246,14 @@ void View::setTranslateX(float translateX) {
 
 void View::setTranslateY(float translateY) {
     this->translateY = translateY;
+}
+
+void View::setMinSize(int minWidth, int minHeight) {
+    this->minWidth = minWidth;
+    this->minHeight = minHeight;
+    YGNodeStyleSetMinWidth(node, minWidth);
+    YGNodeStyleSetMinHeight(node, minHeight);
+    markDirty();
 }
 
 bool View::onInterceptTouchEvent(TouchEvent *touchEvent) {

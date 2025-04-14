@@ -192,7 +192,7 @@ void ScrollView::addScrollCallback(std::function<void(float, float)> callback) {
 
 void ScrollView::draw(SkCanvas *canvas) {
     canvas->save();
-    canvas->clipIRect(skRect);
+    canvas->clipRect(skRect);
     View::draw(canvas);
     for (auto child: children) {
         if (!ignoreChildDraw(child)) {
@@ -204,7 +204,7 @@ void ScrollView::draw(SkCanvas *canvas) {
 
 bool ScrollView::ignoreChildDraw(View *child) {
     if (_direction == YGFlexDirectionColumn) {
-        const auto childRect = child->getIRect();
+        const auto childRect = child->getRect();
         auto childTop = childRect.top();
         auto childBottom = childRect.bottom();
         auto scrollTop = skRect.top();
@@ -212,7 +212,7 @@ bool ScrollView::ignoreChildDraw(View *child) {
         //< top-100 || > bottom+100，invisible, ignore draw
         return childTop > scrollBottom + 100 || childBottom < scrollTop - 100;
     } else {
-        const auto childRect = child->getIRect();
+        const auto childRect = child->getRect();
         auto childLeft = childRect.left();
         auto childRight = childRect.right();
         auto scrollLeft = skRect.left();

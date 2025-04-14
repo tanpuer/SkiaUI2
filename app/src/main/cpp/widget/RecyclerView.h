@@ -62,7 +62,7 @@ public:
                     if (ignoreChildDraw(itemView)) {
                         adapter->recycleStartVH(*itr);
                         itr = adapter->currVHList.cbegin();
-                        translateY += children[0]->getIRect().height();
+                        translateY += children[0]->getRect().height();
                         removeViewAt(0);
                     } else {
                         break;
@@ -99,10 +99,10 @@ public:
                    (height == 0 && childHeightSum < height) ||
                    (firstChild != nullptr && height > 0 && !lastScrollDown &&
                     adapter->startIndex > 0 &&
-                    firstChild->getIRect().top() - addedHeight > skRect.top() - 50) ||
+                    firstChild->getRect().top() - addedHeight > skRect.top() - 50) ||
                    (lastChild != nullptr && height > 0 && lastScrollDown &&
                     adapter->endIndex < adapter->getSize() &&
-                    lastChild->getIRect().bottom() + addedHeight < skRect.bottom() + 50)) {
+                    lastChild->getRect().bottom() + addedHeight < skRect.bottom() + 50)) {
                 RecyclerViewHolder<T> *vh = nullptr;
                 if (lastScrollDown) {
                     vh = adapter->handleEndVH();

@@ -20,14 +20,14 @@ import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.runtime.View
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.onClick
-import com.temple.skiaui.compose.foundation.setAlignItems
-import com.temple.skiaui.compose.foundation.setBackgroundColor
-import com.temple.skiaui.compose.foundation.setMargins
-import com.temple.skiaui.compose.foundation.setSize
-import com.temple.skiaui.compose.foundation.setTextSize
+import com.temple.skiaui.compose.foundation.alignItems
+import com.temple.skiaui.compose.foundation.backgroundColor
+import com.temple.skiaui.compose.foundation.margins
+import com.temple.skiaui.compose.foundation.size
+import com.temple.skiaui.compose.foundation.textSize
 import com.temple.skiaui.compose.ui.Align
 
-class HYComposeAnimationPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
+class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
     override fun RunComposable(width: Int, height: Int) {
@@ -46,13 +46,13 @@ class HYComposeAnimationPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             }
         }
         LazyColumn(
-            modifier = Modifier().setSize(width, height)
-                .setAlignItems(Align.Center),
+            modifier = Modifier().size(width, height)
+                .alignItems(Align.Center),
             "#00000066"
         ) {
             View(
                 modifier = Modifier()
-                    .setSize(200, 200)
+                    .size(200, 200)
                     .onClick {
                         HYComposeSDK.popPage(engine)
                     },
@@ -60,9 +60,9 @@ class HYComposeAnimationPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Text(
                 modifier = Modifier()
-                    .setBackgroundColor("#ffffff00")
-                    .setMargins(intArrayOf(0, 50, 0, 0))
-                    .setTextSize(50),
+                    .backgroundColor("#ffffff00")
+                    .margins(intArrayOf(0, 50, 0, 0))
+                    .textSize(50),
                 "测试文本",
                 convertColor(textColor.value)
             )

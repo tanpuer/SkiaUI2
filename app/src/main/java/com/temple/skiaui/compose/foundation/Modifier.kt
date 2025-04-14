@@ -12,24 +12,24 @@ class Modifier {
 
     companion object {
 
-        fun setSize(width: Int, height: Int): Modifier {
-            return Modifier().setSize(width, height)
+        fun size(width: Int, height: Int): Modifier {
+            return Modifier().size(width, height)
         }
 
-        fun setWidth(width: Int): Modifier {
-            return Modifier().setWidth(width)
+        fun width(width: Int): Modifier {
+            return Modifier().width(width)
         }
 
-        fun setHeight(height: Int): Modifier {
-            return Modifier().setHeight(height)
+        fun height(height: Int): Modifier {
+            return Modifier().height(height)
         }
 
-        fun setTextSize(size: Int): Modifier {
-            return Modifier().setTextSize(size)
+        fun textSize(size: Int): Modifier {
+            return Modifier().textSize(size)
         }
 
-        fun setMargins(margins: IntArray): Modifier {
-            return Modifier().setMargins(margins)
+        fun margins(margins: IntArray): Modifier {
+            return Modifier().margins(margins)
         }
 
     }

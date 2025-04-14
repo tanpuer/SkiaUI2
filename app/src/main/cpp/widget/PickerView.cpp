@@ -74,7 +74,7 @@ void PickerView::layout(int l, int t, int r, int b) {
 void PickerView::draw(SkCanvas *canvas) {
     ScrollView::draw(canvas);
     canvas->drawRect(centerMask, *centerPaint);
-    canvas->drawIRect(skRect, *bottomPaint);
+    canvas->drawRect(skRect, *bottomPaint);
 }
 
 }

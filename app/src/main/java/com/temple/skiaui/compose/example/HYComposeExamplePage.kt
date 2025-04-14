@@ -29,12 +29,13 @@ import com.temple.skiaui.compose.runtime.View
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.onClick
-import com.temple.skiaui.compose.foundation.setAlignItems
-import com.temple.skiaui.compose.foundation.setBackgroundColor
-import com.temple.skiaui.compose.foundation.setCorner
-import com.temple.skiaui.compose.foundation.setJustifyContent
-import com.temple.skiaui.compose.foundation.setMargins
-import com.temple.skiaui.compose.foundation.setTextSize
+import com.temple.skiaui.compose.foundation.alignItems
+import com.temple.skiaui.compose.foundation.backgroundColor
+import com.temple.skiaui.compose.foundation.corner
+import com.temple.skiaui.compose.foundation.justifyContent
+import com.temple.skiaui.compose.foundation.margins
+import com.temple.skiaui.compose.foundation.textSize
+import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.Justify
@@ -62,28 +63,42 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             infiniteRepeatable(tween(5000), RepeatMode.Reverse)
         )
         LazyColumn(
-            modifier = Modifier.setSize(width, height)
-                .setAlignItems(Align.FlexStart),
+            modifier = Modifier.size(width, height)
+                .alignItems(Align.FlexStart),
             "#00000066"
         ) {
             View(
-                modifier = Modifier.setSize(200, 200)
+                modifier = Modifier.size(200, 200)
                     .onClick { view: HYComposeView ->
                         color = randomColor()
                     },
                 color
             )
             Row(
-                modifier = Modifier.setWidth(width)
-                    .setAlignItems(Align.Center)
-                    .setJustifyContent(Justify.Center)
-                    .setBackgroundColor("#ffffff00")
+                modifier = Modifier.width(width)
+                    .justifyContent(Justify.SpaceBetween)
+                    .alignItems(Align.Center)
+                    .margins(intArrayOf(0, 50, 0, 0))
+                    .backgroundColor("#ffffff00")
+            ) {
+                Badge("")
+                Badge("1")
+                Badge("10")
+                Badge("99")
+                Badge("100")
+                Badge("1000")
+            }
+            Row(
+                modifier = Modifier.width(width)
+                    .alignItems(Align.Center)
+                    .justifyContent(Justify.Center)
+                    .backgroundColor("#ffffff00")
             ) {
                 SVG(
-                    modifier = Modifier.setSize(480, 480)
-                        .setBackgroundColor("#ffffff00")
+                    modifier = Modifier.size(480, 480)
+                        .backgroundColor("#ffffff00")
                         .onClick {
-                            HYComposeAnimationPage(engine).apply {
+                            HYComposeMaterialPage(engine).apply {
                                 start(width, height)
                                 HYComposeSDK.pushPage(this)
                             }
@@ -92,38 +107,38 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     rotateZ.absoluteValue
                 )
                 Text(
-                    modifier = Modifier.setTextSize(40)
-                        .setBackgroundColor("#00ffff00"),
+                    modifier = Modifier.textSize(40)
+                        .backgroundColor("#00ffff00"),
                     content = "rememberInfiniteTransition",
                     color = "#ff00ff",
                 )
             }
             Text(
                 modifier = Modifier
-                    .setSize(800, 100)
-                    .setTextSize(50)
-                    .setBackgroundColor("#ffffff00"),
+                    .size(800, 100)
+                    .textSize(50)
+                    .backgroundColor("#ffffff00"),
                 content = "ExoPlayer-Video",
                 color = "#0000ff",
             )
             ExoVideo(
-                modifier = Modifier.setSize(width, 360 * width / 640).setCorner(60),
+                modifier = Modifier.size(width, 360 * width / 640).corner(60),
                 "yiluxiangbei.mp4"
             )
             ComposeNative(width, height)
             ComposeFilament(width, height)
             Loading(
-                modifier = Modifier.setSize(500, 200)
-                    .setMargins(intArrayOf(0, 50, 0, 0))
+                modifier = Modifier.size(500, 200)
+                    .margins(intArrayOf(0, 50, 0, 0))
                     .onClick {
                         color = randomColor()
                     },
                 color = color
             )
             Text(
-                modifier = Modifier.setSize(800, 100)
-                    .setTextSize(50)
-                    .setMargins(intArrayOf(0, 50, 0, 0))
+                modifier = Modifier.size(800, 100)
+                    .textSize(50)
+                    .margins(intArrayOf(0, 50, 0, 0))
                     .onClick {
                         ellipsis = !ellipsis
                     },
@@ -133,8 +148,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ellipsis = "点击展开"
             )
             Lottie(
-                modifier = Modifier.setSize(375, 240)
-                    .setMargins(intArrayOf(0, 50, 0, 0))
+                modifier = Modifier.size(375, 240)
+                    .margins(intArrayOf(0, 50, 0, 0))
                     .onClick {
                         lottiePlay = !lottiePlay
                     },
@@ -143,8 +158,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Shader(
                 modifier = Modifier
-                    .setSize(540, 540)
-                    .setMargins(intArrayOf(0, 50, 0, 0))
+                    .size(540, 540)
+                    .margins(intArrayOf(0, 50, 0, 0))
                     .onClick { _: HYComposeView ->
                         if (shaderSource.list.isEmpty()) {
                             shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
@@ -156,15 +171,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Image(
                 modifier = Modifier
-                    .setSize(300, 300)
-                    .setMargins(intArrayOf(0, 50, 0, 0)), source = "bird.gif"
+                    .size(300, 300)
+                    .margins(intArrayOf(0, 50, 0, 0)), source = "bird.gif"
             )
             Row(
-                modifier = Modifier.setWidth(width)
-                    .setJustifyContent(Justify.SpaceBetween)
-                    .setAlignItems(Align.Center)
-                    .setMargins(intArrayOf(0, 50, 0, 0))
-                    .setBackgroundColor("#ffffff00")
+                modifier = Modifier.width(width)
+                    .justifyContent(Justify.SpaceBetween)
+                    .alignItems(Align.Center)
+                    .margins(intArrayOf(0, 50, 0, 0))
+                    .backgroundColor("#ffffff00")
             ) {
                 Icon(0xe615, color = "#ff0000")
                 Icon(0xe7ce, color = "#ffff00")
@@ -174,15 +189,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Icon(0xe6a2, color = "#000000")
                 Icon(0xe61f)
             }
-            Switch(Modifier.setMargins(intArrayOf(0, 50, 0, 0)))
+            Switch(Modifier.margins(intArrayOf(0, 50, 0, 0)))
         }
     }
 
     @Composable
     private fun ComposeNative(width: Int, height: Int) {
         Button(
-            modifier = Modifier.setTextSize(60)
-                .setMargins(intArrayOf(0, 50, 0, 0))
+            modifier = Modifier.textSize(60)
+                .margins(intArrayOf(0, 50, 0, 0))
                 .onClick {
                     HYComposeNativeViewsPage(engine).apply {
                         start(width, height)
@@ -196,8 +211,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeFilament(width: Int, height: Int) {
         Button(
-            modifier = Modifier.setTextSize(60)
-                .setMargins(intArrayOf(0, 50, 0, 0))
+            modifier = Modifier.textSize(60)
+                .margins(intArrayOf(0, 50, 0, 0))
                 .onClick {
                     HYComposeFilamentPage(engine).apply {
                         start(width, height)

@@ -11,7 +11,7 @@ public:
 
     LinearAnimator(View *view, float startValue, float endValue);
 
-    void update(SkIRect &rect) override;
+    void update(SkRect &rect) override;
 
     void setUpdateListener(std::function<void(View *, float)> &&listener);
 

@@ -31,7 +31,7 @@ public:
 
     virtual bool isEnd();
 
-    virtual void update(SkIRect &rect) = 0;
+    virtual void update(SkRect &rect) = 0;
 
     virtual void addListener(std::function<void()> &&finishCallback);
 

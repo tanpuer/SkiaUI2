@@ -14,9 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.foundation.Modifier
-import com.temple.skiaui.compose.foundation.setAlignItems
-import com.temple.skiaui.compose.foundation.setMargins
-import com.temple.skiaui.compose.foundation.setSize
+import com.temple.skiaui.compose.foundation.alignItems
+import com.temple.skiaui.compose.foundation.margins
+import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.runtime.Camera
 import com.temple.skiaui.compose.runtime.EditText
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
@@ -44,24 +44,24 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
             }
         }
         LazyColumn(
-            modifier = Modifier().setSize(width, height)
-                .setAlignItems(Align.Center),
+            modifier = Modifier().size(width, height)
+                .alignItems(Align.Center),
             "#00000066"
         ) {
             EditText(
-                modifier = Modifier.setSize(width, 150)
-                    .setMargins(intArrayOf(0, 50, 0, 0)),
+                modifier = Modifier.size(width, 150)
+                    .margins(intArrayOf(0, 50, 0, 0)),
                 "这是Android原生的EditText融合渲染",
                 true
             )
-            Camera(Modifier().setSize(width, width), object : CameraCallback {
+            Camera(Modifier().size(width, width), object : CameraCallback {
                 override fun onImageCaptured(imagePtr: Long) {
 
                 }
             })
             Web(
-                Modifier.setSize(width, 1200)
-                    .setMargins(intArrayOf(0, 50, 0, 0)),
+                Modifier.size(width, 1200)
+                    .margins(intArrayOf(0, 50, 0, 0)),
                 "https://m.bilibili.com/"
             )
         }

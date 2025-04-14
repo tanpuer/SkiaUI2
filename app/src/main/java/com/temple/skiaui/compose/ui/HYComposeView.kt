@@ -29,12 +29,20 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                     nativeSetMargins(ref, value as IntArray)
                 }
 
+                "paddings" -> {
+                    nativeSetPaddings(ref, value as IntArray)
+                }
+
                 "position" -> {
                     nativeSetPosition(ref, (value as Position).value)
                 }
 
                 "corner" -> {
                     nativeSetCornerRadius(ref, value as Int)
+                }
+
+                "minSize" -> {
+                    nativeSetMinSize(ref, (value as IntArray)[0], value[1])
                 }
             }
         }
@@ -88,6 +96,8 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetClickCallback(view: Long)
     private external fun nativeSetRotateZ(view: Long, rotateZ: Float)
     private external fun nativeSetMargins(view: Long, margins: IntArray)
+    private external fun nativeSetPaddings(view: Long, padding: IntArray)
     private external fun nativeSetPosition(view: Long, position: String)
     private external fun nativeSetCornerRadius(view: Long, radius: Int)
+    private external fun nativeSetMinSize(view: Long, minWidth: Int, minHeight: Int)
 }
