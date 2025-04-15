@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.temple.skiaui.cache.PersistentCache
 
 class HYSkiaExampleActivity : AppCompatActivity() {
 
@@ -43,7 +42,6 @@ class HYSkiaExampleActivity : AppCompatActivity() {
                 android.Manifest.permission.CAMERA
             ), 101
         )
-        PersistentCache
     }
 
     private fun goToMainActivity(exampleType: Int) {

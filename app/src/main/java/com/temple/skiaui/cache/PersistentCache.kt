@@ -1,23 +1,34 @@
 package com.temple.skiaui.cache
 
+import android.util.Log
 import com.temple.skiaui.HYSkiaUIApp
 import java.io.File
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
+/**
+ * shader program binaries are stored and loaded in GL thread
+ */
 object PersistentCache {
 
+    private const val TAG = "PersistentCache"
     private val ctx = HYSkiaUIApp.getInstance()
     private const val CACHE_DIR_NAME = "skia_cache"
     private val cacheDir by lazy {
         File(ctx.filesDir, CACHE_DIR_NAME).apply { mkdirs() }
     }
     private val cacheMap = ConcurrentHashMap<String, ByteBuffer>()
-    private val executors = Executors.newFixedThreadPool(1)
+    private var executors: ExecutorService? = null
+    private var preloaded = false
 
-    init {
+    fun preload(executors: ExecutorService) {
+        PersistentCache.executors = executors
+        if (preloaded) {
+            return
+        }
         executors.submit {
             cacheDir.list()?.forEach {
                 val file = File(cacheDir, it)
@@ -26,9 +37,11 @@ object PersistentCache {
                 cacheMap[it] = byteBuffer
             }
         }
+        preloaded = true
     }
 
     fun store(key: ByteBuffer, value: ByteBuffer) {
+        Log.d(TAG, "store")
         val keyHash = hashKey(key)
         val byteArray = if (value.hasArray()) {
             value.array()
@@ -37,7 +50,7 @@ object PersistentCache {
                 value.duplicate().get(this)
             }
         }
-        executors.submit {
+        executors?.submit {
             File(cacheDir, keyHash).writeBytes(byteArray)
         }
     }
@@ -45,13 +58,17 @@ object PersistentCache {
     fun load(key: ByteBuffer): ByteBuffer? {
         val keyHash = hashKey(key)
         if (cacheMap.containsKey(keyHash)) {
+            Log.d(TAG, "cache hit")
             return cacheMap[keyHash]
         }
+        Log.d(TAG, "cache missed, try to read file")
         val file = File(cacheDir, keyHash)
         if (!file.exists()) {
             return null
         }
-        return ByteBuffer.allocateDirect(file.length().toInt()).put(file.readBytes())
+        val result = ByteBuffer.allocateDirect(file.length().toInt()).put(file.readBytes())
+        cacheMap[keyHash] = result
+        return result
     }
 
     private fun hashKey(key: ByteBuffer): String {

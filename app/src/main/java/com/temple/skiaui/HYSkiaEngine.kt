@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import androidx.annotation.MainThread
 import androidx.core.math.MathUtils.clamp
+import com.temple.skiaui.cache.PersistentCache
 import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -57,7 +58,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private var uiApp = 0L
     private val skImageList = mutableListOf<Long>()
     private val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
-    private val executors = Executors.newFixedThreadPool(2)
+    private val executors = Executors.newFixedThreadPool(3)
     private var createdFlag = false
 
     data class Velocity(val x: Float, val y: Float)
@@ -73,6 +74,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets, exampleType)
             nativeSetPlugins(uiApp, pluginManager)
         }
+        PersistentCache.preload(executors)
     }
 
     @MainThread
