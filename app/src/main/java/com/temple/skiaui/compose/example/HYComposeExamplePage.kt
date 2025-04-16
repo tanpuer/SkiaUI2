@@ -10,7 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import com.temple.skiaui.HYSkiaEngine
+import com.temple.skiaui.R
 import com.temple.skiaui.compose.runtime.Button
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
@@ -109,7 +111,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Text(
                     modifier = Modifier.textSize(40)
                         .backgroundColor("#00ffff00"),
-                    content = "rememberInfiniteTransition",
+                    content = stringResource(R.string.remember_infinite_transition),
                     color = "#ff00ff",
                 )
             }
@@ -118,7 +120,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .size(800, 100)
                     .textSize(50)
                     .backgroundColor("#ffffff00"),
-                content = "ExoPlayer-Video",
+                content = stringResource(R.string.exo_player),
                 color = "#0000ff",
             )
             ExoVideo(
@@ -145,7 +147,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
                 color = "#0000ff",
                 maxLine = if (ellipsis) 3 else 0,
-                ellipsis = "点击展开"
+                ellipsis = stringResource(R.string.click_to_open)
             )
             Lottie(
                 modifier = Modifier.size(375, 240)

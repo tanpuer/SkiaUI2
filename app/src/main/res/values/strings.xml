@@ -1,0 +1,5 @@
+<resources>
+    <string name="remember_infinite_transition">"rememberInfiniteTransition"</string>
+    <string name="click_to_open">"点击展开"</string>
+    <string name="exo_player">"ExoPlayer-Video"</string>
+</resources>
