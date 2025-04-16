@@ -50,7 +50,7 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         LazyColumn(
             modifier = Modifier().size(width, height)
                 .alignItems(Align.Center),
-            colorResource(R.color.transparent)
+            colorResource(R.color.gray_bg)
         ) {
             View(
                 modifier = Modifier()
