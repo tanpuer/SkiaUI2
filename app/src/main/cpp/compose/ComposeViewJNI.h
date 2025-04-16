@@ -22,11 +22,9 @@ compose_view_set_height(JNIEnv *env, jobject instance, jlong viewPtr, jint heigh
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_view_set_background_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
+compose_view_set_background_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
     auto view = reinterpret_cast<View *>(viewPtr);
-    auto colorStr = env->GetStringUTFChars(color, nullptr);
-    view->setBackgroundColor(colorStr);
-    env->ReleaseStringUTFChars(color, colorStr);
+    view->setBackgroundColor(color);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -98,7 +96,7 @@ compose_view_set_min_size(JNIEnv *env, jobject instance, jlong viewPtr, jint min
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
-        {"nativeSetBackgroundColor", "(JLjava/lang/String;)V", (void *) compose_view_set_background_color},
+        {"nativeSetBackgroundColor", "(JI)V",                  (void *) compose_view_set_background_color},
         {"nativeSetClickCallback",   "(J)V",                   (void *) compose_view_set_click_callback},
         {"nativeSetRotateZ",         "(JF)V",                  (void *) compose_view_set_rotateZ},
         {"nativeSetMargins",         "(J[I)V",                 (void *) compose_view_set_margins},

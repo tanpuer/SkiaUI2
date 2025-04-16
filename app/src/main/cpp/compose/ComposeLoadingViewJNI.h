@@ -10,17 +10,13 @@ using namespace HYSkiaUI;
 const char *HYComposeLoadingView = "com/temple/skiaui/compose/ui/HYComposeLoadingView";
 
 extern "C" JNIEXPORT void JNICALL
-compose_loading_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
+compose_loading_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
     auto lottieView = reinterpret_cast<LoadingView *>(viewPtr);
-    auto colorStr = env->GetStringUTFChars(color, nullptr);
-    int r, g, b, a;
-    hexToRGBA(colorStr, r, g, b, a);
-    lottieView->setLoadingColor(SkColorSetARGB(a, r, g, b));
-    env->ReleaseStringUTFChars(color, colorStr);
+    lottieView->setLoadingColor(color);
 }
 
 static JNINativeMethod g_ComposeLoadingViewMethods[] = {
-        {"nativeSetColor", "(JLjava/lang/String;)V", (void *) compose_loading_set_color},
+        {"nativeSetColor", "(JI)V", (void *) compose_loading_set_color},
 };
 
 static int RegisterComposeLoadingViewMethods(JNIEnv *env) {

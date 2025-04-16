@@ -2,6 +2,7 @@ package com.temple.skiaui.compose.runtime
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
+import androidx.compose.ui.graphics.Color
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.CameraCallback
@@ -26,7 +27,7 @@ import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
 
 @Composable
-fun View(modifier: Modifier, backgroundColor: String, rotateZ: Float = 0.0f) {
+fun View(modifier: Modifier, backgroundColor: Color, rotateZ: Float = 0.0f) {
     ComposeNode<HYComposeView, HYComposeApplier>(
         factory = { HYComposeView(modifier) },
         update = {
@@ -41,7 +42,7 @@ fun View(modifier: Modifier, backgroundColor: String, rotateZ: Float = 0.0f) {
 }
 
 @Composable
-fun Column(modifier: Modifier, backgroundColor: String, content: @Composable () -> Unit) {
+fun Column(modifier: Modifier, backgroundColor: Color, content: @Composable () -> Unit) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
         factory = { HYComposeFlexboxLayout(modifier) },
         update = {
@@ -63,7 +64,7 @@ fun Row(modifier: Modifier, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun LazyColumn(modifier: Modifier, backgroundColor: String, content: @Composable () -> Unit) {
+fun LazyColumn(modifier: Modifier, backgroundColor: Color, content: @Composable () -> Unit) {
     ComposeNode<HYComposeScrollView, HYComposeApplier>(
         factory = { HYComposeScrollView(modifier) },
         update = {
@@ -100,7 +101,7 @@ fun ExoVideo(modifier: Modifier, source: String) {
 }
 
 @Composable
-fun Loading(modifier: Modifier, color: String = "") {
+fun Loading(modifier: Modifier, color: Color = Color.Blue) {
     ComposeNode<HYComposeLoadingView, HYComposeApplier>(
         factory = { HYComposeLoadingView(modifier) },
         update = {
@@ -157,7 +158,7 @@ fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
 fun Text(
     modifier: Modifier,
     content: String,
-    color: String,
+    color: Color,
     maxLine: Int = 0,
     ellipsis: String = "…"
 ) {
@@ -184,7 +185,7 @@ fun Text(
 fun Button(
     modifier: Modifier,
     content: String,
-    color: String = "#ffffff"
+    color: Color = Color.White
 ) {
     ComposeNode<HYComposeText, HYComposeApplier>(
         factory = { HYComposeButton(modifier) },
@@ -212,7 +213,7 @@ fun Image(modifier: Modifier, source: String) {
 }
 
 @Composable
-fun Icon(icon: Int = 0, color: String = "#0000ff", size: Int = 100, modifier: Modifier = Modifier()) {
+fun Icon(icon: Int = 0, color: Color = Color.Blue, size: Int = 100, modifier: Modifier = Modifier()) {
     ComposeNode<HYComposeIcon, HYComposeApplier>(
         factory = { HYComposeIcon(modifier) },
         update = {

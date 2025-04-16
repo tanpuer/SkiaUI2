@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
+import androidx.compose.ui.graphics.Color
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.Justify
@@ -10,7 +11,7 @@ fun Modifier.size(width: Int, height: Int): Modifier {
     return this
 }
 
-fun Modifier.backgroundColor(color: String): Modifier {
+fun Modifier.backgroundColor(color: Color): Modifier {
     styles["backgroundColor"] = color
     return this
 }

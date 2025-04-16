@@ -1,6 +1,8 @@
 package com.temple.skiaui.compose.ui
 
+import androidx.compose.ui.graphics.Color
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.ui.util.composeColorToSkiaColor
 
 open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
 
@@ -19,8 +21,8 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetText(ref, value)
     }
 
-    fun setColor(color: String) {
-        nativeSetColor(ref, color)
+    fun setColor(color: Color) {
+        nativeSetColor(ref, composeColorToSkiaColor(color))
     }
 
     fun setMaxLine(maxLine: Int) {
@@ -35,7 +37,7 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
 
     private external fun nativeSetText(textView: Long, text: String)
     private external fun nativeSetTextSize(textView: Long, textSize: Int)
-    private external fun nativeSetColor(textView: Long, color: String)
+    private external fun nativeSetColor(textView: Long, color: Int)
     private external fun nativeSetMaxLine(textView: Long, maxLine: Int)
     private external fun nativeSetEllipsis(textView: Long, ellipse: String)
 

@@ -1,6 +1,9 @@
 package com.temple.skiaui.compose.ui
 
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.colorspace.ColorSpace
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.ui.util.composeColorToSkiaColor
 
 open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
 
@@ -22,7 +25,7 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 }
 
                 "backgroundColor" -> {
-                    nativeSetBackgroundColor(ref, value as String)
+                    setBackgroundColor(value as Color)
                 }
 
                 "margins" -> {
@@ -64,8 +67,8 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         nativeSetHeight(ref, height)
     }
 
-    fun setBackgroundColor(color: String) {
-        nativeSetBackgroundColor(ref, color)
+    fun setBackgroundColor(color: Color) {
+        nativeSetBackgroundColor(ref, composeColorToSkiaColor(color))
     }
 
     fun setWidth(width: Int) {
@@ -92,7 +95,7 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
 
     private external fun nativeSetWidth(view: Long, width: Int)
     private external fun nativeSetHeight(view: Long, height: Int)
-    private external fun nativeSetBackgroundColor(view: Long, color: String)
+    private external fun nativeSetBackgroundColor(view: Long, color: Int)
     private external fun nativeSetClickCallback(view: Long)
     private external fun nativeSetRotateZ(view: Long, rotateZ: Float)
     private external fun nativeSetMargins(view: Long, margins: IntArray)

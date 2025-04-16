@@ -28,22 +28,18 @@ compose_icon_set_size(JNIEnv *env, jobject instance, jlong viewPtr, jint size) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_icon_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
+compose_icon_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
     auto icon = reinterpret_cast<Icon *>(viewPtr);
     if (icon == nullptr) {
         return;
     }
-    auto colorStr = env->GetStringUTFChars(color, nullptr);
-    int r, g, b, a;
-    hexToRGBA(colorStr, r, g, b, a);
-    icon->setIconColor(SkColorSetARGB(a, r, g, b));
-    env->ReleaseStringUTFChars(color, colorStr);
+    icon->setIconColor(color);
 }
 
 static JNINativeMethod g_ComposeIconViewMethods[] = {
-        {"nativeSetIcon",  "(JI)V",                  (void *) compose_icon_set_icon},
-        {"nativeSetSize",  "(JI)V",                  (void *) compose_icon_set_size},
-        {"nativeSetColor", "(JLjava/lang/String;)V", (void *) compose_icon_set_color},
+        {"nativeSetIcon",  "(JI)V", (void *) compose_icon_set_icon},
+        {"nativeSetSize",  "(JI)V", (void *) compose_icon_set_size},
+        {"nativeSetColor", "(JI)V", (void *) compose_icon_set_color},
 };
 
 static int RegisterComposeIconMethods(JNIEnv *env) {

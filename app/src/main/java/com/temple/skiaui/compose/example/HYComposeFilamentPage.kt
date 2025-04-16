@@ -1,7 +1,9 @@
 package com.temple.skiaui.compose.example
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.colorResource
 import com.temple.skiaui.HYSkiaEngine
+import com.temple.skiaui.R
 import com.temple.skiaui.compose.runtime.Filament
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.LazyColumn
@@ -17,7 +19,7 @@ class HYComposeFilamentPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         LazyColumn(
             modifier = Modifier().size(width, height)
                 .alignItems(Align.FlexStart),
-            "#ffffff"
+            colorResource(R.color.transparent)
         ) {
             Filament(modifier = Modifier().size(width, 500))
         }

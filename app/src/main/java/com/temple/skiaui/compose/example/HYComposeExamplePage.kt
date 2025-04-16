@@ -11,6 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 import com.temple.skiaui.compose.runtime.Button
@@ -67,7 +69,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         LazyColumn(
             modifier = Modifier.size(width, height)
                 .alignItems(Align.FlexStart),
-            "#00000066"
+            colorResource(R.color.gray_bg)
         ) {
             View(
                 modifier = Modifier.size(200, 200)
@@ -81,7 +83,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .justifyContent(Justify.SpaceBetween)
                     .alignItems(Align.Center)
                     .margins(intArrayOf(0, 50, 0, 0))
-                    .backgroundColor("#ffffff00")
+                    .backgroundColor(colorResource(R.color.transparent))
             ) {
                 Badge("")
                 Badge("1")
@@ -94,11 +96,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 modifier = Modifier.width(width)
                     .alignItems(Align.Center)
                     .justifyContent(Justify.Center)
-                    .backgroundColor("#ffffff00")
+                    .backgroundColor(colorResource(R.color.transparent))
             ) {
                 SVG(
                     modifier = Modifier.size(480, 480)
-                        .backgroundColor("#ffffff00")
+                        .backgroundColor(colorResource(R.color.transparent))
                         .onClick {
                             HYComposeMaterialPage(engine).apply {
                                 start(width, height)
@@ -110,18 +112,18 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 Text(
                     modifier = Modifier.textSize(40)
-                        .backgroundColor("#00ffff00"),
+                        .backgroundColor(colorResource(R.color.transparent)),
                     content = stringResource(R.string.remember_infinite_transition),
-                    color = "#ff00ff",
+                    color = Color.Magenta,
                 )
             }
             Text(
                 modifier = Modifier
                     .size(800, 100)
                     .textSize(50)
-                    .backgroundColor("#ffffff00"),
+                    .backgroundColor(colorResource(R.color.transparent)),
                 content = stringResource(R.string.exo_player),
-                color = "#0000ff",
+                color = Color.Blue,
             )
             ExoVideo(
                 modifier = Modifier.size(width, 360 * width / 640).corner(60),
@@ -145,7 +147,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         ellipsis = !ellipsis
                     },
                 content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
-                color = "#0000ff",
+                color = Color.Blue,
                 maxLine = if (ellipsis) 3 else 0,
                 ellipsis = stringResource(R.string.click_to_open)
             )
@@ -181,14 +183,14 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .justifyContent(Justify.SpaceBetween)
                     .alignItems(Align.Center)
                     .margins(intArrayOf(0, 50, 0, 0))
-                    .backgroundColor("#ffffff00")
+                    .backgroundColor(colorResource(R.color.transparent))
             ) {
-                Icon(0xe615, color = "#ff0000")
-                Icon(0xe7ce, color = "#ffff00")
+                Icon(0xe615, color = Color.Red)
+                Icon(0xe7ce, color = Color.Yellow)
                 Icon(0xe670)
-                Icon(0xe67d, color = "#00ff00")
-                Icon(0xe606, color = "#00ffff")
-                Icon(0xe6a2, color = "#000000")
+                Icon(0xe67d, color = Color.Green)
+                Icon(0xe606, color = Color.Cyan)
+                Icon(0xe6a2, color = Color.Black)
                 Icon(0xe61f)
             }
             Switch(Modifier.margins(intArrayOf(0, 50, 0, 0)))
@@ -225,13 +227,13 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         )
     }
 
-    private fun randomColor(): String {
-        val hexChars = "0123456789abcdef"
-        val nextColor = StringBuilder("#")
-        for (i in 0 until 6) {
-            nextColor.append(hexChars[Random.nextInt(hexChars.length)])
-        }
-        return nextColor.toString()
+    private fun randomColor(): Color {
+        return Color(
+            (Math.random() * 255).toInt(),
+            (Math.random() * 255).toInt(),
+            (Math.random() * 255).toInt(),
+            255,
+        )
     }
 
 }

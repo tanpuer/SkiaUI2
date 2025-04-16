@@ -12,7 +12,10 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import com.temple.skiaui.HYSkiaEngine
+import com.temple.skiaui.R
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.margins
@@ -46,12 +49,12 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
         LazyColumn(
             modifier = Modifier().size(width, height)
                 .alignItems(Align.Center),
-            "#00000066"
+            colorResource(R.color.gray_bg)
         ) {
             EditText(
                 modifier = Modifier.size(width, 150)
                     .margins(intArrayOf(0, 50, 0, 0)),
-                "这是Android原生的EditText融合渲染",
+                stringResource(R.string.edit_hint_string),
                 true
             )
             Camera(Modifier().size(width, width), object : CameraCallback {
@@ -65,14 +68,6 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                 "https://m.bilibili.com/"
             )
         }
-    }
-
-    private fun convertColor(color: Color): String {
-        val r = (color.red * 255).toInt()
-        val g = (color.green * 255).toInt()
-        val b = (color.blue * 255).toInt()
-        val a = (color.alpha * 255).toInt()
-        return String.format("#%02X%02X%02X%02X", r, g, b, a)
     }
 
     companion object {

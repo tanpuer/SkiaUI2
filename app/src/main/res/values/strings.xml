@@ -2,4 +2,5 @@
     <string name="remember_infinite_transition">"rememberInfiniteTransition"</string>
     <string name="click_to_open">"点击展开"</string>
     <string name="exo_player">"ExoPlayer-Video"</string>
+    <string name="edit_hint_string">这是Android原生的EditText融合渲染</string>
 </resources>

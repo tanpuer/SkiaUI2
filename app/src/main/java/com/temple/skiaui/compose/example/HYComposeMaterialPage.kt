@@ -12,7 +12,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import com.temple.skiaui.HYSkiaEngine
+import com.temple.skiaui.R
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.compose.runtime.LazyColumn
@@ -48,7 +50,7 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         LazyColumn(
             modifier = Modifier().size(width, height)
                 .alignItems(Align.Center),
-            "#00000066"
+            colorResource(R.color.transparent)
         ) {
             View(
                 modifier = Modifier()
@@ -56,15 +58,15 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .onClick {
                         HYComposeSDK.popPage(engine)
                     },
-                convertColor(color.value)
+                color.value
             )
             Text(
                 modifier = Modifier()
-                    .backgroundColor("#ffffff00")
+                    .backgroundColor(colorResource(R.color.transparent))
                     .margins(intArrayOf(0, 50, 0, 0))
                     .textSize(50),
                 "测试文本",
-                convertColor(textColor.value)
+                textColor.value
             )
         }
     }

@@ -30,16 +30,12 @@ compose_text_set_text_size(JNIEnv *env, jobject instance, jlong viewPtr, jint si
 }
 
 extern "C" JNIEXPORT void JNICALL
-compose_text_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jstring color) {
+compose_text_set_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
     auto textView = reinterpret_cast<TextView *>(viewPtr);
     if (textView == nullptr) {
         return;
     }
-    auto colorStr = env->GetStringUTFChars(color, nullptr);
-    int r, g, b, a;
-    hexToRGBA(colorStr, r, g, b, a);
-    textView->setTextColor(SkColorSetARGB(a, r, g, b));
-    env->ReleaseStringUTFChars(color, colorStr);
+    textView->setTextColor(color);
 }
 
 extern "C" JNIEXPORT void JNICALL
@@ -65,7 +61,7 @@ compose_text_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring e
 static JNINativeMethod g_ComposeTextViewMethods[] = {
         {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_text_set_text},
         {"nativeSetTextSize", "(JI)V",                  (void *) compose_text_set_text_size},
-        {"nativeSetColor",    "(JLjava/lang/String;)V", (void *) compose_text_set_color},
+        {"nativeSetColor",    "(JI)V", (void *) compose_text_set_color},
         {"nativeSetMaxLine",  "(JI)V",                  (void *) compose_text_set_max_line},
         {"nativeSetEllipsis", "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
 };
