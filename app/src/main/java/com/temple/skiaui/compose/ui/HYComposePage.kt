@@ -3,7 +3,8 @@ package com.temple.skiaui.compose.ui
 import android.util.Log
 import com.temple.skiaui.compose.foundation.Modifier
 
-class HYComposePage(modifier: Modifier) : HYComposeViewGroup(modifier) {
+class HYComposePage(modifier: Modifier, val onShow: () -> Unit, val onHide: () -> Unit) :
+    HYComposeViewGroup(modifier) {
 
     override fun getViewType(): String = "Page"
 
@@ -15,12 +16,14 @@ class HYComposePage(modifier: Modifier) : HYComposeViewGroup(modifier) {
         nativePop(ref)
     }
 
-    private fun onShow() {
+    private fun onShowFromNative() {
         Log.d("HYComposePage", "onShow")
+        onShow()
     }
 
-    private fun onHide() {
+    private fun onHideFromNative() {
         Log.d("HYComposePage", "onHide")
+        onHide()
     }
 
     private external fun nativePush(page: Long, width: Int)

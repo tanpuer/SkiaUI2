@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.runtime
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ControlledComposition
 import com.temple.skiaui.HYSkiaEngine
@@ -18,7 +19,9 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) {
         composition = ControlledComposition(
             applier = HYComposeApplier(
                 HYComposePage(
-                    Modifier().size(width, height)
+                    modifier = Modifier().size(width, height),
+                    onShow = { this.onShow() },
+                    onHide = { this.onHide() }
                 ).apply {
                     this.push((modifier.styles["size"] as IntArray)[0])
                 }),
@@ -30,7 +33,20 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) {
     }
 
     open fun dispose() {
+        Log.d(TAG, "dispose")
         composition?.dispose()
+    }
+
+    open fun onShow() {
+        Log.d(TAG, "onShow")
+    }
+
+    open fun onHide() {
+        Log.d(TAG, "onHide")
+    }
+
+    companion object {
+        private const val TAG = "HYComposeBasePage"
     }
 
 }

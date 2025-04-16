@@ -177,7 +177,7 @@ void Page::onShow() {
         auto jniEnv = context->getJniEnv();
         if (pageOnShowMethodId == nullptr) {
             auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/ui/HYComposePage");
-            pageOnShowMethodId = jniEnv->GetMethodID(jClazz, "onShow", "()V");
+            pageOnShowMethodId = jniEnv->GetMethodID(jClazz, "onShowFromNative", "()V");
         }
         jniEnv->CallVoidMethod(globalJavaViewRef, pageOnShowMethodId);
     }
@@ -193,7 +193,7 @@ void Page::onHide() {
         auto jniEnv = context->getJniEnv();
         if (pageOnHideMethodId == nullptr) {
             auto jClazz = jniEnv->FindClass("com/temple/skiaui/compose/ui/HYComposePage");
-            pageOnHideMethodId = jniEnv->GetMethodID(jClazz, "onHide", "()V");
+            pageOnHideMethodId = jniEnv->GetMethodID(jClazz, "onHideFromNative", "()V");
         }
         jniEnv->CallVoidMethod(globalJavaViewRef, pageOnHideMethodId);
     }
