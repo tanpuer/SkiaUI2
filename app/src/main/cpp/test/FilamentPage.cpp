@@ -35,7 +35,6 @@ void FilamentPage::initChildren(ViewGroup *root, int width, int height) {
         filament->setWidth(width);
         filament->setHeight(800);
         filament->setStyle(SkPaint::kStroke_Style);
-        filament->setBackgroundColor(SK_ColorTRANSPARENT);
         filament->setStrokeWidth(0);
         filament->setMargin({0, 0, 0, 50});
         flexboxLayout->addView(filament);
