@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
+import androidx.compose.ui.unit.Dp
 import com.temple.skiaui.compose.ui.HYComposeView
 
 class Modifier {
@@ -24,7 +25,7 @@ class Modifier {
             return Modifier().height(height)
         }
 
-        fun textSize(size: Int): Modifier {
+        fun textSize(size: Dp): Modifier {
             return Modifier().textSize(size)
         }
 

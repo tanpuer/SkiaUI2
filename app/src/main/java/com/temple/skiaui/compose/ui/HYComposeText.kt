@@ -1,6 +1,7 @@
 package com.temple.skiaui.compose.ui
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.ui.util.composeColorToSkiaColor
 
@@ -11,7 +12,7 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
         modifier.styles.forEach { (key, value) ->
             when (key) {
                 "textSize" -> {
-                    nativeSetTextSize(ref, value as Int)
+                    nativeSetTextSize(ref, (value as Dp).value.toInt())
                 }
             }
         }

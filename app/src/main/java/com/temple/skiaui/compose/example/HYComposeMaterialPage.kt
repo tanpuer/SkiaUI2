@@ -13,6 +13,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
@@ -64,19 +66,11 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 modifier = Modifier()
                     .backgroundColor(colorResource(R.color.transparent))
                     .margins(intArrayOf(0, 50, 0, 0))
-                    .textSize(50),
-                "测试文本",
+                    .textSize(50.dp),
+                stringResource(R.string.test_text),
                 textColor.value
             )
         }
-    }
-
-    private fun convertColor(color: Color): String {
-        val r = (color.red * 255).toInt()
-        val g = (color.green * 255).toInt()
-        val b = (color.blue * 255).toInt()
-        val a = (color.alpha * 255).toInt()
-        return String.format("#%02X%02X%02X%02X", r, g, b, a)
     }
 
     companion object {

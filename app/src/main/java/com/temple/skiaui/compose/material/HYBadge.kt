@@ -2,6 +2,7 @@ package com.temple.skiaui.compose.material
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.corner
@@ -16,7 +17,7 @@ fun Badge(
 ) {
     val paddingTop = if (content.isEmpty()) 20 else 10
     Text(
-        modifier = Modifier.textSize(30)
+        modifier = Modifier.textSize(30.dp)
             .corner(Int.MAX_VALUE)
             .backgroundColor(containerColor)
             .paddings(intArrayOf(20, paddingTop, 20, paddingTop)),

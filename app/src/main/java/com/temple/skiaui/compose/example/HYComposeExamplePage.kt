@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 import com.temple.skiaui.compose.runtime.Button
@@ -111,7 +112,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     rotateZ.absoluteValue
                 )
                 Text(
-                    modifier = Modifier.textSize(40)
+                    modifier = Modifier.textSize(40.dp)
                         .backgroundColor(colorResource(R.color.transparent)),
                     content = stringResource(R.string.remember_infinite_transition),
                     color = Color.Magenta,
@@ -120,7 +121,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             Text(
                 modifier = Modifier
                     .size(800, 100)
-                    .textSize(50)
+                    .textSize(50.dp)
                     .backgroundColor(colorResource(R.color.transparent)),
                 content = stringResource(R.string.exo_player),
                 color = Color.Blue,
@@ -141,7 +142,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Text(
                 modifier = Modifier.size(800, 100)
-                    .textSize(50)
+                    .textSize(50.dp)
                     .margins(intArrayOf(0, 50, 0, 0))
                     .onClick {
                         ellipsis = !ellipsis
@@ -200,7 +201,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeNative(width: Int, height: Int) {
         Button(
-            modifier = Modifier.textSize(60)
+            modifier = Modifier.textSize(60.dp)
                 .margins(intArrayOf(0, 50, 0, 0))
                 .onClick {
                     HYComposeNativeViewsPage(engine).apply {
@@ -215,7 +216,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeFilament(width: Int, height: Int) {
         Button(
-            modifier = Modifier.textSize(60)
+            modifier = Modifier.textSize(60.dp)
                 .margins(intArrayOf(0, 50, 0, 0))
                 .onClick {
                     HYComposeFilamentPage(engine).apply {

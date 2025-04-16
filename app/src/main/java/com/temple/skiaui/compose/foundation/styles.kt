@@ -1,6 +1,7 @@
 package com.temple.skiaui.compose.foundation
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.Justify
@@ -26,7 +27,7 @@ fun Modifier.height(height: Int): Modifier {
     return this
 }
 
-fun Modifier.textSize(size: Int): Modifier {
+fun Modifier.textSize(size: Dp): Modifier {
     styles["textSize"] = size
     return this
 }
