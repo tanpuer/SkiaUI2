@@ -21,13 +21,13 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context = std::make_shared<SkiaUIContext>();
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
-    if (exampleType == 1) {
+    if (exampleType == JS) {
         testDraw = std::make_unique<SimpleJavascriptTest>();
-    } else if (exampleType == 2) {
+    } else if (exampleType == Compose) {
         testDraw = std::make_unique<JetpackComposeTest>(env);
-    } else if (exampleType == 3) {
+    } else if (exampleType == React) {
         testDraw = std::make_unique<ReactjsTest>();
-    } else if (exampleType == 4) {
+    } else if (exampleType == Vue) {
         testDraw = std::make_unique<VuejsTest>();
     } else {
         testDraw = std::make_unique<CppTest>();
@@ -86,13 +86,8 @@ bool SkiaUIApp::onBackPressed() {
         context->getBackPressedInterceptor()();
     }
     // Compose
-    if (this->exampleType == 2) {
-        auto jniEnv = getContext()->getJniEnv();
-        jclass composeSDK = jniEnv->FindClass("com/temple/skiaui/compose/runtime/HYComposeSDK");
-        jfieldID instanceField = jniEnv->GetStaticFieldID(composeSDK, "INSTANCE", "Lcom/temple/skiaui/compose/runtime/HYComposeSDK;");
-        jmethodID onPagePoped = jniEnv->GetMethodID(composeSDK, "onPagePoped", "()V");
-        jobject instance = jniEnv->GetStaticObjectField(composeSDK, instanceField);
-        jniEnv->CallVoidMethod(instance, onPagePoped);
+    if (this->exampleType == Compose) {
+        getContext()->callComposeSDKPoped();
     }
     auto page = context->getPageStackManager()->back();
     if (page != nullptr) {

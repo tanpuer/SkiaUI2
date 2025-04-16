@@ -196,6 +196,15 @@ public:
         return this->backPressedInterceptor;
     }
 
+    void callComposeSDKPoped() {
+        jclass composeSDK = jniEnv->FindClass("com/temple/skiaui/compose/runtime/HYComposeSDK");
+        jfieldID instanceField = jniEnv->GetStaticFieldID(composeSDK, "INSTANCE",
+                                                          "Lcom/temple/skiaui/compose/runtime/HYComposeSDK;");
+        jmethodID onPagePoped = jniEnv->GetMethodID(composeSDK, "onPagePoped", "()V");
+        jobject instance = jniEnv->GetStaticObjectField(composeSDK, instanceField);
+        jniEnv->CallVoidMethod(instance, onPagePoped);
+    }
+
 public:
     std::shared_ptr<ResourcesLoader> resourcesLoader;
 

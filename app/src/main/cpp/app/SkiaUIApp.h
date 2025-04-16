@@ -10,6 +10,14 @@ namespace HYSkiaUI {
 
 class SkiaUIApp {
 
+    enum FrontEngineType {
+        Cpp = 0,
+        JS = 1,
+        Compose = 2,
+        React = 3,
+        Vue = 4
+    };
+
 public:
 
     SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine, int exampleType);
