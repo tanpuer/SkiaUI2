@@ -13,6 +13,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
@@ -45,12 +46,11 @@ import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.Justify
 import kotlin.math.absoluteValue
-import kotlin.random.Random
 
 class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
-    override fun RunComposable(width: Int, height: Int) {
+    override fun RunComposable(width: Dp, height: Dp) {
         var color by remember { mutableStateOf(randomColor()) }
         var shaderSource by remember {
             mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
@@ -73,7 +73,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             colorResource(R.color.gray_bg)
         ) {
             View(
-                modifier = Modifier.size(200, 200)
+                modifier = Modifier.size(80.dp, 80.dp)
                     .onClick { view: HYComposeView ->
                         color = randomColor()
                     },
@@ -83,7 +83,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 modifier = Modifier.width(width)
                     .justifyContent(Justify.SpaceBetween)
                     .alignItems(Align.Center)
-                    .margins(intArrayOf(0, 50, 0, 0))
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .backgroundColor(colorResource(R.color.transparent))
             ) {
                 Badge("")
@@ -100,7 +100,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .backgroundColor(colorResource(R.color.transparent))
             ) {
                 SVG(
-                    modifier = Modifier.size(480, 480)
+                    modifier = Modifier.size(180.dp, 180.dp)
                         .backgroundColor(colorResource(R.color.transparent))
                         .onClick {
                             HYComposeMaterialPage(engine).apply {
@@ -112,7 +112,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     rotateZ.absoluteValue
                 )
                 Text(
-                    modifier = Modifier.textSize(40.dp)
+                    modifier = Modifier.textSize(16.dp)
                         .backgroundColor(colorResource(R.color.transparent)),
                     content = stringResource(R.string.remember_infinite_transition),
                     color = Color.Magenta,
@@ -120,30 +120,30 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             }
             Text(
                 modifier = Modifier
-                    .size(800, 100)
-                    .textSize(50.dp)
+                    .size(800.dp, 100.dp)
+                    .textSize(20.dp)
                     .backgroundColor(colorResource(R.color.transparent)),
                 content = stringResource(R.string.exo_player),
                 color = Color.Blue,
             )
             ExoVideo(
-                modifier = Modifier.size(width, 360 * width / 640).corner(60),
+                modifier = Modifier.size(width, width.times(360).div(640)).corner(60.dp),
                 "yiluxiangbei.mp4"
             )
             ComposeNative(width, height)
             ComposeFilament(width, height)
             Loading(
-                modifier = Modifier.size(500, 200)
-                    .margins(intArrayOf(0, 50, 0, 0))
+                modifier = Modifier.size(200.dp, 50.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .onClick {
                         color = randomColor()
                     },
                 color = color
             )
             Text(
-                modifier = Modifier.size(800, 100)
-                    .textSize(50.dp)
-                    .margins(intArrayOf(0, 50, 0, 0))
+                modifier = Modifier.size(width, 100.dp)
+                    .textSize(20.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .onClick {
                         ellipsis = !ellipsis
                     },
@@ -153,8 +153,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ellipsis = stringResource(R.string.click_to_open)
             )
             Lottie(
-                modifier = Modifier.size(375, 240)
-                    .margins(intArrayOf(0, 50, 0, 0))
+                modifier = Modifier.size(160.dp, 120.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .onClick {
                         lottiePlay = !lottiePlay
                     },
@@ -163,8 +163,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Shader(
                 modifier = Modifier
-                    .size(540, 540)
-                    .margins(intArrayOf(0, 50, 0, 0))
+                    .size(200.dp, 200.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .onClick { _: HYComposeView ->
                         if (shaderSource.list.isEmpty()) {
                             shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
@@ -176,14 +176,14 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Image(
                 modifier = Modifier
-                    .size(300, 300)
-                    .margins(intArrayOf(0, 50, 0, 0)), source = "bird.gif"
+                    .size(150.dp, 150.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)), source = "bird.gif"
             )
             Row(
                 modifier = Modifier.width(width)
                     .justifyContent(Justify.SpaceBetween)
                     .alignItems(Align.Center)
-                    .margins(intArrayOf(0, 50, 0, 0))
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .backgroundColor(colorResource(R.color.transparent))
             ) {
                 Icon(0xe615, color = Color.Red)
@@ -194,15 +194,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Icon(0xe6a2, color = Color.Black)
                 Icon(0xe61f)
             }
-            Switch(Modifier.margins(intArrayOf(0, 50, 0, 0)))
+            Switch(Modifier.margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)))
         }
     }
 
     @Composable
-    private fun ComposeNative(width: Int, height: Int) {
+    private fun ComposeNative(width: Dp, height: Dp) {
         Button(
-            modifier = Modifier.textSize(60.dp)
-                .margins(intArrayOf(0, 50, 0, 0))
+            modifier = Modifier.textSize(20.dp)
+                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .onClick {
                     HYComposeNativeViewsPage(engine).apply {
                         start(width, height)
@@ -214,10 +214,10 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     }
 
     @Composable
-    private fun ComposeFilament(width: Int, height: Int) {
+    private fun ComposeFilament(width: Dp, height: Dp) {
         Button(
-            modifier = Modifier.textSize(60.dp)
-                .margins(intArrayOf(0, 50, 0, 0))
+            modifier = Modifier.textSize(20.dp)
+                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .onClick {
                     HYComposeFilamentPage(engine).apply {
                         start(width, height)

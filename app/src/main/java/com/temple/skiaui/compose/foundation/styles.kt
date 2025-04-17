@@ -7,8 +7,8 @@ import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 
-fun Modifier.size(width: Int, height: Int): Modifier {
-    styles["size"] = intArrayOf(width, height)
+fun Modifier.size(width: Dp, height: Dp): Modifier {
+    styles["size"] = arrayOf(width, height)
     return this
 }
 
@@ -17,12 +17,12 @@ fun Modifier.backgroundColor(color: Color): Modifier {
     return this
 }
 
-fun Modifier.width(width: Int): Modifier {
+fun Modifier.width(width: Dp): Modifier {
     styles["width"] = width
     return this
 }
 
-fun Modifier.height(height: Int): Modifier {
+fun Modifier.height(height: Dp): Modifier {
     styles["height"] = height
     return this
 }
@@ -52,22 +52,22 @@ fun Modifier.position(value: Position): Modifier {
     return this
 }
 
-fun Modifier.margins(margins: IntArray): Modifier {
+fun Modifier.margins(margins: Array<Dp>): Modifier {
     styles["margins"] = margins
     return this
 }
 
-fun Modifier.paddings(paddings: IntArray): Modifier {
+fun Modifier.paddings(paddings: Array<Dp>): Modifier {
     styles["paddings"] = paddings
     return this
 }
 
-fun Modifier.corner(radius: Int): Modifier {
+fun Modifier.corner(radius: Dp): Modifier {
     styles["corner"] = radius
     return this
 }
 
-fun Modifier.minSize(minWidth: Int, minHeight: Int): Modifier {
-    styles["minSize"] = intArrayOf(minWidth, minHeight)
+fun Modifier.minSize(minWidth: Dp, minHeight: Dp): Modifier {
+    styles["minSize"] = arrayOf(minWidth, minHeight)
     return this
 }

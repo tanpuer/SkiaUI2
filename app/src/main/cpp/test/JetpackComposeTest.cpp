@@ -29,8 +29,8 @@ void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, 
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
         testRef = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(jClazz, constructor, javaSkiaEngine));
-        composeAppCreateMethodId = jniEnv->GetMethodID(jClazz, "onCreate", "(II)V");
-        composeAppDestroyMethodId = jniEnv->GetMethodID(jClazz, "onDestroy", "()V");
+        composeAppCreateMethodId = jniEnv->GetMethodID(jClazz, "innerOnCreate", "(II)V");
+        composeAppDestroyMethodId = jniEnv->GetMethodID(jClazz, "innerOnDestroy", "()V");
         jniEnv->CallVoidMethod(testRef, composeAppCreateMethodId, width, height);
         createFlag = true;
     }

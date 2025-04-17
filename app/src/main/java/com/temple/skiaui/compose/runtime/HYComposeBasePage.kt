@@ -6,16 +6,18 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ControlledComposition
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.ui.HYComposePage
+import com.temple.skiaui.compose.ui.util.dp2px
 
 abstract class HYComposeBasePage(val engine: HYSkiaEngine) : HYComposeComposer(engine) {
 
-    open fun start(width: Int, height: Int) {
+    open fun start(width: Dp, height: Dp) {
         composition = ControlledComposition(
             applier = HYComposeApplier(
                 HYComposePage(
@@ -23,7 +25,7 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) : HYComposeComposer(e
                     onShow = { this.onShow() },
                     onHide = { this.onHide() }
                 ).apply {
-                    this.push((modifier.styles["size"] as IntArray)[0])
+                    this.push(dp2px((modifier.styles["size"] as Array<*>)[0] as Dp))
                 }),
             parent = reComposer
         )
@@ -39,7 +41,7 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) : HYComposeComposer(e
     }
 
     @Composable
-    abstract fun RunComposable(width: Int, height: Int)
+    abstract fun RunComposable(width: Dp, height: Dp)
 
     open fun dispose() {
         Log.d(TAG, "dispose")

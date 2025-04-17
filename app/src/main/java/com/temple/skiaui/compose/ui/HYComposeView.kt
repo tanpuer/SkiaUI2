@@ -1,9 +1,11 @@
 package com.temple.skiaui.compose.ui
 
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.colorspace.ColorSpace
+import androidx.compose.ui.unit.Dp
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.ui.util.composeColorToSkiaColor
+import com.temple.skiaui.compose.ui.util.dp2px
+import com.temple.skiaui.compose.ui.util.dpArrayToIntArray
 
 open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
 
@@ -12,16 +14,16 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         modifier.styles.forEach { (key, value) ->
             when (key) {
                 "size" -> {
-                    val size = value as IntArray
-                    setSize(size[0], size[1])
+                    val size = value as Array<*>
+                    setSize(dp2px(size[0] as Dp), dp2px(size[1] as Dp))
                 }
 
                 "width" -> {
-                    nativeSetWidth(ref, value as Int)
+                    nativeSetWidth(ref, dp2px(value as Dp))
                 }
 
                 "height" -> {
-                    nativeSetHeight(ref, value as Int)
+                    nativeSetHeight(ref, dp2px(value as Dp))
                 }
 
                 "backgroundColor" -> {
@@ -29,11 +31,11 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 }
 
                 "margins" -> {
-                    nativeSetMargins(ref, value as IntArray)
+                    nativeSetMargins(ref, dpArrayToIntArray(value as Array<Dp>))
                 }
 
                 "paddings" -> {
-                    nativeSetPaddings(ref, value as IntArray)
+                    nativeSetPaddings(ref, dpArrayToIntArray(value as Array<Dp>))
                 }
 
                 "position" -> {
@@ -41,11 +43,12 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 }
 
                 "corner" -> {
-                    nativeSetCornerRadius(ref, value as Int)
+                    nativeSetCornerRadius(ref, dp2px(value as Dp))
                 }
 
                 "minSize" -> {
-                    nativeSetMinSize(ref, (value as IntArray)[0], value[1])
+                    val size = value as Array<*>
+                    nativeSetMinSize(ref, dp2px(size[0] as Dp), dp2px(size[1] as Dp))
                 }
             }
         }

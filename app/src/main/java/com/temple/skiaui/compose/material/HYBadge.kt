@@ -15,12 +15,12 @@ fun Badge(
     containerColor: Color = Color.Magenta,
     contentColor: Color = Color.White
 ) {
-    val paddingTop = if (content.isEmpty()) 20 else 10
+    val paddingTop = if (content.isEmpty()) 8.dp else 5.dp
     Text(
-        modifier = Modifier.textSize(30.dp)
-            .corner(Int.MAX_VALUE)
+        modifier = Modifier.textSize(10.dp)
+            .corner(Int.MAX_VALUE.dp)
             .backgroundColor(containerColor)
-            .paddings(intArrayOf(20, paddingTop, 20, paddingTop)),
+            .paddings(arrayOf(9.dp, paddingTop, 9.dp, paddingTop)),
         content, contentColor
     )
 }

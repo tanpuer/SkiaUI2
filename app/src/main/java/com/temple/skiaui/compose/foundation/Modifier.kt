@@ -13,15 +13,15 @@ class Modifier {
 
     companion object {
 
-        fun size(width: Int, height: Int): Modifier {
+        fun size(width: Dp, height: Dp): Modifier {
             return Modifier().size(width, height)
         }
 
-        fun width(width: Int): Modifier {
+        fun width(width: Dp): Modifier {
             return Modifier().width(width)
         }
 
-        fun height(height: Int): Modifier {
+        fun height(height: Dp): Modifier {
             return Modifier().height(height)
         }
 
@@ -29,7 +29,7 @@ class Modifier {
             return Modifier().textSize(size)
         }
 
-        fun margins(margins: IntArray): Modifier {
+        fun margins(margins: Array<Dp>): Modifier {
             return Modifier().margins(margins)
         }
 

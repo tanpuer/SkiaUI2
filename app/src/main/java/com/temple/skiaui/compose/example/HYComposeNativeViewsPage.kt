@@ -14,6 +14,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 import com.temple.skiaui.compose.foundation.Modifier
@@ -31,7 +33,7 @@ import com.temple.skiaui.compose.ui.CameraCallback
 class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
-    override fun RunComposable(width: Int, height: Int) {
+    override fun RunComposable(width: Dp, height: Dp) {
         val color = remember { Animatable(Color.Green) }
         LaunchedEffect(color) {
             color.animateTo(Color.Blue, infiniteRepeatable(tween(5000), RepeatMode.Reverse))
@@ -52,8 +54,8 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
             colorResource(R.color.gray_bg)
         ) {
             EditText(
-                modifier = Modifier.size(width, 150)
-                    .margins(intArrayOf(0, 50, 0, 0)),
+                modifier = Modifier.size(width, 70.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                 stringResource(R.string.edit_hint_string),
                 true
             )
@@ -63,8 +65,8 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                 }
             })
             Web(
-                Modifier.size(width, 1200)
-                    .margins(intArrayOf(0, 50, 0, 0)),
+                Modifier.size(width, 1200.dp)
+                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                 "https://m.bilibili.com/"
             )
         }
