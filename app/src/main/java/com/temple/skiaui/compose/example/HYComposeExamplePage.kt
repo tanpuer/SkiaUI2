@@ -120,14 +120,13 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             }
             Text(
                 modifier = Modifier
-                    .size(800.dp, 100.dp)
                     .textSize(20.dp)
                     .backgroundColor(colorResource(R.color.transparent)),
                 content = stringResource(R.string.exo_player),
                 color = Color.Blue,
             )
             ExoVideo(
-                modifier = Modifier.size(width, width.times(360).div(640)).corner(60.dp),
+                modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
                 "yiluxiangbei.mp4"
             )
             ComposeNative(width, height)
