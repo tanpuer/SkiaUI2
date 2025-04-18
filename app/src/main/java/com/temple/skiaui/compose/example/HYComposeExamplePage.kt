@@ -103,7 +103,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ) {
                     SVG(
                         modifier = Modifier.size(px2dp(480), px2dp(480))
-                            .backgroundColor(Color.Transparent),
+                            .backgroundColor(Color.Transparent)
+                            .margins(arrayOf(1.dp, 1.dp, 0.dp, 0.dp)),
                         source = "jetpack-compose.svg",
                         rotateZ = rotateZ.absoluteValue,
                         onClick = {

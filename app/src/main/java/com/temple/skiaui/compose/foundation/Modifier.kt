@@ -68,11 +68,25 @@ class Modifier {
         if (alignItems != Align.Unspecified && alignItems != previous.alignItems) {
             styles[StyleKey.alignItems] = alignItems
         }
-        margins?.let {
-            styles[StyleKey.margins] = it
+        if (margins != null && (previous.margins == null ||
+                    previous.margins?.getOrNull(0) != margins?.getOrNull(0) ||
+                    previous.margins?.getOrNull(1) != margins?.getOrNull(1) ||
+                    previous.margins?.getOrNull(2) != margins?.getOrNull(2) ||
+                    previous.margins?.getOrNull(3) != margins?.getOrNull(3))
+            ) {
+            margins?.let {
+                styles[StyleKey.margins] = it
+            }
         }
-        paddings?.let {
-            styles[StyleKey.paddings] = it
+        if (paddings != null && (previous.paddings == null ||
+                    previous.paddings?.getOrNull(0) != paddings?.getOrNull(0) ||
+                    previous.paddings?.getOrNull(1) != paddings?.getOrNull(1) ||
+                    previous.paddings?.getOrNull(2) != paddings?.getOrNull(2) ||
+                    previous.paddings?.getOrNull(3) != paddings?.getOrNull(3))
+        ) {
+            paddings?.let {
+                styles[StyleKey.paddings] = it
+            }
         }
     }
 
