@@ -10,16 +10,7 @@ import com.temple.skiaui.compose.ui.util.dpArrayToIntArray
 
 open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
 
-    override fun initEvents(modifier: Modifier) {
-        super.initEvents(modifier)
-        modifier.events.forEach { (key, value) ->
-            when (key) {
-                "click" -> {
-                    nativeSetClickCallback(ref)
-                }
-            }
-        }
-    }
+    private var clickCallback: (() -> Unit)? = null
 
     override fun innerUpdateModifier(modifier: Modifier) {
         modifier.styles.forEach { (key, value) ->
@@ -86,7 +77,12 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     }
 
     fun triggerClickEvent() {
-        (modifier.events["click"])?.invoke(this, null)
+        clickCallback?.invoke()
+    }
+
+    fun setOnClick(callback: (() -> Unit)?) {
+        clickCallback = callback
+        nativeSetClickCallback(ref)
     }
 
     override fun getViewType(): String = "View"

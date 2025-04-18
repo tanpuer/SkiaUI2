@@ -12,13 +12,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
+import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.ShaderSource
+import com.temple.skiaui.compose.foundation.alignItems
+import com.temple.skiaui.compose.foundation.backgroundColor
+import com.temple.skiaui.compose.foundation.corner
+import com.temple.skiaui.compose.foundation.justifyContent
+import com.temple.skiaui.compose.foundation.margins
+import com.temple.skiaui.compose.foundation.textSize
+import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.runtime.Button
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
@@ -34,18 +43,7 @@ import com.temple.skiaui.compose.runtime.Shader
 import com.temple.skiaui.compose.runtime.Switch
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.runtime.View
-import com.temple.skiaui.compose.foundation.Modifier
-import com.temple.skiaui.compose.foundation.ShaderSource
-import com.temple.skiaui.compose.foundation.onClick
-import com.temple.skiaui.compose.foundation.alignItems
-import com.temple.skiaui.compose.foundation.backgroundColor
-import com.temple.skiaui.compose.foundation.corner
-import com.temple.skiaui.compose.foundation.justifyContent
-import com.temple.skiaui.compose.foundation.margins
-import com.temple.skiaui.compose.foundation.textSize
-import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.ui.Align
-import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.util.px2dp
 import kotlin.math.absoluteValue
@@ -77,11 +75,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 MaterialTheme.colorScheme.background
             ) {
                 View(
-                    modifier = Modifier.size(if (isSystemInDarkTheme()) 180.dp else 80.dp, 80.dp)
-                        .onClick { view: HYComposeView ->
-                            color = randomColor()
-                        },
-                    color
+                    modifier = Modifier.size(if (isSystemInDarkTheme()) 180.dp else 80.dp, 80.dp),
+                    backgroundColor = color,
+                    onClick = {
+                        color = randomColor()
+                    }
                 )
                 Row(
                     modifier = Modifier.width(width)
@@ -105,15 +103,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ) {
                     SVG(
                         modifier = Modifier.size(px2dp(480), px2dp(480))
-                            .backgroundColor(Color.Transparent)
-                            .onClick {
-                                HYComposeMaterialPage(engine).apply {
-                                    start(width, height)
-                                    HYComposeSDK.pushPage(this)
-                                }
-                            },
+                            .backgroundColor(Color.Transparent),
                         source = "jetpack-compose.svg",
-                        rotateZ.absoluteValue
+                        rotateZ.absoluteValue,
+                        onClick = {
+                            HYComposeMaterialPage(engine).apply {
+                                start(width, height)
+                                HYComposeSDK.pushPage(this)
+                            }
+                        }
                     )
                     Text(
                         modifier = Modifier.textSize(16.dp)
@@ -137,45 +135,45 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ComposeFilament(width, height)
                 Loading(
                     modifier = Modifier.size(200.dp, 50.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                        .onClick {
-                            color = randomColor()
-                        },
-                    color = color
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    color = color,
+                    onClick = {
+                        color = randomColor()
+                    }
                 )
                 Text(
                     modifier = Modifier.size(width, 100.dp)
                         .textSize(20.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                        .onClick {
-                            ellipsis = !ellipsis
-                        },
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                     content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
                     color = MaterialTheme.colorScheme.inversePrimary,
                     maxLine = if (ellipsis) 3 else 0,
-                    ellipsis = stringResource(R.string.click_to_open)
+                    ellipsis = stringResource(R.string.click_to_open),
+                    onClick = {
+                        ellipsis = !ellipsis
+                    }
                 )
                 Lottie(
                     modifier = Modifier.size(160.dp, 120.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                        .onClick {
-                            lottiePlay = !lottiePlay
-                        },
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                     "WorkspacePlanet.json",
-                    lottiePlay
+                    play = lottiePlay,
+                    onClick = {
+                        lottiePlay = !lottiePlay
+                    }
                 )
                 Shader(
                     modifier = Modifier
                         .size(200.dp, 200.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                        .onClick { _: HYComposeView ->
-                            if (shaderSource.list.isEmpty()) {
-                                shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
-                            } else {
-                                shaderSource = ShaderSource("sincos.glsl", arrayOf())
-                            }
-                        },
-                    shaderSource
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    shaderSource,
+                    onClick = {
+                        if (shaderSource.list.isEmpty()) {
+                            shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
+                        } else {
+                            shaderSource = ShaderSource("sincos.glsl", arrayOf())
+                        }
+                    }
                 )
                 Image(
                     modifier = Modifier
@@ -207,15 +205,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         Button(
             modifier = Modifier.textSize(20.dp)
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer)
-                .onClick {
-                    HYComposeNativeViewsPage(engine).apply {
-                        start(width, height)
-                        HYComposeSDK.pushPage(this)
-                    }
-                },
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
             stringResource(R.string.native_views_page),
-            MaterialTheme.colorScheme.tertiary
+            MaterialTheme.colorScheme.tertiary,
+            onClick = {
+                HYComposeNativeViewsPage(engine).apply {
+                    start(width, height)
+                    HYComposeSDK.pushPage(this)
+                }
+            }
         )
     }
 
@@ -224,15 +222,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         Button(
             modifier = Modifier.textSize(20.dp)
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer)
-                .onClick {
-                    HYComposeFilamentPage(engine).apply {
-                        start(width, height)
-                        HYComposeSDK.pushPage(this)
-                    }
-                },
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
             stringResource(R.string.filament_page),
-            MaterialTheme.colorScheme.tertiary
+            MaterialTheme.colorScheme.tertiary,
+            onClick = {
+                HYComposeFilamentPage(engine).apply {
+                    start(width, height)
+                    HYComposeSDK.pushPage(this)
+                }
+            }
         )
     }
 

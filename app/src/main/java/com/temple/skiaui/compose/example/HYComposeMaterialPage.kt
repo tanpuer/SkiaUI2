@@ -25,7 +25,6 @@ import com.temple.skiaui.compose.runtime.LazyColumn
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.runtime.View
 import com.temple.skiaui.compose.foundation.Modifier
-import com.temple.skiaui.compose.foundation.onClick
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.margins
@@ -59,11 +58,11 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             ) {
                 View(
                     modifier = Modifier()
-                        .size(100.dp, 100.dp)
-                        .onClick {
-                            HYComposeSDK.popPage(engine)
-                        },
-                    color.value
+                        .size(100.dp, 100.dp),
+                    color.value,
+                    onClick = {
+                        HYComposeSDK.popPage(engine)
+                    }
                 )
                 Text(
                     modifier = Modifier()

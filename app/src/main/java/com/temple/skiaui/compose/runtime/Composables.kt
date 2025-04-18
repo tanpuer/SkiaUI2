@@ -27,7 +27,7 @@ import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
 
 @Composable
-fun View(modifier: Modifier, backgroundColor: Color, rotateZ: Float = 0.0f) {
+fun View(modifier: Modifier, backgroundColor: Color, rotateZ: Float = 0.0f, onClick: (() -> Unit)? = null) {
     ComposeNode<HYComposeView, HYComposeApplier>(
         factory = { HYComposeView(modifier) },
         update = {
@@ -35,10 +35,13 @@ fun View(modifier: Modifier, backgroundColor: Color, rotateZ: Float = 0.0f) {
                 updateModifier(modifier)
             }
             set(backgroundColor) {
-                this.setBackgroundColor(backgroundColor)
+                setBackgroundColor(backgroundColor)
             }
             set(rotateZ) {
-                this.setRotateZ(rotateZ)
+                setRotateZ(rotateZ)
+            }
+            set(onClick) {
+                setOnClick(onClick)
             }
         }
     )
@@ -53,7 +56,7 @@ fun Column(modifier: Modifier, backgroundColor: Color, content: @Composable () -
                 updateModifier(modifier)
             }
             set(backgroundColor) {
-                this.setBackgroundColor(backgroundColor)
+                setBackgroundColor(backgroundColor)
             }
         },
         content = content
@@ -82,7 +85,7 @@ fun LazyColumn(modifier: Modifier, backgroundColor: Color, content: @Composable 
                 updateModifier(modifier)
             }
             set(backgroundColor) {
-                this.setBackgroundColor(backgroundColor)
+                setBackgroundColor(backgroundColor)
             }
         },
         content = content
@@ -90,22 +93,7 @@ fun LazyColumn(modifier: Modifier, backgroundColor: Color, content: @Composable 
 }
 
 @Composable
-fun Video(modifier: Modifier, source: String) {
-    ComposeNode<HYComposeVideo, HYComposeApplier>(
-        factory = { HYComposeVideo(modifier) },
-        update = {
-            set(modifier) {
-                updateModifier(modifier)
-            }
-            set(source) {
-                setSource(source)
-            }
-        }
-    )
-}
-
-@Composable
-fun ExoVideo(modifier: Modifier, source: String) {
+fun ExoVideo(modifier: Modifier, source: String, onClick: (() -> Unit)? = null) {
     ComposeNode<HYComposeExoVideo, HYComposeApplier>(
         factory = { HYComposeExoVideo(modifier) },
         update = {
@@ -115,12 +103,15 @@ fun ExoVideo(modifier: Modifier, source: String) {
             set(source) {
                 setSource(source)
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }
 
 @Composable
-fun Loading(modifier: Modifier, color: Color = Color.Blue) {
+fun Loading(modifier: Modifier, color: Color = Color.Blue, onClick: (() -> Unit)? = null) {
     ComposeNode<HYComposeLoadingView, HYComposeApplier>(
         factory = { HYComposeLoadingView(modifier) },
         update = {
@@ -130,12 +121,15 @@ fun Loading(modifier: Modifier, color: Color = Color.Blue) {
             set(color) {
                 setColor(color)
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }
 
 @Composable
-fun SVG(modifier: Modifier, source: String, rotateZ: Float = 0.0f) {
+fun SVG(modifier: Modifier, source: String, rotateZ: Float = 0.0f, onClick: () -> Unit) {
     ComposeNode<HYComposeSVG, HYComposeApplier>(
         factory = { HYComposeSVG(modifier) },
         update = {
@@ -148,12 +142,15 @@ fun SVG(modifier: Modifier, source: String, rotateZ: Float = 0.0f) {
             set(rotateZ) {
                 setRotateZ(rotateZ)
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }
 
 @Composable
-fun Lottie(modifier: Modifier, source: String, play: Boolean = true) {
+fun Lottie(modifier: Modifier, source: String, play: Boolean = true, onClick: (() -> Unit)? = null) {
     ComposeNode<HYComposeLottie, HYComposeApplier>(
         factory = { HYComposeLottie(modifier) },
         update = {
@@ -166,12 +163,15 @@ fun Lottie(modifier: Modifier, source: String, play: Boolean = true) {
             set(play) {
                 if (play) start() else pause()
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }
 
 @Composable
-fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
+fun Shader(modifier: Modifier, shaderSource: ShaderSource, onClick: (() -> Unit)? = null) {
     ComposeNode<HYComposeShader, HYComposeApplier>(
         factory = { HYComposeShader(modifier) },
         update = {
@@ -180,6 +180,9 @@ fun Shader(modifier: Modifier, shaderSource: ShaderSource) {
             }
             set(shaderSource) {
                 setShaderSource(shaderSource)
+            }
+            set(onClick) {
+                setOnClick(onClick)
             }
         }
     )
@@ -191,7 +194,8 @@ fun Text(
     content: String,
     color: Color,
     maxLine: Int = 0,
-    ellipsis: String = "…"
+    ellipsis: String = "…",
+    onClick: (() -> Unit)? = null
 ) {
     ComposeNode<HYComposeText, HYComposeApplier>(
         factory = { HYComposeText(modifier) },
@@ -211,6 +215,9 @@ fun Text(
             set(ellipsis) {
                 setEllipse(ellipsis)
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }
@@ -219,7 +226,8 @@ fun Text(
 fun Button(
     modifier: Modifier,
     content: String,
-    color: Color = Color.White
+    color: Color = Color.White,
+    onClick: (() -> Unit)? = null
 ) {
     ComposeNode<HYComposeText, HYComposeApplier>(
         factory = { HYComposeButton(modifier) },
@@ -238,7 +246,7 @@ fun Button(
 }
 
 @Composable
-fun Image(modifier: Modifier, source: String) {
+fun Image(modifier: Modifier, source: String, onClick: (() -> Unit)? = null) {
     ComposeNode<HYComposeImage, HYComposeApplier>(
         factory = { HYComposeImage(modifier) },
         update = {
@@ -248,12 +256,21 @@ fun Image(modifier: Modifier, source: String) {
             set(source) {
                 setImageSource(source)
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }
 
 @Composable
-fun Icon(icon: Int = 0, color: Color = Color.Blue, size: Int = 100, modifier: Modifier = Modifier()) {
+fun Icon(
+    icon: Int = 0,
+    color: Color = Color.Blue,
+    size: Int = 100,
+    modifier: Modifier = Modifier(),
+    onClick: (() -> Unit)? = null
+) {
     ComposeNode<HYComposeIcon, HYComposeApplier>(
         factory = { HYComposeIcon(modifier) },
         update = {
@@ -268,6 +285,9 @@ fun Icon(icon: Int = 0, color: Color = Color.Blue, size: Int = 100, modifier: Mo
             }
             set(size) {
                 setIconSize(size)
+            }
+            set(onClick) {
+                setOnClick(onClick)
             }
         }
     )
