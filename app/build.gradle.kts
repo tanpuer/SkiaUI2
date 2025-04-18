@@ -64,5 +64,6 @@ dependencies {
     implementation("androidx.compose.runtime:runtime:1.7.8")
     implementation("androidx.compose.compiler:compiler:1.5.15")
     implementation("androidx.compose.foundation:foundation-android:1.7.8")
+    implementation("androidx.compose.material3:material3:1.3.2")
     implementation("com.google.android.filament:filament-android:1.56.0")
 }

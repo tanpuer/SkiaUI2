@@ -9,5 +9,7 @@ interface ISkiaView {
     fun onBackPressed()
 
     fun release()
+
+    fun onUIModeChange()
     
 }

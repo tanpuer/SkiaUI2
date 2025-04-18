@@ -106,7 +106,7 @@ void TouchEventDispatcher::findTargetView(TouchEvent *touchEvent) {
         return;
     }
     weakTargetView = findTargetViewTraversal(viewGroup, touchEvent);
-    if (weakTargetView != nullptr) {
+    if (weakTargetView != nullptr && !weakTargetView->isViewGroup()) {
         lastAlpha = weakTargetView->getAlpha();
         weakTargetView->setAlpha(0.3f);
     }
@@ -126,7 +126,9 @@ void TouchEventDispatcher::dispatchToTargetView(TouchEvent *touchEvent) {
 
 void TouchEventDispatcher::clearTargetView(TouchEvent *touchEvent) {
     if (weakTargetView != nullptr) {
-        weakTargetView->setAlpha(lastAlpha);
+        if (!weakTargetView->isViewGroup()) {
+            weakTargetView->setAlpha(lastAlpha);
+        }
         if (touchEvent != nullptr) {
             auto originAction = touchEvent->action;
             touchEvent->action = TouchEvent::ACTION_CANCEL;

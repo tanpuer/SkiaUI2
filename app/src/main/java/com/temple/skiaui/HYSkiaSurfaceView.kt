@@ -60,4 +60,8 @@ class HYSkiaSurfaceView @JvmOverloads constructor(
         engine.release()
     }
 
+    override fun onUIModeChange() {
+        engine.onUIModeChange()
+    }
+
 }

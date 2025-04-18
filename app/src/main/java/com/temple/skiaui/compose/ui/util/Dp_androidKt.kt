@@ -9,6 +9,8 @@ fun dp2px(dp: Dp) = (dp.value * density + 0.5).toInt()
 
 fun dp2fpx(dp: Dp) = dp.value * density
 
+fun px2dp(px: Int): Dp = Dp(px / density)
+
 fun dpArrayToIntArray(array: Array<Dp>): IntArray {
     return IntArray(array.size) { index ->
         dp2px(array[index])

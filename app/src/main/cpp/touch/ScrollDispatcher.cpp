@@ -90,7 +90,6 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
             clearTargetView(touchEvent);
             weakTargetView = scrollView;
             lastAlpha = weakTargetView->getAlpha();
-            weakTargetView->setAlpha(0.3f);
             startX = touchEvent->x;
             startY = touchEvent->y;
             return true;

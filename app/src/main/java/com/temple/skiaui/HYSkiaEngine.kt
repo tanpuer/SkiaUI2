@@ -15,6 +15,7 @@ import android.view.ViewConfiguration
 import androidx.annotation.MainThread
 import androidx.core.math.MathUtils.clamp
 import com.temple.skiaui.cache.PersistentCache
+import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.plugin.PluginManager
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicBoolean
@@ -324,6 +325,12 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     @MainThread
     fun getContext(): Context {
         return view.context
+    }
+
+    fun onUIModeChange() {
+        if (exampleType == DEVELOPMENT_COMPOSE) {
+            HYComposeSDK.onUIModeChange()
+        }
     }
 
     private external fun nativeGLInit(): Long

@@ -39,4 +39,10 @@ object HYComposeSDK {
         }
     }
 
+    fun onUIModeChange() {
+        pageStack.forEach {
+            it.onUIModeChange()
+        }
+    }
+
 }

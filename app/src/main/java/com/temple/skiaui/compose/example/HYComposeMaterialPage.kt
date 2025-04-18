@@ -7,12 +7,12 @@ import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -53,7 +53,7 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         LazyColumn(
             modifier = Modifier().size(width, height)
                 .alignItems(Align.Center),
-            colorResource(R.color.gray_bg)
+            MaterialTheme.colorScheme.background
         ) {
             View(
                 modifier = Modifier()
@@ -65,7 +65,7 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             )
             Text(
                 modifier = Modifier()
-                    .backgroundColor(colorResource(R.color.transparent))
+                    .backgroundColor(Color.Transparent)
                     .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                     .textSize(50.dp),
                 stringResource(R.string.test_text),

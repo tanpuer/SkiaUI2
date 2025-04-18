@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,7 @@ import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.Justify
+import com.temple.skiaui.compose.ui.util.px2dp
 import kotlin.math.absoluteValue
 
 class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
@@ -70,7 +72,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         LazyColumn(
             modifier = Modifier.size(width, height)
                 .alignItems(Align.FlexStart),
-            colorResource(R.color.gray_bg)
+            MaterialTheme.colorScheme.background
         ) {
             View(
                 modifier = Modifier.size(80.dp, 80.dp)
@@ -84,7 +86,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .justifyContent(Justify.SpaceBetween)
                     .alignItems(Align.Center)
                     .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .backgroundColor(colorResource(R.color.transparent))
+                    .backgroundColor(Color.Transparent)
             ) {
                 Badge("")
                 Badge("1")
@@ -97,11 +99,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 modifier = Modifier.width(width)
                     .alignItems(Align.Center)
                     .justifyContent(Justify.Center)
-                    .backgroundColor(colorResource(R.color.transparent))
+                    .backgroundColor(Color.Transparent)
             ) {
                 SVG(
-                    modifier = Modifier.size(180.dp, 180.dp)
-                        .backgroundColor(colorResource(R.color.transparent))
+                    modifier = Modifier.size(px2dp(480), px2dp(480))
+                        .backgroundColor(Color.Transparent)
                         .onClick {
                             HYComposeMaterialPage(engine).apply {
                                 start(width, height)
@@ -113,17 +115,17 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 Text(
                     modifier = Modifier.textSize(16.dp)
-                        .backgroundColor(colorResource(R.color.transparent)),
+                        .backgroundColor(Color.Transparent),
                     content = stringResource(R.string.remember_infinite_transition),
-                    color = Color.Magenta,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
             Text(
                 modifier = Modifier
                     .textSize(20.dp)
-                    .backgroundColor(colorResource(R.color.transparent)),
+                    .backgroundColor(Color.Transparent),
                 content = stringResource(R.string.exo_player),
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.primary,
             )
             ExoVideo(
                 modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
@@ -183,7 +185,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     .justifyContent(Justify.SpaceBetween)
                     .alignItems(Align.Center)
                     .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .backgroundColor(colorResource(R.color.transparent))
+                    .backgroundColor(Color.Transparent)
             ) {
                 Icon(0xe615, color = Color.Red)
                 Icon(0xe7ce, color = Color.Yellow)
