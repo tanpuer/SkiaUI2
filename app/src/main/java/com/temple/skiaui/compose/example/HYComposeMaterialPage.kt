@@ -54,12 +54,12 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             LazyColumn(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.Center),
-                MaterialTheme.colorScheme.background
+                backgroundColor = MaterialTheme.colorScheme.background
             ) {
                 View(
                     modifier = Modifier()
                         .size(100.dp, 100.dp),
-                    color.value,
+                    backgroundColor = color.value,
                     onClick = {
                         HYComposeSDK.popPage(engine)
                     }
@@ -69,8 +69,8 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         .backgroundColor(Color.Transparent)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                         .textSize(50.dp),
-                    stringResource(R.string.test_text),
-                    textColor.value
+                    content = stringResource(R.string.test_text),
+                    color = textColor.value
                 )
             }
         }

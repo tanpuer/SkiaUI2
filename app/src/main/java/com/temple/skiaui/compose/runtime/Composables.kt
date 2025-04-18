@@ -241,6 +241,9 @@ fun Button(
             set(color) {
                 setColor(color)
             }
+            set(onClick) {
+                setOnClick(onClick)
+            }
         }
     )
 }

@@ -72,7 +72,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             LazyColumn(
                 modifier = Modifier.size(width, height)
                     .alignItems(Align.FlexStart),
-                MaterialTheme.colorScheme.background
+                backgroundColor = MaterialTheme.colorScheme.background
             ) {
                 View(
                     modifier = Modifier.size(if (isSystemInDarkTheme()) 180.dp else 80.dp, 80.dp),
@@ -88,12 +88,12 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                         .backgroundColor(Color.Transparent)
                 ) {
-                    Badge("")
-                    Badge("1")
-                    Badge("10")
-                    Badge("99")
-                    Badge("100")
-                    Badge("1000+")
+                    Badge(content = "")
+                    Badge(content = "1")
+                    Badge(content = "10")
+                    Badge(content = "99")
+                    Badge(content = "100")
+                    Badge(content = "1000+")
                 }
                 Row(
                     modifier = Modifier.width(width)
@@ -105,7 +105,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         modifier = Modifier.size(px2dp(480), px2dp(480))
                             .backgroundColor(Color.Transparent),
                         source = "jetpack-compose.svg",
-                        rotateZ.absoluteValue,
+                        rotateZ = rotateZ.absoluteValue,
                         onClick = {
                             HYComposeMaterialPage(engine).apply {
                                 start(width, height)
@@ -129,7 +129,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 ExoVideo(
                     modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
-                    "yiluxiangbei.mp4"
+                    source = "yiluxiangbei.mp4"
                 )
                 ComposeNative(width, height)
                 ComposeFilament(width, height)
@@ -156,7 +156,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Lottie(
                     modifier = Modifier.size(160.dp, 120.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
-                    "WorkspacePlanet.json",
+                    source = "WorkspacePlanet.json",
                     play = lottiePlay,
                     onClick = {
                         lottiePlay = !lottiePlay
@@ -166,7 +166,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     modifier = Modifier
                         .size(200.dp, 200.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
-                    shaderSource,
+                    shaderSource = shaderSource,
                     onClick = {
                         if (shaderSource.list.isEmpty()) {
                             shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
@@ -187,13 +187,13 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                         .backgroundColor(Color.Transparent)
                 ) {
-                    Icon(0xe615, color = Color.Red)
-                    Icon(0xe7ce, color = Color.Yellow)
-                    Icon(0xe670)
-                    Icon(0xe67d, color = Color.Green)
-                    Icon(0xe606, color = Color.Cyan)
-                    Icon(0xe6a2, color = Color.Black)
-                    Icon(0xe61f)
+                    Icon(icon = 0xe615, color = Color.Red)
+                    Icon(icon = 0xe7ce, color = Color.Yellow)
+                    Icon(icon = 0xe670)
+                    Icon(icon = 0xe67d, color = Color.Green)
+                    Icon(icon = 0xe606, color = Color.Cyan)
+                    Icon(icon = 0xe6a2, color = Color.Black)
+                    Icon(icon = 0xe61f)
                 }
                 Switch(Modifier.margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)))
             }
@@ -206,8 +206,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             modifier = Modifier.textSize(20.dp)
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
-            stringResource(R.string.native_views_page),
-            MaterialTheme.colorScheme.tertiary,
+            content = stringResource(R.string.native_views_page),
+            color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeNativeViewsPage(engine).apply {
                     start(width, height)
@@ -223,8 +223,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             modifier = Modifier.textSize(20.dp)
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
-            stringResource(R.string.filament_page),
-            MaterialTheme.colorScheme.tertiary,
+            content = stringResource(R.string.filament_page),
+            color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeFilamentPage(engine).apply {
                     start(width, height)

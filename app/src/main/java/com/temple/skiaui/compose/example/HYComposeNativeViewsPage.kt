@@ -35,13 +35,13 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
             LazyColumn(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.Center),
-                MaterialTheme.colorScheme.background
+                backgroundColor = MaterialTheme.colorScheme.background
             ) {
                 EditText(
                     modifier = Modifier.size(width, 70.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
-                    stringResource(R.string.edit_hint_string),
-                    true
+                    hint = stringResource(R.string.edit_hint_string),
+                    focus = false
                 )
                 Camera(Modifier().size(width, width), object : CameraCallback {
                     override fun onImageCaptured(imagePtr: Long) {
@@ -51,7 +51,7 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                 Web(
                     Modifier.size(width, 1200.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
-                    "https://m.bilibili.com/"
+                    url = "https://m.bilibili.com/"
                 )
             }
         }

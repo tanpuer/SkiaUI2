@@ -22,7 +22,7 @@ class HYComposeFilamentPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             LazyColumn(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
-                MaterialTheme.colorScheme.background
+                backgroundColor = MaterialTheme.colorScheme.background
             ) {
                 Filament(modifier = Modifier().size(width, 400.dp))
             }
