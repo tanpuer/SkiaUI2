@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
+import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.runtime.Button
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
@@ -53,149 +54,151 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
     override fun RunComposable(width: Dp, height: Dp) {
-        var color by remember { mutableStateOf(randomColor()) }
-        var shaderSource by remember {
-            mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
-        }
-        var ellipsis by remember {
-            mutableStateOf(true)
-        }
-        var lottiePlay by remember {
-            mutableStateOf(true)
-        }
-        val infiniteTransition = rememberInfiniteTransition()
-        val rotateZ by infiniteTransition.animateFloat(
-            0.0f,
-            360.0f,
-            infiniteRepeatable(tween(5000), RepeatMode.Reverse)
-        )
-        LazyColumn(
-            modifier = Modifier.size(width, height)
-                .alignItems(Align.FlexStart),
-            MaterialTheme.colorScheme.background
-        ) {
-            View(
-                modifier = Modifier.size(if (isSystemInDarkTheme()) 180.dp else 80.dp, 80.dp)
-                    .onClick { view: HYComposeView ->
-                        color = randomColor()
-                    },
-                color
-            )
-            Row(
-                modifier = Modifier.width(width)
-                    .justifyContent(Justify.SpaceBetween)
-                    .alignItems(Align.Center)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .backgroundColor(Color.Transparent)
-            ) {
-                Badge("")
-                Badge("1")
-                Badge("10")
-                Badge("99")
-                Badge("100")
-                Badge("1000+")
+        JetpackComposeTheme {
+            var color by remember { mutableStateOf(randomColor()) }
+            var shaderSource by remember {
+                mutableStateOf(ShaderSource("raining.glsl", arrayOf("raining.png")))
             }
-            Row(
-                modifier = Modifier.width(width)
-                    .alignItems(Align.Center)
-                    .justifyContent(Justify.Center)
-                    .backgroundColor(Color.Transparent)
+            var ellipsis by remember {
+                mutableStateOf(true)
+            }
+            var lottiePlay by remember {
+                mutableStateOf(true)
+            }
+            val infiniteTransition = rememberInfiniteTransition()
+            val rotateZ by infiniteTransition.animateFloat(
+                0.0f,
+                360.0f,
+                infiniteRepeatable(tween(5000), RepeatMode.Reverse)
+            )
+            LazyColumn(
+                modifier = Modifier.size(width, height)
+                    .alignItems(Align.FlexStart),
+                MaterialTheme.colorScheme.background
             ) {
-                SVG(
-                    modifier = Modifier.size(px2dp(480), px2dp(480))
-                        .backgroundColor(Color.Transparent)
-                        .onClick {
-                            HYComposeMaterialPage(engine).apply {
-                                start(width, height)
-                                HYComposeSDK.pushPage(this)
-                            }
+                View(
+                    modifier = Modifier.size(if (isSystemInDarkTheme()) 180.dp else 80.dp, 80.dp)
+                        .onClick { view: HYComposeView ->
+                            color = randomColor()
                         },
-                    source = "jetpack-compose.svg",
-                    rotateZ.absoluteValue
+                    color
+                )
+                Row(
+                    modifier = Modifier.width(width)
+                        .justifyContent(Justify.SpaceBetween)
+                        .alignItems(Align.Center)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(Color.Transparent)
+                ) {
+                    Badge("")
+                    Badge("1")
+                    Badge("10")
+                    Badge("99")
+                    Badge("100")
+                    Badge("1000+")
+                }
+                Row(
+                    modifier = Modifier.width(width)
+                        .alignItems(Align.Center)
+                        .justifyContent(Justify.Center)
+                        .backgroundColor(Color.Transparent)
+                ) {
+                    SVG(
+                        modifier = Modifier.size(px2dp(480), px2dp(480))
+                            .backgroundColor(Color.Transparent)
+                            .onClick {
+                                HYComposeMaterialPage(engine).apply {
+                                    start(width, height)
+                                    HYComposeSDK.pushPage(this)
+                                }
+                            },
+                        source = "jetpack-compose.svg",
+                        rotateZ.absoluteValue
+                    )
+                    Text(
+                        modifier = Modifier.textSize(16.dp)
+                            .backgroundColor(Color.Transparent),
+                        content = stringResource(R.string.remember_infinite_transition),
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
+                Text(
+                    modifier = Modifier
+                        .textSize(20.dp)
+                        .backgroundColor(Color.Transparent),
+                    content = stringResource(R.string.exo_player),
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                ExoVideo(
+                    modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
+                    "yiluxiangbei.mp4"
+                )
+                ComposeNative(width, height)
+                ComposeFilament(width, height)
+                Loading(
+                    modifier = Modifier.size(200.dp, 50.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .onClick {
+                            color = randomColor()
+                        },
+                    color = color
                 )
                 Text(
-                    modifier = Modifier.textSize(16.dp)
-                        .backgroundColor(Color.Transparent),
-                    content = stringResource(R.string.remember_infinite_transition),
-                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.size(width, 100.dp)
+                        .textSize(20.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .onClick {
+                            ellipsis = !ellipsis
+                        },
+                    content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
+                    color = MaterialTheme.colorScheme.inversePrimary,
+                    maxLine = if (ellipsis) 3 else 0,
+                    ellipsis = stringResource(R.string.click_to_open)
                 )
+                Lottie(
+                    modifier = Modifier.size(160.dp, 120.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .onClick {
+                            lottiePlay = !lottiePlay
+                        },
+                    "WorkspacePlanet.json",
+                    lottiePlay
+                )
+                Shader(
+                    modifier = Modifier
+                        .size(200.dp, 200.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .onClick { _: HYComposeView ->
+                            if (shaderSource.list.isEmpty()) {
+                                shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
+                            } else {
+                                shaderSource = ShaderSource("sincos.glsl", arrayOf())
+                            }
+                        },
+                    shaderSource
+                )
+                Image(
+                    modifier = Modifier
+                        .size(150.dp, 150.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)), source = "bird.gif"
+                )
+                Row(
+                    modifier = Modifier.width(width)
+                        .justifyContent(Justify.SpaceBetween)
+                        .alignItems(Align.Center)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(Color.Transparent)
+                ) {
+                    Icon(0xe615, color = Color.Red)
+                    Icon(0xe7ce, color = Color.Yellow)
+                    Icon(0xe670)
+                    Icon(0xe67d, color = Color.Green)
+                    Icon(0xe606, color = Color.Cyan)
+                    Icon(0xe6a2, color = Color.Black)
+                    Icon(0xe61f)
+                }
+                Switch(Modifier.margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)))
             }
-            Text(
-                modifier = Modifier
-                    .textSize(20.dp)
-                    .backgroundColor(Color.Transparent),
-                content = stringResource(R.string.exo_player),
-                color = MaterialTheme.colorScheme.primary,
-            )
-            ExoVideo(
-                modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
-                "yiluxiangbei.mp4"
-            )
-            ComposeNative(width, height)
-            ComposeFilament(width, height)
-            Loading(
-                modifier = Modifier.size(200.dp, 50.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .onClick {
-                        color = randomColor()
-                    },
-                color = color
-            )
-            Text(
-                modifier = Modifier.size(width, 100.dp)
-                    .textSize(20.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .onClick {
-                        ellipsis = !ellipsis
-                    },
-                content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
-                color = MaterialTheme.colorScheme.inversePrimary,
-                maxLine = if (ellipsis) 3 else 0,
-                ellipsis = stringResource(R.string.click_to_open)
-            )
-            Lottie(
-                modifier = Modifier.size(160.dp, 120.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .onClick {
-                        lottiePlay = !lottiePlay
-                    },
-                "WorkspacePlanet.json",
-                lottiePlay
-            )
-            Shader(
-                modifier = Modifier
-                    .size(200.dp, 200.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .onClick { _: HYComposeView ->
-                        if (shaderSource.list.isEmpty()) {
-                            shaderSource = ShaderSource("raining.glsl", arrayOf("raining.png"))
-                        } else {
-                            shaderSource = ShaderSource("sincos.glsl", arrayOf())
-                        }
-                    },
-                shaderSource
-            )
-            Image(
-                modifier = Modifier
-                    .size(150.dp, 150.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)), source = "bird.gif"
-            )
-            Row(
-                modifier = Modifier.width(width)
-                    .justifyContent(Justify.SpaceBetween)
-                    .alignItems(Align.Center)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .backgroundColor(Color.Transparent)
-            ) {
-                Icon(0xe615, color = Color.Red)
-                Icon(0xe7ce, color = Color.Yellow)
-                Icon(0xe670)
-                Icon(0xe67d, color = Color.Green)
-                Icon(0xe606, color = Color.Cyan)
-                Icon(0xe6a2, color = Color.Black)
-                Icon(0xe61f)
-            }
-            Switch(Modifier.margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)))
         }
     }
 

@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
+import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.margins
@@ -25,32 +26,34 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
 
     @Composable
     override fun RunComposable(width: Dp, height: Dp) {
-        DisposableEffect(engine.getContext()) {
-            onDispose {
-                Log.d(TAG, "onDispose")
-            }
-        }
-        LazyColumn(
-            modifier = Modifier().size(width, height)
-                .alignItems(Align.Center),
-            MaterialTheme.colorScheme.background
-        ) {
-            EditText(
-                modifier = Modifier.size(width, 70.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
-                stringResource(R.string.edit_hint_string),
-                true
-            )
-            Camera(Modifier().size(width, width), object : CameraCallback {
-                override fun onImageCaptured(imagePtr: Long) {
-
+        JetpackComposeTheme {
+            DisposableEffect(engine.getContext()) {
+                onDispose {
+                    Log.d(TAG, "onDispose")
                 }
-            })
-            Web(
-                Modifier.size(width, 1200.dp)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
-                "https://m.bilibili.com/"
-            )
+            }
+            LazyColumn(
+                modifier = Modifier().size(width, height)
+                    .alignItems(Align.Center),
+                MaterialTheme.colorScheme.background
+            ) {
+                EditText(
+                    modifier = Modifier.size(width, 70.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    stringResource(R.string.edit_hint_string),
+                    true
+                )
+                Camera(Modifier().size(width, width), object : CameraCallback {
+                    override fun onImageCaptured(imagePtr: Long) {
+
+                    }
+                })
+                Web(
+                    Modifier.size(width, 1200.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    "https://m.bilibili.com/"
+                )
+            }
         }
     }
 

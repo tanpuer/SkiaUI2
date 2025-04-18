@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.temple.skiaui.HYSkiaEngine
-import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.ui.HYComposePage
@@ -36,9 +35,7 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) : HYComposeComposer(e
                 LocalConfiguration provides engine.getContext().resources.configuration,
                 LocalLifecycleOwner provides engine.getContext() as LifecycleOwner,
             ) {
-                JetpackComposeTheme {
-                    RunComposable(width, height)
-                }
+                RunComposable(width, height)
             }
         }
     }

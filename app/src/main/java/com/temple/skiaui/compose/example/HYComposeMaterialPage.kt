@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
+import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.compose.runtime.LazyColumn
@@ -36,41 +37,43 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
     @Composable
     override fun RunComposable(width: Dp, height: Dp) {
-        val color = remember { Animatable(Color.Green) }
-        LaunchedEffect(color) {
-            color.animateTo(Color.Blue, infiniteRepeatable(tween(5000), RepeatMode.Reverse))
-        }
-        val textColor = rememberInfiniteTransition().animateColor(
-            initialValue = Color(0xFF60DDAD),
-            targetValue = Color(0xFF4285F4),
-            animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Reverse),
-        )
-        DisposableEffect(engine.getContext()) {
-            onDispose {
-                Log.d(TAG, "onDispose")
+        JetpackComposeTheme {
+            val color = remember { Animatable(Color.Green) }
+            LaunchedEffect(color) {
+                color.animateTo(Color.Blue, infiniteRepeatable(tween(5000), RepeatMode.Reverse))
             }
-        }
-        LazyColumn(
-            modifier = Modifier().size(width, height)
-                .alignItems(Align.Center),
-            MaterialTheme.colorScheme.background
-        ) {
-            View(
-                modifier = Modifier()
-                    .size(100.dp, 100.dp)
-                    .onClick {
-                        HYComposeSDK.popPage(engine)
-                    },
-                color.value
+            val textColor = rememberInfiniteTransition().animateColor(
+                initialValue = Color(0xFF60DDAD),
+                targetValue = Color(0xFF4285F4),
+                animationSpec = infiniteRepeatable(tween(1000), RepeatMode.Reverse),
             )
-            Text(
-                modifier = Modifier()
-                    .backgroundColor(Color.Transparent)
-                    .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                    .textSize(50.dp),
-                stringResource(R.string.test_text),
-                textColor.value
-            )
+            DisposableEffect(engine.getContext()) {
+                onDispose {
+                    Log.d(TAG, "onDispose")
+                }
+            }
+            LazyColumn(
+                modifier = Modifier().size(width, height)
+                    .alignItems(Align.Center),
+                MaterialTheme.colorScheme.background
+            ) {
+                View(
+                    modifier = Modifier()
+                        .size(100.dp, 100.dp)
+                        .onClick {
+                            HYComposeSDK.popPage(engine)
+                        },
+                    color.value
+                )
+                Text(
+                    modifier = Modifier()
+                        .backgroundColor(Color.Transparent)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .textSize(50.dp),
+                    stringResource(R.string.test_text),
+                    textColor.value
+                )
+            }
         }
     }
 
