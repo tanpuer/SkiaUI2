@@ -1,24 +1,25 @@
 package com.temple.skiaui.compose.ui
 
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.StyleKey
 
 open class HYComposeViewGroup(modifier: Modifier) : HYComposeView(modifier) {
 
     override fun getViewType(): String = "ViewGroup"
 
-    override fun initStyles(modifier: Modifier) {
-        super.initStyles(modifier)
+    override fun innerUpdateModifier(modifier: Modifier) {
+        super.innerUpdateModifier(modifier)
         modifier.styles.forEach { (key, value) ->
             when (key) {
-                "flexDirection" -> {
+                StyleKey.flexDirection -> {
                     nativeSetFlexDirection(ref, (value as FlexDirection).value)
                 }
 
-                "justifyContent" -> {
+                StyleKey.justifyContent -> {
                     nativeSetJustifyContent(ref, (value as Justify).value)
                 }
 
-                "alignItems" -> {
+                StyleKey.alignItems -> {
                     nativeSetAlignItems(ref, (value as Align).value)
                 }
 

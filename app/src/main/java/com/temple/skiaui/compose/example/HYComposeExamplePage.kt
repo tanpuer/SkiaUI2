@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -13,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
@@ -75,7 +75,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             MaterialTheme.colorScheme.background
         ) {
             View(
-                modifier = Modifier.size(80.dp, 80.dp)
+                modifier = Modifier.size(if (isSystemInDarkTheme()) 180.dp else 80.dp, 80.dp)
                     .onClick { view: HYComposeView ->
                         color = randomColor()
                     },
@@ -149,7 +149,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         ellipsis = !ellipsis
                     },
                 content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
-                color = Color.Blue,
+                color = MaterialTheme.colorScheme.inversePrimary,
                 maxLine = if (ellipsis) 3 else 0,
                 ellipsis = stringResource(R.string.click_to_open)
             )
@@ -204,13 +204,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         Button(
             modifier = Modifier.textSize(20.dp)
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer)
                 .onClick {
                     HYComposeNativeViewsPage(engine).apply {
                         start(width, height)
                         HYComposeSDK.pushPage(this)
                     }
                 },
-            "Native Views Page",
+            stringResource(R.string.native_views_page),
+            MaterialTheme.colorScheme.tertiary
         )
     }
 
@@ -219,13 +221,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         Button(
             modifier = Modifier.textSize(20.dp)
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer)
                 .onClick {
                     HYComposeFilamentPage(engine).apply {
                         start(width, height)
                         HYComposeSDK.pushPage(this)
                     }
                 },
-            "Filament Page",
+            stringResource(R.string.filament_page),
+            MaterialTheme.colorScheme.tertiary
         )
     }
 

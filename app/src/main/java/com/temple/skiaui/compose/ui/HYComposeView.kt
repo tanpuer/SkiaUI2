@@ -3,56 +3,12 @@ package com.temple.skiaui.compose.ui
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import com.temple.skiaui.compose.foundation.Modifier
+import com.temple.skiaui.compose.foundation.StyleKey
 import com.temple.skiaui.compose.ui.util.composeColorToSkiaColor
 import com.temple.skiaui.compose.ui.util.dp2px
 import com.temple.skiaui.compose.ui.util.dpArrayToIntArray
 
 open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
-
-    override fun initStyles(modifier: Modifier) {
-        super.initStyles(modifier)
-        modifier.styles.forEach { (key, value) ->
-            when (key) {
-                "size" -> {
-                    val size = value as Array<*>
-                    setSize(dp2px(size[0] as Dp), dp2px(size[1] as Dp))
-                }
-
-                "width" -> {
-                    nativeSetWidth(ref, dp2px(value as Dp))
-                }
-
-                "height" -> {
-                    nativeSetHeight(ref, dp2px(value as Dp))
-                }
-
-                "backgroundColor" -> {
-                    setBackgroundColor(value as Color)
-                }
-
-                "margins" -> {
-                    nativeSetMargins(ref, dpArrayToIntArray(value as Array<Dp>))
-                }
-
-                "paddings" -> {
-                    nativeSetPaddings(ref, dpArrayToIntArray(value as Array<Dp>))
-                }
-
-                "position" -> {
-                    nativeSetPosition(ref, (value as Position).value)
-                }
-
-                "corner" -> {
-                    nativeSetCornerRadius(ref, dp2px(value as Dp))
-                }
-
-                "minSize" -> {
-                    val size = value as Array<*>
-                    nativeSetMinSize(ref, dp2px(size[0] as Dp), dp2px(size[1] as Dp))
-                }
-            }
-        }
-    }
 
     override fun initEvents(modifier: Modifier) {
         super.initEvents(modifier)
@@ -60,6 +16,45 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
             when (key) {
                 "click" -> {
                     nativeSetClickCallback(ref)
+                }
+            }
+        }
+    }
+
+    override fun innerUpdateModifier(modifier: Modifier) {
+        modifier.styles.forEach { (key, value) ->
+            when (key) {
+                StyleKey.width -> {
+                    nativeSetWidth(ref, dp2px(value as Dp))
+                }
+
+                StyleKey.height -> {
+                    nativeSetHeight(ref, dp2px(value as Dp))
+                }
+
+                StyleKey.backgroundColor -> {
+                    setBackgroundColor(value as Color)
+                }
+
+                StyleKey.margins -> {
+                    nativeSetMargins(ref, dpArrayToIntArray(value as Array<Dp>))
+                }
+
+                StyleKey.paddings -> {
+                    nativeSetPaddings(ref, dpArrayToIntArray(value as Array<Dp>))
+                }
+
+                StyleKey.position -> {
+                    nativeSetPosition(ref, (value as Position).value)
+                }
+
+                StyleKey.corner -> {
+                    nativeSetCornerRadius(ref, dp2px(value as Dp))
+                }
+
+                StyleKey.minSize -> {
+                    val size = value as Array<*>
+                    nativeSetMinSize(ref, dp2px(size[0] as Dp), dp2px(size[1] as Dp))
                 }
             }
         }

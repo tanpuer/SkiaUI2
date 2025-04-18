@@ -2,72 +2,74 @@ package com.temple.skiaui.compose.foundation
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 
 fun Modifier.size(width: Dp, height: Dp): Modifier {
-    styles["size"] = arrayOf(width, height)
+    this.width = width
+    this.height = height
     return this
 }
 
 fun Modifier.backgroundColor(color: Color): Modifier {
-    styles["backgroundColor"] = color
+    this.backgroundColor = color
     return this
 }
 
 fun Modifier.width(width: Dp): Modifier {
-    styles["width"] = width
+    this.width = width
     return this
 }
 
 fun Modifier.height(height: Dp): Modifier {
-    styles["height"] = height
+    this.height = height
     return this
 }
 
 fun Modifier.textSize(size: Dp): Modifier {
-    styles["textSize"] = size
+    this.textSize = size
     return this
 }
 
 fun Modifier.justifyContent(value: Justify): Modifier {
-    styles["justifyContent"] = value
+    this.justifyContent = value
     return this
 }
 
 fun Modifier.alignItems(value: Align): Modifier {
-    styles["alignItems"] = value
+    this.alignItems = value
     return this
 }
 
 fun Modifier.flexDirection(value: FlexDirection): Modifier {
-    styles["flexDirection"] = value
+    this.flexDirection = value
     return this
 }
 
 fun Modifier.position(value: Position): Modifier {
-    styles["position"] = value
+    this.position = value
     return this
 }
 
 fun Modifier.margins(margins: Array<Dp>): Modifier {
-    styles["margins"] = margins
+    this.margins = margins
     return this
 }
 
 fun Modifier.paddings(paddings: Array<Dp>): Modifier {
-    styles["paddings"] = paddings
+    this.paddings = paddings
     return this
 }
 
 fun Modifier.corner(radius: Dp): Modifier {
-    styles["corner"] = radius
+    this.corner = radius
     return this
 }
 
-fun Modifier.minSize(minWidth: Dp, minHeight: Dp): Modifier {
-    styles["minSize"] = arrayOf(minWidth, minHeight)
+fun Modifier.minSize(size: DpSize): Modifier {
+    this.minSize = size
     return this
 }

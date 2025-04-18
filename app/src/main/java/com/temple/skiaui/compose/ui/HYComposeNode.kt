@@ -2,7 +2,7 @@ package com.temple.skiaui.compose.ui
 
 import com.temple.skiaui.compose.foundation.Modifier
 
-abstract class HYComposeNode(val modifier: Modifier) {
+abstract class HYComposeNode(var modifier: Modifier) {
 
     var ref: Long = 0L
 
@@ -14,7 +14,6 @@ abstract class HYComposeNode(val modifier: Modifier) {
 
     private fun initNativeView() {
         ref = nativeCreateView(getViewType())
-        initStyles(modifier)
         initAttrs(modifier)
         initEvents(modifier)
     }
@@ -38,11 +37,21 @@ abstract class HYComposeNode(val modifier: Modifier) {
 
     abstract fun getViewType(): String
 
-    open fun initStyles(modifier: Modifier) {}
-
     open fun initAttrs(modifier: Modifier) {}
 
     open fun initEvents(modifier: Modifier) {}
+
+    fun updateModifier(modifier: Modifier) {
+        if (modifier != this.modifier) {
+            modifier.diffStyles(this.modifier)
+        } else {
+            modifier.diffStyles(Modifier())
+        }
+        innerUpdateModifier(modifier)
+        this.modifier = modifier
+    }
+
+    open fun innerUpdateModifier(modifier: Modifier) {}
 
     private external fun nativeAddView(parent: Long, child: Long, index: Int)
     private external fun nativeCreateView(type: String): Long

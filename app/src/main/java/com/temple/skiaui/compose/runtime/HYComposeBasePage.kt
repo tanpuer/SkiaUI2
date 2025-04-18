@@ -26,7 +26,7 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) : HYComposeComposer(e
                     onShow = { this.onShow() },
                     onHide = { this.onHide() }
                 ).apply {
-                    this.push(dp2px((modifier.styles["size"] as Array<*>)[0] as Dp))
+                    this.push(dp2px(modifier.width))
                 }),
             parent = reComposer
         )
@@ -34,7 +34,7 @@ abstract class HYComposeBasePage(val engine: HYSkiaEngine) : HYComposeComposer(e
             CompositionLocalProvider(
                 LocalContext provides engine.getContext(),
                 LocalConfiguration provides engine.getContext().resources.configuration,
-                LocalLifecycleOwner provides engine.getContext() as LifecycleOwner
+                LocalLifecycleOwner provides engine.getContext() as LifecycleOwner,
             ) {
                 JetpackComposeTheme {
                     RunComposable(width, height)

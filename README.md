@@ -26,7 +26,7 @@ steps：
     |--------|--------------------------------------|-------------------------------------------------------------------------|
     | C++    | ``                                   | See ExamplePage.cpp.
     | js     | `Import v8 to evaluate javascript`   | See test.js in assets. Support **debug in chrome**.  
-    | Kotlin | `Import kotlin`<br>`Compose-runtime` | Support **Live-Edit**. Support Material Theme. |                    |
+    | Kotlin | `Import kotlin`<br>`Compose-runtime` | Support **Live-Edit**. Support Material Theme(dark/light theme change). |
     | React  | `Import react/react-reconciler`      | demo: https://github.com/tanpuer/skia-ui-react |
     | Vue    | `Import @vue/runtime-core`           | demo: https://github.com/tanpuer/skia-ui-vue. Need import CSS-Selector(TODO). |
 11. **Cross Platform**  

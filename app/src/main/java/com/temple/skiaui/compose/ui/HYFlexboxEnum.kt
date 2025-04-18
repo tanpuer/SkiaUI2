@@ -1,12 +1,14 @@
 package com.temple.skiaui.compose.ui
 
 enum class FlexWrap(val value: String) {
+    Unspecified("Unspecified"),
     NoWrap("nowrap"),
     Wrap("wrap"),
     WrapReverse("wrap-reverse")
 }
 
 enum class FlexDirection(val value: String) {
+    Unspecified("Unspecified"),
     Row("row"),
     RowReverse("row-reverse"),
     Column("column"),
@@ -14,6 +16,7 @@ enum class FlexDirection(val value: String) {
 }
 
 enum class Justify(val value: String) {
+    Unspecified("Unspecified"),
     FlexStart("flex-start"),
     FlexEnd("flex-end"),
     Center("center"),
@@ -23,6 +26,7 @@ enum class Justify(val value: String) {
 }
 
 enum class Align(val value: String) {
+    Unspecified("Unspecified"),
     FlexStart("flex-start"),
     Center("center"),
     FlexEnd("flex-end"),
@@ -34,12 +38,14 @@ enum class Align(val value: String) {
 }
 
 enum class ScaleType(val value: String) {
+    Unspecified("Unspecified"),
     FitXY("fill"),
     CenterCrop("cover"),
     FitCenter("container")
 }
 
 enum class Position(val value: String) {
+    Unspecified("Unspecified"),
     Absolute("absolute"),
     Static("static"),
     Relative("relative")
