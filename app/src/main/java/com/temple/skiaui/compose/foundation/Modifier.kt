@@ -92,8 +92,6 @@ class Modifier {
 
     val styles = mutableMapOf<String, Any>()
 
-    val events = mutableMapOf<String, (view: HYComposeView, params: String?) -> Unit>()
-
     companion object {
 
         fun size(width: Dp, height: Dp): Modifier {
