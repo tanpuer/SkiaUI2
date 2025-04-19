@@ -25,4 +25,8 @@ class SurfaceObj {
         surfaceTexture?.setDefaultBufferSize(width, height)
     }
 
+    companion object {
+        var INDEX = 0
+    }
+
 }

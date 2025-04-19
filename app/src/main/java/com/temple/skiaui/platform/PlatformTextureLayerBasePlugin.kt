@@ -35,7 +35,9 @@ abstract class PlatformTextureLayerBasePlugin(
     @Volatile
     private var show: Boolean = true
 
-    private var index = "platform:${INDEX++}"
+    private val platformIndex = SurfaceObj.INDEX++
+
+    private var index = "platform:${platformIndex}"
 
     @Volatile
     private var released = false
@@ -114,7 +116,7 @@ abstract class PlatformTextureLayerBasePlugin(
         }
         if (surfaceObj == null) {
             surfaceObj = SurfaceObj().apply {
-                this.surfaceTexture = SurfaceTexture(0).apply { detachFromGLContext() }
+                this.surfaceTexture = SurfaceTexture(platformIndex).apply { detachFromGLContext() }
                 this.surface = Surface(this.surfaceTexture)
                 this.width = originCanvas.width
                 this.height = originCanvas.height
@@ -160,10 +162,6 @@ abstract class PlatformTextureLayerBasePlugin(
 
     private fun deleteSkImage(ptr: Long) {
         engine.deleteSkImage(ptr)
-    }
-
-    companion object {
-        private var INDEX = 0
     }
 
 }

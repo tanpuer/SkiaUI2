@@ -30,7 +30,9 @@ abstract class SurfaceTextureBasePlugin(
     @Volatile
     protected var skiaShow: Boolean = true
 
-    private var index = "surface-texture:${INDEX++}"
+    private val renderIndex = SurfaceObj.INDEX++
+
+    private var index = "surface-texture:${renderIndex}"
 
     private val pluginThread = HandlerThread(index).apply {
         start()
@@ -152,7 +154,7 @@ abstract class SurfaceTextureBasePlugin(
         }
         if (surfaceObj == null) {
             surfaceObj = SurfaceObj().apply {
-                this.surfaceTexture = SurfaceTexture(INDEX).apply { detachFromGLContext() }
+                this.surfaceTexture = SurfaceTexture(renderIndex).apply { detachFromGLContext() }
                 this.surface = Surface(this.surfaceTexture)
                 this.width = width
                 this.height = height
@@ -191,7 +193,6 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     companion object {
-        private var INDEX = 0
         private const val TAG = "SurfaceTextureBase"
     }
 }
