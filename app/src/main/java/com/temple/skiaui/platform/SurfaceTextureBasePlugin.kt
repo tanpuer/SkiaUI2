@@ -51,8 +51,6 @@ abstract class SurfaceTextureBasePlugin(
         val runnable = {
             if (!it) {
                 skiaSurfaceDestroyed()
-                surfaceObj?.release()
-                surfaceObj = null
             } else {
                 skiaSurfaceCreated()
             }
@@ -71,9 +69,22 @@ abstract class SurfaceTextureBasePlugin(
         Choreographer.getInstance().postFrameCallback(this)
     }
 
-    abstract fun skiaSurfaceCreated()
+    open fun skiaSurfaceCreated() {
+        surfaceObj?.surfaceTexture?.let { surfaceTexture->
+            engine.attachSurfaceTexture(width, height, surfaceTexture) {
+                skImagePtr = it
+            }
+        }
+    }
 
-    abstract fun skiaSurfaceDestroyed()
+    open fun skiaSurfaceDestroyed() {
+        engine.postToSkiaGL {
+            surfaceObj?.surfaceTexture?.detachFromGLContext()
+        }
+        engine.postToSkiaUI {
+            skImagePtr = 0L
+        }
+    }
 
     abstract fun type(): String
 

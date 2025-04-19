@@ -59,13 +59,14 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
     }
 
     override fun skiaSurfaceCreated() {
-        start()
+        super.skiaSurfaceCreated()
     }
 
     override fun skiaSurfaceDestroyed() {
         if (cameraManager != null) {
             closeCamera()
         }
+        super.skiaSurfaceDestroyed()
     }
 
     override fun type(): String = "CameraView"
@@ -104,8 +105,8 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
 
     override fun onHide() {
         super.onHide()
-        pluginHandler.post {
-            skiaSurfaceDestroyed()
+        if (cameraManager != null) {
+            closeCamera()
         }
     }
 

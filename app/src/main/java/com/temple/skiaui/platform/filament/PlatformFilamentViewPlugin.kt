@@ -69,9 +69,15 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
     }
 
     override fun skiaSurfaceCreated() {
+        super.skiaSurfaceCreated()
     }
 
+    /**
+     * TODO
+     */
     override fun skiaSurfaceDestroyed() {
+        surfaceObj?.release()
+        surfaceObj = null
         pluginHandler.post {
             if (swapChain == null) {
                 return@post

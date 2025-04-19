@@ -13,16 +13,12 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     private var renderFirstFrame = false
 
     override fun skiaSurfaceCreated() {
+        super.skiaSurfaceCreated()
     }
 
     override fun skiaSurfaceDestroyed() {
-        if (exoPlayer == null) {
-            return
-        }
-        currentPosition = exoPlayer?.getCurrentPosition() ?: 0L
-        exoPlayer?.setVideoSurface(null)
-        exoPlayer?.release()
-        exoPlayer = null
+        super.skiaSurfaceDestroyed()
+        exoPlayer?.pause()
     }
 
     override fun dispatchTouchEvent(touchEvent: MotionEvent) {
@@ -102,7 +98,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     override fun onHide() {
         super.onHide()
         pluginHandler.post {
-            skiaSurfaceDestroyed()
+            exoPlayer?.pause()
         }
     }
 
