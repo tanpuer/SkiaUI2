@@ -62,6 +62,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             lastChildBottom += diffY;
             ScrollView::addView(child);
             layoutNewAddedChild(l, t, r, b, child);
+            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
         }
         auto firstChild = children.front();
         if (firstChild == nullptr) {
@@ -79,6 +80,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             putViewToCache(firstChildIndex, removedView);
             firstChildIndex++;
             updateTranslateY(diffY);
+            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
         }
     } else {
         //scrollToTop, addView to top, then removeView from bottom
@@ -104,9 +106,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             layoutNewAddedChild(l, t, r, b, child);
             firstChildIndex--;
             updateTranslateY(-diffY);
-            if (firstChildIndex <= 0) {
-                break;
-            }
+            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
         }
         auto lastChild = children.back();
         if (lastChild == nullptr) {
@@ -123,6 +123,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             auto diffY = removedView->getHeight() + removedView->getMarginTop() +
                          removedView->getMarginBottom();
             lastChildTop -= diffY;
+            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
         }
     }
 }
