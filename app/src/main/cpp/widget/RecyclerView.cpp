@@ -8,7 +8,9 @@ RecyclerView::RecyclerView() {
 
 RecyclerView::~RecyclerView() {
     for (const auto &item: viewCache) {
-        delete item;
+        for (const auto &view: item.second) {
+            delete view;
+        }
     }
 }
 
@@ -18,10 +20,6 @@ void RecyclerView::measure() {
         firstFlag = false;
         initChildren();
     }
-}
-
-void RecyclerView::draw(SkCanvas *canvas) {
-    ScrollView::draw(canvas);
 }
 
 void RecyclerView::setDataSize(uint32_t size) {
@@ -51,40 +49,37 @@ void RecyclerView::layout(int l, int t, int r, int b) {
         auto lastChildRect = lastChild->getRect();
         auto lastChildBottom = lastChildRect.bottom();
         auto targetBottom = getRect().bottom() + DISTANCE;
-        while (children.size() < size && lastChildBottom < targetBottom) {
-            View *child = nullptr;
-            if (viewCache.empty()) {
+        while (firstChildIndex + children.size() < size && lastChildBottom < targetBottom) {
+            auto targetIndex = children.size() + firstChildIndex;
+            auto child = getViewFromCache(targetIndex);
+            if (child == nullptr) {
                 ALOGD("RecyclerView createView")
-                child = onCreateView(children.size() + firstChildIndex);
-            } else {
-                ALOGD("RecyclerView addView from cache")
-                child = viewCache.back();
-                viewCache.pop_back();
+                child = onCreateView(targetIndex);
             }
-            onBindView(children.size() + firstChildIndex, child);
+            onBindView(targetIndex, child);
             child->measure();
             auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
             lastChildBottom += diffY;
             ScrollView::addView(child);
+            layoutNewAddedChild(l, t, r, b, child);
         }
         auto firstChild = children.front();
         if (firstChild == nullptr) {
             return;
         }
         auto topChildRect = firstChild->getRect();
-        auto topChildTop = topChildRect.top();
+        auto topChildBottom = topChildRect.bottom();
         auto targetTop = getRect().top() - DISTANCE;
-        while (topChildTop < targetTop) {
+        while (topChildBottom < targetTop) {
             ALOGD("RecyclerView remove first view")
             auto removedView = ScrollView::removeViewAtForRV(0);
             auto diffY = removedView->getHeight() + removedView->getMarginTop() +
                          removedView->getMarginBottom();
-            topChildTop += diffY;
+            topChildBottom += diffY;
+            putViewToCache(firstChildIndex, removedView);
             firstChildIndex++;
             updateTranslateY(diffY);
-            viewCache.emplace_back(removedView);
         }
-        ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
     } else {
         //scrollToTop, addView to top, then removeView from bottom
         auto firstChild = children.front();
@@ -95,23 +90,21 @@ void RecyclerView::layout(int l, int t, int r, int b) {
         auto firstChildTop = firstChildRect.top();
         auto targetTop = getRect().top() - DISTANCE;
         while (firstChildIndex > 0 && firstChildTop > targetTop) {
-            View *child = nullptr;
-            if (viewCache.empty()) {
+            auto targetIndex = firstChildIndex - 1;
+            View *child = getViewFromCache(targetIndex);
+            if (child == nullptr) {
                 ALOGD("RecyclerView createView")
-                child = onCreateView(firstChildIndex - 1);
-            } else {
-                ALOGD("RecyclerView addView from cache")
-                child = viewCache.back();
-                viewCache.pop_back();
+                child = onCreateView(targetIndex);
             }
-            onBindView(firstChildIndex - 1, child);
+            onBindView(targetIndex, child);
             child->measure();
             auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
             firstChildTop -= diffY;
             ScrollView::addViewAt(child, 0);
+            layoutNewAddedChild(l, t, r, b, child);
             firstChildIndex--;
             updateTranslateY(-diffY);
-            if (firstChildIndex == 0) {
+            if (firstChildIndex <= 0) {
                 break;
             }
         }
@@ -126,12 +119,46 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             ALOGD("RecyclerView remove back view size:%ld firstChildIndex:%d", children.size(),
                   firstChildIndex)
             auto removedView = ScrollView::removeViewAtForRV(children.size() - 1);
+            putViewToCache(firstChildIndex + children.size() - 1, removedView);
             auto diffY = removedView->getHeight() + removedView->getMarginTop() +
                          removedView->getMarginBottom();
             lastChildTop -= diffY;
-            viewCache.emplace_back(removedView);
         }
     }
+}
+
+View *RecyclerView::getViewFromCache(int index) {
+    auto type = getViewType(index);
+    if (viewCache.find(type) == viewCache.end()) {
+        viewCache.emplace(std::make_pair(type, std::vector<View *>()));
+    }
+    auto typeCache = viewCache[type];
+    if (typeCache.empty()) {
+        return nullptr;
+    }
+    auto child = typeCache.back();
+    typeCache.pop_back();
+    ALOGD("RecyclerView addView from cache")
+    return child;
+}
+
+void RecyclerView::putViewToCache(int index, View *view) {
+    auto type = getViewType(index);
+    if (viewCache.find(type) == viewCache.end()) {
+        viewCache.emplace(std::make_pair(type, std::vector<View *>()));
+    }
+    auto typeCache = viewCache[type];
+    typeCache.emplace_back(view);
+}
+
+void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
+    auto childNode = view->getNode();
+    auto left = static_cast<int>(YGNodeLayoutGetLeft(childNode));
+    auto top = static_cast<int>(YGNodeLayoutGetTop(childNode));
+    auto width = static_cast<int>(YGNodeLayoutGetWidth(childNode));
+    auto height = static_cast<int>(YGNodeLayoutGetHeight(childNode));
+    view->layout(left + l, top + t + translateY, left + l + width,
+                 top + t + translateY + height);
 }
 
 }

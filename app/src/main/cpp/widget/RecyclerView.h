@@ -18,13 +18,13 @@ public:
 
     virtual void onBindView(uint32_t index, View *view) = 0;
 
+    virtual int getViewType(uint32_t index) = 0;
+
     void setDataSize(uint32_t size);
 
     void measure() override;
 
     void layout(int l, int t, int r, int b) override;
-
-    void draw(SkCanvas *canvas) override;
 
 private:
 
@@ -36,7 +36,13 @@ private:
 
     uint32_t firstChildIndex = 0;
 
-    std::vector<View *> viewCache;
+    std::unordered_map<int, std::vector<View *>> viewCache;
+
+    View *getViewFromCache(int index);
+
+    void putViewToCache(int index, View *view);
+
+    void layoutNewAddedChild(int l, int t, int r, int b, View *view);
 
 };
 

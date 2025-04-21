@@ -27,6 +27,7 @@
 #include "BlendTestPage.h"
 #include "EasingTestPage.h"
 #include "MatrixTestPage.h"
+#include "RecyclerViewPage.h"
 
 namespace HYSkiaUI {
 
@@ -399,6 +400,23 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         scrollView->addView(button);
         button->setOnClickListener([](View *view) {
             ALOGD("setOnClickListener perform %s", view->name())
+        });
+    }
+
+    {
+        auto button = new Button();
+        button->setContext(this->context);
+        button->setText(SkString("RecyclerView Test"));
+        button->setTextSize(60);
+        button->setCornerRadius(20);
+        button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+        button->setMargin({50, 50, 50, 50});
+        scrollView->addView(button);
+        button->setOnClickListener([this, width, height](View *view) {
+            auto page = new RecyclerViewPage();
+            page->init(context, width, height);
+            context->getPageStackManager()->push(page);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
         });
     }
 
