@@ -29,7 +29,6 @@ import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.margins
 import com.temple.skiaui.compose.foundation.size
-import com.temple.skiaui.compose.foundation.textSize
 import com.temple.skiaui.compose.ui.Align
 
 class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
@@ -67,8 +66,8 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Text(
                     modifier = Modifier()
                         .backgroundColor(Color.Transparent)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                        .textSize(50.dp),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    textSize = 50.dp,
                     content = stringResource(R.string.test_text),
                     color = textColor.value
                 )

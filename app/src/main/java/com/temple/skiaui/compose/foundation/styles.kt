@@ -29,11 +29,6 @@ fun Modifier.height(height: Dp): Modifier {
     return this
 }
 
-fun Modifier.textSize(size: Dp): Modifier {
-    this.textSize = size
-    return this
-}
-
 fun Modifier.justifyContent(value: Justify): Modifier {
     this.justifyContent = value
     return this

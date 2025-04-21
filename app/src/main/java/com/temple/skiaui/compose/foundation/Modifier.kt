@@ -7,7 +7,6 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.isUnspecified
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexDirection
-import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 
@@ -28,8 +27,6 @@ class Modifier {
     var corner: Dp = Dp.Unspecified
 
     var minSize: DpSize = DpSize.Unspecified
-
-    var textSize: Dp = Dp.Unspecified
 
     var flexDirection: FlexDirection = FlexDirection.Unspecified
 
@@ -56,24 +53,12 @@ class Modifier {
         if (!minSize.isUnspecified && minSize != previous.minSize) {
             styles[StyleKey.minSize] = minSize
         }
-        if (!textSize.isUnspecified && textSize != previous.textSize) {
-            styles[StyleKey.textSize] = textSize
-        }
-        if (flexDirection != FlexDirection.Unspecified && flexDirection != previous.flexDirection) {
-            styles[StyleKey.flexDirection] = flexDirection
-        }
-        if (justifyContent != Justify.Unspecified && justifyContent != previous.justifyContent) {
-            styles[StyleKey.justifyContent] = justifyContent
-        }
-        if (alignItems != Align.Unspecified && alignItems != previous.alignItems) {
-            styles[StyleKey.alignItems] = alignItems
-        }
         if (margins != null && (previous.margins == null ||
                     previous.margins?.getOrNull(0) != margins?.getOrNull(0) ||
                     previous.margins?.getOrNull(1) != margins?.getOrNull(1) ||
                     previous.margins?.getOrNull(2) != margins?.getOrNull(2) ||
                     previous.margins?.getOrNull(3) != margins?.getOrNull(3))
-            ) {
+        ) {
             margins?.let {
                 styles[StyleKey.margins] = it
             }
@@ -87,6 +72,16 @@ class Modifier {
             paddings?.let {
                 styles[StyleKey.paddings] = it
             }
+        }
+
+        if (flexDirection != FlexDirection.Unspecified && flexDirection != previous.flexDirection) {
+            styles[StyleKey.flexDirection] = flexDirection
+        }
+        if (justifyContent != Justify.Unspecified && justifyContent != previous.justifyContent) {
+            styles[StyleKey.justifyContent] = justifyContent
+        }
+        if (alignItems != Align.Unspecified && alignItems != previous.alignItems) {
+            styles[StyleKey.alignItems] = alignItems
         }
     }
 
@@ -106,12 +101,12 @@ class Modifier {
             return Modifier().height(height)
         }
 
-        fun textSize(size: Dp): Modifier {
-            return Modifier().textSize(size)
-        }
-
         fun margins(margins: Array<Dp>): Modifier {
             return Modifier().margins(margins)
+        }
+
+        fun backgroundColor(color: Color): Modifier {
+            return Modifier().backgroundColor(color)
         }
 
     }

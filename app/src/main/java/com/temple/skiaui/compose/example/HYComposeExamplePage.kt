@@ -26,7 +26,6 @@ import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.corner
 import com.temple.skiaui.compose.foundation.justifyContent
 import com.temple.skiaui.compose.foundation.margins
-import com.temple.skiaui.compose.foundation.textSize
 import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.runtime.Button
 import com.temple.skiaui.compose.runtime.ExoVideo
@@ -115,16 +114,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         }
                     )
                     Text(
-                        modifier = Modifier.textSize(16.dp)
-                            .backgroundColor(Color.Transparent),
+                        modifier = Modifier.backgroundColor(Color.Transparent),
+                        textSize = 16.dp,
                         content = stringResource(R.string.remember_infinite_transition),
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
                 Text(
-                    modifier = Modifier
-                        .textSize(20.dp)
-                        .backgroundColor(Color.Transparent),
+                    modifier = Modifier.backgroundColor(Color.Transparent),
+                    textSize = 20.dp,
                     content = stringResource(R.string.exo_player),
                     color = MaterialTheme.colorScheme.primary,
                 )
@@ -145,9 +143,9 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 Text(
                     modifier = Modifier.size(width, 100.dp)
-                        .textSize(20.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                     content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
+                    textSize = 20.dp,
                     color = MaterialTheme.colorScheme.inversePrimary,
                     maxLine = if (ellipsis) 3 else 0,
                     ellipsis = stringResource(R.string.click_to_open),
@@ -205,10 +203,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeNative(width: Dp, height: Dp) {
         Button(
-            modifier = Modifier.textSize(20.dp)
+            modifier = Modifier
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
             content = stringResource(R.string.native_views_page),
+            textSize = 20.dp,
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeNativeViewsPage(engine).apply {
@@ -222,10 +221,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeFilament(width: Dp, height: Dp) {
         Button(
-            modifier = Modifier.textSize(20.dp)
+            modifier = Modifier
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
             content = stringResource(R.string.filament_page),
+            textSize = 20.dp,
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeFilamentPage(engine).apply {
@@ -239,10 +239,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeCamera(width: Dp, height: Dp) {
         Button(
-            modifier = Modifier.textSize(20.dp)
+            modifier = Modifier
                 .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                 .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
             content = stringResource(R.string.camera_page),
+            textSize = 20.dp,
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeCameraPage(engine).apply {

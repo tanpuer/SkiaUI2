@@ -3,6 +3,8 @@ package com.temple.skiaui.compose.runtime
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.CameraCallback
@@ -22,12 +24,16 @@ import com.temple.skiaui.compose.ui.HYComposeScrollView
 import com.temple.skiaui.compose.ui.HYComposeShader
 import com.temple.skiaui.compose.ui.HYComposeSwitch
 import com.temple.skiaui.compose.ui.HYComposeText
-import com.temple.skiaui.compose.ui.HYComposeVideo
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
 
 @Composable
-fun View(modifier: Modifier, backgroundColor: Color, rotateZ: Float = 0.0f, onClick: (() -> Unit)? = null) {
+fun View(
+    modifier: Modifier,
+    backgroundColor: Color,
+    rotateZ: Float = 0.0f,
+    onClick: (() -> Unit)? = null
+) {
     ComposeNode<HYComposeView, HYComposeApplier>(
         factory = { HYComposeView(modifier) },
         update = {
@@ -150,7 +156,12 @@ fun SVG(modifier: Modifier, source: String, rotateZ: Float = 0.0f, onClick: () -
 }
 
 @Composable
-fun Lottie(modifier: Modifier, source: String, play: Boolean = true, onClick: (() -> Unit)? = null) {
+fun Lottie(
+    modifier: Modifier,
+    source: String,
+    play: Boolean = true,
+    onClick: (() -> Unit)? = null
+) {
     ComposeNode<HYComposeLottie, HYComposeApplier>(
         factory = { HYComposeLottie(modifier) },
         update = {
@@ -192,7 +203,8 @@ fun Shader(modifier: Modifier, shaderSource: ShaderSource, onClick: (() -> Unit)
 fun Text(
     modifier: Modifier,
     content: String,
-    color: Color,
+    textSize: Dp = 20.dp,
+    color: Color = Color.Black,
     maxLine: Int = 0,
     ellipsis: String = "…",
     onClick: (() -> Unit)? = null
@@ -205,6 +217,9 @@ fun Text(
             }
             set(content) {
                 setText(content)
+            }
+            set(textSize) {
+                setTextSize(textSize)
             }
             set(color) {
                 setColor(color)
@@ -226,6 +241,7 @@ fun Text(
 fun Button(
     modifier: Modifier,
     content: String,
+    textSize: Dp = 20.dp,
     color: Color = Color.White,
     onClick: (() -> Unit)? = null
 ) {
@@ -234,6 +250,9 @@ fun Button(
         update = {
             set(modifier) {
                 updateModifier(modifier)
+            }
+            set(textSize) {
+                setTextSize(textSize)
             }
             set(content) {
                 setText(content)
