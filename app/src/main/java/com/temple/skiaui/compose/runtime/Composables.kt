@@ -19,6 +19,7 @@ import com.temple.skiaui.compose.ui.HYComposeIcon
 import com.temple.skiaui.compose.ui.HYComposeImage
 import com.temple.skiaui.compose.ui.HYComposeLoadingView
 import com.temple.skiaui.compose.ui.HYComposeLottie
+import com.temple.skiaui.compose.ui.HYComposeProgressBar
 import com.temple.skiaui.compose.ui.HYComposeSVG
 import com.temple.skiaui.compose.ui.HYComposeScrollView
 import com.temple.skiaui.compose.ui.HYComposeShader
@@ -392,4 +393,31 @@ fun EditText(modifier: Modifier, hint: String, focus: Boolean = false) {
         }
     )
 }
+
+@Composable
+fun ProgressBar(
+    modifier: Modifier,
+    barColor: Color = Color.Red,
+    backgroundColor: Color = Color.Green,
+    onChange: ((progress: Int) -> Unit)? = null
+) {
+    ComposeNode<HYComposeProgressBar, HYComposeApplier>(
+        factory = { HYComposeProgressBar(modifier) },
+        update = {
+            set(modifier) {
+                updateModifier(modifier)
+            }
+            set(barColor) {
+                setBarColor(barColor)
+            }
+            set(backgroundColor) {
+                setBackgroundColor(backgroundColor)
+            }
+            set(onChange) {
+                setOnChangeListener(onChange)
+            }
+        }
+    )
+}
+
 

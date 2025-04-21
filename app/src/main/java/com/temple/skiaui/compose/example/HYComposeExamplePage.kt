@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.example
 
+import android.util.Log
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -36,6 +37,7 @@ import com.temple.skiaui.compose.runtime.Image
 import com.temple.skiaui.compose.runtime.LazyColumn
 import com.temple.skiaui.compose.runtime.Loading
 import com.temple.skiaui.compose.runtime.Lottie
+import com.temple.skiaui.compose.runtime.ProgressBar
 import com.temple.skiaui.compose.runtime.Row
 import com.temple.skiaui.compose.runtime.SVG
 import com.temple.skiaui.compose.runtime.Shader
@@ -129,6 +131,13 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ExoVideo(
                     modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
                     source = "yiluxiangbei.mp4"
+                )
+                ProgressBar(
+                    modifier = Modifier.size(width, 20.dp)
+                        .margins(arrayOf(10.dp, 20.dp, 10.dp, 0.dp)),
+                    barColor = MaterialTheme.colorScheme.tertiary,
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    onChange = {}
                 )
                 ComposeNative(width, height)
                 ComposeCamera(width, height)

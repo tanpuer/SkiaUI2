@@ -80,9 +80,11 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
         clickCallback?.invoke()
     }
 
-    fun setOnClick(callback: (() -> Unit)?) {
+    fun setOnClick(callback: (() -> Unit)? = null) {
         clickCallback = callback
-        nativeSetClickCallback(ref)
+        callback?.let {
+            nativeSetClickCallback(ref)
+        }
     }
 
     override fun getViewType(): String = "View"

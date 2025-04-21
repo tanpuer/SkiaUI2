@@ -22,6 +22,7 @@
 #include "ComposeViewGroupJNI.h"
 #include "ComposeButtonJNI.h"
 #include "ComposeEditTextJNI.h"
+#include "ComposeProgressBarJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -47,6 +48,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeSVGMethods(jniEnv);
     RegisterComposeButtonMethods(jniEnv);
     RegisterComposeEditTextMethods(jniEnv);
+    RegisterComposeProgressMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -71,4 +73,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeSVGMethods(jniEnv);
     UnRegisterComposeButtonMethods(jniEnv);
     UnRegisterComposeEditTextMethods(jniEnv);
+    UnRegisterComposeProgressMethods(jniEnv);
 }

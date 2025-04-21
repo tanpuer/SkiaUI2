@@ -7,7 +7,7 @@ namespace HYSkiaUI {
 
 ProgressBar::ProgressBar()
         : View(), progressRect(SkRect::MakeEmpty()), autoMode(false), progress(0), index(0),
-          type(ProgressBarType::CIRCLE), pressed(false), progressCallback(nullptr) {
+          type(ProgressBarType::LINEAR), pressed(false), progressCallback(nullptr) {
     gradientColors = std::vector<SkColor>();
     gradientColorSize = 0;
     backgroundPaint = std::make_unique<SkPaint>();
@@ -49,7 +49,7 @@ void ProgressBar::layout(int l, int t, int r, int b) {
         }
     } else if (type == ProgressBarType::LINEAR) {
         auto diff = height / 3.0f;
-        progressRect.setLTRB(l + marginLeft, t + diff, r - marginRight, b - diff);
+        progressRect.setLTRB(l, t + diff, r - marginLeft - marginRight, b - diff);
         if (gradientColorSize > 0) {
             SkPoint points[2]{SkPoint::Make(l, t), SkPoint::Make(r, b)};
             paint->setShader(
@@ -169,7 +169,7 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
 }
 
 void ProgressBar::setProgressCallback(std::function<void(int, bool)> progressCallback) {
-    this->progressCallback = progressCallback;
+    this->progressCallback = std::move(progressCallback);
 }
 
 void ProgressBar::setStrokeWidth(SkScalar _width) {

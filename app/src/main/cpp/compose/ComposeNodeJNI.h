@@ -18,6 +18,7 @@
 #include "Button.h"
 #include "EditText.h"
 #include "ComposeContext.h"
+#include "ProgressBar.h"
 
 using namespace HYSkiaUI;
 
@@ -55,6 +56,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jstring type) {
             {"SVG",           []() -> View * { return new SVGView(); }},
             {"Button",        []() -> View * { return new Button(); }},
             {"EditText",      []() -> View * { return new EditText(); }},
+            {"ProgressBar",   []() -> View * { return new ProgressBar(); }},
     };
     auto result = viewFactory[typeStr]();
     auto context = ComposeContext::getInstance()->getUIContext();
