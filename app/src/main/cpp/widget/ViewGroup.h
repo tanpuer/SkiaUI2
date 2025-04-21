@@ -105,6 +105,10 @@ public:
     //TODO smart-pointer
     std::vector<View *> children;
 
+#pragma mark for RecyclerView
+
+    View *removeViewAtForRV(uint32_t index);
+
 };
 
 }

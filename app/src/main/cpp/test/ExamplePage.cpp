@@ -19,7 +19,6 @@
 #include "MovingArea.h"
 #include "EditText.h"
 #include "SwiperView.h"
-#include "RecyclerViewPage.h"
 #include "WebViewPage.h"
 #include "CameraPage.h"
 #include "FilamentPage.h"

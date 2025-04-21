@@ -32,6 +32,7 @@ void TextView::setText(SkString text) {
     this->text = std::move(text);
     stringBuilders.clear();
     markDirty();
+    markMeasure();
 }
 
 SkString TextView::getText() {

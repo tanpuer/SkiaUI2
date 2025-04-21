@@ -22,9 +22,11 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
         case TouchEvent::ACTION_MOVE: {
             ALOGD("ScrollDispatcher::ACTION_MOVE")
             if (scrollView->_direction == YGFlexDirectionColumn) {
+                scrollView->setScrollEnd(touchEvent->y < startY);
                 scrollView->updateTranslateY(touchEvent->y - startY);
                 startY = touchEvent->y;
             } else {
+                scrollView->setScrollEnd(touchEvent->x < startX);
                 scrollView->updateTranslateX(touchEvent->x - startX);
                 startX = touchEvent->x;
             }

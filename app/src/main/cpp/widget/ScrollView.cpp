@@ -29,10 +29,10 @@ void ScrollView::layout(int l, int t, int r, int b) {
     }
     if (_direction == YGFlexDirectionRow) {
         updateTranslateX(0.0);
-        layoutChildren(l + translateX, t, r, b);
+        layoutChildren(l + translateX, t, r + translateX, b);
     } else {
         updateTranslateY(0.0);
-        layoutChildren(l, t + translateY, r, b);
+        layoutChildren(l, t + translateY, r, b + translateY);
     }
 }
 
@@ -46,7 +46,6 @@ void ScrollView::updateTranslateY(float diffY) {
     if (translateY >= 0) {
         translateY = 0;
     }
-    lastScrollDown = diffY < 0.0f;
 }
 
 void ScrollView::setTranslateY(float y) {
@@ -59,7 +58,6 @@ void ScrollView::setTranslateY(float y) {
     if (translateY >= 0) {
         translateY = 0;
     }
-    lastScrollDown = y < 0.0f;
     markDirty();
 }
 
@@ -72,7 +70,6 @@ void ScrollView::setTranslateX(float x) {
     if (translateX > 0) {
         translateX = 0;
     }
-    lastScrollRight = x < 0.0f;
     markDirty();
 }
 
@@ -97,7 +94,6 @@ void ScrollView::updateTranslateX(float diffX) {
     if (translateX > 0) {
         translateX = 0;
     }
-    lastScrollRight = diffX > 0.0f;
 }
 
 bool ScrollView::addView(View *view) {
@@ -303,6 +299,10 @@ int ScrollView::getDistanceByIndex(int index) {
 
 void ScrollView::onFlingStopped() {
 
+}
+
+void ScrollView::setScrollEnd(bool flag) {
+    this->lastScrollEnd = flag;
 }
 
 }

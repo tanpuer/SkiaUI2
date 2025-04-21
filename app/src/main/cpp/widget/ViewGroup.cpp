@@ -231,4 +231,17 @@ void ViewGroup::moveViews(uint32_t from, uint32_t to, uint32_t count) {
     }
 }
 
+View *ViewGroup::removeViewAtForRV(uint32_t index) {
+    auto view = children[index];
+    if (view == nullptr) {
+        return nullptr;
+    }
+    YGNodeRemoveChild(node, view->getNode());
+    auto it = std::find(children.begin(), children.end(), view);
+    if (it != children.end()) {
+        children.erase(it);
+    }
+    return view;
+}
+
 }
