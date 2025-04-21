@@ -14,13 +14,11 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.margins
 import com.temple.skiaui.compose.foundation.size
-import com.temple.skiaui.compose.runtime.Camera
 import com.temple.skiaui.compose.runtime.EditText
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.LazyColumn
 import com.temple.skiaui.compose.runtime.Web
 import com.temple.skiaui.compose.ui.Align
-import com.temple.skiaui.compose.ui.CameraCallback
 
 class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
@@ -43,11 +41,6 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                     hint = stringResource(R.string.edit_hint_string),
                     focus = false
                 )
-                Camera(Modifier().size(width, width), object : CameraCallback {
-                    override fun onImageCaptured(imagePtr: Long) {
-
-                    }
-                })
                 Web(
                     Modifier.size(width, 1200.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),

@@ -133,6 +133,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     source = "yiluxiangbei.mp4"
                 )
                 ComposeNative(width, height)
+                ComposeCamera(width, height)
                 ComposeFilament(width, height)
                 Loading(
                     modifier = Modifier.size(200.dp, 50.dp)
@@ -228,6 +229,23 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeFilamentPage(engine).apply {
+                    start(width, height)
+                    HYComposeSDK.pushPage(this)
+                }
+            }
+        )
+    }
+
+    @Composable
+    private fun ComposeCamera(width: Dp, height: Dp) {
+        Button(
+            modifier = Modifier.textSize(20.dp)
+                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+            content = stringResource(R.string.camera_page),
+            color = MaterialTheme.colorScheme.tertiary,
+            onClick = {
+                HYComposeCameraPage(engine).apply {
                     start(width, height)
                     HYComposeSDK.pushPage(this)
                 }

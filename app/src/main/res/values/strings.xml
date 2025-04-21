@@ -5,5 +5,6 @@
     <string name="edit_hint_string">这是Android原生的EditText融合渲染</string>
     <string name="test_text">测试文本</string>
     <string name="filament_page">Filament Page</string>
+    <string name="camera_page">Camera Page</string>
     <string name="native_views_page">Native Views Page</string>
 </resources>
