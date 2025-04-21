@@ -1,9 +1,8 @@
 package com.temple.skiaui.compose.runtime
 
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
-import com.temple.skiaui.HYSkiaUIApp
+import com.temple.skiaui.compose.ui.util.px2dp
 
 abstract class HYComposeApplication(val engine: HYSkiaEngine) {
 
@@ -16,8 +15,7 @@ abstract class HYComposeApplication(val engine: HYSkiaEngine) {
     }
 
     private fun innerOnCreate(width: Int, height: Int) {
-        val density = HYSkiaUIApp.getInstance().resources.displayMetrics.density
-        onCreate((width / density).dp, (height / density).dp)
+        onCreate(px2dp(width), px2dp(height))
     }
 
     private fun innerOnDestroy() {

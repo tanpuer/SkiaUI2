@@ -30,7 +30,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     }
 
     override fun getSkImage(): Long {
-        return if (renderFirstFrame) skImagePtr else 0
+        return skImagePtr
     }
 
     override fun type(): String = "ExoPlayerView"

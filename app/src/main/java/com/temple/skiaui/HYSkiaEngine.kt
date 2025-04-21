@@ -7,7 +7,6 @@ import android.hardware.HardwareBuffer
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
@@ -22,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
-class HYSkiaEngine(private val exampleType: Int, val view: View) {
+class HYSkiaEngine(private val developmentType: Int, val view: View) {
 
     /**
      * 执行UI逻辑
@@ -32,7 +31,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             start()
         }
     private val skiaUIHandler =
-        if (exampleType == DEVELOPMENT_COMPOSE) Handler(Looper.getMainLooper()) else Handler(
+        if (developmentType == DEVELOPMENT_COMPOSE) Handler(Looper.getMainLooper()) else Handler(
             skiaUIHandlerThread.looper
         )
 
@@ -59,8 +58,8 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private var uiApp = 0L
     private val skImageList = mutableListOf<Long>()
     private val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
+    private val sizeChangeListeners = mutableMapOf<String, (width: Int, height: Int) -> Unit>()
     private val executors = Executors.newFixedThreadPool(3)
-    private var createdFlag = false
 
     data class Velocity(val x: Float, val y: Float)
 
@@ -72,7 +71,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             glApp = nativeGLInit()
         }
         skiaUIHandler.post {
-            uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets, exampleType)
+            uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets, developmentType)
             nativeSetPlugins(uiApp, pluginManager)
         }
         PersistentCache.preload(executors)
@@ -88,7 +87,9 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
         skiaGLHandler.post {
             nativeGLCreated(glApp, surface)
         }
-        createdFlag = true
+        createListeners.forEach {
+            it.value.invoke(true)
+        }
     }
 
     @MainThread
@@ -100,11 +101,8 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
             nativeUIChanged(uiApp, width, height, System.currentTimeMillis() / 1000)
             pic.set(nativeUIDoFrame(uiApp, System.currentTimeMillis() - start))
         }
-        if (createdFlag) {
-            createdFlag = false
-            createListeners.forEach {
-                it.value.invoke(true)
-            }
+        sizeChangeListeners.forEach { (_, callback) ->
+            callback.invoke(width, height)
         }
     }
 
@@ -129,6 +127,16 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     @MainThread
     fun removeSurfaceListener(key: String) {
         createListeners.remove(key)
+    }
+
+    @MainThread
+    fun addSizeChangeListener(key: String, callback: (width: Int, height: Int) -> Unit) {
+        sizeChangeListeners[key] = callback
+    }
+
+    @MainThread
+    fun removeSizeChangeListener(key: String) {
+        sizeChangeListeners.remove(key)
     }
 
     @MainThread
@@ -239,8 +247,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     }
 
     fun makeHardwareBufferToSkImage(
-        hardwareBuffer: HardwareBuffer,
-        callback: (skImagePtr: Long) -> Unit
+        hardwareBuffer: HardwareBuffer, callback: (skImagePtr: Long) -> Unit
     ) {
         skiaGLHandler.post {
             val skImagePtr = nativeGLMakeHardwareBufferToSkImage(glApp, hardwareBuffer)
@@ -328,7 +335,7 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     }
 
     fun onUIModeChange() {
-        if (exampleType == DEVELOPMENT_COMPOSE) {
+        if (developmentType == DEVELOPMENT_COMPOSE) {
             HYComposeSDK.onUIModeChange()
         }
     }
@@ -339,22 +346,16 @@ class HYSkiaEngine(private val exampleType: Int, val view: View) {
     private external fun nativeGLDestroyed(glApp: Long)
     private external fun nativeGLDoFrame(glApp: Long, pic: Long, time: Long)
     private external fun nativeGLMakeHardwareBufferToSkImage(
-        glApp: Long,
-        hardwareBuffer: HardwareBuffer
+        glApp: Long, hardwareBuffer: HardwareBuffer
     ): Long
 
     private external fun nativeDeleteSkImage(glApp: Long, skImagePtr: Long)
     private external fun nativeAttachSurfaceTexture(
-        glApp: Long,
-        width: Int,
-        height: Int,
-        surfaceTexture: SurfaceTexture
+        glApp: Long, width: Int, height: Int, surfaceTexture: SurfaceTexture
     ): Long
 
     private external fun nativeUpdateTexImage(
-        glApp: Long,
-        surfaceTexture: SurfaceTexture,
-        skImagePtr: Long
+        glApp: Long, surfaceTexture: SurfaceTexture, skImagePtr: Long
     )
 
 
