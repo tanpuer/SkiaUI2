@@ -1,12 +1,14 @@
 #pragma once
 
 #include "ScrollView.h"
+#include "LinearAnimator.h"
 
 namespace HYSkiaUI {
 
 class RecyclerView : public ScrollView {
 
 #define DISTANCE 300
+#define SMOOTH_DISTANCE DISTANCE / 2
 
 public:
 
@@ -26,7 +28,15 @@ public:
 
     void layout(int l, int t, int r, int b) override;
 
-    const char * name() override;
+    const char *name() override;
+
+    virtual void scrollToPosition(int position);
+
+    virtual void smoothScrollToPosition(int position);
+
+    void updateTranslateY(float diffY) override;
+
+    bool isSmoothScrolling();
 
 private:
 
@@ -45,6 +55,8 @@ private:
     void putViewToCache(int index, View *view);
 
     void layoutNewAddedChild(int l, int t, int r, int b, View *view);
+
+    LinearAnimator *smoothAnimator = nullptr;
 
 };
 

@@ -1,4 +1,5 @@
 #include "RecyclerView.h"
+#include "LinearAnimator.h"
 
 namespace HYSkiaUI {
 
@@ -63,7 +64,8 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             ScrollView::addView(child);
             YGNodeCalculateLayout(node, width, height, YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
-            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
+            ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
+                  firstChildIndex)
         }
         auto firstChild = children.front();
         if (firstChild == nullptr) {
@@ -83,7 +85,8 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             topChildBottom += diffY;
             putViewToCache(removedIndex, removedView);
             updateTranslateY(diffY);
-            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
+            ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
+                  firstChildIndex)
         }
     } else {
         //scrollToTop, addView to top, then removeView from bottom
@@ -106,11 +109,12 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
             firstChildTop -= diffY;
             ScrollView::addViewAt(child, 0);
+            updateTranslateY(-diffY);
             YGNodeCalculateLayout(node, width, height, YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
             firstChildIndex--;
-            updateTranslateY(-diffY);
-            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
+            ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
+                  firstChildIndex)
         }
         auto lastChild = children.back();
         if (lastChild == nullptr) {
@@ -128,7 +132,8 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             auto diffY = removedView->getHeight() + removedView->getMarginTop() +
                          removedView->getMarginBottom();
             lastChildTop -= diffY;
-            ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
+            ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
+                  firstChildIndex)
         }
     }
 }
@@ -169,6 +174,81 @@ void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
 
 const char *RecyclerView::name() {
     return "RecyclerView";
+}
+
+void RecyclerView::scrollToPosition(int position) {
+    ALOGD("RecyclerView::scrollToPosition %d", position)
+    stopFling();
+    while (!children.empty()) {
+        auto removedIndex = firstChildIndex + children.size() - 1;
+        auto removedView = ScrollView::removeViewAtForRV(children.size() - 1);
+        putViewToCache(removedIndex, removedView);
+    }
+    updateTranslateY(0);
+    firstChildIndex = position;
+    initChildren();
+}
+
+void RecyclerView::smoothScrollToPosition(int position) {
+    if (position >= firstChildIndex && position <= firstChildIndex + children.size() - 1) {
+        //targetView already in RecyclerView
+        auto targetView = children[position - firstChildIndex];
+        smoothAnimator = new LinearAnimator(this, 0, 0);
+        smoothAnimator->setDuration(INT_MAX);
+        smoothAnimator->setEaseType(EaseType::Linear);
+        smoothAnimator->setUpdateListener([this, targetView](View *view, float value) {
+            auto top = targetView->getTop();
+            if ((top < 0 && top > -SMOOTH_DISTANCE) || (top > 0 && top < SMOOTH_DISTANCE)) {
+                updateTranslateY(-targetView->getTop() + targetView->getMarginTop());
+                smoothAnimator->stop();
+                smoothAnimator = nullptr;
+                return;
+            }
+            updateTranslateY(-SMOOTH_DISTANCE);
+        });
+        smoothAnimator->start();
+    } else {
+        //targetView is not in RecyclerView
+        lastScrollEnd = !(position < firstChildIndex);
+        smoothAnimator = new LinearAnimator(this, 0, 0);
+        smoothAnimator->setDuration(INT_MAX);
+        smoothAnimator->setEaseType(EaseType::Linear);
+        smoothAnimator->setUpdateListener([this, position](View *view, float value) {
+            if (position >= firstChildIndex && position <= firstChildIndex + children.size() - 1) {
+                auto targetView = children[position - firstChildIndex];
+                auto top = targetView->getTop();
+                if ((top < 0 && top > -SMOOTH_DISTANCE) || (top > 0 && top < SMOOTH_DISTANCE)) {
+                    updateTranslateY(-targetView->getTop() + targetView->getMarginTop());
+                    smoothAnimator->stop();
+                    smoothAnimator = nullptr;
+                    return;
+                }
+            }
+            updateTranslateY(lastScrollEnd ? -SMOOTH_DISTANCE : SMOOTH_DISTANCE);
+        });
+        smoothAnimator->start();
+    }
+}
+
+void RecyclerView::updateTranslateY(float diffY) {
+    translateY += diffY;
+    if (isSmoothScrolling()) {
+        return;
+    }
+    auto maxTranslate = height - getChildHeightSum();
+    if (translateY <= maxTranslate) {
+        translateY = maxTranslate;
+    }
+    if (translateY >= 0) {
+        translateY = 0;
+    }
+}
+
+bool RecyclerView::isSmoothScrolling() {
+    if (smoothAnimator == nullptr || smoothAnimator->isEnd()) {
+        return false;
+    }
+    return true;
 }
 
 }
