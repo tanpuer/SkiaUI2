@@ -61,6 +61,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
             lastChildBottom += diffY;
             ScrollView::addView(child);
+            YGNodeCalculateLayout(node, width, height, YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
             ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
         }
@@ -105,6 +106,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
             firstChildTop -= diffY;
             ScrollView::addViewAt(child, 0);
+            YGNodeCalculateLayout(node, width, height, YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
             firstChildIndex--;
             updateTranslateY(-diffY);
@@ -161,12 +163,6 @@ void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(childNode));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(childNode));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(childNode));
-    if (width == 0) {
-        width = view->getWidth();
-    }
-    if (height == 0) {
-        height = view->getHeight();
-    }
     view->layout(left + l, top + t + translateY, left + l + width,
                  top + t + translateY + height);
 }

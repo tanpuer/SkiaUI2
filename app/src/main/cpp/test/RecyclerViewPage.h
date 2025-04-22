@@ -37,6 +37,17 @@ public:
                 textView->setMargin({0, 25, 0, 25});
                 return textView;
             } else if (type == 1) {
+                auto flexboxLayout = new FlexboxLayout();
+                flexboxLayout->setContext(this->context);
+                flexboxLayout->setWidth(width);
+                flexboxLayout->setStyle(SkPaint::kStroke_Style);
+                flexboxLayout->setBackgroundColor(SK_ColorTRANSPARENT);
+                flexboxLayout->setStrokeWidth(0);
+                flexboxLayout->setMargin({0, 0, 0, 50});
+                flexboxLayout->setFlexDirection(YGFlexDirection::YGFlexDirectionRow);
+                flexboxLayout->setJustifyContent(YGJustify::YGJustifyCenter);
+                flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
+
                 auto lottieView = new LottieView();
                 lottieView->setContext(this->context);
                 lottieView->setWidth(375);
@@ -45,8 +56,19 @@ public:
                 lottieView->setStyle(SkPaint::kStroke_Style);
                 lottieView->setBackgroundColor(SK_ColorRED);
                 lottieView->setStrokeWidth(2);
-                lottieView->setMargin({0, 25, 0, 25});
-                return lottieView;
+                flexboxLayout->addView(lottieView);
+
+                auto textView = new TextView();
+                textView->setContext(this->context);
+                textView->setText(SkString("test recyclerview"));
+                textView->setTextColor(SK_ColorGREEN);
+                textView->setTextSize(50);
+                textView->setMargin({50, 0, 0, 0});
+                textView->setBackgroundColor(SK_ColorTRANSPARENT);
+                textView->setStyle(SkPaint::kStroke_Style);
+                flexboxLayout->addView(textView);
+
+                return flexboxLayout;
             } else {
                 auto loadingView = new LoadingView();
                 loadingView->setContext(this->context);
@@ -66,8 +88,13 @@ public:
                     textView->setText(std::to_string(index).c_str());
                 }
             } else if (type == 1) {
-                auto lottieView = reinterpret_cast<LottieView *>(view);
-                if (lottieView != nullptr) {
+                auto flexboxLayout = reinterpret_cast<FlexboxLayout *>(view);
+                if (flexboxLayout != nullptr) {
+
+                }
+            } else if (type == 2) {
+                auto loadingView = reinterpret_cast<LoadingView *>(view);
+                if (loadingView != nullptr) {
 
                 }
             }

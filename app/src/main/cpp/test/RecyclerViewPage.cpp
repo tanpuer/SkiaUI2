@@ -18,7 +18,7 @@ void RecyclerViewPage::init(std::shared_ptr<SkiaUIContext> &context, int width, 
 void RecyclerViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height) {
     auto recyclerView = new MyRecyclerView();
     recyclerView->setContext(context);
-    recyclerView->setDataSize(100);
+    recyclerView->setDataSize(100000);
     recyclerView->setWidth(width);
     recyclerView->setHeight(height);
     root->addView(recyclerView);
