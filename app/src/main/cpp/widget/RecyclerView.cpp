@@ -141,7 +141,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
 View *RecyclerView::getViewFromCache(int index) {
     auto type = getViewType(index);
     if (viewCache.find(type) == viewCache.end()) {
-        viewCache.emplace(std::make_pair(type, std::vector<View *>()));
+        viewCache.emplace(type, std::vector<View *>());
     }
     auto &typeCache = viewCache[type];
     if (typeCache.empty()) {
@@ -156,7 +156,7 @@ View *RecyclerView::getViewFromCache(int index) {
 void RecyclerView::putViewToCache(int index, View *view) {
     auto type = getViewType(index);
     if (viewCache.find(type) == viewCache.end()) {
-        viewCache.emplace(std::make_pair(type, std::vector<View *>()));
+        viewCache.emplace(type, std::vector<View *>());
     }
     auto &typeCache = viewCache[type]; //auto typeCache = viewCache[type] error!
     typeCache.push_back(view);
@@ -193,6 +193,7 @@ void RecyclerView::smoothScrollToPosition(int position) {
     if (position >= firstChildIndex && position <= firstChildIndex + children.size() - 1) {
         //targetView already in RecyclerView
         auto targetView = children[position - firstChildIndex];
+        lastScrollEnd = targetView->getTop() > 0; //important
         smoothAnimator = new LinearAnimator(this, 0, 0);
         smoothAnimator->setDuration(INT_MAX);
         smoothAnimator->setEaseType(EaseType::Linear);
@@ -209,7 +210,7 @@ void RecyclerView::smoothScrollToPosition(int position) {
         smoothAnimator->start();
     } else {
         //targetView is not in RecyclerView
-        lastScrollEnd = !(position < firstChildIndex);
+        lastScrollEnd = position >= firstChildIndex; //important
         smoothAnimator = new LinearAnimator(this, 0, 0);
         smoothAnimator->setDuration(INT_MAX);
         smoothAnimator->setEaseType(EaseType::Linear);
@@ -235,7 +236,7 @@ void RecyclerView::updateTranslateY(float diffY) {
     if (isSmoothScrolling()) {
         return;
     }
-    auto maxTranslate = height - getChildHeightSum();
+    auto maxTranslate = static_cast<float >(height - getChildHeightSum());
     if (translateY <= maxTranslate) {
         translateY = maxTranslate;
     }

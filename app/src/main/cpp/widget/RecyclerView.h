@@ -7,8 +7,8 @@ namespace HYSkiaUI {
 
 class RecyclerView : public ScrollView {
 
-#define DISTANCE 300
-#define SMOOTH_DISTANCE DISTANCE / 2
+#define DISTANCE 300.0f
+#define SMOOTH_DISTANCE (DISTANCE / 2)
 
 public:
 
