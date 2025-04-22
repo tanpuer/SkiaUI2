@@ -72,13 +72,15 @@ void RecyclerView::layout(int l, int t, int r, int b) {
         auto topChildBottom = topChildRect.bottom();
         auto targetTop = getRect().top() - DISTANCE;
         while (topChildBottom < targetTop) {
-            ALOGD("RecyclerView remove first view")
+            auto removedIndex = firstChildIndex;
             auto removedView = ScrollView::removeViewAtForRV(0);
+            ALOGD("RecyclerView remove first view index:%d name:%s", removedIndex,
+                  removedView->name())
+            firstChildIndex++;
             auto diffY = removedView->getHeight() + removedView->getMarginTop() +
                          removedView->getMarginBottom();
             topChildBottom += diffY;
-            putViewToCache(firstChildIndex, removedView);
-            firstChildIndex++;
+            putViewToCache(removedIndex, removedView);
             updateTranslateY(diffY);
             ALOGD("RecyclerView size: %ld firstChildIndex:%d", children.size(), firstChildIndex)
         }
@@ -118,8 +120,9 @@ void RecyclerView::layout(int l, int t, int r, int b) {
         while (children.size() < size && lastChildTop > targetBottom) {
             ALOGD("RecyclerView remove back view size:%ld firstChildIndex:%d", children.size(),
                   firstChildIndex)
+            auto removedIndex = firstChildIndex + children.size() - 1;
             auto removedView = ScrollView::removeViewAtForRV(children.size() - 1);
-            putViewToCache(firstChildIndex + children.size() - 1, removedView);
+            putViewToCache(removedIndex, removedView);
             auto diffY = removedView->getHeight() + removedView->getMarginTop() +
                          removedView->getMarginBottom();
             lastChildTop -= diffY;
@@ -133,13 +136,13 @@ View *RecyclerView::getViewFromCache(int index) {
     if (viewCache.find(type) == viewCache.end()) {
         viewCache.emplace(std::make_pair(type, std::vector<View *>()));
     }
-    auto typeCache = viewCache[type];
+    auto &typeCache = viewCache[type];
     if (typeCache.empty()) {
         return nullptr;
     }
     auto child = typeCache.back();
     typeCache.pop_back();
-    ALOGD("RecyclerView addView from cache")
+    ALOGD("RecyclerView addView from cache index:%d type:%d", index, type)
     return child;
 }
 
@@ -148,8 +151,8 @@ void RecyclerView::putViewToCache(int index, View *view) {
     if (viewCache.find(type) == viewCache.end()) {
         viewCache.emplace(std::make_pair(type, std::vector<View *>()));
     }
-    auto typeCache = viewCache[type];
-    typeCache.emplace_back(view);
+    auto &typeCache = viewCache[type]; //auto typeCache = viewCache[type] error!
+    typeCache.push_back(view);
 }
 
 void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
@@ -158,8 +161,18 @@ void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(childNode));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(childNode));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(childNode));
+    if (width == 0) {
+        width = view->getWidth();
+    }
+    if (height == 0) {
+        height = view->getHeight();
+    }
     view->layout(left + l, top + t + translateY, left + l + width,
                  top + t + translateY + height);
+}
+
+const char *RecyclerView::name() {
+    return "RecyclerView";
 }
 
 }

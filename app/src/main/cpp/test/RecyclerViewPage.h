@@ -34,7 +34,7 @@ public:
                 textView->setTextSize(100);
                 textView->setTextAlign(skia::textlayout::TextAlign::kCenter);
                 textView->setText(std::to_string(index).c_str());
-                textView->setMargin({0, 0, 0, 50});
+                textView->setMargin({0, 25, 0, 25});
                 return textView;
             } else if (type == 1) {
                 auto lottieView = new LottieView();
@@ -45,14 +45,14 @@ public:
                 lottieView->setStyle(SkPaint::kStroke_Style);
                 lottieView->setBackgroundColor(SK_ColorRED);
                 lottieView->setStrokeWidth(2);
-                lottieView->setMargin({0, 0, 0, 50});
+                lottieView->setMargin({0, 25, 0, 25});
                 return lottieView;
             } else {
                 auto loadingView = new LoadingView();
                 loadingView->setContext(this->context);
                 loadingView->setWidth(1080);
                 loadingView->setHeight(200);
-                loadingView->setMargin({0, 0, 0, 50});
+                loadingView->setMargin({0, 25, 0, 25});
                 loadingView->setStyle(SkPaint::kStroke_Style);
                 return loadingView;
             }

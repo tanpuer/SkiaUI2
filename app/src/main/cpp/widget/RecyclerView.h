@@ -26,6 +26,8 @@ public:
 
     void layout(int l, int t, int r, int b) override;
 
+    const char * name() override;
+
 private:
 
     void initChildren();
