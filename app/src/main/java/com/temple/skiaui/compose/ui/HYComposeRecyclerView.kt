@@ -1,6 +1,5 @@
 package com.temple.skiaui.compose.ui
 
-import androidx.compose.runtime.Composable
 import com.temple.skiaui.compose.foundation.Modifier
 
 class HYComposeRecyclerView(
@@ -9,8 +8,7 @@ class HYComposeRecyclerView(
     val bindView: (index: Int, node: HYComposeView) -> Unit,
     val viewType: (index: Int) -> Int,
     val dataSize: Int
-) :
-    HYComposeScrollView(modifier) {
+) : HYComposeScrollView(modifier) {
 
     override fun getViewType(): String = "RecyclerView"
 

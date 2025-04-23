@@ -426,6 +426,10 @@ fun ProgressBar(
     )
 }
 
+/**
+ * For ComposeRecyclerView, createView/bindView/viewType are called from Native, it is impossible to change them to @Composable functions.
+ * So use RecyclerView is not comfortable compared with other widgets.
+ */
 @Composable
 fun RecyclerView(
     modifier: Modifier,
