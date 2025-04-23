@@ -20,7 +20,7 @@ public:
 
     virtual void onBindView(uint32_t index, View *view) = 0;
 
-    virtual int getViewType(uint32_t index) = 0;
+    virtual uint32_t getViewType(uint32_t index) = 0;
 
     void setDataSize(uint32_t size);
 
@@ -30,9 +30,9 @@ public:
 
     const char *name() override;
 
-    virtual void scrollToPosition(int position);
+    virtual void scrollToPosition(uint32_t position);
 
-    virtual void smoothScrollToPosition(int position);
+    virtual void smoothScrollToPosition(uint32_t position);
 
     void updateTranslateY(float diffY) override;
 
@@ -48,11 +48,11 @@ private:
 
     uint32_t firstChildIndex = 0;
 
-    std::unordered_map<int, std::vector<View *>> viewCache;
+    std::unordered_map<uint32_t, std::vector<View *>> viewCache;
 
-    View *getViewFromCache(int index);
+    View *getViewFromCache(uint32_t index);
 
-    void putViewToCache(int index, View *view);
+    void putViewToCache(uint32_t index, View *view);
 
     void layoutNewAddedChild(int l, int t, int r, int b, View *view);
 

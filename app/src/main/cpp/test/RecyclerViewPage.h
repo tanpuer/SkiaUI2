@@ -100,7 +100,7 @@ public:
             }
         }
 
-        int getViewType(uint32_t index) override {
+        uint32_t getViewType(uint32_t index) override {
             return index % 3;
         }
 

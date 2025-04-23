@@ -31,8 +31,9 @@ void RecyclerView::setDataSize(uint32_t size) {
 void RecyclerView::initChildren() {
     auto childHeightSum = 0;
     while (childHeightSum < height) {
-        auto child = onCreateView(children.size() + firstChildIndex);
-        onBindView(children.size() + firstChildIndex, child);
+        uint32_t index = static_cast<uint32_t>(children.size() + firstChildIndex);
+        auto child = onCreateView(index);
+        onBindView(index, child);
         child->measure();
         childHeightSum += child->getHeight() + child->getMarginTop() + child->getMarginBottom();
         ScrollView::addView(child);
@@ -51,7 +52,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
         auto lastChildBottom = lastChildRect.bottom();
         auto targetBottom = getRect().bottom() + DISTANCE;
         while (firstChildIndex + children.size() < size && lastChildBottom < targetBottom) {
-            auto targetIndex = children.size() + firstChildIndex;
+            auto targetIndex = static_cast<uint32_t>(children.size() + firstChildIndex);
             auto child = getViewFromCache(targetIndex);
             if (child == nullptr) {
                 ALOGD("RecyclerView createView")
@@ -59,10 +60,12 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             }
             onBindView(targetIndex, child);
             child->measure();
-            auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
+            auto diffY = static_cast<float >(child->getHeight() + child->getMarginTop() +
+                                             child->getMarginBottom());
             lastChildBottom += diffY;
             ScrollView::addView(child);
-            YGNodeCalculateLayout(node, width, height, YGDirection::YGDirectionLTR);
+            YGNodeCalculateLayout(node, static_cast<float >(width), static_cast<float >(height),
+                                  YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
             ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
                   firstChildIndex)
@@ -80,8 +83,9 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             ALOGD("RecyclerView remove first view index:%d name:%s", removedIndex,
                   removedView->name())
             firstChildIndex++;
-            auto diffY = removedView->getHeight() + removedView->getMarginTop() +
-                         removedView->getMarginBottom();
+            auto diffY = static_cast<float >(removedView->getHeight() +
+                                             removedView->getMarginTop() +
+                                             removedView->getMarginBottom());
             topChildBottom += diffY;
             putViewToCache(removedIndex, removedView);
             updateTranslateY(diffY);
@@ -106,11 +110,13 @@ void RecyclerView::layout(int l, int t, int r, int b) {
             }
             onBindView(targetIndex, child);
             child->measure();
-            auto diffY = child->getHeight() + child->getMarginTop() + child->getMarginBottom();
+            auto diffY = static_cast<float >(child->getHeight() + child->getMarginTop() +
+                                             child->getMarginBottom());
             firstChildTop -= diffY;
             ScrollView::addViewAt(child, 0);
             updateTranslateY(-diffY);
-            YGNodeCalculateLayout(node, width, height, YGDirection::YGDirectionLTR);
+            YGNodeCalculateLayout(node, static_cast<float >(width), static_cast<float >(height),
+                                  YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
             firstChildIndex--;
             ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
@@ -126,11 +132,12 @@ void RecyclerView::layout(int l, int t, int r, int b) {
         while (children.size() < size && lastChildTop > targetBottom) {
             ALOGD("RecyclerView remove back view size:%ld firstChildIndex:%d", children.size(),
                   firstChildIndex)
-            auto removedIndex = firstChildIndex + children.size() - 1;
-            auto removedView = ScrollView::removeViewAtForRV(children.size() - 1);
+            auto removedIndex = static_cast<uint32_t >(firstChildIndex + children.size() - 1);
+            auto removedView = removeViewAtForRV(static_cast<uint32_t>(children.size() - 1));
             putViewToCache(removedIndex, removedView);
-            auto diffY = removedView->getHeight() + removedView->getMarginTop() +
-                         removedView->getMarginBottom();
+            auto diffY = static_cast<float >(removedView->getHeight() +
+                                             removedView->getMarginTop() +
+                                             removedView->getMarginBottom());
             lastChildTop -= diffY;
             ALOGD("RecyclerView children-size: %ld firstChildIndex:%d", children.size(),
                   firstChildIndex)
@@ -138,7 +145,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
     }
 }
 
-View *RecyclerView::getViewFromCache(int index) {
+View *RecyclerView::getViewFromCache(uint32_t index) {
     auto type = getViewType(index);
     if (viewCache.find(type) == viewCache.end()) {
         viewCache.emplace(type, std::vector<View *>());
@@ -153,7 +160,7 @@ View *RecyclerView::getViewFromCache(int index) {
     return child;
 }
 
-void RecyclerView::putViewToCache(int index, View *view) {
+void RecyclerView::putViewToCache(uint32_t index, View *view) {
     auto type = getViewType(index);
     if (viewCache.find(type) == viewCache.end()) {
         viewCache.emplace(type, std::vector<View *>());
@@ -165,7 +172,7 @@ void RecyclerView::putViewToCache(int index, View *view) {
 void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
     auto childNode = view->getNode();
     auto left = static_cast<int>(YGNodeLayoutGetLeft(childNode));
-    auto top = static_cast<int>(YGNodeLayoutGetTop(childNode));
+    auto top = YGNodeLayoutGetTop(childNode);
     auto width = static_cast<int>(YGNodeLayoutGetWidth(childNode));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(childNode));
     view->layout(left + l, top + t + translateY, left + l + width, top + t + translateY + height);
@@ -175,12 +182,12 @@ const char *RecyclerView::name() {
     return "RecyclerView";
 }
 
-void RecyclerView::scrollToPosition(int position) {
+void RecyclerView::scrollToPosition(uint32_t position) {
     ALOGD("RecyclerView::scrollToPosition %d", position)
     stopFling();
     while (!children.empty()) {
-        auto removedIndex = firstChildIndex + children.size() - 1;
-        auto removedView = ScrollView::removeViewAtForRV(children.size() - 1);
+        auto removedIndex = static_cast<uint32_t>(firstChildIndex + children.size() - 1);
+        auto removedView = removeViewAtForRV(static_cast<uint32_t>(children.size() - 1));
         putViewToCache(removedIndex, removedView);
     }
     updateTranslateY(0);
@@ -188,7 +195,7 @@ void RecyclerView::scrollToPosition(int position) {
     initChildren();
 }
 
-void RecyclerView::smoothScrollToPosition(int position) {
+void RecyclerView::smoothScrollToPosition(uint32_t position) {
     if (position >= firstChildIndex && position <= firstChildIndex + children.size() - 1) {
         //targetView already in RecyclerView
         auto targetView = children[position - firstChildIndex];
@@ -197,9 +204,9 @@ void RecyclerView::smoothScrollToPosition(int position) {
         smoothAnimator->setDuration(INT_MAX);
         smoothAnimator->setEaseType(EaseType::Linear);
         smoothAnimator->setUpdateListener([this, targetView](View *view, float value) {
-            auto top = targetView->getTop();
+            auto top = static_cast<float >(targetView->getTop() - getMarginTop());
             if ((top < 0 && top > -SMOOTH_DISTANCE) || (top > 0 && top < SMOOTH_DISTANCE)) {
-                updateTranslateY(-targetView->getTop() + targetView->getMarginTop());
+                updateTranslateY(-top + static_cast<float >(targetView->getMarginTop()));
                 smoothAnimator->stop();
                 smoothAnimator = nullptr;
                 return;
@@ -216,9 +223,9 @@ void RecyclerView::smoothScrollToPosition(int position) {
         smoothAnimator->setUpdateListener([this, position](View *view, float value) {
             if (position >= firstChildIndex && position <= firstChildIndex + children.size() - 1) {
                 auto targetView = children[position - firstChildIndex];
-                auto top = targetView->getTop();
+                auto top = static_cast<float >(targetView->getTop() - getMarginTop());
                 if ((top < 0 && top > -SMOOTH_DISTANCE) || (top > 0 && top < SMOOTH_DISTANCE)) {
-                    updateTranslateY(-targetView->getTop() + targetView->getMarginTop());
+                    updateTranslateY(-top + static_cast<float >(targetView->getMarginTop()));
                     smoothAnimator->stop();
                     smoothAnimator = nullptr;
                     return;
