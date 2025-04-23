@@ -74,9 +74,6 @@ void ViewGroup::draw(SkCanvas *canvas) {
 
 void ViewGroup::setAlignItems(YGAlign align) {
     SkASSERT(node);
-    if (node == nullptr) {
-        return;
-    }
     YGNodeStyleSetAlignItems(node, align);
 }
 
