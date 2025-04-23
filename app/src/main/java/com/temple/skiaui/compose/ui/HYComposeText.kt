@@ -20,6 +20,13 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetColor(ref, composeColorToSkiaColor(color))
     }
 
+    fun setTextAlign(align: TextAlign) {
+        if (align == TextAlign.Unspecified) {
+            return
+        }
+        nativeSetTextAlign(ref, align.value)
+    }
+
     fun setMaxLine(maxLine: Int) {
         nativeSetMaxLine(ref, maxLine)
     }
@@ -35,5 +42,6 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
     private external fun nativeSetColor(textView: Long, color: Int)
     private external fun nativeSetMaxLine(textView: Long, maxLine: Int)
     private external fun nativeSetEllipsis(textView: Long, ellipse: String)
+    private external fun nativeSetTextAlign(textView: Long, align: String)
 
 }

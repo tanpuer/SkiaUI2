@@ -196,6 +196,8 @@ void RecyclerView::scrollToPosition(uint32_t position) {
 }
 
 void RecyclerView::smoothScrollToPosition(uint32_t position) {
+    ALOGD("RecyclerView::smoothScrollToPosition %d", position)
+    stopFling();
     if (position >= firstChildIndex && position <= firstChildIndex + children.size() - 1) {
         //targetView already in RecyclerView
         auto targetView = children[position - firstChildIndex];

@@ -20,6 +20,7 @@ import com.temple.skiaui.compose.ui.HYComposeImage
 import com.temple.skiaui.compose.ui.HYComposeLoadingView
 import com.temple.skiaui.compose.ui.HYComposeLottie
 import com.temple.skiaui.compose.ui.HYComposeProgressBar
+import com.temple.skiaui.compose.ui.HYComposeRecyclerView
 import com.temple.skiaui.compose.ui.HYComposeSVG
 import com.temple.skiaui.compose.ui.HYComposeScrollView
 import com.temple.skiaui.compose.ui.HYComposeShader
@@ -27,6 +28,7 @@ import com.temple.skiaui.compose.ui.HYComposeSwitch
 import com.temple.skiaui.compose.ui.HYComposeText
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
+import com.temple.skiaui.compose.ui.TextAlign
 
 @Composable
 fun View(
@@ -206,6 +208,7 @@ fun Text(
     content: String,
     textSize: Dp = 20.dp,
     color: Color = Color.Black,
+    align: TextAlign = TextAlign.Unspecified,
     maxLine: Int = 0,
     ellipsis: String = "…",
     onClick: (() -> Unit)? = null
@@ -224,6 +227,9 @@ fun Text(
             }
             set(color) {
                 setColor(color)
+            }
+            set(align) {
+                setTextAlign(align)
             }
             set(maxLine) {
                 setMaxLine(maxLine)
@@ -420,4 +426,28 @@ fun ProgressBar(
     )
 }
 
+@Composable
+fun RecyclerView(
+    modifier: Modifier,
+    backgroundColor: Color = Color.Unspecified,
+    createView: (index: Int) -> HYComposeView,
+    bindView: (index: Int, view: HYComposeView) -> Unit,
+    viewType: (index: Int) -> Int,
+    dataSize: Int
+) {
+    ComposeNode<HYComposeRecyclerView, HYComposeApplier>(
+        factory = { HYComposeRecyclerView(modifier, createView, bindView, viewType, dataSize) },
+        update = {
+            set(modifier) {
+                updateModifier(modifier)
+            }
+            set(backgroundColor) {
+                setBackgroundColor(backgroundColor)
+            }
+            set(dataSize) {
+                setDataSize(dataSize)
+            }
+        },
+    )
+}
 

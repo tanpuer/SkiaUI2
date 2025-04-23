@@ -19,6 +19,7 @@
 #include "EditText.h"
 #include "ComposeContext.h"
 #include "ProgressBar.h"
+#include "ComposeRecyclerView.h"
 
 using namespace HYSkiaUI;
 
@@ -57,6 +58,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jstring type) {
             {"Button",        []() -> View * { return new Button(); }},
             {"EditText",      []() -> View * { return new EditText(); }},
             {"ProgressBar",   []() -> View * { return new ProgressBar(); }},
+            {"RecyclerView",  []() -> View * { return new ComposeRecyclerView(); }},
     };
     auto result = viewFactory[typeStr]();
     auto context = ComposeContext::getInstance()->getUIContext();

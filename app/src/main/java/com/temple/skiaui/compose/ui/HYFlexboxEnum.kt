@@ -50,3 +50,14 @@ enum class Position(val value: String) {
     Static("static"),
     Relative("relative")
 }
+
+enum class TextAlign(val value: String) {
+    Unspecified("Unspecified"),
+    kLeft("left"),
+    kRight("right"),
+    kCenter("center"),
+    kJustify("justify"),
+    kStart("start"),
+    kEnd("end"),
+}
+

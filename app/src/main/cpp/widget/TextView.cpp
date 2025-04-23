@@ -12,6 +12,7 @@ namespace HYSkiaUI {
 
 TextView::TextView() : View(), maxLine(0), skColor(SK_ColorBLACK) {
     defaultStyle = std::make_unique<TextStyle>();
+    defaultStyle->setColor(SK_ColorBLACK);
     fontFamily.emplace_back("Alimama");
     fontFamily.emplace_back("ColorEmoji");
 }

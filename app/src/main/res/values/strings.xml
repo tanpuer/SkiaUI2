@@ -7,4 +7,5 @@
     <string name="filament_page">Filament Page</string>
     <string name="camera_page">Camera Page</string>
     <string name="native_views_page">Native Views Page</string>
+    <string name="recycler_view_page">RecyclerView Page</string>
 </resources>

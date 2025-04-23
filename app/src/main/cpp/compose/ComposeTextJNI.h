@@ -4,6 +4,7 @@
 #include "TextView.h"
 #include "native_log.h"
 #include "color_util.h"
+#include "w3c_util.h"
 
 using namespace HYSkiaUI;
 
@@ -58,12 +59,24 @@ compose_text_set_ellipse(JNIEnv *env, jobject instance, jlong viewPtr, jstring e
     env->ReleaseStringUTFChars(ellipse, ellipseStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_text_set_align(JNIEnv *env, jobject instance, jlong viewPtr, jstring align) {
+    auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
+    auto alignStr = env->GetStringUTFChars(align, nullptr);
+    textView->setTextAlign(W3CToTextAlign(alignStr));
+    env->ReleaseStringUTFChars(align, alignStr);
+}
+
 static JNINativeMethod g_ComposeTextViewMethods[] = {
-        {"nativeSetText",     "(JLjava/lang/String;)V", (void *) compose_text_set_text},
-        {"nativeSetTextSize", "(JI)V",                  (void *) compose_text_set_text_size},
-        {"nativeSetColor",    "(JI)V", (void *) compose_text_set_color},
-        {"nativeSetMaxLine",  "(JI)V",                  (void *) compose_text_set_max_line},
-        {"nativeSetEllipsis", "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
+        {"nativeSetText",      "(JLjava/lang/String;)V", (void *) compose_text_set_text},
+        {"nativeSetTextSize",  "(JI)V",                  (void *) compose_text_set_text_size},
+        {"nativeSetColor",     "(JI)V",                  (void *) compose_text_set_color},
+        {"nativeSetMaxLine",   "(JI)V",                  (void *) compose_text_set_max_line},
+        {"nativeSetEllipsis",  "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
+        {"nativeSetTextAlign", "(JLjava/lang/String;)V", (void *) compose_text_set_align},
 };
 
 static int RegisterComposeTextMethods(JNIEnv *env) {

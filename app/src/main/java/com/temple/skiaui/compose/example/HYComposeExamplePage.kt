@@ -144,6 +144,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ComposeNative(width, height)
                 ComposeCamera(width, height)
                 ComposeFilament(width, height)
+                ComposeRecycler(width, height)
                 Loading(
                     modifier = Modifier.size(200.dp, 50.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
@@ -258,6 +259,24 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeCameraPage(engine).apply {
+                    start(width, height)
+                    HYComposeSDK.pushPage(this)
+                }
+            }
+        )
+    }
+
+    @Composable
+    private fun ComposeRecycler(width: Dp, height: Dp) {
+        Button(
+            modifier = Modifier
+                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+            content = stringResource(R.string.recycler_view_page),
+            textSize = 20.dp,
+            color = MaterialTheme.colorScheme.tertiary,
+            onClick = {
+                HYComposeRecyclerPage(engine).apply {
                     start(width, height)
                     HYComposeSDK.pushPage(this)
                 }

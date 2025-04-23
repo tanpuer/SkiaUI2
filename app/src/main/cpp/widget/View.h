@@ -318,7 +318,7 @@ public:
 #pragma mark Compose
 public:
 
-    void checkJavaViewRef(jobject instance);
+    virtual void checkJavaViewRef(jobject instance);
 
     const jobject getJavaViewRef();
 

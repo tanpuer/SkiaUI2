@@ -101,7 +101,7 @@ static YGPositionType W3CToYGPosition(const std::string &value) {
     if (value == "absolute") {
         return YGPositionType::YGPositionTypeAbsolute;
     } else if (value == "static") {
-        return YGPositionType ::YGPositionTypeStatic;
+        return YGPositionType::YGPositionTypeStatic;
     } else {
         return YGPositionType::YGPositionTypeRelative;
     }
@@ -114,5 +114,23 @@ static const char *YGPositionToW3C(YGPositionType type) {
         return "static";
     } else {
         return "relative";
+    }
+}
+
+static TextAlign W3CToTextAlign(const std::string &align) {
+    if (align == "left") {
+        return TextAlign::kLeft;
+    } else if (align == "right") {
+        return TextAlign::kRight;
+    } else if (align == "center") {
+        return TextAlign::kCenter;
+    } else if (align == "justify") {
+        return TextAlign::kJustify;
+    } else if (align == "start") {
+        return TextAlign::kStart;
+    } else if (align == "end") {
+        return TextAlign::kEnd;
+    } else {
+        return TextAlign::kLeft;
     }
 }
