@@ -44,12 +44,12 @@ void View::measure() {
 void View::setMeasuredDimension(int _measuredWidth, int _measuredHeight) {
     width = _measuredWidth;
     height = _measuredHeight;
-    YGNodeStyleSetWidth(node, _measuredWidth);
-    YGNodeStyleSetHeight(node, _measuredHeight);
+    YGNodeStyleSetWidth(node, static_cast<float >(_measuredWidth));
+    YGNodeStyleSetHeight(node, static_cast<float >(_measuredHeight));
 }
 
 void View::layout(int l, int t, int r, int b) {
-    if (skRect.width() != r - l || skRect.height() != b - t) {
+    if (width != r - l || height != b - t) {
         onSizeChange(r - l, b - t);
     }
     skRect.setLTRB(l, t, r, b);

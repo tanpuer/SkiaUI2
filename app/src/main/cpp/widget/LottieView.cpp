@@ -22,7 +22,7 @@ void LottieView::setSource(const char *path) {
         lottieAnimation = Animation::Make(reinterpret_cast<const char *>(imageData->content),
                                           length);
         startTime = getContext()->getCurrentTimeMills();
-        duration = lottieAnimation->duration() * 1000L;
+        duration = static_cast<long >(lottieAnimation->duration() * 1000);
         endTime = startTime + duration;
     });
 }

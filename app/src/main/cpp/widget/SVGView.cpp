@@ -43,11 +43,12 @@ void SVGView::layout(int l, int t, int r, int b) {
     if (skSVGDom != nullptr && (containerWidth != width || containerHeight != height)) {
         containerWidth = width;
         containerHeight = height;
-        skSVGDom->setContainerSize(SkSize::Make(containerWidth, containerHeight));
+        skSVGDom->setContainerSize(SkSize::Make(static_cast<float >(containerWidth),
+                                                static_cast<float >(containerHeight)));
     }
     svgMatrix.setIdentity();
-    svgMatrix.preTranslate(left + x, top + y);
-    svgMatrix.preRotate(rotateZ, width / 2, height / 2);
+    svgMatrix.preTranslate(static_cast<float >(left + x), static_cast<float >(top + y));
+    svgMatrix.preRotate(rotateZ, static_cast<float >(width) / 2, static_cast<float >(height) / 2);
 }
 
 void SVGView::setXY(int x, int y) {

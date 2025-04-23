@@ -22,8 +22,8 @@ void Icon::measure() {
         SkPath path;
         font->getPath(glyphId, &path);
         SkRect bounds = path.getBounds();
-        width = bounds.width();
-        height = bounds.height();
+        width = static_cast<int>(bounds.width());
+        height = static_cast<int>(bounds.height());
         x = bounds.x();
         y = bounds.y();
         setMeasuredDimension(width, height);
@@ -35,7 +35,7 @@ void Icon::draw(SkCanvas *canvas) {
     if (text == 0) {
         return;
     }
-    auto position = SkPoint::Make(left, top);
+    auto position = SkPoint::Make(static_cast<float >(left), static_cast<float >(top));
     canvas->drawGlyphs(1, &glyphId, &position, SkPoint::Make(-x, -y), *font, *iconPaint);
 }
 

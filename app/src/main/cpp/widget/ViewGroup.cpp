@@ -44,7 +44,7 @@ bool ViewGroup::removeView(View *view) {
 }
 
 bool ViewGroup::removeViewAt(uint32_t index) {
-    if (index < 0 || index >= children.size()) {
+    if (index >= children.size()) {
         return false;
     }
     auto view = children[index];
@@ -195,8 +195,8 @@ void ViewGroup::performAnimations() {
 }
 
 bool ViewGroup::addViewBefore(View *view, View *beforeView) {
-    int index = -1;
-    for (int i = 0; i < children.size(); ++i) {
+    size_t index;
+    for (size_t i = 0; i < children.size(); ++i) {
         if (children[i] == beforeView) {
             index = i;
             break;
@@ -205,7 +205,7 @@ bool ViewGroup::addViewBefore(View *view, View *beforeView) {
     if (index == -1) {
         return false;
     }
-    return addViewAt(view, index);
+    return addViewAt(view, static_cast<uint32_t>(index));
 }
 
 void ViewGroup::removeViews(uint32_t index, uint32_t count) {
