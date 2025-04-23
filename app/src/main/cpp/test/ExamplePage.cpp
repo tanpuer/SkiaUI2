@@ -370,7 +370,8 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         progressBar->setStyle(SkPaint::kStroke_Style);
         progressBar->setWidth(width);
         progressBar->setHeight(60);
-        progressBar->setMargin({50, 50, 0, 50});
+        progressBar->setMargin({0, 50, 0, 50});
+        progressBar->setPadding({50, 0, 50, 0});
         scrollView->addView(progressBar);
         progressBar->setProgressCallback([](int progress, bool finished) {
             ALOGD("ProgressBar progress: %d %d", progress, finished)

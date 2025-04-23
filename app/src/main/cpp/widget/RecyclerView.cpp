@@ -168,8 +168,7 @@ void RecyclerView::layoutNewAddedChild(int l, int t, int r, int b, View *view) {
     auto top = static_cast<int>(YGNodeLayoutGetTop(childNode));
     auto width = static_cast<int>(YGNodeLayoutGetWidth(childNode));
     auto height = static_cast<int>(YGNodeLayoutGetHeight(childNode));
-    view->layout(left + l, top + t + translateY, left + l + width,
-                 top + t + translateY + height);
+    view->layout(left + l, top + t + translateY, left + l + width, top + t + translateY + height);
 }
 
 const char *RecyclerView::name() {

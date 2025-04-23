@@ -49,9 +49,9 @@ void ProgressBar::layout(int l, int t, int r, int b) {
         }
     } else if (type == ProgressBarType::LINEAR) {
         auto diff = height / 3.0f;
-        progressRect.setLTRB(l, t + diff, r - marginLeft - marginRight, b - diff);
+        progressRect.setLTRB(l + paddingLeft, t + diff, r - paddingRight, b - diff);
         if (gradientColorSize > 0) {
-            SkPoint points[2]{SkPoint::Make(l, t), SkPoint::Make(r, b)};
+            SkPoint points[2]{SkPoint::Make(l + paddingLeft, t), SkPoint::Make(r - paddingRight, b)};
             paint->setShader(
                     SkGradientShader::MakeLinear(&points[0], &gradientColors[0], nullptr,
                                                  gradientColorSize, SkTileMode::kClamp));

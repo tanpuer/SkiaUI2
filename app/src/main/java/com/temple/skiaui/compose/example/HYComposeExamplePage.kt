@@ -27,6 +27,7 @@ import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.corner
 import com.temple.skiaui.compose.foundation.justifyContent
 import com.temple.skiaui.compose.foundation.margins
+import com.temple.skiaui.compose.foundation.paddings
 import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.runtime.Button
 import com.temple.skiaui.compose.runtime.ExoVideo
@@ -134,7 +135,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 ProgressBar(
                     modifier = Modifier.size(width, 20.dp)
-                        .margins(arrayOf(10.dp, 20.dp, 10.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .paddings(arrayOf(20.dp, 0.dp, 20.dp, 0.dp)),
                     barColor = MaterialTheme.colorScheme.tertiary,
                     backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                     onChange = {}
