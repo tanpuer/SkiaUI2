@@ -20,6 +20,7 @@ steps：
    render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
    render 3D View by Filament(other engines can also supported)/SurfaceTexture/SkImage.  
    render Video(ExoPlayer)/Camera by SurfaceTexture/SkImage.  
+   render AndroidImage(drawable/mipmap...) by Glide/Bitmap/SkImage.  
    ...
 10. **Development**:   
     |  |  |  |

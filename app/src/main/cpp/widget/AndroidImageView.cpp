@@ -72,7 +72,7 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
 
 void AndroidImageView::draw(SkCanvas *canvas) {
     View::draw(canvas);
-    if (skImage == nullptr) {
+    if (skImage == nullptr || javaInstance == nullptr) {
         return;
     }
     canvas->save();
@@ -84,6 +84,9 @@ void AndroidImageView::draw(SkCanvas *canvas) {
 }
 
 void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap) {
+    if (javaInstance == nullptr) {
+        return;
+    }
     AndroidBitmapInfo info;
     void *pixels = nullptr;
     auto res = AndroidBitmap_getInfo(env, bitmap, &info);
