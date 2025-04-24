@@ -18,6 +18,7 @@ AndroidImageView::~AndroidImageView() {
 }
 
 void AndroidImageView::setSource(const char *source) {
+    skImage = nullptr;
     this->source = source;
     auto jniEnv = context->getJniEnv();
     checkInstance();
@@ -27,6 +28,7 @@ void AndroidImageView::setSource(const char *source) {
 }
 
 void AndroidImageView::setResId(int resId) {
+    skImage = nullptr;
     this->resId = resId;
     auto jniEnv = context->getJniEnv();
     checkInstance();

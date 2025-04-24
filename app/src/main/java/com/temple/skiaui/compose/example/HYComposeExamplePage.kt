@@ -35,7 +35,6 @@ import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.compose.runtime.Icon
-import com.temple.skiaui.compose.runtime.Image
 import com.temple.skiaui.compose.runtime.LazyColumn
 import com.temple.skiaui.compose.runtime.Loading
 import com.temple.skiaui.compose.runtime.Lottie
@@ -189,10 +188,12 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         }
                     }
                 )
-                Image(
+                AndroidImage(
                     modifier = Modifier
                         .size(150.dp, 150.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)), source = "bird.gif"
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    source = "bird.gif",
+                    contentScale = ContentScale.Cover
                 )
                 AndroidImage(
                     modifier = Modifier

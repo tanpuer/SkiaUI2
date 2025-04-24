@@ -5,6 +5,7 @@
 #include "TextView.h"
 #include "LottieView.h"
 #include "LoadingView.h"
+#include "AndroidImageView.h"
 
 namespace HYSkiaUI {
 
@@ -69,7 +70,7 @@ public:
                 flexboxLayout->addView(textView);
 
                 return flexboxLayout;
-            } else {
+            } else if (type == 2) {
                 auto loadingView = new LoadingView();
                 loadingView->setContext(this->context);
                 loadingView->setWidth(1080);
@@ -77,6 +78,18 @@ public:
                 loadingView->setMargin({0, 25, 0, 25});
                 loadingView->setStyle(SkPaint::kStroke_Style);
                 return loadingView;
+            } else {
+                auto imageView = new AndroidImageView();
+                imageView->setContext(this->context);
+                imageView->setWidth(300);
+                imageView->setHeight(300);
+                imageView->setMargin({0, 25, 0, 25});
+                if ((index + 1) % 8 == 0) {
+                    imageView->setSource("bird.gif");
+                } else {
+                    imageView->setSource("raining.png");
+                }
+                return imageView;
             }
         }
 
@@ -97,11 +110,20 @@ public:
                 if (loadingView != nullptr) {
 
                 }
+            } else {
+                auto imageView = reinterpret_cast<AndroidImageView *>(view);
+                if (imageView != nullptr) {
+                    if ((index + 1) % 8 == 0) {
+                        imageView->setSource("bird.gif");
+                    } else {
+                        imageView->setSource("raining.png");
+                    }
+                }
             }
         }
 
         uint32_t getViewType(uint32_t index) override {
-            return index % 3;
+            return index % 4;
         }
 
     };

@@ -17,7 +17,9 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     private val mainHandler = Handler(Looper.getMainLooper())
 
     private var bitmap: Bitmap? = null
-    private var resource: GifDrawable? = null
+    private var bitmapTarget: CustomTarget<Bitmap>? = null
+    private var gifDrawable: GifDrawable? = null
+    private var gifTarget: CustomTarget<GifDrawable>? = null
     private var released = false
 
     private var resId: Int = 0
@@ -27,10 +29,11 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
         this.source = source
         this.resId = 0
         mainHandler.post {
+            innerRecycle()
             if (source.endsWith(".gif")) {
                 processGif()
             } else {
-                processPNG()
+                processBitmap()
             }
         }
     }
@@ -39,28 +42,27 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
         this.source = null
         this.resId = resId
         mainHandler.post {
-            processPNG()
+            innerRecycle()
+            processBitmap()
         }
     }
 
     override fun start() {
         mainHandler.post {
-            resource?.start()
+            gifDrawable?.start()
         }
     }
 
     override fun stop() {
         mainHandler.post {
-            resource?.stop()
+            gifDrawable?.stop()
         }
     }
 
     override fun release() {
         mainHandler.post {
-            resource?.callback = null
             released = true
-            bitmap?.recycle()
-            resource?.recycle()
+            innerRecycle()
         }
     }
 
@@ -77,7 +79,6 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     private fun processGif() {
         var builder = Glide.with(engine.getContext())
             .asGif()
-
         if (source != null) {
             builder = if (isAbsoluteUrl(source)) {
                 builder.load(source)
@@ -87,26 +88,28 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
         } else if (resId > 0) {
             builder = builder.load(resId)
         }
-        builder.diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .into(object : CustomTarget<GifDrawable>() {
-                override fun onResourceReady(
-                    resource: GifDrawable,
-                    transition: Transition<in GifDrawable>?
-                ) {
-                    if (released) {
-                        return
-                    }
-                    resource.setLoopCount(GifDrawable.LOOP_FOREVER)
-                    //new WeakReference<>(cb)!
-                    resource.callback = this@GlideImageLoader
-                    resource.start()
+        val target = object : CustomTarget<GifDrawable>() {
+            override fun onResourceReady(
+                gifDrawable: GifDrawable,
+                transition: Transition<in GifDrawable>?
+            ) {
+                if (released) {
+                    return
                 }
+                this@GlideImageLoader.gifDrawable = gifDrawable
+                gifDrawable.setLoopCount(GifDrawable.LOOP_FOREVER)
+                //new WeakReference<>(cb)!
+                gifDrawable.callback = this@GlideImageLoader
+                gifDrawable.start()
+            }
 
-                override fun onLoadCleared(placeholder: Drawable?) {}
-            })
+            override fun onLoadCleared(placeholder: Drawable?) {}
+        }
+        gifTarget = target
+        builder.diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(gifTarget!!)
     }
 
-    private fun processPNG() {
+    private fun processBitmap() {
         var builder = Glide.with(engine.getContext())
             .asBitmap()
         if (source != null) {
@@ -118,27 +121,36 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
         } else if (resId > 0) {
             builder = builder.load(resId)
         }
-        builder.diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-            .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    if (released) {
-                        return
-                    }
-                    bitmap = resource
-                    engine.updateAndroidBitmap(ref, resource)
+        val target = object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(
+                bitmap: Bitmap,
+                transition: Transition<in Bitmap>?
+            ) {
+                if (released) {
+                    return
                 }
+                this@GlideImageLoader.bitmap = bitmap
+                engine.updateAndroidBitmap(ref, bitmap)
+            }
 
-                override fun onLoadCleared(placeholder: Drawable?) {}
-            })
+            override fun onLoadCleared(placeholder: Drawable?) {}
+        }
+        bitmapTarget = target
+        builder.diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(bitmapTarget!!)
     }
 
     private fun isAbsoluteUrl(source: String? = null): Boolean {
         return source?.startsWith("http://") == true ||
                 source?.startsWith("https://") == true ||
                 source?.startsWith("file://") == true
+    }
+
+    private fun innerRecycle() {
+        Glide.with(engine.getContext()).clear(gifTarget)
+        Glide.with(engine.getContext()).clear(bitmapTarget)
+        bitmap = null
+        gifDrawable?.callback = null
+        gifDrawable = null
     }
 
 }
