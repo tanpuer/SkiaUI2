@@ -77,11 +77,12 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     private fun processGif() {
         var builder = Glide.with(engine.getContext())
             .asGif()
+
         if (source != null) {
-            if (source?.startsWith("http://") == true || source?.startsWith("https://") == true) {
-                builder = builder.load(source)
+            builder = if (isAbsoluteUrl(source)) {
+                builder.load(source)
             } else {
-                builder = builder.load("file:///android_asset/${source}")
+                builder.load("file:///android_asset/${source}")
             }
         } else if (resId > 0) {
             builder = builder.load(resId)
@@ -109,10 +110,10 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
         var builder = Glide.with(engine.getContext())
             .asBitmap()
         if (source != null) {
-            if (source?.startsWith("http://") == true || source?.startsWith("https://") == true) {
-                builder = builder.load(source)
+            builder = if (isAbsoluteUrl(source)) {
+                builder.load(source)
             } else {
-                builder = builder.load("file:///android_asset/${source}")
+                builder.load("file:///android_asset/${source}")
             }
         } else if (resId > 0) {
             builder = builder.load(resId)
@@ -132,6 +133,12 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
 
                 override fun onLoadCleared(placeholder: Drawable?) {}
             })
+    }
+
+    private fun isAbsoluteUrl(source: String? = null): Boolean {
+        return source?.startsWith("http://") == true ||
+                source?.startsWith("https://") == true ||
+                source?.startsWith("file://") == true
     }
 
 }
