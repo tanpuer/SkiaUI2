@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.runtime
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.ui.graphics.Color
@@ -8,7 +9,9 @@ import androidx.compose.ui.unit.dp
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.CameraCallback
+import com.temple.skiaui.compose.ui.ContentScale
 import com.temple.skiaui.compose.ui.FlexDirection
+import com.temple.skiaui.compose.ui.HYComposeAndroidImage
 import com.temple.skiaui.compose.ui.HYComposeButton
 import com.temple.skiaui.compose.ui.HYComposeCamera
 import com.temple.skiaui.compose.ui.HYComposeEditText
@@ -452,6 +455,36 @@ fun RecyclerView(
                 setDataSize(dataSize)
             }
         },
+    )
+}
+
+@Composable
+fun AndroidImage(
+    modifier: Modifier,
+    source: String? = null,
+    @DrawableRes resId: Int = 0,
+    contentScale: ContentScale = ContentScale.Unspecified,
+    onClick: (() -> Unit)? = null
+) {
+    ComposeNode<HYComposeAndroidImage, HYComposeApplier>(
+        factory = { HYComposeAndroidImage(modifier) },
+        update = {
+            set(modifier) {
+                updateModifier(modifier)
+            }
+            set(source) {
+                setResource(source)
+            }
+            set(resId) {
+                setResId(resId)
+            }
+            set(onClick) {
+                setOnClick(onClick)
+            }
+            set(contentScale) {
+                setContentScale(contentScale)
+            }
+        }
     )
 }
 

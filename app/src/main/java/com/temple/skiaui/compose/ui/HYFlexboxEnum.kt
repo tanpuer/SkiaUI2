@@ -61,3 +61,10 @@ enum class TextAlign(val value: String) {
     kEnd("end"),
 }
 
+enum class ContentScale(val value: String) {
+    Unspecified("Unspecified"),
+    Fill("fill"),
+    Cover("cover"),
+    Contain("contain")
+}
+

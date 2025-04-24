@@ -29,6 +29,7 @@ import com.temple.skiaui.compose.foundation.justifyContent
 import com.temple.skiaui.compose.foundation.margins
 import com.temple.skiaui.compose.foundation.paddings
 import com.temple.skiaui.compose.material.Badge
+import com.temple.skiaui.compose.runtime.AndroidImage
 import com.temple.skiaui.compose.runtime.Button
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
@@ -46,6 +47,7 @@ import com.temple.skiaui.compose.runtime.Switch
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.runtime.View
 import com.temple.skiaui.compose.ui.Align
+import com.temple.skiaui.compose.ui.ContentScale
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.util.px2dp
 import kotlin.math.absoluteValue
@@ -191,6 +193,13 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     modifier = Modifier
                         .size(150.dp, 150.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)), source = "bird.gif"
+                )
+                AndroidImage(
+                    modifier = Modifier
+                        .size(150.dp, 150.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    resId = R.drawable.ic_launcher_background,
+                    contentScale = ContentScale.Cover
                 )
                 Row(
                     modifier = Modifier.width(width)

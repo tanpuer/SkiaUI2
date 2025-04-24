@@ -64,6 +64,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
                                              child->getMarginBottom());
             lastChildBottom += diffY;
             ScrollView::addView(child);
+            viewShow ? child->onShow() : child->onHide();
             YGNodeCalculateLayout(node, static_cast<float >(width), static_cast<float >(height),
                                   YGDirection::YGDirectionLTR);
             layoutNewAddedChild(l, t, r, b, child);
@@ -114,6 +115,7 @@ void RecyclerView::layout(int l, int t, int r, int b) {
                                              child->getMarginBottom());
             firstChildTop -= diffY;
             ScrollView::addViewAt(child, 0);
+            viewShow ? child->onShow() : child->onHide();
             updateTranslateY(-diffY);
             YGNodeCalculateLayout(node, static_cast<float >(width), static_cast<float >(height),
                                   YGDirection::YGDirectionLTR);
@@ -258,6 +260,16 @@ bool RecyclerView::isSmoothScrolling() {
         return false;
     }
     return true;
+}
+
+void RecyclerView::onShow() {
+    ViewGroup::onShow();
+    viewShow = true;
+}
+
+void RecyclerView::onHide() {
+    ViewGroup::onHide();
+    viewShow = false;
 }
 
 }

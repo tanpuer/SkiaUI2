@@ -24,6 +24,7 @@
 #include "ComposeEditTextJNI.h"
 #include "ComposeProgressBarJNI.h"
 #include "ComposeRecyclerViewJNI.h"
+#include "ComposeAndroidImageJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -51,6 +52,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeEditTextMethods(jniEnv);
     RegisterComposeProgressMethods(jniEnv);
     RegisterComposeRecyclerMethods(jniEnv);
+    RegisterComposeAndroidImageMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -77,4 +79,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeEditTextMethods(jniEnv);
     UnRegisterComposeProgressMethods(jniEnv);
     UnRegisterComposeRecyclerMethods(jniEnv);
+    UnRegisterComposeAndroidImageMethods(jniEnv);
 }

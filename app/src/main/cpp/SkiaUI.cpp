@@ -8,6 +8,7 @@
 #include "compose/ComposeJNI.h"
 #include "WebView.h"
 #include "inspect/WebSocketServer.h"
+#include "AndroidImageView.h"
 
 using namespace HYSkiaUI;
 
@@ -263,6 +264,19 @@ native_SendInspectMsg(JNIEnv *env, jobject instance, jstring message, jobject pt
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+native_UpdateAndroidBitmap(JNIEnv *env, jobject instance, jlong javaUIApp, jlong ref, jobject bitmap) {
+    ALOGD("native_UpdateAndroidBitmap")
+    auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
+    if (uiApp == nullptr) {
+        return;
+    }
+    auto androidImageView = reinterpret_cast<AndroidImageView*>(ref);
+    if (androidImageView != nullptr) {
+        androidImageView->setJavaBitmap(env, bitmap);
+    }
+}
+
 static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLInit",                        "()J",                                          (void *) native_GLInit},
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
@@ -291,6 +305,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUpdateTexImage",                "(JLandroid/graphics/SurfaceTexture;J)V",       (void *) native_UpdateTexImage},
         {"nativeMarkDirty",                     "(J)V",                                         (void *) native_MarkDirty},
         {"nativeSendInspectMsg",                "(Ljava/lang/String;J)V",                       (void *) native_SendInspectMsg},
+        {"nativeUpdateAndroidBitmap",           "(JJLandroid/graphics/Bitmap;)V",               (void *) native_UpdateAndroidBitmap},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

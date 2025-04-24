@@ -28,6 +28,7 @@
 #include "EasingTestPage.h"
 #include "MatrixTestPage.h"
 #include "RecyclerViewPage.h"
+#include "AndroidImageView.h"
 
 namespace HYSkiaUI {
 
@@ -62,6 +63,30 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
     scrollView->setBackgroundColor(SK_ColorWHITE);
     scrollView->setFlex(1);
     root->addView(scrollView);
+
+    {
+        auto imageView = new AndroidImageView();
+        imageView->setContext(this->context);
+        imageView->setSource("bird.gif");
+        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorRED);
+        imageView->setStrokeWidth(2);
+        imageView->setWidth(400);
+        imageView->setHeight(250);
+        scrollView->addView(imageView);
+    }
+
+    {
+        auto imageView = new AndroidImageView();
+        imageView->setContext(this->context);
+        imageView->setSource("raining.png");
+        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorRED);
+        imageView->setStrokeWidth(2);
+        imageView->setWidth(400);
+        imageView->setHeight(250);
+        scrollView->addView(imageView);
+    }
 
     {
         auto editText = new EditText();

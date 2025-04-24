@@ -2,6 +2,7 @@ package com.temple.skiaui
 
 import android.content.Context
 import android.content.res.AssetManager
+import android.graphics.Bitmap
 import android.graphics.SurfaceTexture
 import android.hardware.HardwareBuffer
 import android.os.Handler
@@ -340,6 +341,12 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         }
     }
 
+    fun updateAndroidBitmap(ref: Long, bitmap: Bitmap) {
+        skiaUIHandler.post {
+            nativeUpdateAndroidBitmap(uiApp, ref, bitmap)
+        }
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -374,6 +381,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
     private external fun nativeRegisterJetpackCompose()
     private external fun nativePerformTimeout(uiApp: Long, id: Long)
+    private external fun nativeUpdateAndroidBitmap(uiApp: Long, ref: Long, bitmap: Bitmap)
 
     private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
     private external fun nativeMarkDirty(viewPtr: Long)

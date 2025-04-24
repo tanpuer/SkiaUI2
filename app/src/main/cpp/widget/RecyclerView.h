@@ -38,6 +38,10 @@ public:
 
     bool isSmoothScrolling();
 
+    void onShow() override;
+
+    void onHide() override;
+
 private:
 
     void initChildren();
@@ -58,6 +62,7 @@ private:
 
     LinearAnimator *smoothAnimator = nullptr;
 
+    bool viewShow = true;
 };
 
 }
