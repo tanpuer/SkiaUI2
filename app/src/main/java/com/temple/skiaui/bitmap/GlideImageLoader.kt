@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -13,29 +12,50 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.temple.skiaui.HYSkiaEngine
 
-class AndroidBitmap(val engine: HYSkiaEngine, val ref: Long) {
+class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
 
     private val mainHandler = Handler(Looper.getMainLooper())
+
     private var bitmap: Bitmap? = null
     private var resource: GifDrawable? = null
+    private var released = false
 
     private var resId: Int = 0
     private var source: String? = null
-    private var released = false
 
-    fun setSource(source: String) {
+    override fun requestBitmap(source: String) {
         this.source = source
-        this.resId = -1
-        requestBitmap()
+        this.resId = 0
+        mainHandler.post {
+            if (source.endsWith(".gif")) {
+                processGif()
+            } else {
+                processPNG()
+            }
+        }
     }
 
-    fun setResId(resId: Int) {
+    override fun requestDrawable(resId: Int) {
         this.source = null
         this.resId = resId
-        requestBitmap()
+        mainHandler.post {
+            processPNG()
+        }
     }
 
-    fun release() {
+    override fun start() {
+        mainHandler.post {
+            resource?.start()
+        }
+    }
+
+    override fun stop() {
+        mainHandler.post {
+            resource?.stop()
+        }
+    }
+
+    override fun release() {
         mainHandler.post {
             resource?.callback = null
             released = true
@@ -44,33 +64,14 @@ class AndroidBitmap(val engine: HYSkiaEngine, val ref: Long) {
         }
     }
 
-    private fun requestBitmap() {
-        mainHandler.post {
-            if (source?.endsWith(".gif") == true) {
-                processGif()
-            } else {
-                processPNG()
+    override fun invalidateDrawable(drawable: Drawable) {
+        if (released) {
+            return
+        }
+        drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
+            .apply {
+                engine.updateAndroidBitmap(ref, this)
             }
-        }
-    }
-
-    private val callback = object : Drawable.Callback {
-        override fun invalidateDrawable(drawable: Drawable) {
-            if (released) {
-                return
-            }
-            drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
-                .apply {
-                    engine.updateAndroidBitmap(ref, this)
-                }
-        }
-
-        override fun scheduleDrawable(who: Drawable, what: Runnable, `when`: Long) {
-        }
-
-        override fun unscheduleDrawable(who: Drawable, what: Runnable) {
-        }
-
     }
 
     private fun processGif() {
@@ -80,7 +81,7 @@ class AndroidBitmap(val engine: HYSkiaEngine, val ref: Long) {
             if (source?.startsWith("http://") == true || source?.startsWith("https://") == true) {
                 builder = builder.load(source)
             } else {
-                builder = builder.load("file:///android_asset/${this.source}")
+                builder = builder.load("file:///android_asset/${source}")
             }
         } else if (resId > 0) {
             builder = builder.load(resId)
@@ -96,7 +97,7 @@ class AndroidBitmap(val engine: HYSkiaEngine, val ref: Long) {
                     }
                     resource.setLoopCount(GifDrawable.LOOP_FOREVER)
                     //new WeakReference<>(cb)!
-                    resource.callback = callback
+                    resource.callback = this@GlideImageLoader
                     resource.start()
                 }
 
@@ -111,7 +112,7 @@ class AndroidBitmap(val engine: HYSkiaEngine, val ref: Long) {
             if (source?.startsWith("http://") == true || source?.startsWith("https://") == true) {
                 builder = builder.load(source)
             } else {
-                builder = builder.load("file:///android_asset/${this.source}")
+                builder = builder.load("file:///android_asset/${source}")
             }
         } else if (resId > 0) {
             builder = builder.load(resId)
@@ -133,22 +134,6 @@ class AndroidBitmap(val engine: HYSkiaEngine, val ref: Long) {
 
                 override fun onLoadCleared(placeholder: Drawable?) {}
             })
-    }
-
-    private fun start() {
-        mainHandler.post {
-            resource?.start()
-        }
-    }
-
-    private fun stop() {
-        mainHandler.post {
-            resource?.stop()
-        }
-    }
-
-    companion object {
-        private const val TAG = "AndroidBitmap"
     }
 
 }

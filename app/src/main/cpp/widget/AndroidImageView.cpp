@@ -131,7 +131,7 @@ void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap) {
 void AndroidImageView::checkInstance() {
     if (javaInstance == nullptr) {
         auto jniEnv = context->getJniEnv();
-        auto javaClass = jniEnv->FindClass("com/temple/skiaui/bitmap/AndroidBitmap");
+        auto javaClass = jniEnv->FindClass("com/temple/skiaui/bitmap/AndroidBitmapLoader");
         auto javaConstructor = jniEnv->GetMethodID(javaClass, "<init>",
                                                    "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
         auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
