@@ -127,9 +127,7 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
                         return
                     }
                     bitmap = resource
-                    engine.postToSkiaUI {
-                        engine.updateAndroidBitmap(ref, resource)
-                    }
+                    engine.updateAndroidBitmap(ref, resource)
                 }
 
                 override fun onLoadCleared(placeholder: Drawable?) {}
