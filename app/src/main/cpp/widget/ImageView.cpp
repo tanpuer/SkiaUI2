@@ -25,7 +25,6 @@ ImageView::~ImageView() {
 }
 
 void ImageView::setAlpha(float alpha) {
-    SkASSERT(imagePaint);
     imagePaint->setAlphaf(alpha);
     markDirty();
 }

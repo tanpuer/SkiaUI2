@@ -187,7 +187,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 AndroidImage(
                     modifier = Modifier
                         .size(150.dp, 150.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(Color.Transparent),
                     source = "bird.gif",
                     contentScale = ContentScale.Cover,
                     blur = birdBlur
@@ -206,7 +207,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 AndroidImage(
                     modifier = Modifier
                         .size(150.dp, 150.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(Color.Transparent),
                     resId = R.drawable.ic_launcher_background,
                     contentScale = ContentScale.Cover
                 )

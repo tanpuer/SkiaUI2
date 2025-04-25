@@ -44,6 +44,10 @@ public:
 
     void setOnCompleteFunc(std::function<void(AndroidImageView *imageView)> &&completeFunc);
 
+    float getAlpha() override;
+
+    void setAlpha(float alpha) override;
+
 private:
 
     SkMatrix imageMatrix;
@@ -89,6 +93,8 @@ private:
     void innerStop();
 
     int lastIndex = 0;
+
+    std::unique_ptr<SkPaint> imagePaint;
 
 };
 

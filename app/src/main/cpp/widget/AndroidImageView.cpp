@@ -6,6 +6,11 @@
 namespace HYSkiaUI {
 
 AndroidImageView::AndroidImageView() {
+    imagePaint = std::make_unique<SkPaint>();
+    imagePaint->setAntiAlias(true);
+    paint->setStyle(SkPaint::Style::kStroke_Style);
+    paint->setColor(SK_ColorRED);
+    paint->setStrokeWidth(2);
 }
 
 AndroidImageView::~AndroidImageView() {
@@ -77,6 +82,7 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
 }
 
 void AndroidImageView::draw(SkCanvas *canvas) {
+    View::draw(canvas);
     if (skImage == nullptr || javaInstance == nullptr) {
         return;
     }
@@ -84,7 +90,7 @@ void AndroidImageView::draw(SkCanvas *canvas) {
     clipRect.setRectXY(skRect, radius, radius);
     canvas->clipRRect(clipRect);
     canvas->setMatrix(imageMatrix);
-    canvas->drawImageRect(skImage, srcRect, skRect, SkSamplingOptions(), paint.get(),
+    canvas->drawImageRect(skImage, srcRect, skRect, SkSamplingOptions(), imagePaint.get(),
                           SkCanvas::kFast_SrcRectConstraint);
     canvas->restore();
 }
@@ -169,7 +175,7 @@ void AndroidImageView::onHide() {
 
 void AndroidImageView::blur(float blur) {
     auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
-    paint->setImageFilter(filter);
+    imagePaint->setImageFilter(filter);
     markDirty();
 }
 
@@ -212,6 +218,15 @@ void AndroidImageView::innerStop() {
     }
     auto jniEnv = context->getJniEnv();
     jniEnv->CallVoidMethod(javaInstance, stopMethodId);
+}
+
+float AndroidImageView::getAlpha() {
+    return imagePaint->getAlpha();
+}
+
+void AndroidImageView::setAlpha(float alpha) {
+    imagePaint->setAlphaf(alpha);
+    markDirty();
 }
 
 }
