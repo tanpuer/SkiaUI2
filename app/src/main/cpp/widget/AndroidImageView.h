@@ -88,6 +88,8 @@ private:
 
     void innerStop();
 
+    int lastIndex = 0;
+
 };
 
 }

@@ -302,17 +302,12 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         flexboxLayout->setAlignItems(YGAlign::YGAlignCenter);
         scrollView->addView(flexboxLayout);
 
-        auto imageView = new ImageView();
+        auto imageView = new AndroidImageView();
         imageView->setContext(this->context);
         imageView->setSource("bird.gif");
-        imageView->setScaleType(ImageView::ScaleType::FitCenter);
-        imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorRED);
-        imageView->setStrokeWidth(2);
         imageView->setWidth(400);
         imageView->setHeight(250);
-        imageView->setScaleEffect(true);
-        imageView->setOnCompleteFunc([](ImageView *imageView) {
+        imageView->setOnCompleteFunc([](AndroidImageView *imageView) {
             static bool flag = true;
             imageView->blur(flag ? 10.0f : 0.0f);
             flag = !flag;

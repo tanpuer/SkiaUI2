@@ -267,7 +267,7 @@ native_SendInspectMsg(JNIEnv *env, jobject instance, jstring message, jobject pt
 extern "C" JNIEXPORT void JNICALL
 native_UpdateAndroidBitmap(JNIEnv *env, jobject instance, jlong javaUIApp, jlong ref,
                            jobject bitmap, jint index, jint frameCount) {
-    ALOGD("native_UpdateAndroidBitmap")
+//    ALOGD("native_UpdateAndroidBitmap")
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp == nullptr) {
         return;

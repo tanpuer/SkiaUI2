@@ -132,9 +132,10 @@ void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int
     skImage = skBitmap->asImage();
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
     markDirty();
-    if (completeFunc != nullptr && frameCount > 0 && index == frameCount - 1) {
+    if (completeFunc != nullptr && frameCount > 0 && index < lastIndex) {
         completeFunc(this);
     }
+    lastIndex = index;
 }
 
 void AndroidImageView::checkInstance() {
@@ -167,12 +168,8 @@ void AndroidImageView::onHide() {
 }
 
 void AndroidImageView::blur(float blur) {
-    if (YGFloatsEqual(blur, 0.0)) {
-        paint->setImageFilter(nullptr);
-    } else {
-        auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
-        paint->setImageFilter(filter);
-    }
+    auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
+    paint->setImageFilter(filter);
     markDirty();
 }
 
