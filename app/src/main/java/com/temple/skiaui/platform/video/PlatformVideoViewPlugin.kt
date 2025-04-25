@@ -12,12 +12,13 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     private var currentPosition: Long = 0L
     private var renderFirstFrame = false
 
-    override fun skiaSurfaceCreated() {
-        super.skiaSurfaceCreated()
+    override fun onSurfaceCreated() {
     }
 
-    override fun skiaSurfaceDestroyed() {
-        super.skiaSurfaceDestroyed()
+    override fun onSurfaceChanged(width: Int, height: Int) {
+    }
+
+    override fun onSurfaceDestroyed() {
         exoPlayer?.pause()
     }
 
@@ -27,10 +28,6 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     override fun drawOneFrame(frameTimeNanos: Long) {
 
-    }
-
-    override fun getSkImage(): Long {
-        return skImagePtr
     }
 
     override fun type(): String = "ExoPlayerView"

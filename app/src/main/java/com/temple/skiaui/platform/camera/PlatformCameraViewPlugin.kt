@@ -58,15 +58,14 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         }
     }
 
-    override fun skiaSurfaceCreated() {
-        super.skiaSurfaceCreated()
+    override fun onSurfaceCreated() {
+
     }
 
-    override fun skiaSurfaceDestroyed() {
+    override fun onSurfaceDestroyed() {
         if (cameraManager != null) {
             closeCamera()
         }
-        super.skiaSurfaceDestroyed()
     }
 
     override fun type(): String = "CameraView"
@@ -110,8 +109,8 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         }
     }
 
-    override fun onSizeChange(width: Int, height: Int) {
-        //camera not update surfaceTexture size, keep ratio
+    override fun onSurfaceChanged(width: Int, height: Int) {
+
     }
 
     private fun getRotation(): Int {

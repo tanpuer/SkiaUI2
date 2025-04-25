@@ -68,14 +68,14 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
         }
     }
 
-    override fun skiaSurfaceCreated() {
-        super.skiaSurfaceCreated()
+    override fun onSurfaceCreated() {
+
     }
 
     /**
      * TODO
      */
-    override fun skiaSurfaceDestroyed() {
+    override fun onSurfaceDestroyed() {
         surfaceObj?.release()
         surfaceObj = null
         pluginHandler.post {
@@ -125,7 +125,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
     }
 
     override fun release() {
-        skiaSurfaceDestroyed()
+        onSurfaceDestroyed()
         super.release()
     }
 
@@ -147,8 +147,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
         super.onHide()
     }
 
-    override fun onSizeChange(width: Int, height: Int) {
-        super.onSizeChange(width, height)
+    override fun onSurfaceChanged(width: Int, height: Int) {
         pluginHandler.post {
             view.viewport = Viewport(0, 0, width, height)
         }

@@ -16,7 +16,7 @@ abstract class SurfaceTextureBasePlugin(
     val height: Int,
     val viewPtr: Long,
     private val inMainThread: Boolean = false
-) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener {
+) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener, HYSurfaceViewCallback {
 
     protected var skImagePtr: Long = 0L
 
@@ -69,24 +69,24 @@ abstract class SurfaceTextureBasePlugin(
         Choreographer.getInstance().postFrameCallback(this)
     }
 
-    open fun skiaSurfaceCreated() {
-        surfaceObj?.surfaceTexture?.let { surfaceTexture->
+    private fun skiaSurfaceCreated() {
+        surfaceObj?.surfaceTexture?.let { surfaceTexture ->
             engine.attachSurfaceTexture(width, height, surfaceTexture) {
                 skImagePtr = it
             }
         }
+        onSurfaceCreated()
     }
 
-    open fun skiaSurfaceDestroyed() {
+    private fun skiaSurfaceDestroyed() {
         engine.postToSkiaGL {
             surfaceObj?.surfaceTexture?.detachFromGLContext()
         }
         engine.postToSkiaUI {
             skImagePtr = 0L
         }
+        onSurfaceDestroyed()
     }
-
-    abstract fun type(): String
 
     open fun getSkImage(): Long {
         return skImagePtr
@@ -110,25 +110,28 @@ abstract class SurfaceTextureBasePlugin(
         }
     }
 
-    open fun onShow() {
+    override fun onShow() {
         show = true
         Choreographer.getInstance().postFrameCallback(this)
         //TODO: pop to this page, onFrameAvailable sometimes will never be called
         onFrameAvailable(surfaceObj?.surfaceTexture)
     }
 
-    open fun onHide() {
+    override fun onHide() {
         show = false
         Choreographer.getInstance().removeFrameCallback(this)
     }
 
-    open fun onSizeChange(width: Int, height: Int) {
+    private fun onSizeChange(width: Int, height: Int) {
         pluginHandler.post {
             if (surfaceObj?.width != width || surfaceObj?.height != height) {
                 surfaceObj?.setDefaultBufferSize(width, height)
             }
         }
+        onSurfaceChanged(width, height)
     }
+
+    abstract fun type(): String
 
     abstract fun dispatchTouchEvent(touchEvent: MotionEvent)
 
