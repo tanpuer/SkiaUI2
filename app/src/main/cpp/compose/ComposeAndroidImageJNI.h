@@ -39,10 +39,20 @@ compose_android_image_set_scale(JNIEnv *env, jobject instance, jlong viewPtr, js
     env->ReleaseStringUTFChars(scale, scaleStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_android_image_set_blur(JNIEnv *env, jobject instance, jlong viewPtr, jfloat blur) {
+    auto imageView = reinterpret_cast<AndroidImageView *>(viewPtr);
+    if (imageView == nullptr) {
+        return;
+    }
+    imageView->blur(blur);
+}
+
 static JNINativeMethod g_ComposeAndroidImageViewMethods[] = {
         {"nativeSetResource", "(JLjava/lang/String;)V", (void *) compose_android_image_set_resource},
         {"nativeSetResId",    "(JI)V",                  (void *) compose_android_image_set_resid},
         {"nativeSetScale",    "(JLjava/lang/String;)V", (void *) compose_android_image_set_scale},
+        {"nativeSetBlur",     "(JF)V",                  (void *) compose_android_image_set_blur},
 };
 
 static int RegisterComposeAndroidImageMethods(JNIEnv *env) {

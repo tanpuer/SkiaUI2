@@ -28,8 +28,13 @@ class HYComposeAndroidImage(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetScale(ref, scale.value)
     }
 
+    fun setBlur(value: Float) {
+        nativeSetBlur(ref, value)
+    }
+
     private external fun nativeSetResource(ref: Long, source: String)
     private external fun nativeSetResId(ref: Long, resId: Int)
     private external fun nativeSetScale(ref: Long, scale: String)
+    private external fun nativeSetBlur(ref: Long, blur: Float);
 
 }

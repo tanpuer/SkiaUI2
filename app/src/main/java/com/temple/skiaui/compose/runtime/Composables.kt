@@ -408,6 +408,7 @@ fun ProgressBar(
     modifier: Modifier,
     barColor: Color = Color.Red,
     backgroundColor: Color = Color.Green,
+    progress: Int = 0,
     onChange: ((progress: Int) -> Unit)? = null
 ) {
     ComposeNode<HYComposeProgressBar, HYComposeApplier>(
@@ -424,6 +425,9 @@ fun ProgressBar(
             }
             set(onChange) {
                 setOnChangeListener(onChange)
+            }
+            set(progress) {
+                setProgress(progress)
             }
         }
     )
@@ -464,6 +468,7 @@ fun AndroidImage(
     source: String? = null,
     @DrawableRes resId: Int = 0,
     contentScale: ContentScale = ContentScale.Unspecified,
+    blur: Float = 0.0f,
     onClick: (() -> Unit)? = null
 ) {
     ComposeNode<HYComposeAndroidImage, HYComposeApplier>(
@@ -483,6 +488,9 @@ fun AndroidImage(
             }
             set(contentScale) {
                 setContentScale(contentScale)
+            }
+            set(blur) {
+                setBlur(blur)
             }
         }
     )

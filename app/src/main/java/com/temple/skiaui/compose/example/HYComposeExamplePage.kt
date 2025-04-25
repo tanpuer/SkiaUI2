@@ -10,6 +10,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -72,6 +73,9 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 360.0f,
                 infiniteRepeatable(tween(5000), RepeatMode.Reverse)
             )
+            var birdBlur by remember {
+                mutableFloatStateOf(0.0f)
+            }
             LazyColumn(
                 modifier = Modifier.size(width, height)
                     .alignItems(Align.FlexStart),
@@ -134,14 +138,6 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
                     source = "yiluxiangbei.mp4"
                 )
-                ProgressBar(
-                    modifier = Modifier.size(width, 20.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
-                        .paddings(arrayOf(20.dp, 0.dp, 20.dp, 0.dp)),
-                    barColor = MaterialTheme.colorScheme.tertiary,
-                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    onChange = {}
-                )
                 ComposeNative(width, height)
                 ComposeCamera(width, height)
                 ComposeFilament(width, height)
@@ -193,7 +189,19 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         .size(150.dp, 150.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                     source = "bird.gif",
-                    contentScale = ContentScale.Cover
+                    contentScale = ContentScale.Cover,
+                    blur = birdBlur
+                )
+                ProgressBar(
+                    modifier = Modifier.size(width, 20.dp)
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .paddings(arrayOf(20.dp, 0.dp, 20.dp, 0.dp)),
+                    barColor = MaterialTheme.colorScheme.tertiary,
+                    backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    progress = 50,
+                    onChange = {
+                        birdBlur = it / 5.0f
+                    }
                 )
                 AndroidImage(
                     modifier = Modifier

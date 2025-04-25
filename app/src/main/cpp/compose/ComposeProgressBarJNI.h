@@ -30,9 +30,18 @@ compose_progress_set_change_callback(JNIEnv *env, jobject instance, jlong viewPt
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_progress_set_progress(JNIEnv *env, jobject instance, jlong viewPtr, jint progress) {
+    auto progressBar = reinterpret_cast<ProgressBar *>(viewPtr);
+    if (progressBar != nullptr) {
+        progressBar->setProgress(progress);
+    }
+}
+
 static JNINativeMethod g_ComposeProgressBarMethods[] = {
         {"nativeSetBarColor",         "(JI)V", (void *) compose_progress_set_bar_color},
         {"nativeSetOnChangeCallback", "(J)V",  (void *) compose_progress_set_change_callback},
+        {"nativeSetProgress",         "(JI)V", (void *) compose_progress_set_progress},
 };
 
 static int RegisterComposeProgressMethods(JNIEnv *env) {

@@ -21,11 +21,16 @@ class HYComposeProgressBar(modifier: Modifier) : HYComposeView(modifier) {
         }
     }
 
+    fun setProgress(progress: Int) {
+        nativeSetProgress(ref, progress)
+    }
+
     private fun onChangeFromNative(progress: Int) {
         onChange?.invoke(progress)
     }
 
     private external fun nativeSetBarColor(ref: Long, color: Int)
     private external fun nativeSetOnChangeCallback(ref: Long)
+    private external fun nativeSetProgress(ref: Long, progress: Int)
 
 }
