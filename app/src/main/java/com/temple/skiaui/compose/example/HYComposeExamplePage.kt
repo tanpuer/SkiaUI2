@@ -133,6 +133,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     textSize = 20.dp,
                     content = stringResource(R.string.exo_player),
                     color = MaterialTheme.colorScheme.primary,
+                    fontFamily = "Aria"
                 )
                 ExoVideo(
                     modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),

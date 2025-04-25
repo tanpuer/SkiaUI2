@@ -214,6 +214,7 @@ fun Text(
     align: TextAlign = TextAlign.Unspecified,
     maxLine: Int = 0,
     ellipsis: String = "…",
+    fontFamily: String? = null,
     onClick: (() -> Unit)? = null
 ) {
     ComposeNode<HYComposeText, HYComposeApplier>(
@@ -239,6 +240,9 @@ fun Text(
             }
             set(ellipsis) {
                 setEllipse(ellipsis)
+            }
+            set(fontFamily) {
+                setFontFamily(fontFamily)
             }
             set(onClick) {
                 setOnClick(onClick)

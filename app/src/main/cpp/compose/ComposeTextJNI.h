@@ -70,13 +70,25 @@ compose_text_set_align(JNIEnv *env, jobject instance, jlong viewPtr, jstring ali
     env->ReleaseStringUTFChars(align, alignStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_text_set_font_family(JNIEnv *env, jobject instance, jlong viewPtr, jstring fontFamily) {
+    auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
+    auto fontStr = env->GetStringUTFChars(fontFamily, nullptr);
+    textView->setFontFamily(fontStr);
+    env->ReleaseStringUTFChars(fontFamily, fontStr);
+}
+
 static JNINativeMethod g_ComposeTextViewMethods[] = {
-        {"nativeSetText",      "(JLjava/lang/String;)V", (void *) compose_text_set_text},
-        {"nativeSetTextSize",  "(JI)V",                  (void *) compose_text_set_text_size},
-        {"nativeSetColor",     "(JI)V",                  (void *) compose_text_set_color},
-        {"nativeSetMaxLine",   "(JI)V",                  (void *) compose_text_set_max_line},
-        {"nativeSetEllipsis",  "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
-        {"nativeSetTextAlign", "(JLjava/lang/String;)V", (void *) compose_text_set_align},
+        {"nativeSetText",       "(JLjava/lang/String;)V", (void *) compose_text_set_text},
+        {"nativeSetTextSize",   "(JI)V",                  (void *) compose_text_set_text_size},
+        {"nativeSetColor",      "(JI)V",                  (void *) compose_text_set_color},
+        {"nativeSetMaxLine",    "(JI)V",                  (void *) compose_text_set_max_line},
+        {"nativeSetEllipsis",   "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
+        {"nativeSetTextAlign",  "(JLjava/lang/String;)V", (void *) compose_text_set_align},
+        {"nativeSetFontFamily", "(JLjava/lang/String;)V", (void *) compose_text_set_font_family},
 };
 
 static int RegisterComposeTextMethods(JNIEnv *env) {
