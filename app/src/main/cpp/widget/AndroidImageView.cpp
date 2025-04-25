@@ -6,7 +6,6 @@
 namespace HYSkiaUI {
 
 AndroidImageView::AndroidImageView() {
-
 }
 
 AndroidImageView::~AndroidImageView() {
@@ -90,7 +89,7 @@ void AndroidImageView::draw(SkCanvas *canvas) {
     canvas->restore();
 }
 
-void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap) {
+void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int frameCount) {
     if (javaInstance == nullptr) {
         return;
     }
@@ -133,6 +132,9 @@ void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap) {
     skImage = skBitmap->asImage();
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
     markDirty();
+    if (completeFunc != nullptr && frameCount > 0 && index == frameCount - 1) {
+        completeFunc(this);
+    }
 }
 
 void AndroidImageView::checkInstance() {
@@ -154,19 +156,14 @@ void AndroidImageView::checkInstance() {
 }
 
 void AndroidImageView::onShow() {
-    if (javaInstance == nullptr) {
+    if (userSetPaused) {
         return;
     }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(javaInstance, startMethodId);
+    innerStart();
 }
 
 void AndroidImageView::onHide() {
-    if (javaInstance == nullptr) {
-        return;
-    }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(javaInstance, stopMethodId);
+    innerStop();
 }
 
 void AndroidImageView::blur(float blur) {
@@ -188,6 +185,36 @@ void AndroidImageView::setCornerRadius(int radius) {
 void
 AndroidImageView::setRotateFunc(std::function<void(SkRect &, SkMatrix &, float)> &&rotateFunc) {
     this->rotateFunc = std::move(rotateFunc);
+}
+
+void AndroidImageView::setOnCompleteFunc(std::function<void(AndroidImageView *)> &&completeFunc) {
+    this->completeFunc = std::move(completeFunc);
+}
+
+void AndroidImageView::start() {
+    userSetPaused = false;
+    innerStart();
+}
+
+void AndroidImageView::stop() {
+    userSetPaused = true;
+    innerStop();
+}
+
+void AndroidImageView::innerStart() {
+    if (javaInstance == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(javaInstance, startMethodId);
+}
+
+void AndroidImageView::innerStop() {
+    if (javaInstance == nullptr) {
+        return;
+    }
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(javaInstance, stopMethodId);
 }
 
 }

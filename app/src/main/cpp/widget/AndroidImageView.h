@@ -26,7 +26,7 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
-    void setJavaBitmap(JNIEnv *env, jobject bitmap);
+    void setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int frameCount);
 
     void onShow() override;
 
@@ -37,6 +37,12 @@ public:
     void setCornerRadius(int radius) override;
 
     void setRotateFunc(std::function<void(SkRect &, SkMatrix &, float)> &&rotateFunc);
+
+    void stop();
+
+    void start();
+
+    void setOnCompleteFunc(std::function<void(AndroidImageView *imageView)> &&completeFunc);
 
 private:
 
@@ -73,6 +79,14 @@ private:
     SkRRect clipRect;
 
     std::function<void(SkRect &dstRect, SkMatrix &imageMatrix, float rotateZ)> rotateFunc = nullptr;
+
+    std::function<void(AndroidImageView *imageView)> completeFunc = nullptr;
+
+    bool userSetPaused = false;
+
+    void innerStart();
+
+    void innerStop();
 
 };
 

@@ -265,15 +265,16 @@ native_SendInspectMsg(JNIEnv *env, jobject instance, jstring message, jobject pt
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_UpdateAndroidBitmap(JNIEnv *env, jobject instance, jlong javaUIApp, jlong ref, jobject bitmap) {
+native_UpdateAndroidBitmap(JNIEnv *env, jobject instance, jlong javaUIApp, jlong ref,
+                           jobject bitmap, jint index, jint frameCount) {
     ALOGD("native_UpdateAndroidBitmap")
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp == nullptr) {
         return;
     }
-    auto androidImageView = reinterpret_cast<AndroidImageView*>(ref);
+    auto androidImageView = reinterpret_cast<AndroidImageView *>(ref);
     if (androidImageView != nullptr) {
-        androidImageView->setJavaBitmap(env, bitmap);
+        androidImageView->setJavaBitmap(env, bitmap, index, frameCount);
     }
 }
 
@@ -305,7 +306,7 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeUpdateTexImage",                "(JLandroid/graphics/SurfaceTexture;J)V",       (void *) native_UpdateTexImage},
         {"nativeMarkDirty",                     "(J)V",                                         (void *) native_MarkDirty},
         {"nativeSendInspectMsg",                "(Ljava/lang/String;J)V",                       (void *) native_SendInspectMsg},
-        {"nativeUpdateAndroidBitmap",           "(JJLandroid/graphics/Bitmap;)V",               (void *) native_UpdateAndroidBitmap},
+        {"nativeUpdateAndroidBitmap",           "(JJLandroid/graphics/Bitmap;II)V",             (void *) native_UpdateAndroidBitmap},
 };
 
 static int RegisterNativeMethods(JNIEnv *env, const char *className, JNINativeMethod *nativeMethods,

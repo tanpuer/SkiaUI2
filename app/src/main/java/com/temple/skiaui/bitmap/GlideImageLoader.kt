@@ -1,5 +1,6 @@
 package com.temple.skiaui.bitmap
 
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Handler
@@ -72,7 +73,12 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
         }
         drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
             .apply {
-                engine.updateAndroidBitmap(ref, this)
+                engine.updateAndroidBitmap(
+                    ref,
+                    this,
+                    gifDrawable?.frameIndex ?: 0,
+                    gifDrawable?.frameCount ?: 0
+                )
             }
     }
 
@@ -130,7 +136,7 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
                     return
                 }
                 this@GlideImageLoader.bitmap = bitmap
-                engine.updateAndroidBitmap(ref, bitmap)
+                engine.updateAndroidBitmap(ref, bitmap, 0, 0)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {}
@@ -146,8 +152,11 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     }
 
     private fun innerRecycle() {
-        Glide.with(engine.getContext()).clear(gifTarget)
-        Glide.with(engine.getContext()).clear(bitmapTarget)
+        val isFinishing = (engine.getContext() as Activity).isFinishing
+        if (!isFinishing) {
+            Glide.with(engine.getContext()).clear(gifTarget)
+            Glide.with(engine.getContext()).clear(bitmapTarget)
+        }
         bitmap = null
         gifDrawable?.callback = null
         gifDrawable = null

@@ -341,9 +341,9 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         }
     }
 
-    fun updateAndroidBitmap(ref: Long, bitmap: Bitmap) {
+    fun updateAndroidBitmap(ref: Long, bitmap: Bitmap, index: Int, frameCount: Int) {
         skiaUIHandler.post {
-            nativeUpdateAndroidBitmap(uiApp, ref, bitmap)
+            nativeUpdateAndroidBitmap(uiApp, ref, bitmap, index, frameCount)
         }
     }
 
@@ -381,7 +381,13 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private external fun nativeDeleteSkPicture(uiApp: Long, skPicture: Long)
     private external fun nativeRegisterJetpackCompose()
     private external fun nativePerformTimeout(uiApp: Long, id: Long)
-    private external fun nativeUpdateAndroidBitmap(uiApp: Long, ref: Long, bitmap: Bitmap)
+    private external fun nativeUpdateAndroidBitmap(
+        uiApp: Long,
+        ref: Long,
+        bitmap: Bitmap,
+        index: Int,
+        frameCount: Int
+    )
 
     private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
     private external fun nativeMarkDirty(viewPtr: Long)
