@@ -51,7 +51,8 @@ void ProgressBar::layout(int l, int t, int r, int b) {
         auto diff = height / 3.0f;
         progressRect.setLTRB(l + paddingLeft, t + diff, r - paddingRight, b - diff);
         if (gradientColorSize > 0) {
-            SkPoint points[2]{SkPoint::Make(l + paddingLeft, t), SkPoint::Make(r - paddingRight, b)};
+            SkPoint points[2]{SkPoint::Make(l + paddingLeft, t),
+                              SkPoint::Make(r - paddingRight, b)};
             paint->setShader(
                     SkGradientShader::MakeLinear(&points[0], &gradientColors[0], nullptr,
                                                  gradientColorSize, SkTileMode::kClamp));
@@ -69,7 +70,7 @@ void ProgressBar::draw(SkCanvas *canvas) {
                 index = 0;
             }
         } else {
-            index = progress * 360 / 100;
+            index = static_cast<int>(progress * 360 / 100);
         }
         canvas->drawArc(progressRect, 0.0, 360, false, *backgroundPaint);
         canvas->drawArc(progressRect, 0.0, index, false, *paint);
@@ -134,8 +135,8 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
             case TouchEvent::ACTION_MOVE: {
                 pressed = true;
                 auto lastProgress = progress;
-                progress = static_cast<int>((touchEvent->x - left - marginLeft)
-                                            * 100 / (width - marginLeft - marginRight));
+                progress = (touchEvent->x - left - marginLeft - paddingLeft)
+                           * 100 / (width - marginLeft - marginRight - paddingLeft - paddingRight);
                 if (progress > 100) {
                     progress = 100;
                 } else if (progress < 0) {
@@ -149,8 +150,8 @@ bool ProgressBar::onTouchEvent(TouchEvent *touchEvent) {
             case TouchEvent::ACTION_CANCEL:
             case TouchEvent::ACTION_UP: {
                 pressed = false;
-                progress = static_cast<int>((touchEvent->x - left - marginLeft)
-                                            * 100 / (width - marginLeft - marginRight));
+                progress = (touchEvent->x - left - marginLeft - paddingLeft)
+                           * 100 / (width - marginLeft - marginRight - paddingLeft - paddingRight);
                 if (progress > 100) {
                     progress = 100;
                 } else if (progress < 0) {

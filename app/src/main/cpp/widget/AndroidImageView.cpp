@@ -1,6 +1,7 @@
 #include "AndroidImageView.h"
 #include "android/bitmap.h"
 #include "core/SkColorSpace.h"
+#include "effects/SkImageFilters.h"
 
 namespace HYSkiaUI {
 
@@ -69,16 +70,20 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
                                  skRect.centerY());
         }
     }
-    imageMatrix.preRotate(rotateZ, skRect.centerX(), skRect.centerY());
+    if (rotateFunc != nullptr) {
+        rotateFunc(skRect, imageMatrix, rotateZ);
+    } else {
+        imageMatrix.preRotate(rotateZ, skRect.centerX(), skRect.centerY());
+    }
 }
 
 void AndroidImageView::draw(SkCanvas *canvas) {
-    View::draw(canvas);
     if (skImage == nullptr || javaInstance == nullptr) {
         return;
     }
     canvas->save();
-    canvas->clipRect(skRect);
+    clipRect.setRectXY(skRect, radius, radius);
+    canvas->clipRRect(clipRect);
     canvas->setMatrix(imageMatrix);
     canvas->drawImageRect(skImage, srcRect, skRect, SkSamplingOptions(), paint.get(),
                           SkCanvas::kFast_SrcRectConstraint);
@@ -162,6 +167,27 @@ void AndroidImageView::onHide() {
     }
     auto jniEnv = context->getJniEnv();
     jniEnv->CallVoidMethod(javaInstance, stopMethodId);
+}
+
+void AndroidImageView::blur(float blur) {
+    if (YGFloatsEqual(blur, 0.0)) {
+        paint->setImageFilter(nullptr);
+    } else {
+        auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
+        paint->setImageFilter(filter);
+    }
+    markDirty();
+}
+
+void AndroidImageView::setCornerRadius(int radius) {
+    this->radius = static_cast<float >(radius);
+    View::setCornerRadius(radius);
+    markDirty();
+}
+
+void
+AndroidImageView::setRotateFunc(std::function<void(SkRect &, SkMatrix &, float)> &&rotateFunc) {
+    this->rotateFunc = std::move(rotateFunc);
 }
 
 }

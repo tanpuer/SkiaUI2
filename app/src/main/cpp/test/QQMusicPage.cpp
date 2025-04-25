@@ -24,7 +24,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     this->addView(flexboxLayout);
 
     {
-        auto imageView = new ImageView();
+        auto imageView = new AndroidImageView();
         imageView->setContext(this->context);
         imageView->setWidthPercent(100);
         imageView->setHeightPercent(100);
@@ -36,7 +36,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     }
 
     {
-        auto imageView = new ImageView();
+        auto imageView = new AndroidImageView();
         imageView->setContext(this->context);
         imageView->setWidth(170 * 2);
         imageView->setHeight(46 * 2);
@@ -45,7 +45,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->setAlignSelf(YGAlignFlexStart);
         imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setStrokeWidth(1);
         flexboxLayout->addView(imageView);
     }
@@ -65,7 +64,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     }
 
     {
-        auto imageView = new ImageView();
+        auto imageView = new AndroidImageView();
         imageView->setContext(this->context);
         imageView->setWidth(480 * 2);
         imageView->setHeight(480 * 2);
@@ -74,7 +73,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->setAlignSelf(YGAlignCenter);
         imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 300, 0, 0});
         flexboxLayout->addView(imageView);
         recordOutAnimator = new LinearAnimator(imageView, 0.0, 360.0);
@@ -87,7 +85,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
     }
 
     {
-        auto imageView = new ImageView();
+        auto imageView = new AndroidImageView();
         imageView->setContext(this->context);
         imageView->setWidth(160 * 2);
         imageView->setHeight(160 * 2);
@@ -97,7 +95,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->setAlignSelf(YGAlignCenter);
         imageView->setStyle(SkPaint::kStroke_Style);
-        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 620, 0, 0});
         flexboxLayout->addView(imageView);
         recordInnerAnimator = new LinearAnimator(imageView, 0.0, 360.0);
@@ -161,7 +158,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         controlView->setMargin({400, 0, 0, 0});
         flexboxLayout->addView(controlView);
         {
-            auto imageView = new ImageView();
+            auto imageView = new AndroidImageView();
             imageView->setContext(this->context);
             imageView->setWidth(72 * 1.5);
             imageView->setHeight(72 * 1.5);
@@ -169,7 +166,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setScaleType(ImageView::ScaleType::CenterCrop);
             imageView->setAlignSelf(YGAlignFlexStart);
             imageView->setStyle(SkPaint::kStroke_Style);
-            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setOnClickListener([this](View *view) {
                 fftView->seek(0);
                 playImage->setSource("music/ic_pause.png");
@@ -177,7 +173,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             controlView->addView(imageView);
         }
         {
-            playImage = new ImageView();
+            playImage = new AndroidImageView();
             playImage->setContext(this->context);
             playImage->setWidth(72 * 1.5);
             playImage->setHeight(72 * 1.5);
@@ -185,7 +181,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             playImage->setScaleType(ImageView::ScaleType::CenterCrop);
             playImage->setAlignSelf(YGAlignFlexStart);
             playImage->setStyle(SkPaint::kStroke_Style);
-            playImage->setBackgroundColor(SK_ColorTRANSPARENT);
             playImage->setMargin({100, 0, 0, 0});
             playImage->setOnClickListener([this](View *view) {
                 if (fftView != nullptr) {
@@ -205,7 +200,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             controlView->addView(playImage);
         }
         {
-            auto imageView = new ImageView();
+            auto imageView = new AndroidImageView();
             imageView->setContext(this->context);
             imageView->setWidth(72 * 1.5);
             imageView->setHeight(72 * 1.5);
@@ -213,7 +208,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setScaleType(ImageView::ScaleType::CenterCrop);
             imageView->setAlignSelf(YGAlignFlexStart);
             imageView->setStyle(SkPaint::kStroke_Style);
-            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setMargin({100, 0, 100, 0});
             imageView->setOnClickListener([this](View *view) {
                 if (fftView != nullptr) {
@@ -237,7 +231,8 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         progressBar->setStyle(SkPaint::kStroke_Style);
         progressBar->setWidthPercent(100);
         progressBar->setHeight(60);
-        progressBar->setMargin({50, 150, 50, 50});
+        progressBar->setMargin({0, 150, 0, 50});
+        progressBar->setPadding({50, 0, 50, 0});
         progressBar->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         flexboxLayout->addView(progressBar);
         progressBar->setProgressCallback([this](int progress, bool finished) {

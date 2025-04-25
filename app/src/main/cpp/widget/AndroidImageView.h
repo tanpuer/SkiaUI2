@@ -32,6 +32,12 @@ public:
 
     void onHide() override;
 
+    void blur(float blur);
+
+    void setCornerRadius(int radius) override;
+
+    void setRotateFunc(std::function<void(SkRect &, SkMatrix &, float)> &&rotateFunc);
+
 private:
 
     SkMatrix imageMatrix;
@@ -61,6 +67,12 @@ private:
     jmethodID stopMethodId = nullptr;
 
     void checkInstance();
+
+    float radius = 0.0f;
+
+    SkRRect clipRect;
+
+    std::function<void(SkRect &dstRect, SkMatrix &imageMatrix, float rotateZ)> rotateFunc = nullptr;
 
 };
 

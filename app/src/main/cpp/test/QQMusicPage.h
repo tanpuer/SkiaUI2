@@ -6,6 +6,7 @@
 #include "ImageView.h"
 #include "LinearAnimator.h"
 #include "LyricScrollView.h"
+#include "AndroidImageView.h"
 
 namespace HYSkiaUI {
 
@@ -27,7 +28,7 @@ private:
 
     ProgressBar *progressBar = nullptr;
 
-    ImageView *playImage = nullptr;
+    AndroidImageView *playImage = nullptr;
 
     ImageView *armView = nullptr;
 
