@@ -342,9 +342,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     }
 
     fun updateAndroidBitmap(ref: Long, bitmap: Bitmap, index: Int, frameCount: Int) {
-        skiaUIHandler.post {
-            nativeUpdateAndroidBitmap(uiApp, ref, bitmap, index, frameCount)
-        }
+        nativeUpdateAndroidBitmap(uiApp, ref, bitmap, index, frameCount)
     }
 
     private external fun nativeGLInit(): Long

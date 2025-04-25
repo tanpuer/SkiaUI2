@@ -21,6 +21,7 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     private var bitmapTarget: CustomTarget<Bitmap>? = null
     private var gifDrawable: GifDrawable? = null
     private var gifTarget: CustomTarget<GifDrawable>? = null
+    @Volatile
     private var released = false
 
     private var resId: Int = 0
@@ -61,24 +62,27 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     }
 
     override fun release() {
+        released = true
         mainHandler.post {
-            released = true
+            gifDrawable?.stop()
             innerRecycle()
         }
     }
 
     override fun invalidateDrawable(drawable: Drawable) {
-        if (released) {
-            return
-        }
         drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
             .apply {
-                engine.updateAndroidBitmap(
-                    ref,
-                    this,
-                    gifDrawable?.frameIndex ?: 0,
-                    gifDrawable?.frameCount ?: 0
-                )
+                engine.postToSkiaUI {
+                    if (released) {
+                        return@postToSkiaUI
+                    }
+                    engine.updateAndroidBitmap(
+                        ref,
+                        this,
+                        gifDrawable?.frameIndex ?: 0,
+                        gifDrawable?.frameCount ?: 0
+                    )
+                }
             }
     }
 
@@ -132,11 +136,13 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
                 bitmap: Bitmap,
                 transition: Transition<in Bitmap>?
             ) {
-                if (released) {
-                    return
-                }
                 this@GlideImageLoader.bitmap = bitmap
-                engine.updateAndroidBitmap(ref, bitmap, 0, 0)
+                engine.postToSkiaUI {
+                    if (released) {
+                        return@postToSkiaUI
+                    }
+                    engine.updateAndroidBitmap(ref, bitmap, 0, 0)
+                }
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {}
