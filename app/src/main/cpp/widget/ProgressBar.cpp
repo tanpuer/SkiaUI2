@@ -104,7 +104,7 @@ void ProgressBar::setProgress(float progress) {
     }
     this->progress = progress;
     if (progressCallback != nullptr) {
-        progressCallback(progress, true);
+        progressCallback(progress, false);
     }
     markDirty();
 }

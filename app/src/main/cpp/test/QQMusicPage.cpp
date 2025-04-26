@@ -44,7 +44,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->setAlignSelf(YGAlignFlexStart);
-        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setStrokeWidth(1);
         flexboxLayout->addView(imageView);
     }
@@ -72,7 +72,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->setAlignSelf(YGAlignCenter);
-        imageView->setStyle(SkPaint::kStroke_Style);
+        imageView->setBackgroundColor(SK_ColorTRANSPARENT);
         imageView->setMargin({0, 300, 0, 0});
         flexboxLayout->addView(imageView);
         recordOutAnimator = new LinearAnimator(imageView, 0.0, 360.0);
@@ -94,7 +94,6 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         imageView->setAlignSelf(YGAlignCenter);
-        imageView->setStyle(SkPaint::kStroke_Style);
         imageView->setMargin({0, 620, 0, 0});
         flexboxLayout->addView(imageView);
         recordInnerAnimator = new LinearAnimator(imageView, 0.0, 360.0);
@@ -163,9 +162,9 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setWidth(72 * 1.5);
             imageView->setHeight(72 * 1.5);
             imageView->setSource("music/ic_previous.png");
+            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setScaleType(ImageView::ScaleType::CenterCrop);
             imageView->setAlignSelf(YGAlignFlexStart);
-            imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setOnClickListener([this](View *view) {
                 fftView->seek(0);
                 playImage->setSource("music/ic_pause.png");
@@ -180,7 +179,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             playImage->setSource("music/ic_pause.png");
             playImage->setScaleType(ImageView::ScaleType::CenterCrop);
             playImage->setAlignSelf(YGAlignFlexStart);
-            playImage->setStyle(SkPaint::kStroke_Style);
+            playImage->setBackgroundColor(SK_ColorTRANSPARENT);
             playImage->setMargin({100, 0, 0, 0});
             playImage->setOnClickListener([this](View *view) {
                 if (fftView != nullptr) {
@@ -205,9 +204,9 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
             imageView->setWidth(72 * 1.5);
             imageView->setHeight(72 * 1.5);
             imageView->setSource("music/ic_next.png");
+            imageView->setBackgroundColor(SK_ColorTRANSPARENT);
             imageView->setScaleType(ImageView::ScaleType::CenterCrop);
             imageView->setAlignSelf(YGAlignFlexStart);
-            imageView->setStyle(SkPaint::kStroke_Style);
             imageView->setMargin({100, 0, 100, 0});
             imageView->setOnClickListener([this](View *view) {
                 if (fftView != nullptr) {
