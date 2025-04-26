@@ -144,13 +144,9 @@ void ImageView::setScaleType(ImageView::ScaleType scaleType) {
     markDirty();
 }
 
-void ImageView::blur(float blur) {
-    if (YGFloatsEqual(blur, 0.0)) {
-        imagePaint->setImageFilter(nullptr);
-    } else {
-        auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
-        imagePaint->setImageFilter(filter);
-    }
+void ImageView::setBlur(float blur) {
+    auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
+    imagePaint->setImageFilter(filter);
     markDirty();
 }
 

@@ -44,7 +44,7 @@ public:
 
     virtual const ScaleType getScaleType();
 
-    virtual void blur(float blur);
+    virtual void setBlur(float blur) override;
 
     void setRotateFunc(std::function<void(SkRect &dstRect, SkMatrix &imageMatrix,
                                           float rotateZ)> &&rotateFunc);

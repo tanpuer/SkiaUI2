@@ -251,6 +251,8 @@ public:
 
     virtual void setBlurMask(SkBlurStyle style, SkScalar sigma);
 
+    virtual void setBlur(float blur);
+
     const SkRect &getRect();
 
     float getRotateZ();

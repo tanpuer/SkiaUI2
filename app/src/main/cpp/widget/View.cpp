@@ -2,6 +2,7 @@
 #include <yoga/Utils.h>
 #include "View.h"
 #include "effects/SkCornerPathEffect.h"
+#include "effects/SkImageFilters.h"
 #include "core/SkPathEffect.h"
 #include "SkiaUIContext.h"
 #include "effects/SkGradientShader.h"
@@ -215,6 +216,12 @@ void View::setSwiperGradient(std::vector<SkColor> colors) {
 void View::setBlurMask(SkBlurStyle style, SkScalar sigma) {
     auto filter = SkMaskFilter::MakeBlur(style, sigma);
     paint->setMaskFilter(filter);
+    markDirty();
+}
+
+void View::setBlur(float blur) {
+    auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
+    paint->setImageFilter(filter);
     markDirty();
 }
 

@@ -310,7 +310,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         imageView->setHeight(250);
         imageView->setOnCompleteFunc([](AndroidImageView *imageView) {
             static bool flag = true;
-            imageView->blur(flag ? 10.0f : 0.0f);
+            imageView->setBlur(flag ? 10.0f : 0.0f);
             flag = !flag;
         });
         flexboxLayout->addView(imageView);

@@ -33,7 +33,7 @@ class PlatformWebView @JvmOverloads constructor(
         this.render = render
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun draw(canvas: Canvas) {
         val glCanvas = render?.lockCanvas(canvas)
         if (glCanvas == null) {
             invalidate()
@@ -42,7 +42,7 @@ class PlatformWebView @JvmOverloads constructor(
         glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         glCanvas.save()
         glCanvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
-        super.onDraw(glCanvas)
+        super.draw(glCanvas)
         glCanvas.restore()
         render?.unLockCanvas(glCanvas)
     }

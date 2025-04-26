@@ -53,7 +53,7 @@ JSImageViewBinding::registerJSView(v8::Isolate *isolate, v8::Local<v8::Object> s
             throwInvalidError(info.GetIsolate(), "Invalid value for blur; expected a number");
         }
         auto imageView = GetTargetView<ImageView>(info);
-        imageView->blur(value->NumberValue());
+        imageView->setBlur(value->NumberValue());
     };
     imageTemplate->InstanceTemplate()->SetAccessor(v8::String::NewFromUtf8(isolate, "blur"),
                                                    nullptr, blurSetter);

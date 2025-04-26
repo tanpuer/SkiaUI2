@@ -45,7 +45,7 @@ compose_android_image_set_blur(JNIEnv *env, jobject instance, jlong viewPtr, jfl
     if (imageView == nullptr) {
         return;
     }
-    imageView->blur(blur);
+    imageView->setBlur(blur);
 }
 
 static JNINativeMethod g_ComposeAndroidImageViewMethods[] = {

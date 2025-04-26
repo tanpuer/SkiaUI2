@@ -24,10 +24,7 @@ class PlatformEditText @JvmOverloads constructor(
         this.render = render
     }
 
-    /**
-     * EditText sometimes draw dark, TODO!
-     */
-    override fun onDraw(canvas: Canvas) {
+    override fun draw(canvas: Canvas) {
         val glCanvas = render?.lockCanvas(canvas)
         if (glCanvas == null) {
             invalidate()
@@ -37,7 +34,7 @@ class PlatformEditText @JvmOverloads constructor(
         glCanvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
         glCanvas.save()
         glCanvas.translate(-scrollX.toFloat(), -scrollY.toFloat())
-        super.onDraw(glCanvas)
+        super.draw(glCanvas)
         glCanvas.restore()
         render?.unLockCanvas(glCanvas)
     }

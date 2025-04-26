@@ -31,7 +31,7 @@ void QQMusicPage::init(std::shared_ptr<SkiaUIContext> &context, int width, int h
         imageView->setSource("music/bg.png");
         imageView->setScaleType(ImageView::ScaleType::CenterCrop);
         imageView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
-        imageView->blur(10.0f);
+        imageView->setBlur(10.0f);
         flexboxLayout->addView(imageView);
     }
 

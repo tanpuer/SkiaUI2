@@ -173,7 +173,7 @@ void AndroidImageView::onHide() {
     innerStop();
 }
 
-void AndroidImageView::blur(float blur) {
+void AndroidImageView::setBlur(float blur) {
     auto filter = SkImageFilters::Blur(blur, blur, SkTileMode::kClamp, nullptr);
     imagePaint->setImageFilter(filter);
     markDirty();

@@ -32,7 +32,7 @@ public:
 
     void onHide() override;
 
-    void blur(float blur);
+    void setBlur(float blur) override;
 
     void setCornerRadius(int radius) override;
 
