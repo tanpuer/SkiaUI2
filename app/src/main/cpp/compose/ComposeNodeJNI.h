@@ -21,6 +21,7 @@
 #include "ProgressBar.h"
 #include "ComposeRecyclerView.h"
 #include "AndroidImageView.h"
+#include "ComposeCanvas.h"
 
 using namespace HYSkiaUI;
 
@@ -61,6 +62,7 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jstring type) {
             {"ProgressBar",   []() -> View * { return new ProgressBar(); }},
             {"RecyclerView",  []() -> View * { return new ComposeRecyclerView(); }},
             {"AndroidImage",  []() -> View * { return new AndroidImageView(); }},
+            {"Canvas",        []() -> View * { return new ComposeCanvas(); }},
     };
     auto result = viewFactory[typeStr]();
     auto context = ComposeContext::getInstance()->getUIContext();

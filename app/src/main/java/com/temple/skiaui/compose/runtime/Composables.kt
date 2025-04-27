@@ -9,11 +9,13 @@ import androidx.compose.ui.unit.dp
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.CameraCallback
+import com.temple.skiaui.compose.ui.Canvas
 import com.temple.skiaui.compose.ui.ContentScale
 import com.temple.skiaui.compose.ui.FlexDirection
 import com.temple.skiaui.compose.ui.HYComposeAndroidImage
 import com.temple.skiaui.compose.ui.HYComposeButton
 import com.temple.skiaui.compose.ui.HYComposeCamera
+import com.temple.skiaui.compose.ui.HYComposeCanvas
 import com.temple.skiaui.compose.ui.HYComposeEditText
 import com.temple.skiaui.compose.ui.HYComposeExoVideo
 import com.temple.skiaui.compose.ui.HYComposeFilament
@@ -495,6 +497,21 @@ fun AndroidImage(
             }
             set(blur) {
                 setBlur(blur)
+            }
+        }
+    )
+}
+
+@Composable
+fun Canvas(modifier: Modifier, onDraw: (canvas: Canvas) -> Unit) {
+    ComposeNode<HYComposeCanvas, HYComposeApplier>(
+        factory = { HYComposeCanvas(modifier) },
+        update = {
+            set(modifier) {
+                updateModifier(modifier)
+            }
+            set(onDraw) {
+                setDrawCallback(onDraw)
             }
         }
     )

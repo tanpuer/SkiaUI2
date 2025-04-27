@@ -8,4 +8,5 @@
     <string name="camera_page">Camera Page</string>
     <string name="native_views_page">Native Views Page</string>
     <string name="recycler_view_page">RecyclerView Page</string>
+    <string name="canvas_page">Canvas Page</string>
 </resources>

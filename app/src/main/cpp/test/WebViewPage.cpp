@@ -65,8 +65,6 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
         webView->loadUrl("https://m.bilibili.com/");
         webView->setStyle(SkPaint::kStroke_Style);
         webView->setBackgroundColor(SK_ColorTRANSPARENT);
-        webView->setMargin({0, 200, 0, 0});
-        webView->setStrokeWidth(0);
         flexboxLayout->addView(webView);
         webView->setProgressCallback([this](int progress) {
             if (progressView != nullptr) {
