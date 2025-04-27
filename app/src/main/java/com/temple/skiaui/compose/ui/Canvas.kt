@@ -13,4 +13,6 @@ interface Canvas {
 
     fun drawBitmap(bitmap: Bitmap, x: Float, y: Float, paint: HYComposePaint?)
 
+    fun invalidate()
+
 }

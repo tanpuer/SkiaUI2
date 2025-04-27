@@ -24,20 +24,20 @@ AndroidImageView::~AndroidImageView() {
 
 void AndroidImageView::setSource(const char *source) {
     skImage = nullptr;
+    this->resId = -1;
     this->source = source;
-    auto jniEnv = context->getJniEnv();
     checkInstance();
-    auto jSource = jniEnv->NewStringUTF(source);
-    jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource);
-    jniEnv->DeleteLocalRef(jSource);
+    sourceUpdated = true;
+    markDirty();
 }
 
 void AndroidImageView::setResId(int resId) {
     skImage = nullptr;
+    this->source = "";
     this->resId = resId;
-    auto jniEnv = context->getJniEnv();
     checkInstance();
-    jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId);
+    sourceUpdated = true;
+    markDirty();
 }
 
 void AndroidImageView::setScaleType(ImageView::ScaleType scaleType) {
@@ -82,6 +82,17 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
 }
 
 void AndroidImageView::draw(SkCanvas *canvas) {
+    if (sourceUpdated) {
+        sourceUpdated = false;
+        auto jniEnv = context->getJniEnv();
+        if (!source.empty()) {
+            auto jSource = jniEnv->NewStringUTF(source.c_str());
+            jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource);
+            jniEnv->DeleteLocalRef(jSource);
+        } else if (resId > 0) {
+            jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId);
+        }
+    }
     View::draw(canvas);
     if (skImage == nullptr || javaInstance == nullptr) {
         return;

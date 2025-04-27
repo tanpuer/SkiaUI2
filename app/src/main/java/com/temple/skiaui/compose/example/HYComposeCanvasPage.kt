@@ -1,5 +1,10 @@
 package com.temple.skiaui.compose.example
 
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,7 +45,11 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     )
                 )
             }
-            paint.setColor(MaterialTheme.colorScheme.primary)
+            val rectColor = rememberInfiniteTransition().animateColor(
+                initialValue = Color.Yellow,
+                targetValue = Color.Cyan,
+                animationSpec = infiniteRepeatable(tween(2000), RepeatMode.Reverse),
+            )
             LazyColumn(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
@@ -50,7 +59,7 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 Canvas(
                     modifier = Modifier().size(width, height),
                     onDraw = { canvas: Canvas ->
-                        paint.setColor(Color.Yellow)
+                        paint.setColor(rectColor.value)
                         canvas.drawRect(100f, 100f, dp2pxf(width) / 2, dp2pxf(height) / 2, paint)
                         paint.setColor(Color.Red)
                         canvas.drawCircle(dp2pxf(width) / 2, dp2pxf(height) / 2, 100.0f, paint)
@@ -62,6 +71,7 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             dp2pxf(height) / 2 + 100,
                             null
                         )
+                        canvas.invalidate()
                     }
                 )
             }
