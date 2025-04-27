@@ -50,11 +50,18 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
     }
 
     {
+        progressView = new WebViewProgressView();
+        progressView->setContext(this->context);
+        progressView->setWidth(width);
+        progressView->setHeight(16);
+        flexboxLayout->addView(progressView);
+    }
+
+    {
         auto webView = new WebView();
         webView->setContext(this->context);
         webView->setWidth(width);
-        webView->setHeight(height - 200);
-        webView->setPositionType(YGPositionTypeAbsolute);
+        webView->setFlex(1);
         webView->loadUrl("https://m.bilibili.com/");
         webView->setStyle(SkPaint::kStroke_Style);
         webView->setBackgroundColor(SK_ColorTRANSPARENT);
@@ -66,16 +73,6 @@ void WebViewPage::initChildren(HYSkiaUI::ViewGroup *root, int width, int height)
                 progressView->setProgress(progress);
             }
         });
-    }
-
-    {
-        progressView = new WebViewProgressView();
-        progressView->setContext(this->context);
-        progressView->setWidth(width);
-        progressView->setHeight(16);
-        progressView->setMargin({0, 200, 0, 0});
-        progressView->setPositionType(YGPositionTypeAbsolute);
-        flexboxLayout->addView(progressView);
     }
 }
 
