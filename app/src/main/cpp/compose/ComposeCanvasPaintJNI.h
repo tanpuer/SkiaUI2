@@ -14,14 +14,21 @@ compose_paint_init(JNIEnv *env, jobject instance) {
 }
 
 extern "C" JNIEXPORT void JNICALL
+compose_paint_set_anti_alias(JNIEnv *env, jobject instance, jlong paintPtr, jboolean aa) {
+    auto paint = reinterpret_cast<SkPaint *>(paintPtr);
+    paint->setAntiAlias(aa);
+}
+
+extern "C" JNIEXPORT void JNICALL
 compose_paint_set_color(JNIEnv *env, jobject instance, jlong paintPtr, jint color) {
     auto paint = reinterpret_cast<SkPaint *>(paintPtr);
     paint->setColor(color);
 }
 
 static JNINativeMethod g_ComposePaintMethods[] = {
-        {"nativeInitPaint", "()J",   (void *) compose_paint_init},
-        {"nativeSetColor",  "(JI)V", (void *) compose_paint_set_color},
+        {"nativeInitPaint",    "()J",   (void *) compose_paint_init},
+        {"nativeSetAntiAlias", "(JZ)V", (void *) compose_paint_set_anti_alias},
+        {"nativeSetColor",     "(JI)V", (void *) compose_paint_set_color},
 };
 
 static int RegisterComposePaintMethods(JNIEnv *env) {

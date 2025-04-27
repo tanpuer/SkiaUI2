@@ -11,11 +11,16 @@ class HYComposePaint {
         ref = nativeInitPaint()
     }
 
+    fun setAntiAlias(aa: Boolean) {
+        nativeSetAntiAlias(ref, aa)
+    }
+
     fun setColor(color: Color) {
         nativeSetColor(ref, composeColorToSkiaColor(color))
     }
 
     private external fun nativeInitPaint(): Long
+    private external fun nativeSetAntiAlias(ref: Long, aa: Boolean)
     private external fun nativeSetColor(ref: Long, color: Int)
 
 }

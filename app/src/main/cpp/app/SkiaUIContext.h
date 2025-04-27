@@ -99,7 +99,7 @@ public:
         return canvas;
     }
 
-    const std::shared_ptr<V8Runtime> & initV8Runtime() {
+    const std::shared_ptr<V8Runtime> &initV8Runtime() {
         v8Runtime = std::make_shared<V8Runtime>();
         return v8Runtime;
     }
