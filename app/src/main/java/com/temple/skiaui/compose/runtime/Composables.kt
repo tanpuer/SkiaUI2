@@ -528,7 +528,7 @@ fun Canvas(modifier: Modifier, onDraw: (canvas: Canvas) -> Unit) {
 }
 
 @Composable
-fun rememberAutoClosePaint(): HYComposePaint {
+fun rememberAutoReleasePaint(): HYComposePaint {
     val paint = remember { HYComposePaint() }
     DisposableEffect(Unit) {
         onDispose { paint.release() }
@@ -537,7 +537,7 @@ fun rememberAutoClosePaint(): HYComposePaint {
 }
 
 @Composable
-fun rememberAutoClosePath(): HYComposePath {
+fun rememberAutoReleasePath(): HYComposePath {
     val path = remember { HYComposePath() }
     DisposableEffect(Unit) {
         onDispose {
@@ -548,7 +548,7 @@ fun rememberAutoClosePath(): HYComposePath {
 }
 
 @Composable
-fun rememberAutoCloseBitmap(resources: Resources, @DrawableRes resId: Int, reqWidth: Int): Bitmap {
+fun rememberAutoReleaseBitmap(resources: Resources, @DrawableRes resId: Int, reqWidth: Int): Bitmap {
     val bitmap = remember {
         decodeDrawableResource(resources, resId, reqWidth)
     }

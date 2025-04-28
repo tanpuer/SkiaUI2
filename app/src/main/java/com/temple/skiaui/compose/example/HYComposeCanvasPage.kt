@@ -21,14 +21,11 @@ import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.runtime.Canvas
 import com.temple.skiaui.compose.runtime.LazyColumn
-import com.temple.skiaui.compose.runtime.rememberAutoCloseBitmap
-import com.temple.skiaui.compose.runtime.rememberAutoClosePaint
-import com.temple.skiaui.compose.runtime.rememberAutoClosePath
+import com.temple.skiaui.compose.runtime.rememberAutoReleaseBitmap
+import com.temple.skiaui.compose.runtime.rememberAutoReleasePaint
+import com.temple.skiaui.compose.runtime.rememberAutoReleasePath
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.Canvas
-import com.temple.skiaui.compose.ui.HYComposePaint
-import com.temple.skiaui.compose.ui.HYComposePath
-import com.temple.skiaui.compose.ui.util.decodeDrawableResource
 import com.temple.skiaui.compose.ui.util.dp2pxf
 
 class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
@@ -36,13 +33,13 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     override fun RunComposable(width: Dp, height: Dp) {
         JetpackComposeTheme {
-            val paint = rememberAutoClosePaint()
-            val bitmap = rememberAutoCloseBitmap(
+            val paint = rememberAutoReleasePaint()
+            val bitmap = rememberAutoReleaseBitmap(
                 engine.getContext().resources,
                 R.drawable.round_logo,
                 100
             )
-            val path = rememberAutoClosePath().apply {
+            val path = rememberAutoReleasePath().apply {
                 moveTo(100f, dp2pxf(height) / 2 + 100)
                 lineTo(400f, dp2pxf(height) / 2 + 100)
                 lineTo(250f, dp2pxf(height) / 2 + 300)
