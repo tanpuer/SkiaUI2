@@ -1,6 +1,6 @@
 package com.temple.skiaui.compose.ui
 
-class HYComposePath {
+class HYComposePath : AutoReleasable {
 
     var ref = nativeInit()
 
@@ -16,8 +16,13 @@ class HYComposePath {
         nativeClose(ref)
     }
 
+    override fun release() {
+        nativeDeInit(ref)
+    }
+
     private external fun nativeInit(): Long
     private external fun nativeMoveTo(ref: Long, x: Float, y: Float)
     private external fun nativeLineTo(ref: Long, x: Float, y: Float)
     private external fun nativeClose(ref: Long)
+    private external fun nativeDeInit(ref: Long)
 }

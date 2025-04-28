@@ -1,11 +1,18 @@
 package com.temple.skiaui.compose.runtime
 
+import android.content.Context
+import android.content.res.Resources
+import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.temple.skiaui.R
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.CameraCallback
@@ -24,6 +31,8 @@ import com.temple.skiaui.compose.ui.HYComposeIcon
 import com.temple.skiaui.compose.ui.HYComposeImage
 import com.temple.skiaui.compose.ui.HYComposeLoadingView
 import com.temple.skiaui.compose.ui.HYComposeLottie
+import com.temple.skiaui.compose.ui.HYComposePaint
+import com.temple.skiaui.compose.ui.HYComposePath
 import com.temple.skiaui.compose.ui.HYComposeProgressBar
 import com.temple.skiaui.compose.ui.HYComposeRecyclerView
 import com.temple.skiaui.compose.ui.HYComposeSVG
@@ -34,6 +43,7 @@ import com.temple.skiaui.compose.ui.HYComposeText
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
 import com.temple.skiaui.compose.ui.TextAlign
+import com.temple.skiaui.compose.ui.util.decodeDrawableResource
 
 @Composable
 fun View(
@@ -515,5 +525,38 @@ fun Canvas(modifier: Modifier, onDraw: (canvas: Canvas) -> Unit) {
             }
         }
     )
+}
+
+@Composable
+fun rememberAutoClosePaint(): HYComposePaint {
+    val paint = remember { HYComposePaint() }
+    DisposableEffect(Unit) {
+        onDispose { paint.release() }
+    }
+    return paint
+}
+
+@Composable
+fun rememberAutoClosePath(): HYComposePath {
+    val path = remember { HYComposePath() }
+    DisposableEffect(Unit) {
+        onDispose {
+            path.release()
+        }
+    }
+    return path
+}
+
+@Composable
+fun rememberAutoCloseBitmap(resources: Resources, @DrawableRes resId: Int, reqWidth: Int): Bitmap {
+    val bitmap = remember {
+        decodeDrawableResource(resources, resId, reqWidth)
+    }
+    DisposableEffect(Unit) {
+        onDispose {
+            bitmap.recycle()
+        }
+    }
+    return bitmap
 }
 

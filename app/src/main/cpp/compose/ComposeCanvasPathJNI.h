@@ -33,11 +33,18 @@ compose_path_close(JNIEnv *env, jobject instance, jlong ref, float x, float y) {
     path->close();
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_path_de_init(JNIEnv *env, jobject instance, jlong ref) {
+    auto path = reinterpret_cast<SkPath *>(ref);
+    delete path;
+}
+
 static JNINativeMethod g_ComposePathMethods[] = {
         {"nativeInit",   "()J",    (void *) compose_path_init},
         {"nativeMoveTo", "(JFF)V", (void *) compose_path_move_to},
         {"nativeLineTo", "(JFF)V", (void *) compose_path_line_to},
         {"nativeClose",  "(J)V",   (void *) compose_path_close},
+        {"nativeDeInit", "(J)V",   (void *) compose_path_de_init},
 };
 
 static int RegisterComposePathMethods(JNIEnv *env) {

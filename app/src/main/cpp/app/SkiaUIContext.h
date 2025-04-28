@@ -13,6 +13,7 @@
 #include "skparagraph/include/TypefaceFontProvider.h"
 #include "skparagraph/include/ParagraphBuilder.h"
 #include "MeasureTime.h"
+#include "FrontEngineType.h"
 
 using namespace skia::textlayout;
 
@@ -44,6 +45,10 @@ public:
         ALOGD("~SkiaUIContext")
         jniEnv->DeleteGlobalRef(javaSkiaEngine);
         YGConfigFree(config);
+    }
+
+    void setFrontEngineType(FrontEngineType type) {
+        engineType = type;
     }
 
     void setJavaAssetManager(JNIEnv *env, jobject javaAssetManager) {
@@ -197,6 +202,9 @@ public:
     }
 
     void callComposeSDKPoped() {
+        if (engineType != Compose) {
+            return;
+        }
         jclass composeSDK = jniEnv->FindClass("com/temple/skiaui/compose/runtime/HYComposeSDK");
         jfieldID instanceField = jniEnv->GetStaticFieldID(composeSDK, "INSTANCE",
                                                           "Lcom/temple/skiaui/compose/runtime/HYComposeSDK;");
@@ -243,6 +251,8 @@ private:
     long timerId = 0;
 
     std::function<void()> backPressedInterceptor = nullptr;
+
+    FrontEngineType engineType = Cpp;
 
 };
 

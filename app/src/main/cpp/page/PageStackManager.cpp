@@ -40,6 +40,7 @@ void PageStackManager::removeDestroyedPage() {
         auto page = back();
         if (page != nullptr && page->isDestroyed()) {
             auto _page = pop();
+            _page->getContext()->callComposeSDKPoped();
             delete _page;
             _page = nullptr;
         }

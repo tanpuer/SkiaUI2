@@ -45,6 +45,8 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         }
     private val skiaGLHandler = Handler(skiaGLHandlerThread.looper)
 
+    private val mainHandler = Handler(Looper.getMainLooper())
+
     private var pic = AtomicLong(0)
     private var picIsNull = AtomicBoolean(false)
 
@@ -240,7 +242,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     fun onBackPressed() {
         skiaUIHandler.post {
             if (!nativeBackPressed(uiApp)) {
-                Handler(Looper.getMainLooper()).post {
+                mainHandler.post {
                     renderCallback?.onPlatformBackPressed()
                 }
             }

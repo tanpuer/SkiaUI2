@@ -15,19 +15,20 @@
 namespace HYSkiaUI {
 
 SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine,
-                     int exampleType) {
-    this->exampleType = exampleType;
+                     int engineType) {
+    this->engineType = static_cast<FrontEngineType>(engineType);
     SkGraphics::Init();
     context = std::make_shared<SkiaUIContext>();
+    context->setFrontEngineType(this->engineType);
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
-    if (exampleType == JS) {
+    if (engineType == JS) {
         testDraw = std::make_unique<SimpleJavascriptTest>();
-    } else if (exampleType == Compose) {
+    } else if (engineType == Compose) {
         testDraw = std::make_unique<JetpackComposeTest>(env);
-    } else if (exampleType == React) {
+    } else if (engineType == React) {
         testDraw = std::make_unique<ReactjsTest>();
-    } else if (exampleType == Vue) {
+    } else if (engineType == Vue) {
         testDraw = std::make_unique<VuejsTest>();
     } else {
         testDraw = std::make_unique<CppTest>();
@@ -84,10 +85,6 @@ bool SkiaUIApp::onBackPressed() {
     // js
     if (context->getBackPressedInterceptor() != nullptr) {
         context->getBackPressedInterceptor()();
-    }
-    // Compose
-    if (this->exampleType == Compose) {
-        getContext()->callComposeSDKPoped();
     }
     auto page = context->getPageStackManager()->back();
     if (page != nullptr) {

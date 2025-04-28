@@ -5,22 +5,15 @@
 #include "ITestDraw.h"
 #include "Velocity.h"
 #include "PluginManager.h"
+#include "FrontEngineType.h"
 
 namespace HYSkiaUI {
 
 class SkiaUIApp {
 
-    enum FrontEngineType {
-        Cpp = 0,
-        JS = 1,
-        Compose = 2,
-        React = 3,
-        Vue = 4
-    };
-
 public:
 
-    SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine, int exampleType);
+    SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngine, int engineType);
 
     ~SkiaUIApp();
 
@@ -64,7 +57,7 @@ private:
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
-    int exampleType = 0;
+    FrontEngineType engineType = Cpp;
 
 };
 

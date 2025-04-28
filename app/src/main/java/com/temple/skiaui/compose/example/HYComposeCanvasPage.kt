@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.example
 
+import android.util.Log
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.infiniteRepeatable
@@ -7,9 +8,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -22,6 +21,9 @@ import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.runtime.Canvas
 import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.rememberAutoCloseBitmap
+import com.temple.skiaui.compose.runtime.rememberAutoClosePaint
+import com.temple.skiaui.compose.runtime.rememberAutoClosePath
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.Canvas
 import com.temple.skiaui.compose.ui.HYComposePaint
@@ -34,25 +36,17 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     override fun RunComposable(width: Dp, height: Dp) {
         JetpackComposeTheme {
-            val paint by remember {
-                mutableStateOf(HYComposePaint().apply { setAntiAlias(true) })
-            }
-            val bitmap by remember {
-                mutableStateOf(
-                    decodeDrawableResource(
-                        engine.getContext().resources,
-                        R.drawable.round_logo,
-                        100
-                    )
-                )
-            }
-            val path by remember {
-                mutableStateOf(HYComposePath().apply {
-                    moveTo(100f, dp2pxf(height) / 2 + 100)
-                    lineTo(400f, dp2pxf(height) / 2 + 100)
-                    lineTo(250f, dp2pxf(height) / 2 + 300)
-                    close()
-                })
+            val paint = rememberAutoClosePaint()
+            val bitmap = rememberAutoCloseBitmap(
+                engine.getContext().resources,
+                R.drawable.round_logo,
+                100
+            )
+            val path = rememberAutoClosePath().apply {
+                moveTo(100f, dp2pxf(height) / 2 + 100)
+                lineTo(400f, dp2pxf(height) / 2 + 100)
+                lineTo(250f, dp2pxf(height) / 2 + 300)
+                close()
             }
             val rectColor = rememberInfiniteTransition().animateColor(
                 initialValue = Color.Yellow,
@@ -62,15 +56,20 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             val textColor = MaterialTheme.colorScheme.error
             val circleColor = MaterialTheme.colorScheme.inversePrimary
             val lineColor = MaterialTheme.colorScheme.onPrimaryContainer
+            DisposableEffect(Unit) {
+                onDispose {
+                    Log.d("CanvasPage", "onDispose")
+                }
+            }
             LazyColumn(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
                 backgroundColor = MaterialTheme.colorScheme.background
-            )
-            {
+            ) {
                 Canvas(
                     modifier = Modifier().size(width, height),
                     onDraw = { canvas: Canvas ->
+                        Log.d("CanvasPage", "onDraw")
                         paint.setColor(rectColor.value)
                         canvas.drawRect(100f, 100f, dp2pxf(width) / 2, dp2pxf(height) / 2, paint)
                         paint.setColor(circleColor)

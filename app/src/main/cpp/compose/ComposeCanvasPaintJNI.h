@@ -25,10 +25,17 @@ compose_paint_set_color(JNIEnv *env, jobject instance, jlong paintPtr, jint colo
     paint->setColor(color);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_paint_de_init(JNIEnv *env, jobject instance, jlong paintPtr) {
+    auto paint = reinterpret_cast<SkPaint *>(paintPtr);
+    delete paint;
+}
+
 static JNINativeMethod g_ComposePaintMethods[] = {
-        {"nativeInitPaint",    "()J",   (void *) compose_paint_init},
+        {"nativeInit",         "()J",   (void *) compose_paint_init},
         {"nativeSetAntiAlias", "(JZ)V", (void *) compose_paint_set_anti_alias},
         {"nativeSetColor",     "(JI)V", (void *) compose_paint_set_color},
+        {"nativeDeInit",       "(J)V",  (void *) compose_paint_de_init},
 };
 
 static int RegisterComposePaintMethods(JNIEnv *env) {
