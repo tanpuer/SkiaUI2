@@ -98,6 +98,16 @@ compose_canvas_draw_bitmap(JNIEnv *env, jobject instance, jlong canvasPtr, jobje
 }
 
 extern "C" JNIEXPORT void JNICALL
+compose_canvas_drawPath(JNIEnv *env, jobject instance, jlong canvasPtr, jlong pathPtr,
+                        jlong paintPtr) {
+    auto composeCanvas = reinterpret_cast<ComposeCanvas *>(canvasPtr);
+    auto canvas = composeCanvas->getCanvas();
+    auto path = reinterpret_cast<SkPath *>(pathPtr);
+    auto paint = reinterpret_cast<SkPaint *>(paintPtr);
+    canvas->drawPath(*path, *paint);
+}
+
+extern "C" JNIEXPORT void JNICALL
 compose_canvas_invalidate(JNIEnv *env, jobject instance, jlong canvasPtr) {
     auto composeCanvas = reinterpret_cast<ComposeCanvas *>(canvasPtr);
     composeCanvas->markDirty();
@@ -108,6 +118,7 @@ static JNINativeMethod g_ComposeCanvasMethods[] = {
         {"nativeDrawCircle", "(JFFFJ)V",                         (void *) compose_canvas_draw_circle},
         {"nativeDrawText",   "(JLjava/lang/String;FFFII)V",      (void *) compose_canvas_draw_text},
         {"nativeDrawBitmap", "(JLandroid/graphics/Bitmap;FFJ)V", (void *) compose_canvas_draw_bitmap},
+        {"nativeDrawPath",   "(JJJ)V",                           (void *) compose_canvas_drawPath},
         {"nativeInvalidate", "(J)V",                             (void *) compose_canvas_invalidate},
 };
 

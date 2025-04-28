@@ -25,6 +25,7 @@ import com.temple.skiaui.compose.runtime.LazyColumn
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.Canvas
 import com.temple.skiaui.compose.ui.HYComposePaint
+import com.temple.skiaui.compose.ui.HYComposePath
 import com.temple.skiaui.compose.ui.util.decodeDrawableResource
 import com.temple.skiaui.compose.ui.util.dp2pxf
 
@@ -45,11 +46,22 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     )
                 )
             }
+            val path by remember {
+                mutableStateOf(HYComposePath().apply {
+                    moveTo(100f, dp2pxf(height) / 2 + 100)
+                    lineTo(400f, dp2pxf(height) / 2 + 100)
+                    lineTo(250f, dp2pxf(height) / 2 + 300)
+                    close()
+                })
+            }
             val rectColor = rememberInfiniteTransition().animateColor(
                 initialValue = Color.Yellow,
                 targetValue = Color.Cyan,
                 animationSpec = infiniteRepeatable(tween(2000), RepeatMode.Reverse),
             )
+            val textColor = MaterialTheme.colorScheme.error
+            val circleColor = MaterialTheme.colorScheme.inversePrimary
+            val lineColor = MaterialTheme.colorScheme.onPrimaryContainer
             LazyColumn(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
@@ -61,16 +73,17 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     onDraw = { canvas: Canvas ->
                         paint.setColor(rectColor.value)
                         canvas.drawRect(100f, 100f, dp2pxf(width) / 2, dp2pxf(height) / 2, paint)
-                        paint.setColor(Color.Red)
+                        paint.setColor(circleColor)
                         canvas.drawCircle(dp2pxf(width) / 2, dp2pxf(height) / 2, 100.0f, paint)
-                        paint.setColor(Color.Black)
-                        canvas.drawText("drawText test", 500f, 500f, dp2pxf(30.dp), Color.Black)
+                        canvas.drawText("drawText test", 500f, 500f, dp2pxf(30.dp), textColor)
                         canvas.drawBitmap(
                             bitmap,
                             dp2pxf(width) / 2 + 100,
                             dp2pxf(height) / 2 + 100,
                             null
                         )
+                        paint.setColor(lineColor)
+                        canvas.drawPath(path, paint)
                         canvas.invalidate()
                     }
                 )

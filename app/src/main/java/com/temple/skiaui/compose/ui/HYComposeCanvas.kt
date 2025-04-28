@@ -42,6 +42,10 @@ class HYComposeCanvas(modifier: Modifier) : HYComposeView(modifier), Canvas {
         nativeDrawBitmap(ref, bitmap, x, y, paint?.ref ?: 0L)
     }
 
+    override fun drawPath(path: HYComposePath, paint: HYComposePaint) {
+        nativeDrawPath(ref, path.ref, paint.ref)
+    }
+
     override fun invalidate() {
         nativeInvalidate(ref)
     }
@@ -80,6 +84,8 @@ class HYComposeCanvas(modifier: Modifier) : HYComposeView(modifier), Canvas {
         y: Float,
         paint: Long
     )
+
+    private external fun nativeDrawPath(ref: Long, path: Long, paint: Long)
 
     private external fun nativeInvalidate(
         ref: Long

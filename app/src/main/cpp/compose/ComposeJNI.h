@@ -27,6 +27,7 @@
 #include "ComposeAndroidImageJNI.h"
 #include "ComposeCanvasJNI.h"
 #include "ComposeCanvasPaintJNI.h"
+#include "ComposeCanvasPathJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -56,6 +57,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposeRecyclerMethods(jniEnv);
     RegisterComposeAndroidImageMethods(jniEnv);
     RegisterComposePaintMethods(jniEnv);
+    RegisterComposePathMethods(jniEnv);
     RegisterComposeCanvasMethods(jniEnv);
 }
 
@@ -85,5 +87,6 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposeRecyclerMethods(jniEnv);
     UnRegisterComposeAndroidImageMethods(jniEnv);
     UnRegisterComposePaintMethods(jniEnv);
+    UnRegisterComposePathMethods(jniEnv);
     UnRegisterComposeCanvasMethods(jniEnv);
 }
