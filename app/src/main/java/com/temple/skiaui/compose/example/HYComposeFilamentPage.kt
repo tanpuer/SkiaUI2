@@ -8,7 +8,7 @@ import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.runtime.Filament
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
-import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.size
@@ -19,7 +19,7 @@ class HYComposeFilamentPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     override fun RunComposable(width: Dp, height: Dp) {
         JetpackComposeTheme {
-            LazyColumn(
+            Scroll(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
                 backgroundColor = MaterialTheme.colorScheme.background

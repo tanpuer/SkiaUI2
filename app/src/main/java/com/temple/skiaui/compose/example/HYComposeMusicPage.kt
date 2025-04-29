@@ -31,7 +31,7 @@ import com.temple.skiaui.compose.foundation.position
 import com.temple.skiaui.compose.runtime.AndroidImage
 import com.temple.skiaui.compose.runtime.Column
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
-import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.runtime.Row
 import com.temple.skiaui.compose.runtime.SVG
 import com.temple.skiaui.compose.runtime.Text
@@ -167,7 +167,7 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         val colors = remember { arrayOf(Color.Green, Color.Green, Color.White, Color.White) }
         val index = remember { 0 }
         val currentIndex = calculateIndex(lyrics, progress)
-        LazyColumn(
+        Scroll(
             modifier = Modifier.size(width, height)
                 .backgroundColor(Color.Transparent)
                 .margins(arrayOf(0.dp, 40.dp, 0.dp, 0.dp))

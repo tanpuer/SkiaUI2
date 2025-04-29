@@ -16,7 +16,7 @@ import com.temple.skiaui.compose.foundation.margins
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.runtime.EditText
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
-import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.runtime.Web
 import com.temple.skiaui.compose.ui.Align
 
@@ -30,7 +30,7 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                     Log.d(TAG, "onDispose")
                 }
             }
-            LazyColumn(
+            Scroll(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.Center),
                 backgroundColor = MaterialTheme.colorScheme.background

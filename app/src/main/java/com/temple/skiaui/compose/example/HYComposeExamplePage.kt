@@ -35,7 +35,7 @@ import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.compose.runtime.Icon
-import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.runtime.Loading
 import com.temple.skiaui.compose.runtime.Lottie
 import com.temple.skiaui.compose.runtime.ProgressBar
@@ -75,7 +75,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var birdBlur by remember {
                 mutableFloatStateOf(0.0f)
             }
-            LazyColumn(
+            Scroll(
                 modifier = Modifier.size(width, height)
                     .alignItems(Align.FlexStart),
                 backgroundColor = MaterialTheme.colorScheme.background

@@ -104,7 +104,7 @@ fun Row(modifier: Modifier, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun LazyColumn(modifier: Modifier, backgroundColor: Color = Color.Transparent, content: @Composable () -> Unit) {
+fun Scroll(modifier: Modifier, backgroundColor: Color = Color.Transparent, content: @Composable () -> Unit) {
     ComposeNode<HYComposeScrollView, HYComposeApplier>(
         factory = { HYComposeScrollView(modifier) },
         update = {

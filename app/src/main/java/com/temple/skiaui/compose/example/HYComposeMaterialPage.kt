@@ -21,7 +21,7 @@ import com.temple.skiaui.R
 import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
-import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.runtime.View
 import com.temple.skiaui.compose.foundation.Modifier
@@ -50,7 +50,7 @@ class HYComposeMaterialPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     Log.d(TAG, "onDispose")
                 }
             }
-            LazyColumn(
+            Scroll(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.Center),
                 backgroundColor = MaterialTheme.colorScheme.background

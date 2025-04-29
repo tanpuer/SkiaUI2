@@ -20,7 +20,7 @@ import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.runtime.Canvas
-import com.temple.skiaui.compose.runtime.LazyColumn
+import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.runtime.rememberAutoReleaseBitmap
 import com.temple.skiaui.compose.runtime.rememberAutoReleasePaint
 import com.temple.skiaui.compose.runtime.rememberAutoReleasePath
@@ -54,7 +54,7 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     Log.d("CanvasPage", "onDispose")
                 }
             }
-            LazyColumn(
+            Scroll(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
                 backgroundColor = MaterialTheme.colorScheme.background
