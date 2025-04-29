@@ -34,11 +34,7 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     override fun RunComposable(width: Dp, height: Dp) {
         JetpackComposeTheme {
             val paint = rememberAutoReleasePaint()
-            val bitmap = rememberAutoReleaseBitmap(
-                engine.getContext().resources,
-                R.drawable.round_logo,
-                100
-            )
+            val bitmap = rememberAutoReleaseBitmap(R.drawable.round_logo, 100)
             val path = rememberAutoReleasePath().apply {
                 moveTo(100f, dp2pxf(height) / 2 + 100)
                 lineTo(400f, dp2pxf(height) / 2 + 100)

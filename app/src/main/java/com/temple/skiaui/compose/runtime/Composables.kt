@@ -1,20 +1,18 @@
 package com.temple.skiaui.compose.runtime
 
-import android.content.Context
-import android.content.res.Resources
 import android.graphics.Bitmap
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.temple.skiaui.R
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
+import com.temple.skiaui.compose.ui.AutoReleasable
 import com.temple.skiaui.compose.ui.CameraCallback
 import com.temple.skiaui.compose.ui.Canvas
 import com.temple.skiaui.compose.ui.ContentScale
@@ -528,27 +526,31 @@ fun Canvas(modifier: Modifier, onDraw: (canvas: Canvas) -> Unit) {
 }
 
 @Composable
-fun rememberAutoReleasePaint(): HYComposePaint {
-    val paint = remember { HYComposePaint() }
+fun <T : AutoReleasable> rememberAutoReleasable(
+    factory: () -> T
+): T {
+    val autoReleasable = remember { factory() }
     DisposableEffect(Unit) {
-        onDispose { paint.release() }
+        onDispose {
+            autoReleasable.release()
+        }
     }
-    return paint
+    return autoReleasable
+}
+
+@Composable
+fun rememberAutoReleasePaint(): HYComposePaint {
+    return rememberAutoReleasable { HYComposePaint() }
 }
 
 @Composable
 fun rememberAutoReleasePath(): HYComposePath {
-    val path = remember { HYComposePath() }
-    DisposableEffect(Unit) {
-        onDispose {
-            path.release()
-        }
-    }
-    return path
+    return rememberAutoReleasable { HYComposePath() }
 }
 
 @Composable
-fun rememberAutoReleaseBitmap(resources: Resources, @DrawableRes resId: Int, reqWidth: Int): Bitmap {
+fun rememberAutoReleaseBitmap(@DrawableRes resId: Int, reqWidth: Int = Int.MAX_VALUE): Bitmap {
+    val resources = LocalContext.current.resources
     val bitmap = remember {
         decodeDrawableResource(resources, resId, reqWidth)
     }
@@ -559,4 +561,3 @@ fun rememberAutoReleaseBitmap(resources: Resources, @DrawableRes resId: Int, req
     }
     return bitmap
 }
-
