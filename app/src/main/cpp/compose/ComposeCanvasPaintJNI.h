@@ -22,7 +22,7 @@ compose_paint_set_anti_alias(JNIEnv *env, jobject instance, jlong paintPtr, jboo
 extern "C" JNIEXPORT void JNICALL
 compose_paint_set_color(JNIEnv *env, jobject instance, jlong paintPtr, jint color) {
     auto paint = reinterpret_cast<SkPaint *>(paintPtr);
-    paint->setColor(color);
+    paint->setColor(static_cast<unsigned int>(color));
 }
 
 extern "C" JNIEXPORT void JNICALL

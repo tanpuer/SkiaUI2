@@ -12,7 +12,7 @@ extern "C" JNIEXPORT void JNICALL
 compose_progress_set_bar_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
     auto progressBar = reinterpret_cast<ProgressBar *>(viewPtr);
     if (progressBar != nullptr) {
-        progressBar->setBarColor(color);
+        progressBar->setBarColor(static_cast<unsigned int>(color));
     }
 }
 

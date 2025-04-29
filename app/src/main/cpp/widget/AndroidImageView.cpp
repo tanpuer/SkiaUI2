@@ -1,8 +1,7 @@
 #include "AndroidImageView.h"
-#include "android/bitmap.h"
-#include "core/SkColorSpace.h"
 #include "effects/SkImageFilters.h"
 #include "Page.h"
+#include "bitmap_util.h"
 
 namespace HYSkiaUI {
 
@@ -102,43 +101,7 @@ void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int
     if (javaInstance == nullptr) {
         return;
     }
-    AndroidBitmapInfo info;
-    void *pixels = nullptr;
-    auto res = AndroidBitmap_getInfo(env, bitmap, &info);
-    if (res != ANDROID_BITMAP_RESULT_SUCCESS) {
-        ALOGE("AndroidBitmap_getInfo error %d", res)
-        return;
-    }
-    res = AndroidBitmap_lockPixels(env, bitmap, &pixels);
-    if (res != ANDROID_BITMAP_RESULT_SUCCESS) {
-        ALOGE("AndroidBitmap_lockPixels error %d", res)
-        return;
-    }
-    SkColorType colorType = kUnknown_SkColorType;
-    if (info.format == ANDROID_BITMAP_FORMAT_RGBA_8888) {
-        colorType = kRGBA_8888_SkColorType;
-    } else if (info.format == ANDROID_BITMAP_FORMAT_RGB_565) {
-        colorType = kRGB_565_SkColorType;
-    } else if (info.format == ANDROID_BITMAP_FORMAT_RGBA_4444) {
-        colorType = kARGB_4444_SkColorType;
-    } else if (info.format == ANDROID_BITMAP_FORMAT_A_8) {
-        colorType = kAlpha_8_SkColorType;
-    } else if (info.format == ANDROID_BITMAP_FORMAT_RGBA_F16) {
-        colorType = kRGBA_F16_SkColorType;
-    } else if (info.format == ANDROID_BITMAP_FORMAT_RGBA_1010102) {
-        colorType = kRGBA_1010102_SkColorType;
-    }
-    SkImageInfo skInfo = SkImageInfo::Make(
-            static_cast<int>(info.width), static_cast<int>(info.height),
-            colorType,
-            kPremul_SkAlphaType,
-            SkColorSpace::MakeSRGB()
-    );
-    skBitmap = std::make_unique<SkBitmap>();
-    skBitmap->setInfo(skInfo, info.stride);
-    skBitmap->setPixels(pixels);
-    AndroidBitmap_unlockPixels(env, bitmap);
-    skImage = skBitmap->asImage();
+    skImage = transferBitmapToSkImage(env, bitmap);
     srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
     markDirty();
     if (completeFunc != nullptr && frameCount > 0 && index < lastIndex) {
