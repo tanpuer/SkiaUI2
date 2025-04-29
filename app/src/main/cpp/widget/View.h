@@ -87,6 +87,8 @@ public:
 
     virtual void onSizeChange(int width, int height);
 
+    virtual const Page* getPage();
+
     //TODO
     float animTranslateX = 0.0f;
     float animTranslateY = 0.0f;
@@ -94,6 +96,8 @@ public:
 protected:
 
     View *parent = nullptr;
+
+    Page *page = nullptr;
 
     int64_t viewId;
 

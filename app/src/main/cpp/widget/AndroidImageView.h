@@ -96,8 +96,6 @@ private:
 
     std::unique_ptr<SkPaint> imagePaint;
 
-    bool sourceUpdated = false;
-
 };
 
 }

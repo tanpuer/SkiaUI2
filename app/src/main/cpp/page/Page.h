@@ -64,7 +64,7 @@ public:
 
     void setVisibility(bool visible);
 
-    bool getVisibility();
+    bool getVisibility() const;
 
     void setBlackWhiteMode();
 

@@ -2,6 +2,7 @@
 #include "android/bitmap.h"
 #include "core/SkColorSpace.h"
 #include "effects/SkImageFilters.h"
+#include "Page.h"
 
 namespace HYSkiaUI {
 
@@ -27,8 +28,10 @@ void AndroidImageView::setSource(const char *source) {
     this->resId = -1;
     this->source = source;
     checkInstance();
-    sourceUpdated = true;
-    markDirty();
+    auto jniEnv = context->getJniEnv();
+    auto jSource = jniEnv->NewStringUTF(source);
+    jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource);
+    jniEnv->DeleteLocalRef(jSource);
 }
 
 void AndroidImageView::setResId(int resId) {
@@ -36,8 +39,8 @@ void AndroidImageView::setResId(int resId) {
     this->source = "";
     this->resId = resId;
     checkInstance();
-    sourceUpdated = true;
-    markDirty();
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId);
 }
 
 void AndroidImageView::setScaleType(ImageView::ScaleType scaleType) {
@@ -82,17 +85,6 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
 }
 
 void AndroidImageView::draw(SkCanvas *canvas) {
-    if (sourceUpdated) {
-        sourceUpdated = false;
-        auto jniEnv = context->getJniEnv();
-        if (!source.empty()) {
-            auto jSource = jniEnv->NewStringUTF(source.c_str());
-            jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource);
-            jniEnv->DeleteLocalRef(jSource);
-        } else if (resId > 0) {
-            jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId);
-        }
-    }
     View::draw(canvas);
     if (skImage == nullptr || javaInstance == nullptr) {
         return;
@@ -153,6 +145,10 @@ void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int
         completeFunc(this);
     }
     lastIndex = index;
+    auto page = getPage();
+    if (page != nullptr && !page->getVisibility()) {
+        innerStop();
+    }
 }
 
 void AndroidImageView::checkInstance() {

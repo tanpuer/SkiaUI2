@@ -448,6 +448,22 @@ void View::onSizeChange(int width, int height) {
 
 }
 
+const Page *View::getPage() {
+    if (page != nullptr) {
+        return page;
+    }
+    auto parent = getParent();
+    while (parent != nullptr) {
+        auto page = reinterpret_cast<Page *>(parent);
+        if (page != nullptr) {
+            this->page = page;
+            break;
+        }
+        parent = parent->getParent();
+    }
+    return page;
+}
+
 void View::setVelocity(float x, float y) {
     this->xVelocity = x;
     this->yVelocity = y;

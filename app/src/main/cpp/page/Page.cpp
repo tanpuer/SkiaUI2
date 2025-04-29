@@ -152,7 +152,7 @@ void Page::setVisibility(bool visible) {
     this->visible = visible;
 }
 
-bool Page::getVisibility() {
+bool Page::getVisibility() const {
     return visible;
 }
 
