@@ -454,14 +454,13 @@ const Page *View::getPage() {
     }
     auto parent = getParent();
     while (parent != nullptr) {
-        auto page = reinterpret_cast<Page *>(parent);
-        if (page != nullptr) {
-            this->page = page;
-            break;
+        if (strcmp(parent->name(), "Page") == 0) {
+            this->page = reinterpret_cast<Page *>(parent);
+            return page;
         }
         parent = parent->getParent();
     }
-    return page;
+    return nullptr;
 }
 
 void View::setVelocity(float x, float y) {
