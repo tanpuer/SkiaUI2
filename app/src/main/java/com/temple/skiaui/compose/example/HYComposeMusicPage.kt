@@ -176,7 +176,7 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             lyrics.forEachIndexed { index, lyric ->
                 val gradientStops = remember(progress) {
                     if (progress < lyric.timeMills.first() || progress > lyric.timeMills.last()) {
-                        floatArrayOf(0.0f, 0.0f, 0.0f, 1.0f)
+                        floatArrayOf()
                     } else {
                         val percent = calculatePercent(lyric, progress)
                         floatArrayOf(0f, percent, percent, 1f)
@@ -188,7 +188,10 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     content = lyric.content,
                     textSize = 25.dp,
                     color = Color.White,
-                    textGradient = TextGradient(colors, gradientStops)
+                    textGradient = TextGradient(
+                        if (gradientStops.size == 4) colors else arrayOf(),
+                        gradientStops
+                    )
                 )
             }
         }
