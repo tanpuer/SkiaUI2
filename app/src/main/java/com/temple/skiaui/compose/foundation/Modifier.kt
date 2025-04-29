@@ -34,6 +34,8 @@ class Modifier {
 
     var alignItems: Align = Align.Unspecified
 
+    var alignSelf: Align = Align.Unspecified
+
     fun diffStyles(previous: Modifier) {
         if (!width.isUnspecified && width != previous.width) {
             styles[StyleKey.width] = width
@@ -82,6 +84,9 @@ class Modifier {
         }
         if (alignItems != Align.Unspecified && alignItems != previous.alignItems) {
             styles[StyleKey.alignItems] = alignItems
+        }
+        if (alignSelf != Align.Unspecified && alignSelf != previous.alignSelf) {
+            styles[StyleKey.alignSelf] = alignSelf
         }
     }
 

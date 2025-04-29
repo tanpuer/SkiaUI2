@@ -47,6 +47,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                     val size = value as Array<*>
                     nativeSetMinSize(ref, dp2px(size[0] as Dp), dp2px(size[1] as Dp))
                 }
+
+                StyleKey.alignSelf -> {
+                    nativeSetAlignSelf(ref, (value as Align).value)
+                }
             }
         }
     }
@@ -99,4 +103,5 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetPosition(view: Long, position: String)
     private external fun nativeSetCornerRadius(view: Long, radius: Int)
     private external fun nativeSetMinSize(view: Long, minWidth: Int, minHeight: Int)
+    private external fun nativeSetAlignSelf(view: Long, value: String)
 }

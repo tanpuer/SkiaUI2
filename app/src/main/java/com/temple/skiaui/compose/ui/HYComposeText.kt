@@ -42,6 +42,15 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetFontFamily(ref, fontFamily)
     }
 
+    fun setTextGradient(textGradient: TextGradient?) {
+        if (textGradient == null) {
+            return
+        }
+        nativeSetTextGradient(ref, textGradient.colors.map {
+            composeColorToSkiaColor(it)
+        }.toIntArray(), textGradient.pos)
+    }
+
     override fun getViewType(): String = "Text"
 
     private external fun nativeSetText(textView: Long, text: String)
@@ -51,5 +60,6 @@ open class HYComposeText(modifier: Modifier) : HYComposeView(modifier) {
     private external fun nativeSetEllipsis(textView: Long, ellipse: String)
     private external fun nativeSetTextAlign(textView: Long, align: String)
     private external fun nativeSetFontFamily(textView: Long, fontFamily: String)
+    private external fun nativeSetTextGradient(textView: Long, colors: IntArray, pos: FloatArray)
 
 }

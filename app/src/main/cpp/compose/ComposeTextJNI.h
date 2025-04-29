@@ -81,14 +81,35 @@ compose_text_set_font_family(JNIEnv *env, jobject instance, jlong viewPtr, jstri
     env->ReleaseStringUTFChars(fontFamily, fontStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_text_set_text_gradient(JNIEnv *env, jobject instance, jlong viewPtr, jintArray colors,
+                               jfloatArray pos) {
+    auto textView = reinterpret_cast<TextView *>(viewPtr);
+    if (textView == nullptr) {
+        return;
+    }
+    std::vector<SkColor> colorVector;
+    jint *cArray = env->GetIntArrayElements(colors, nullptr);
+    jsize length = env->GetArrayLength(colors);
+    colorVector.assign(cArray, cArray + length);
+    env->ReleaseIntArrayElements(colors, cArray, 0);
+    std::vector<float> posVector;
+    jfloat *pArray = env->GetFloatArrayElements(pos, nullptr);
+    jsize pLength = env->GetArrayLength(pos);
+    posVector.assign(pArray, pArray + pLength);
+    env->ReleaseFloatArrayElements(pos, pArray, 0);
+    textView->setTextGradient(colorVector, posVector);
+}
+
 static JNINativeMethod g_ComposeTextViewMethods[] = {
-        {"nativeSetText",       "(JLjava/lang/String;)V", (void *) compose_text_set_text},
-        {"nativeSetTextSize",   "(JI)V",                  (void *) compose_text_set_text_size},
-        {"nativeSetColor",      "(JI)V",                  (void *) compose_text_set_color},
-        {"nativeSetMaxLine",    "(JI)V",                  (void *) compose_text_set_max_line},
-        {"nativeSetEllipsis",   "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
-        {"nativeSetTextAlign",  "(JLjava/lang/String;)V", (void *) compose_text_set_align},
-        {"nativeSetFontFamily", "(JLjava/lang/String;)V", (void *) compose_text_set_font_family},
+        {"nativeSetText",         "(JLjava/lang/String;)V", (void *) compose_text_set_text},
+        {"nativeSetTextSize",     "(JI)V",                  (void *) compose_text_set_text_size},
+        {"nativeSetColor",        "(JI)V",                  (void *) compose_text_set_color},
+        {"nativeSetMaxLine",      "(JI)V",                  (void *) compose_text_set_max_line},
+        {"nativeSetEllipsis",     "(JLjava/lang/String;)V", (void *) compose_text_set_ellipse},
+        {"nativeSetTextAlign",    "(JLjava/lang/String;)V", (void *) compose_text_set_align},
+        {"nativeSetFontFamily",   "(JLjava/lang/String;)V", (void *) compose_text_set_font_family},
+        {"nativeSetTextGradient", "(J[I[F)V",               (void *) compose_text_set_text_gradient},
 };
 
 static int RegisterComposeTextMethods(JNIEnv *env) {

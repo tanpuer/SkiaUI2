@@ -93,6 +93,14 @@ compose_view_set_min_size(JNIEnv *env, jobject instance, jlong viewPtr, jint min
     view->setMinSize(minWidth, minHeight);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_align_self(JNIEnv *env, jobject instance, jlong viewPtr, jstring alignSelf) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    auto alignSelfStr = env->GetStringUTFChars(alignSelf, nullptr);
+    view->setAlignSelf(W3CToYGAlign(alignSelfStr));
+    env->ReleaseStringUTFChars(alignSelf, alignSelfStr);
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
@@ -104,6 +112,7 @@ static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetPosition",        "(JLjava/lang/String;)V", (void *) compose_view_set_position},
         {"nativeSetCornerRadius",    "(JI)V",                  (void *) compose_view_set_corner_radius},
         {"nativeSetMinSize",         "(JII)V",                 (void *) compose_view_set_min_size},
+        {"nativeSetAlignSelf",       "(JLjava/lang/String;)V", (void *) compose_view_set_align_self},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

@@ -1,6 +1,5 @@
 package com.temple.skiaui.compose.example
 
-import android.util.Log
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -144,6 +143,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ComposeFilament(width, height)
                 ComposeRecycler(width, height)
                 ComposeCanvas(width, height)
+                ComposeMusic(width, height)
                 Loading(
                     modifier = Modifier.size(200.dp, 50.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
@@ -317,6 +317,24 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeCanvasPage(engine).apply {
+                    start(width, height)
+                    HYComposeSDK.pushPage(this)
+                }
+            }
+        )
+    }
+
+    @Composable
+    private fun ComposeMusic(width: Dp, height: Dp) {
+        Button(
+            modifier = Modifier
+                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+            content = stringResource(R.string.qq_music_page),
+            textSize = 20.dp,
+            color = MaterialTheme.colorScheme.tertiary,
+            onClick = {
+                HYComposeMusicPage(engine).apply {
                     start(width, height)
                     HYComposeSDK.pushPage(this)
                 }

@@ -11,6 +11,7 @@ object StyleKey {
     const val flexDirection = "flexDirection"
     const val justifyContent = "justifyContent"
     const val alignItems = "alignItems"
+    const val alignSelf = "alignSelf"
     const val margins = "margins"
     const val paddings = "paddings"
 }

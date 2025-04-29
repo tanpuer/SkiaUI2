@@ -41,6 +41,7 @@ import com.temple.skiaui.compose.ui.HYComposeText
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
 import com.temple.skiaui.compose.ui.TextAlign
+import com.temple.skiaui.compose.ui.TextGradient
 import com.temple.skiaui.compose.ui.util.decodeDrawableResource
 
 @Composable
@@ -70,7 +71,11 @@ fun View(
 }
 
 @Composable
-fun Column(modifier: Modifier, backgroundColor: Color, content: @Composable () -> Unit) {
+fun Column(
+    modifier: Modifier,
+    backgroundColor: Color = Color.Transparent,
+    content: @Composable () -> Unit
+) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
         factory = { HYComposeFlexboxLayout(modifier) },
         update = {
@@ -99,7 +104,7 @@ fun Row(modifier: Modifier, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun LazyColumn(modifier: Modifier, backgroundColor: Color, content: @Composable () -> Unit) {
+fun LazyColumn(modifier: Modifier, backgroundColor: Color = Color.Transparent, content: @Composable () -> Unit) {
     ComposeNode<HYComposeScrollView, HYComposeApplier>(
         factory = { HYComposeScrollView(modifier) },
         update = {
@@ -151,7 +156,12 @@ fun Loading(modifier: Modifier, color: Color = Color.Blue, onClick: (() -> Unit)
 }
 
 @Composable
-fun SVG(modifier: Modifier, source: String, rotateZ: Float = 0.0f, onClick: () -> Unit) {
+fun SVG(
+    modifier: Modifier,
+    source: String,
+    rotateZ: Float = 0.0f,
+    onClick: (() -> Unit)? = null
+) {
     ComposeNode<HYComposeSVG, HYComposeApplier>(
         factory = { HYComposeSVG(modifier) },
         update = {
@@ -225,6 +235,7 @@ fun Text(
     maxLine: Int = 0,
     ellipsis: String = "…",
     fontFamily: String? = null,
+    textGradient: TextGradient? = null,
     onClick: (() -> Unit)? = null
 ) {
     ComposeNode<HYComposeText, HYComposeApplier>(
@@ -253,6 +264,9 @@ fun Text(
             }
             set(fontFamily) {
                 setFontFamily(fontFamily)
+            }
+            set(textGradient) {
+                setTextGradient(textGradient)
             }
             set(onClick) {
                 setOnClick(onClick)
@@ -483,6 +497,7 @@ fun AndroidImage(
     @DrawableRes resId: Int = 0,
     contentScale: ContentScale = ContentScale.Unspecified,
     blur: Float = 0.0f,
+    rotateZ: Float = 0.0f,
     onClick: (() -> Unit)? = null
 ) {
     ComposeNode<HYComposeAndroidImage, HYComposeApplier>(
@@ -505,6 +520,9 @@ fun AndroidImage(
             }
             set(blur) {
                 setBlur(blur)
+            }
+            set(rotateZ) {
+                setRotateZ(rotateZ)
             }
         }
     )

@@ -1,5 +1,7 @@
 package com.temple.skiaui.compose.ui
 
+import androidx.compose.ui.graphics.Color
+
 enum class FlexWrap(val value: String) {
     Unspecified("Unspecified"),
     NoWrap("nowrap"),
@@ -68,3 +70,4 @@ enum class ContentScale(val value: String) {
     Contain("contain")
 }
 
+data class TextGradient(val colors: Array<Color>, val pos: FloatArray)

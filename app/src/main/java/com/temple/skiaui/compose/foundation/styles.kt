@@ -39,6 +39,11 @@ fun Modifier.alignItems(value: Align): Modifier {
     return this
 }
 
+fun Modifier.alignSelf(value: Align): Modifier {
+    this.alignSelf = value
+    return this
+}
+
 fun Modifier.flexDirection(value: FlexDirection): Modifier {
     this.flexDirection = value
     return this
