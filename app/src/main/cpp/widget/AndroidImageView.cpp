@@ -27,10 +27,11 @@ void AndroidImageView::setSource(const char *source) {
     this->resId = -1;
     this->source = source;
     checkInstance();
-    auto jniEnv = context->getJniEnv();
-    auto jSource = jniEnv->NewStringUTF(source);
-    jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource);
-    jniEnv->DeleteLocalRef(jSource);
+    if (width > 0 || height > 0) {
+        setSourceJNI();
+        return;
+    }
+    imageUpdatedFlag = true;
 }
 
 void AndroidImageView::setResId(int resId) {
@@ -38,8 +39,11 @@ void AndroidImageView::setResId(int resId) {
     this->source = "";
     this->resId = resId;
     checkInstance();
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId);
+    if (width > 0 || height > 0) {
+        setSourceJNI();
+        return;
+    }
+    imageUpdatedFlag = true;
 }
 
 void AndroidImageView::setScaleType(ImageView::ScaleType scaleType) {
@@ -49,6 +53,10 @@ void AndroidImageView::setScaleType(ImageView::ScaleType scaleType) {
 
 void AndroidImageView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
+    if (imageUpdatedFlag && width > 0 && height > 0) {
+        imageUpdatedFlag = false;
+        setSourceJNI();
+    }
     if (skImage == nullptr) {
         return;
     }
@@ -124,9 +132,9 @@ void AndroidImageView::checkInstance() {
         javaInstance = jniEnv->NewGlobalRef(
                 jniEnv->NewObject(javaClass, javaConstructor, javaSkiaEngine,
                                   reinterpret_cast<long>(this)));
-        setSourceMethodId = jniEnv->GetMethodID(javaClass, "setSource", "(Ljava/lang/String;)V");
+        setSourceMethodId = jniEnv->GetMethodID(javaClass, "setSource", "(Ljava/lang/String;II)V");
         releaseMethodId = jniEnv->GetMethodID(javaClass, "release", "()V");
-        setResIdMethodId = jniEnv->GetMethodID(javaClass, "setResId", "(I)V");
+        setResIdMethodId = jniEnv->GetMethodID(javaClass, "setResId", "(III)V");
         startMethodId = jniEnv->GetMethodID(javaClass, "start", "()V");
         stopMethodId = jniEnv->GetMethodID(javaClass, "stop", "()V");
     }
@@ -197,6 +205,18 @@ float AndroidImageView::getAlpha() {
 void AndroidImageView::setAlpha(float alpha) {
     imagePaint->setAlphaf(alpha);
     markDirty();
+}
+
+void AndroidImageView::setSourceJNI() {
+    if (resId > 0) {
+        auto jniEnv = context->getJniEnv();
+        jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId, width, height);
+    } else if (!source.empty()) {
+        auto jniEnv = context->getJniEnv();
+        auto jSource = jniEnv->NewStringUTF(source.c_str());
+        jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource, width, height);
+        jniEnv->DeleteLocalRef(jSource);
+    }
 }
 
 }

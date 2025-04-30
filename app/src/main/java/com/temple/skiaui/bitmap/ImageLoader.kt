@@ -4,9 +4,9 @@ import android.graphics.drawable.Drawable
 
 interface ImageLoader : Drawable.Callback {
 
-    fun requestBitmap(source: String)
+    fun requestBitmap(source: String, viewWidth: Int, viewHeight: Int)
 
-    fun requestDrawable(resId: Int)
+    fun requestDrawable(resId: Int, viewWidth: Int, viewHeight: Int)
 
     fun start()
 

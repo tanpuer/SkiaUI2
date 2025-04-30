@@ -6,12 +6,12 @@ class AndroidBitmapLoader(val engine: HYSkiaEngine, val ref: Long) {
 
     private var imageLoader: ImageLoader = GlideImageLoader(engine, ref)
 
-    fun setSource(source: String) {
-        imageLoader.requestBitmap(source)
+    fun setSource(source: String, viewWidth: Int, viewHeight: Int) {
+        imageLoader.requestBitmap(source, viewWidth, viewHeight)
     }
 
-    fun setResId(resId: Int) {
-        imageLoader.requestDrawable(resId)
+    fun setResId(resId: Int, viewWidth: Int, viewHeight: Int) {
+        imageLoader.requestDrawable(resId, viewWidth, viewHeight)
     }
 
     fun release() {

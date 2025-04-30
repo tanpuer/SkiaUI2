@@ -50,6 +50,14 @@ public:
 
 private:
 
+    void checkInstance();
+
+    void innerStart();
+
+    void innerStop();
+
+    void setSourceJNI();
+
     SkMatrix imageMatrix;
 
     ImageView::ScaleType scaleType = ImageView::ScaleType::FitCenter;
@@ -76,8 +84,6 @@ private:
 
     jmethodID stopMethodId = nullptr;
 
-    void checkInstance();
-
     float radius = 0.0f;
 
     SkRRect clipRect;
@@ -88,13 +94,11 @@ private:
 
     bool userSetPaused = false;
 
-    void innerStart();
-
-    void innerStop();
-
     int lastIndex = 0;
 
     std::unique_ptr<SkPaint> imagePaint;
+
+    bool imageUpdatedFlag = false;
 
 };
 

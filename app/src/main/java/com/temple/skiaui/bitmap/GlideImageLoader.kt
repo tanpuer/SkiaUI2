@@ -21,31 +21,32 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     private var bitmapTarget: CustomTarget<Bitmap>? = null
     private var gifDrawable: GifDrawable? = null
     private var gifTarget: CustomTarget<GifDrawable>? = null
+
     @Volatile
     private var released = false
 
     private var resId: Int = 0
     private var source: String? = null
 
-    override fun requestBitmap(source: String) {
+    override fun requestBitmap(source: String, viewWidth: Int, viewHeight: Int) {
         this.source = source
         this.resId = 0
         mainHandler.post {
             innerRecycle()
             if (source.endsWith(".gif")) {
-                processGif()
+                processGif(viewWidth, viewHeight)
             } else {
-                processBitmap()
+                processBitmap(viewWidth, viewHeight)
             }
         }
     }
 
-    override fun requestDrawable(resId: Int) {
+    override fun requestDrawable(resId: Int, viewWidth: Int, viewHeight: Int) {
         this.source = null
         this.resId = resId
         mainHandler.post {
             innerRecycle()
-            processBitmap()
+            processBitmap(viewWidth, viewHeight)
         }
     }
 
@@ -86,7 +87,7 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
             }
     }
 
-    private fun processGif() {
+    private fun processGif(viewWidth: Int, viewHeight: Int) {
         var builder = Glide.with(engine.getContext())
             .asGif()
         if (source != null) {
@@ -116,10 +117,14 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
             override fun onLoadCleared(placeholder: Drawable?) {}
         }
         gifTarget = target
-        builder.diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(gifTarget!!)
+        var loader = builder.diskCacheStrategy(DiskCacheStrategy.ALL)
+        if (viewWidth > 0 && viewHeight > 0) {
+            loader = loader.override(viewWidth, viewHeight)
+        }
+        loader.into(target)
     }
 
-    private fun processBitmap() {
+    private fun processBitmap(viewWidth: Int, viewHeight: Int) {
         var builder = Glide.with(engine.getContext())
             .asBitmap()
         if (source != null) {
@@ -148,7 +153,11 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
             override fun onLoadCleared(placeholder: Drawable?) {}
         }
         bitmapTarget = target
-        builder.diskCacheStrategy(DiskCacheStrategy.RESOURCE).into(bitmapTarget!!)
+        var loader = builder.diskCacheStrategy(DiskCacheStrategy.ALL)
+        if (viewWidth > 0 && viewHeight > 0) {
+            loader = loader.override(viewWidth, viewHeight)
+        }
+        loader.into(target)
     }
 
     private fun isAbsoluteUrl(source: String? = null): Boolean {
