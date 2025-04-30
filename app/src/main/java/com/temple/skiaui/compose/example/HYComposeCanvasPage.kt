@@ -67,7 +67,7 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         canvas.drawRect(100f, 100f, dp2pxf(width) / 2, dp2pxf(height) / 2, paint)
                         paint.setColor(circleColor)
                         canvas.drawCircle(dp2pxf(width) / 2, dp2pxf(height) / 2, 100.0f, paint)
-                        canvas.drawText("drawText test", 500f, 500f, dp2pxf(30.dp), textColor)
+                        canvas.drawText("drawText test", 500f, 500f, dp2pxf(20.dp), textColor)
                         canvas.drawBitmap(
                             bitmap,
                             dp2pxf(width) / 2 + 100,
