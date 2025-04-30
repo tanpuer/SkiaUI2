@@ -14,9 +14,13 @@ class LyricsViewModel : ViewModel() {
 
     val lyrics: StateFlow<List<Lyric>> = _lyrics.asStateFlow()
 
-    private val _progress = MutableStateFlow<Long>(0L)
+    private val _progress = MutableStateFlow(0L)
 
     val progress: StateFlow<Long> = _progress.asStateFlow()
+
+    private val _playing = MutableStateFlow(true)
+
+    val playing: StateFlow<Boolean> = _playing.asStateFlow()
 
     fun parseLrc(path: String) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,6 +33,10 @@ class LyricsViewModel : ViewModel() {
 
     fun setProgress(progress: Long) {
         _progress.value = progress
+    }
+
+    fun setPlaying(playing: Boolean) {
+        _playing.value = playing
     }
 
 }

@@ -122,14 +122,15 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     source = "music/record_player_dark_arm.png",
                     contentScale = ContentScale.Cover
                 )
-                ComposeControl()
+                ComposeControl(audioPlayer, viewModel)
                 LyricsScreen(width, height - 150.dp, progress.value, lyrics.value)
             }
         }
     }
 
     @Composable
-    private fun ComposeControl() {
+    private fun ComposeControl(audioPlayer: HYSkiaAudioTracker, viewModel: LyricsViewModel) {
+        val playing = viewModel.playing.collectAsState()
         Row(
             modifier = Modifier.backgroundColor(Color.Transparent)
                 .position(Position.Absolute)
@@ -137,21 +138,38 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 .margins(arrayOf(220.dp, 0.dp, 0.dp, 0.dp))
         ) {
             AndroidImage(
-                modifier = Modifier.size(50.dp, 50.dp)
+                modifier = Modifier.size(40.dp, 40.dp)
                     .backgroundColor(Color.Transparent),
-                source = "music/ic_previous.png"
+                source = "music/ic_previous.png",
+                onClick = {
+                    audioPlayer.seek(0)
+                    viewModel.setPlaying(true)
+                }
             )
             AndroidImage(
-                modifier = Modifier.size(50.dp, 50.dp)
+                modifier = Modifier.size(40.dp, 40.dp)
                     .backgroundColor(Color.Transparent)
                     .margins(arrayOf(10.dp, 0.dp, 0.dp, 0.dp)),
-                source = "music/ic_pause.png"
+                source = if (playing.value) "music/ic_pause.png" else "music/ic_play.png",
+                onClick = {
+                    if (playing.value) {
+                        viewModel.setPlaying(false)
+                        audioPlayer.pause()
+                    } else {
+                        viewModel.setPlaying(true)
+                        audioPlayer.start()
+                    }
+                }
             )
             AndroidImage(
-                modifier = Modifier.size(50.dp, 50.dp)
+                modifier = Modifier.size(40.dp, 40.dp)
                     .backgroundColor(Color.Transparent)
                     .margins(arrayOf(10.dp, 0.dp, 0.dp, 0.dp)),
-                source = "music/ic_next.png"
+                source = "music/ic_next.png",
+                onClick = {
+                    audioPlayer.seek(0)
+                    viewModel.setPlaying(true)
+                }
             )
         }
     }
@@ -184,7 +202,7 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 }
                 Text(
                     modifier = Modifier.backgroundColor(Color.Transparent)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 20.dp)),
                     content = lyric.content,
                     textSize = 25.dp,
                     color = Color.White,
@@ -227,7 +245,7 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         for (z in 0..<jIndex - 1) {
             gradientLength += lyric.contentList[z].length
         }
-        if (jIndex > 1) {
+        if (jIndex >= 1) {
             gradientLength += (progress - lyric.timeMills[jIndex - 1]) * 1.0f /
                     (lyric.timeMills[jIndex] - lyric.timeMills[jIndex - 1]) *
                     lyric.contentList[jIndex - 1].length
