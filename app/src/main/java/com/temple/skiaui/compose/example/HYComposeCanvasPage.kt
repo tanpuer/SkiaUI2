@@ -63,6 +63,7 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     modifier = Modifier().size(width, height),
                     onDraw = { canvas: Canvas ->
                         Log.d("CanvasPage", "onDraw")
+                        paint.setAntiAlias(true)
                         paint.setColor(rectColor.value)
                         canvas.drawRect(100f, 100f, dp2pxf(width) / 2, dp2pxf(height) / 2, paint)
                         paint.setColor(circleColor)
@@ -76,6 +77,16 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         )
                         paint.setColor(lineColor)
                         canvas.drawPath(path, paint)
+                        canvas.save()
+                        paint.setColor(Color.Red)
+                        canvas.translate(600f, 100f)
+                        canvas.drawOval(0f, 0f, 200f, 300f, paint)
+                        canvas.restore()
+                        canvas.save();
+                        canvas.translate(50f, 800f)
+                        paint.setColor(Color.Blue)
+                        canvas.drawRoundRect(0f, 0f, 200f, 200f, 20f, 20f, paint)
+                        canvas.restore();
                         canvas.invalidate()
                     }
                 )
