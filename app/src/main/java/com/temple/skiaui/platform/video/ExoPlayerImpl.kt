@@ -1,5 +1,6 @@
 package com.temple.skiaui.platform.video
 
+import android.util.Log
 import android.view.Surface
 import androidx.annotation.OptIn
 import androidx.core.net.toUri
@@ -20,6 +21,7 @@ class ExoPlayerImpl : IVideoPlayer {
 
     @OptIn(UnstableApi::class)
     override fun setAssetsSource(assetsPath: String) {
+        val start = System.currentTimeMillis()
         val dataSourceFactory = DataSource.Factory { AssetDataSource(HYSkiaUIApp.getInstance()) }
         val uri = "asset:///$assetsPath".toUri()
         val mediaSource: MediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -27,6 +29,7 @@ class ExoPlayerImpl : IVideoPlayer {
         exoPlayer?.setMediaSource(mediaSource)
         exoPlayer?.addListener(object : Player.Listener {
             override fun onRenderedFirstFrame() {
+                Log.d(TAG, "first-frame: ${System.currentTimeMillis() - start}")
                 listener?.onRenderedFirstFrame()
             }
         })
@@ -71,6 +74,10 @@ class ExoPlayerImpl : IVideoPlayer {
 
     override fun setVideoListener(listener: IVideoListener?) {
         this.listener = listener
+    }
+
+    companion object {
+        private const val TAG = "ExoPlayerImpl"
     }
 
 }
