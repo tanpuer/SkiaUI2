@@ -104,15 +104,28 @@ fun Row(modifier: Modifier, content: @Composable () -> Unit) {
 }
 
 @Composable
-fun Scroll(modifier: Modifier, backgroundColor: Color = Color.Transparent, content: @Composable () -> Unit) {
+fun Scroll(
+    ref: ((scroll: HYComposeScrollView) -> Unit)? = null, //TODO, should support ref?
+    modifier: Modifier,
+    backgroundColor: Color = Color.Transparent,
+    offset: Int = -1,
+    content: @Composable () -> Unit
+) {
     ComposeNode<HYComposeScrollView, HYComposeApplier>(
-        factory = { HYComposeScrollView(modifier) },
+        factory = {
+            HYComposeScrollView(modifier).apply {
+                ref?.invoke(this)
+            }
+        },
         update = {
             set(modifier) {
                 updateModifier(modifier)
             }
             set(backgroundColor) {
                 setBackgroundColor(backgroundColor)
+            }
+            set(offset) {
+                scrollTo(offset)
             }
         },
         content = content

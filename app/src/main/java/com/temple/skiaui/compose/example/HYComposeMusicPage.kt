@@ -12,6 +12,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
@@ -40,9 +41,11 @@ import com.temple.skiaui.compose.runtime.SVG
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.ContentScale
+import com.temple.skiaui.compose.ui.HYComposeScrollView
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 import com.temple.skiaui.compose.ui.TextGradient
+import com.temple.skiaui.compose.ui.util.dp2px
 import kotlin.math.absoluteValue
 
 
@@ -200,20 +203,31 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     ) {
         Log.d(TAG, "progress is $progress, lyrics is ${lyrics.size}")
         val colors = remember { arrayOf(Color.Green, Color.Green, Color.White, Color.White) }
-        val index = remember { 0 }
         val currentIndex = calculateIndex(lyrics, progress)
+        val scrollView = remember {
+            mutableStateOf<HYComposeScrollView?>(null)
+        }
         Scroll(
+            ref = {
+                scrollView.value = it
+            },
             modifier = Modifier.size(width, height)
                 .backgroundColor(Color.Transparent)
-                .alignItems(Align.Center)
+                .alignItems(Align.Center),
+            offset = -((scrollView.value?.getDistanceByIndex(currentIndex)
+                ?: 0) - dp2px(height) / 2)
         ) {
             lyrics.forEachIndexed { index, lyric ->
                 val gradientStops = remember(progress) {
-                    if (progress < lyric.timeMills.first() || progress > lyric.timeMills.last()) {
-                        floatArrayOf()
+                    if (currentIndex == index) {
+                        if (progress < lyric.timeMills.first() || progress > lyric.timeMills.last()) {
+                            floatArrayOf(0f, 1.0f, 1.0f, 1f)
+                        } else {
+                            val percent = calculatePercent(lyric, progress)
+                            floatArrayOf(0f, percent, percent, 1f)
+                        }
                     } else {
-                        val percent = calculatePercent(lyric, progress)
-                        floatArrayOf(0f, percent, percent, 1f)
+                        floatArrayOf()
                     }
                 }
                 Text(
@@ -243,6 +257,8 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             } else if (start > progress) {
                 index = i - 1
                 break
+            } else if (i == lyrics.indices.last) {
+                return i
             }
         }
         return index

@@ -29,7 +29,6 @@ private fun parseEnhancedLrc(lrcText: String): ArrayList<Lyric> {
         val timeMatches = timeRegex.findAll(line).map { it.value }.toList()
         val cleanText = line.replace(timeRegex, "")
             .replace(" ", "")
-            .replace("-", "") // 处理连字符分隔的时间
 
         val timeMills = timeMatches.map { timeStr ->
             val (h, m, sMs) = timeStr.split(":")
