@@ -82,11 +82,11 @@ class HYComposeCanvasPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         canvas.translate(600f, 100f)
                         canvas.drawOval(0f, 0f, 200f, 300f, paint)
                         canvas.restore()
-                        canvas.save();
+                        canvas.save()
                         canvas.translate(50f, 800f)
                         paint.setColor(Color.Blue)
                         canvas.drawRoundRect(0f, 0f, 200f, 200f, 20f, 20f, paint)
-                        canvas.restore();
+                        canvas.restore()
                         canvas.invalidate()
                     }
                 )

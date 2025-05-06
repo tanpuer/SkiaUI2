@@ -21,6 +21,9 @@ compose_progress_set_change_callback(JNIEnv *env, jobject instance, jlong viewPt
     auto progressBar = reinterpret_cast<ProgressBar *>(viewPtr);
     if (progressBar != nullptr) {
         progressBar->setProgressCallback([progressBar](int progress, bool finished) {
+            if (!finished) {
+                return;
+            }
             auto jniEnv = progressBar->getContext()->getJniEnv();
             auto javaInstance = progressBar->getJavaViewRef();
             static jmethodID onChangeFromNativeMethodId = jniEnv->GetMethodID(

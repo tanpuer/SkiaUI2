@@ -26,17 +26,21 @@ import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.alignSelf
 import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.corner
+import com.temple.skiaui.compose.foundation.justifyContent
 import com.temple.skiaui.compose.foundation.margins
+import com.temple.skiaui.compose.foundation.paddings
 import com.temple.skiaui.compose.foundation.position
 import com.temple.skiaui.compose.runtime.AndroidImage
 import com.temple.skiaui.compose.runtime.Column
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
+import com.temple.skiaui.compose.runtime.ProgressBar
 import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.runtime.Row
 import com.temple.skiaui.compose.runtime.SVG
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.ContentScale
+import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 import com.temple.skiaui.compose.ui.TextGradient
 import kotlin.math.absoluteValue
@@ -81,17 +85,33 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     contentScale = ContentScale.Cover,
                     blur = 10f
                 )
-                AndroidImage(
-                    modifier = Modifier.size(170.dp / 2, 46.dp / 2)
-                        .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp))
-                        .position(Position.Absolute)
-                        .backgroundColor(Color.Transparent),
-                    source = "music/logo.png"
+                Row(
+                    modifier = Modifier.width(width)
+                        .backgroundColor(Color.Transparent)
+                        .paddings(arrayOf(10.dp, 0.dp, 10.dp, 0.dp))
+                        .alignItems(Align.Center)
+                        .justifyContent(Justify.SpaceAround)
+                ) {
+                    AndroidImage(
+                        modifier = Modifier.size(170.dp / 2, 46.dp / 2)
+                            .backgroundColor(Color.Transparent),
+                        source = "music/logo.png"
+                    )
+                    ComposeControl(audioPlayer, viewModel)
+                }
+                ProgressBar(
+                    modifier = Modifier.size(width, 20.dp)
+                        .paddings(arrayOf(20.dp, 0.dp, 20.dp, 0.dp)),
+                    barColor = Color.Green,
+                    backgroundColor = Color.White,
+                    progress = (if (audioPlayer.getDuration() == 0L) 0 else progress.value * 100 / audioPlayer.getDuration()).toInt(),
+                    onChange = {
+                        audioPlayer.seek(audioPlayer.getDuration() * it / 100)
+                    }
                 )
                 SVG(
                     modifier = Modifier.size(40.dp, 40.dp).backgroundColor(Color.Transparent)
-                        .position(Position.Absolute)
-                        .margins(arrayOf(20.dp, 40.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(20.dp, 0.dp, 0.dp, 0.dp)),
                     source = "music/mv_definition_super.svg",
                 )
                 AndroidImage(
@@ -122,7 +142,6 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     source = "music/record_player_dark_arm.png",
                     contentScale = ContentScale.Cover
                 )
-                ComposeControl(audioPlayer, viewModel)
                 LyricsScreen(width, height - 150.dp, progress.value, lyrics.value)
             }
         }
@@ -133,9 +152,7 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         val playing = viewModel.playing.collectAsState()
         Row(
             modifier = Modifier.backgroundColor(Color.Transparent)
-                .position(Position.Absolute)
                 .alignSelf(Align.FlexEnd)
-                .margins(arrayOf(220.dp, 0.dp, 0.dp, 0.dp))
         ) {
             AndroidImage(
                 modifier = Modifier.size(40.dp, 40.dp)
@@ -188,7 +205,6 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         Scroll(
             modifier = Modifier.size(width, height)
                 .backgroundColor(Color.Transparent)
-                .margins(arrayOf(0.dp, 40.dp, 0.dp, 0.dp))
                 .alignItems(Align.Center)
         ) {
             lyrics.forEachIndexed { index, lyric ->
