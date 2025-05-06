@@ -166,7 +166,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 Lottie(
                     modifier = Modifier.size(160.dp, 120.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(Color.Transparent),
                     source = "WorkspacePlanet.json",
                     play = lottiePlay,
                     onClick = {
