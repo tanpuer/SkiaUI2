@@ -42,8 +42,7 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                     focus = false
                 )
                 Web(
-                    Modifier.size(width, 1200.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                    Modifier.size(width, height - 90.dp),
                     url = "https://m.bilibili.com/"
                 )
             }

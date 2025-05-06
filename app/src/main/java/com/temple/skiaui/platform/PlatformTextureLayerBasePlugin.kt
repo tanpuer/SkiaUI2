@@ -79,7 +79,7 @@ abstract class PlatformTextureLayerBasePlugin(
         deleteSkImage(skImagePtr)
     }
 
-    fun sendTouchEvent(type: Int, x: Float, y: Float) {
+    private fun sendTouchEvent(type: Int, x: Float, y: Float) {
         mainHandler.post {
             if (type == MotionEvent.ACTION_DOWN) {
                 downTime = System.currentTimeMillis()
