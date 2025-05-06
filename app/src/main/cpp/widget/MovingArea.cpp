@@ -20,6 +20,8 @@ bool MovingArea::onTouchEvent(TouchEvent *touchEvent) {
         case TouchEvent::ACTION_DOWN: {
             lastX = touchEvent->x;
             lastY = touchEvent->y;
+            originAlpha = getAlpha();
+            setAlpha(0.3f);
             markDirty();
             break;
         }
@@ -29,6 +31,11 @@ bool MovingArea::onTouchEvent(TouchEvent *touchEvent) {
             lastX = touchEvent->x;
             lastY = touchEvent->y;
             markDirty();
+            break;
+        }
+        case TouchEvent::ACTION_CANCEL:
+        case TouchEvent::ACTION_UP: {
+            setAlpha(originAlpha);
             break;
         }
         default: {

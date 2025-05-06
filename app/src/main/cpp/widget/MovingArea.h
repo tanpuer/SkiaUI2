@@ -25,6 +25,8 @@ private:
     float lastX = 0.0f;
     float lastY = 0.0f;
 
+    float originAlpha = 1.0f;
+
 };
 
 }

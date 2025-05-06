@@ -67,12 +67,12 @@ View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent
 }
 
 bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
-    if (weakTargetView == scrollView) {
-        return true;
-    }
     if (touchEvent->action == TouchEvent::ACTION_DOWN) {
         lastScrollX = touchEvent->x;
         lastScrollY = touchEvent->y;
+        if (weakTargetView == scrollView) {
+            return true;
+        }
     } else if (touchEvent->action == TouchEvent::ACTION_MOVE) {
         if (YGFloatsEqual(0.0f, lastScrollX) && YGFloatsEqual(0.0f, lastScrollY)) {
             lastScrollX = touchEvent->x;
@@ -85,6 +85,9 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
              diffY > ScrollView::SCROLL_SLOP) ||
             (scrollView->_direction == YGFlexDirectionRow && diffX > diffY &&
              diffX > ScrollView::SCROLL_SLOP)) {
+            if (weakTargetView == scrollView) {
+                return true;
+            }
             //TODO
             if (weakTargetView != nullptr && weakTargetView->onInterceptTouchEvent(touchEvent)) {
                 return false;
