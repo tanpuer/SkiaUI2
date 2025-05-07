@@ -6,7 +6,7 @@ interface CameraCallback {
     fun onImageCaptured(imagePtr: Long)
 }
 
-class HYComposeCamera(modifier: Modifier) : HYComposeView(modifier) {
+class HYComposeCamera(modifier: Modifier) : HYComposeBaseSurfaceTexture(modifier) {
 
     override fun getViewType(): String {
         return "Camera"

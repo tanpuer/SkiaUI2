@@ -10,4 +10,6 @@
     <string name="recycler_view_page">RecyclerView Page</string>
     <string name="canvas_page">Canvas Page</string>
     <string name="qq_music_page">QQ Music Page</string>
+    <string name="video_black_white_shader">Black White Shader</string>
+    <string name="video_lightning_shader">Lightning Shader</string>
 </resources>

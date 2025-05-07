@@ -136,7 +136,6 @@ void BaseSurfaceTextureView::drawShader(SkCanvas *canvas) {
     canvas->translate(left, top);
     canvas->drawPicture(picture);
     canvas->restore();
-    markDirty();
 }
 
 void BaseSurfaceTextureView::setShaderCode(const char *code) {

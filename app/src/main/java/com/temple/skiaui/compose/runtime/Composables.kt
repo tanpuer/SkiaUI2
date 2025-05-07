@@ -133,7 +133,13 @@ fun Scroll(
 }
 
 @Composable
-fun ExoVideo(modifier: Modifier, source: String, onClick: (() -> Unit)? = null) {
+fun ExoVideo(
+    modifier: Modifier,
+    source: String,
+    onClick: (() -> Unit)? = null,
+    shaderPath: String? = null,
+    shaderCode: String? = null
+) {
     ComposeNode<HYComposeExoVideo, HYComposeApplier>(
         factory = { HYComposeExoVideo(modifier) },
         update = {
@@ -145,6 +151,12 @@ fun ExoVideo(modifier: Modifier, source: String, onClick: (() -> Unit)? = null) 
             }
             set(onClick) {
                 setOnClick(onClick)
+            }
+            set(shaderPath) {
+                setShaderPath(shaderPath)
+            }
+            set(shaderCode) {
+                setShaderCode(shaderCode)
             }
         }
     )
@@ -385,7 +397,12 @@ fun Switch(modifier: Modifier, enable: Boolean = true, color: String = "#ff00ff"
 }
 
 @Composable
-fun Camera(modifier: Modifier, callback: CameraCallback) {
+fun Camera(
+    modifier: Modifier,
+    callback: CameraCallback,
+    shaderPath: String? = null,
+    shaderCode: String? = null
+) {
     ComposeNode<HYComposeCamera, HYComposeApplier>(
         factory = { HYComposeCamera(modifier) },
         update = {
@@ -394,6 +411,12 @@ fun Camera(modifier: Modifier, callback: CameraCallback) {
             }
             set(callback) {
                 capture(callback)
+            }
+            set(shaderPath) {
+                setShaderPath(shaderPath)
+            }
+            set(shaderCode) {
+                setShaderCode(shaderCode)
             }
         }
     )

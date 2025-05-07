@@ -28,6 +28,7 @@
 #include "ComposeCanvasJNI.h"
 #include "ComposeCanvasPaintJNI.h"
 #include "ComposeCanvasPathJNI.h"
+#include "ComposeBaseSurfaceTextureJNI.h"
 
 using namespace HYSkiaUI;
 
@@ -59,6 +60,7 @@ static void registerComposeJNI(JNIEnv *jniEnv) {
     RegisterComposePaintMethods(jniEnv);
     RegisterComposePathMethods(jniEnv);
     RegisterComposeCanvasMethods(jniEnv);
+    RegisterComposeBaseSurfaceTextureMethods(jniEnv);
 }
 
 static void unRegisterComposeJNI(JNIEnv *jniEnv) {
@@ -89,4 +91,5 @@ static void unRegisterComposeJNI(JNIEnv *jniEnv) {
     UnRegisterComposePaintMethods(jniEnv);
     UnRegisterComposePathMethods(jniEnv);
     UnRegisterComposeCanvasMethods(jniEnv);
+    UnRegisterComposeBaseSurfaceTextureMethods(jniEnv);
 }

@@ -96,6 +96,34 @@ void CameraView::draw(SkCanvas *canvas) {
     skCanvas->drawImageRect(skImage, target, SkSamplingOptions());
     auto picture = recorder.finishRecordingAsPicture();
 
+    //TODO runtimeEffect should perform on origin skImage
+    if (runtimeEffect != nullptr) {
+        SkCanvas *skCanvas;
+        SkPictureRecorder recorder;
+        skCanvas = recorder.beginRecording(width, height);
+        ResolutionUniforms uniforms;
+        uniforms.width = width;
+        uniforms.height = height;
+        SkRuntimeShaderBuilder builder(runtimeEffect);
+        builder.uniform("iResolution") = uniforms;
+        auto time = getContext()->getCurrentTimeMills();
+        builder.uniform("iTime") = (float) time / 1000;
+        auto skShader = picture->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, SkFilterMode::kLinear);
+        builder.child("iChannel0") = std::move(skShader);
+        auto shader = builder.makeShader(nullptr);
+        SkPaint skPaint;
+        skPaint.setShader(std::move(shader));
+        skCanvas->drawIRect({0, 0, (int32_t)recordingWidth, (int32_t)recordingHeight}, skPaint);
+        auto picture = recorder.finishRecordingAsPicture();
+        canvas->setMatrix(viewMatrix);
+        canvas->save();
+        canvas->translate(left + (width - recordingWidth) / 2.0f,
+                          top + (height - recordingHeight) / 2.0f);
+        canvas->drawPicture(picture);
+        canvas->restore();
+        return;
+    }
+
     canvas->setMatrix(viewMatrix);
     canvas->save();
     canvas->translate(left + (width - recordingWidth) / 2.0f,

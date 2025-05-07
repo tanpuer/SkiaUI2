@@ -2,7 +2,7 @@ package com.temple.skiaui.compose.ui
 
 import com.temple.skiaui.compose.foundation.Modifier
 
-class HYComposeExoVideo(modifier: Modifier) : HYComposeView(modifier) {
+class HYComposeExoVideo(modifier: Modifier) : HYComposeBaseSurfaceTexture(modifier) {
 
     fun setSource(source: String) {
         nativeSetSource(ref, source)
