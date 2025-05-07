@@ -3,7 +3,6 @@ package com.temple.skiaui.platform
 import android.graphics.SurfaceTexture
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.util.Log
 import android.view.Choreographer
 import android.view.MotionEvent

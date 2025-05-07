@@ -9,7 +9,6 @@ import android.media.MediaFormat
 import android.os.Build
 import android.os.Handler
 import android.os.HandlerThread
-import android.os.Looper
 import android.util.Log
 import android.view.Surface
 import com.temple.skiaui.HYSkiaEngine

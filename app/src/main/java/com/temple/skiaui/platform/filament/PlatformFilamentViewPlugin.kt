@@ -3,8 +3,6 @@ package com.temple.skiaui.platform.filament
 import android.animation.ValueAnimator
 import android.graphics.SurfaceTexture
 import android.opengl.Matrix
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.animation.LinearInterpolator

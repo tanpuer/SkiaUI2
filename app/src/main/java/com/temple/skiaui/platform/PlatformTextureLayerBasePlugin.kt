@@ -2,8 +2,6 @@ package com.temple.skiaui.platform
 
 import android.graphics.Canvas
 import android.graphics.SurfaceTexture
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
