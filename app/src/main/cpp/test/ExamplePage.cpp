@@ -29,6 +29,7 @@
 #include "MatrixTestPage.h"
 #include "RecyclerViewPage.h"
 #include "GridLayoutTest.h"
+#include "VideoShaderTest.h"
 
 namespace HYSkiaUI {
 
@@ -527,6 +528,22 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         scrollView->addView(button);
         button->setOnClickListener([this, width, height](View *view) {
             auto page = new GridLayoutTest();
+            page->init(context, width, height);
+            context->getPageStackManager()->push(page);
+            page->enterFromRight(Page::EnterExitInfo(width, 0));
+        });
+    }
+
+    {
+        auto button = new Button();
+        button->setContext(this->context);
+        button->setText(SkString("VideoShader Test"));
+        button->setTextSize(60);
+        button->setCornerRadius(20);
+        button->setMargin({50, 50, 50, 50});
+        scrollView->addView(button);
+        button->setOnClickListener([this, width, height](View *view) {
+            auto page = new VideoShaderTest();
             page->init(context, width, height);
             context->getPageStackManager()->push(page);
             page->enterFromRight(Page::EnterExitInfo(width, 0));

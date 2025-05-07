@@ -154,7 +154,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 Text(
                     modifier = Modifier.size(width, 100.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(Color.Transparent),
                     content = "😀😃😄🐦🐋🐟🐡🐴🐊🐄🐪🐘🌸🌏🔥🌟🌚🌝💦💧❄🍕🍔🍟🥝🍱🕶🎩🏈⚽🚴‍♀️🎻🎼🎹🚨🚎🚐⚓🛳🚀🚁🏪🏢🖱⏰📱💾💉📉🛏🔑📁🗓📊❤💯🚫🔻♠♣🕓❗🏳🏁🏳️‍🌈🇮🇹🇱🇷🇺🇸🇬🇧🇨🇳\nEmojiShow",
                     textSize = 20.dp,
                     color = MaterialTheme.colorScheme.inversePrimary,

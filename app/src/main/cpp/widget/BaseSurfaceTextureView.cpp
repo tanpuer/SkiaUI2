@@ -1,4 +1,6 @@
 #include "BaseSurfaceTextureView.h"
+#include "core/SkPictureRecorder.h"
+#include "core/SkPicture.h"
 
 namespace HYSkiaUI {
 
@@ -53,6 +55,10 @@ void BaseSurfaceTextureView::draw(SkCanvas *canvas) {
         lastSkImagePtr = skImagePtr;
         drawOneFrame();
     }
+    if (runtimeEffect != nullptr && skImage != nullptr) {
+        drawShader(canvas);
+        return;
+    }
     canvas->save();
     canvas->setMatrix(viewMatrix);
     if (cornerRadius > 0) {
@@ -96,6 +102,51 @@ void BaseSurfaceTextureView::onSizeChange(int width, int height) {
         auto jniEnv = getContext()->getJniEnv();
         jniEnv->CallVoidMethod(javaInstance, onSizeChangeMethodId, width, height);
     }
+}
+
+void BaseSurfaceTextureView::setShaderPath(const char *path) {
+    if (shaderPath == path) {
+        return;
+    }
+    context->resourcesLoader->readFile(path, [this](const char *data) {
+        setShaderCode(data);
+    });
+}
+
+void BaseSurfaceTextureView::drawShader(SkCanvas *canvas) {
+    SkCanvas *skCanvas;
+    SkPictureRecorder recorder;
+    skCanvas = recorder.beginRecording(width, height);
+    ResolutionUniforms uniforms;
+    uniforms.width = width;
+    uniforms.height = height;
+    SkRuntimeShaderBuilder builder(runtimeEffect);
+    builder.uniform("iResolution") = uniforms;
+    auto time = getContext()->getCurrentTimeMills();
+    builder.uniform("iTime") = (float) time / 1000;
+    auto skShader = skImage->makeShader(SkSamplingOptions());
+    builder.child("iChannel0") = std::move(skShader);
+    auto shader = builder.makeShader(nullptr);
+    SkPaint skPaint;
+    skPaint.setShader(std::move(shader));
+    skCanvas->drawIRect({0, 0, width, height}, skPaint);
+    auto picture = recorder.finishRecordingAsPicture();
+    canvas->setMatrix(viewMatrix);
+    canvas->save();
+    canvas->translate(left, top);
+    canvas->drawPicture(picture);
+    canvas->restore();
+    markDirty();
+}
+
+void BaseSurfaceTextureView::setShaderCode(const char *code) {
+    auto [effect, error] = SkRuntimeEffect::MakeForShader(SkString(code));
+    if (!effect) {
+        ALOGD("set shader source failed %s", error.data())
+        return;
+    }
+    runtimeEffect = effect;
+    markDirty();
 }
 
 }

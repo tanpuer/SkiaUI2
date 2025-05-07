@@ -1,6 +1,7 @@
 #pragma once
 
 #include "View.h"
+#include "effects/SkRuntimeEffect.h"
 
 namespace HYSkiaUI {
 
@@ -36,6 +37,10 @@ public:
 
     void onSizeChange(int width, int height) override;
 
+    virtual void setShaderPath(const char *path);
+
+    virtual void setShaderCode(const char *code);
+
 protected:
 
     SkRect dstRect;
@@ -65,6 +70,12 @@ protected:
     jmethodID sendTouchEventMethodId = nullptr;
 
     jmethodID onSizeChangeMethodId = nullptr;
+
+    std::string shaderPath = "";
+
+    sk_sp<SkRuntimeEffect> runtimeEffect = nullptr;
+
+    void drawShader(SkCanvas *canvas);
 
 };
 
