@@ -105,9 +105,6 @@ void BaseSurfaceTextureView::onSizeChange(int width, int height) {
 }
 
 void BaseSurfaceTextureView::setShaderPath(const char *path) {
-    if (shaderPath == path) {
-        return;
-    }
     context->resourcesLoader->readFile(path, [this](const char *data) {
         setShaderCode(data);
     });

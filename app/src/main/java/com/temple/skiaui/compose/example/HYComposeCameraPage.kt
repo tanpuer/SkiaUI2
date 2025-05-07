@@ -31,6 +31,9 @@ class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var shaderPath by remember {
                 mutableStateOf("")
             }
+            var shaderCode by remember {
+                mutableStateOf("")
+            }
             Scroll(
                 modifier = Modifier().size(width, height)
                     .alignItems(Align.FlexStart),
@@ -43,7 +46,8 @@ class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
 
                         }
                     },
-                    shaderPath = shaderPath
+                    shaderPath = shaderPath,
+                    shaderCode = shaderCode
                 )
                 Button(
                     modifier = Modifier
@@ -54,6 +58,7 @@ class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     color = MaterialTheme.colorScheme.tertiary,
                     onClick = {
                         shaderPath = "skia_video_black_white.glsl"
+                        shaderCode = ""
                     }
                 )
                 Button(
@@ -64,7 +69,17 @@ class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     textSize = 20.dp,
                     color = MaterialTheme.colorScheme.tertiary,
                     onClick = {
-                        shaderPath = "skia_video_lightning.glsl"
+                        shaderPath = ""
+                        shaderCode = """
+                            uniform float2 iResolution;
+                            uniform float iTime;
+                            uniform shader iChannel0;
+
+                            float4 main(float2 coord) {
+                                float4 color = iChannel0.eval(coord);
+                                return float4(1.0 - color.r, 1.0 - color.g, 1.0 - color.b, color.a);
+                            }
+                        """.trimIndent()
                     }
                 )
                 Button(
@@ -76,6 +91,7 @@ class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     color = MaterialTheme.colorScheme.tertiary,
                     onClick = {
                         shaderPath = "skia_video_raining_shader.glsl"
+                        shaderCode = ""
                     }
                 )
             }
