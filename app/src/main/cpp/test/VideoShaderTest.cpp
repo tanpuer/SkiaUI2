@@ -67,6 +67,21 @@ void VideoShaderTest::initChildren(ViewGroup *root, int width, int height) {
             videoView->setShaderPath("skia_video_lightning.glsl");
         });
     }
+
+    {
+        auto button = new Button();
+        button->setContext(this->context);
+        button->setText(SkString("Raining"));
+        button->setTextSize(60);
+        button->setCornerRadius(20);
+        button->addShadow(SK_ColorRED, {2.0, 2.0}, 1.0f);
+        button->setMargin({0, 20, 0, 0});
+        scrollView->addView(button);
+        button->setOnClickListener([videoView](View *view) {
+            videoView->setShaderPath("skia_video_raining_shader.glsl");
+        });
+    }
+
 }
 
 }

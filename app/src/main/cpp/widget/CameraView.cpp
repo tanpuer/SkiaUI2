@@ -5,7 +5,6 @@
 
 namespace HYSkiaUI {
 
-
 CameraView::CameraView() {
 }
 

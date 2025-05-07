@@ -12,4 +12,5 @@
     <string name="qq_music_page">QQ Music Page</string>
     <string name="video_black_white_shader">Black White Shader</string>
     <string name="video_lightning_shader">Lightning Shader</string>
+    <string name="video_raining_shader">Raining Shader</string>
 </resources>

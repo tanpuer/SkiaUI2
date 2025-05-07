@@ -67,6 +67,17 @@ class HYComposeCameraPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         shaderPath = "skia_video_lightning.glsl"
                     }
                 )
+                Button(
+                    modifier = Modifier
+                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+                    content = stringResource(R.string.video_raining_shader),
+                    textSize = 20.dp,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    onClick = {
+                        shaderPath = "skia_video_raining_shader.glsl"
+                    }
+                )
             }
         }
     }
