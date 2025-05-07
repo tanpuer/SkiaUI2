@@ -3,8 +3,6 @@ package com.temple.skiaui.bitmap
 import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Handler
-import android.os.Looper
 import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -15,7 +13,7 @@ import com.temple.skiaui.HYSkiaEngine
 
 class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
 
-    private val mainHandler = Handler(Looper.getMainLooper())
+    private val mainHandler = engine.mainHandler
 
     private var bitmap: Bitmap? = null
     private var bitmapTarget: CustomTarget<Bitmap>? = null

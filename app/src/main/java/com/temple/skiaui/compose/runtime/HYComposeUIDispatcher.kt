@@ -32,7 +32,7 @@ class HYComposeUIDispatcher(
     private var spareToRunOnFrame = mutableListOf<Choreographer.FrameCallback>()
     private var scheduledTrampolineDispatch = false
     private var scheduledFrameDispatch = false
-    private val mainHandler = Handler(Looper.getMainLooper())
+    private val mainHandler = engine.mainHandler
 
     private val dispatchCallback = object : Choreographer.FrameCallback, Runnable {
         override fun run() {

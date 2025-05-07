@@ -73,7 +73,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 infiniteRepeatable(tween(5000), RepeatMode.Reverse)
             )
             var birdBlur by remember {
-                mutableFloatStateOf(0.0f)
+                mutableFloatStateOf(10.0f)
             }
             Scroll(
                 modifier = Modifier.size(width, height)

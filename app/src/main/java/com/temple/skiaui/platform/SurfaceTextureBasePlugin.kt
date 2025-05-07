@@ -39,9 +39,9 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     protected val pluginHandler =
-        if (inMainThread) Handler(Looper.getMainLooper()) else Handler(pluginThread.looper)
+        if (inMainThread) engine.mainHandler else Handler(pluginThread.looper)
 
-    protected val mainHandler = Handler(Looper.getMainLooper())
+    protected val mainHandler = engine.mainHandler
 
     @Volatile
     protected var released = false

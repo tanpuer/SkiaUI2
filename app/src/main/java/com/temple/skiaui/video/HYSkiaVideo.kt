@@ -40,7 +40,7 @@ class HYSkiaVideo internal constructor(
 
     private val decodeHandler = Handler(decodeThread.looper)
 
-    private val mainHandler = Handler(Looper.getMainLooper())
+    private val mainHandler = engine.mainHandler
 
     private var skImagePtr = 0L
 

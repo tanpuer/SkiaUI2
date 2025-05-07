@@ -20,7 +20,7 @@ abstract class PlatformTextureLayerBasePlugin(
     val viewPtr: Long
 ) : ICanvasProvider {
 
-    protected val mainHandler = Handler(Looper.getMainLooper())
+    protected val mainHandler = engine.mainHandler
 
     protected var targetView: View? = null
 

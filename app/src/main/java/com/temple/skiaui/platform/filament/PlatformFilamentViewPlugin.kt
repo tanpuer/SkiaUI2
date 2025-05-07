@@ -208,7 +208,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
             material.compile(
                 Material.CompilerPriorityQueue.HIGH,
                 Material.UserVariantFilterBit.ALL,
-                Handler(Looper.getMainLooper())
+                engine.mainHandler
             ) {
                 Log.i("hellotriangle", "Material " + material.name + " compiled.")
             }

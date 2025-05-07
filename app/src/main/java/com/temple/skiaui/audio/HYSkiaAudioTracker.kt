@@ -33,7 +33,7 @@ class HYSkiaAudioTracker(
     private var encoding = -1
     private var audioTracker: AudioTrack? = null
     private var isEOS = false
-    private var mainHandler = Handler(Looper.getMainLooper())
+    private var mainHandler = engine.mainHandler
 
     @Volatile
     private var presentationTimeUs = 0L
@@ -140,7 +140,7 @@ class HYSkiaAudioTracker(
             .build()
         audioTracker?.play()
         audioTracker?.audioSessionId?.let {
-            Handler(Looper.getMainLooper()).post {
+            engine.mainHandler.post {
                 createVisualizer(it)
             }
         }

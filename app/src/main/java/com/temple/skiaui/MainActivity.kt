@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
 import android.widget.TextView
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
-import com.temple.skiaui.compose.runtime.HYComposeSDK
 
 class MainActivity : AppCompatActivity(), RenderCallback {
 
@@ -20,8 +17,6 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         currentNightMode = resources.configuration.uiMode
         HYSkiaUIApp.getInstance().setFrameRate(this)
         setContentView(R.layout.activity_main)
-        val controller = WindowCompat.getInsetsController(window, window.decorView)
-        controller.hide(WindowInsetsCompat.Type.statusBars())
         skiaView = findViewById(R.id.surfaceView)
         val type = intent.getIntExtra("type", 0)
         skiaView.initEngine(type)

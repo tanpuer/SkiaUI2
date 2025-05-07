@@ -24,6 +24,8 @@ import java.util.concurrent.atomic.AtomicLong
 
 class HYSkiaEngine(private val developmentType: Int, val view: View) {
 
+    val mainHandler = Handler(Looper.getMainLooper())
+
     /**
      * 执行UI逻辑
      */
@@ -32,9 +34,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
             start()
         }
     private val skiaUIHandler =
-        if (developmentType == DEVELOPMENT_COMPOSE) Handler(Looper.getMainLooper()) else Handler(
-            skiaUIHandlerThread.looper
-        )
+        if (developmentType == DEVELOPMENT_COMPOSE) mainHandler else Handler(skiaUIHandlerThread.looper)
 
     /**
      * 执行渲染逻辑
@@ -44,8 +44,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
             start()
         }
     private val skiaGLHandler = Handler(skiaGLHandlerThread.looper)
-
-    private val mainHandler = Handler(Looper.getMainLooper())
 
     private var pic = AtomicLong(0)
     private var picIsNull = AtomicBoolean(false)
@@ -382,11 +380,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private external fun nativeRegisterJetpackCompose()
     private external fun nativePerformTimeout(uiApp: Long, id: Long)
     private external fun nativeUpdateAndroidBitmap(
-        uiApp: Long,
-        ref: Long,
-        bitmap: Bitmap,
-        index: Int,
-        frameCount: Int
+        uiApp: Long, ref: Long, bitmap: Bitmap, index: Int, frameCount: Int
     )
 
     private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
