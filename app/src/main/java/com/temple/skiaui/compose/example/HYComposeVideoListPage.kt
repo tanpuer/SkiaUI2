@@ -136,7 +136,8 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     mapOf(
                         "black-white shader" to "skia_video_black_white.glsl",
                         "lightning shader" to "skia_video_lightning_shader.glsl",
-                        "raining shader" to "skia_video_raining_shader.glsl"
+                        "raining shader" to "skia_video_raining_shader.glsl",
+                        "bright shader" to "skia_video_bright_shader.glsl"
                     ).map {
                         ComposeShaderList(it.key, it.value) {
                             shaderPath = it
