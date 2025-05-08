@@ -5,9 +5,10 @@ import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.SurfaceTextureBasePlugin
 
 class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, viewPtr: Long) :
-    SurfaceTextureBasePlugin(engine, width, height, viewPtr, true) {
+    SurfaceTextureBasePlugin(engine, width, height, viewPtr, true), IVideoListener {
 
-    private var exoPlayer: ExoPlayerImpl? = null
+    private var exoPlayer: IVideoPlayer? = null
+    private var customPlayer: IVideoPlayer? = null
     private var source: String = ""
     private var currentPosition: Long = 0L
     private var renderFirstFrame = false
@@ -32,7 +33,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     override fun type(): String = "ExoPlayerView"
 
-    fun setSource(source: String) {
+    private fun setSource(source: String) {
         renderFirstFrame = false
         pluginHandler.post {
             this.source = source
@@ -45,24 +46,30 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
         }
     }
 
+    private fun setCustomPlayer(player: IVideoPlayer) {
+        pluginHandler.post {
+            customPlayer = player
+        }
+    }
+
     private fun initializeReader() {
-        exoPlayer = ExoPlayerImpl()
+        exoPlayer = customPlayer ?: ExoPlayerImpl()
         exoPlayer?.setSource(source)
         exoPlayer?.setVideoSurface(surfaceObj?.surface)
         exoPlayer?.setRepeat(true)
         exoPlayer?.prepare()
         exoPlayer?.play()
-        exoPlayer?.setVideoListener(object : IVideoListener {
-            override fun onRenderedFirstFrame() {
-                engine.postToSkiaUI {
-                    renderFirstFrame = true
-                }
-            }
+        exoPlayer?.setVideoListener(this)
+    }
 
-            override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
+    override fun onRenderedFirstFrame() {
+        engine.postToSkiaUI {
+            renderFirstFrame = true
+        }
+    }
 
-            }
-        })
+    override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
+
     }
 
     override fun release() {

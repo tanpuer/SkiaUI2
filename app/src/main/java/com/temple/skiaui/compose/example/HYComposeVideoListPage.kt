@@ -4,6 +4,7 @@ import android.provider.MediaStore
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import com.temple.skiaui.compose.runtime.Row
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexWrap
+import com.temple.skiaui.platform.video.ExoPlayerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -50,6 +52,18 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var shaderPath by remember {
                 mutableStateOf("")
             }
+            var videoViewHeight by remember {
+                mutableStateOf(200.dp)
+            }
+            val exoplayer = remember {
+                object : ExoPlayerImpl() {
+                    override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
+                        super.onVideoSizeChanged(videoWidth, videoHeight)
+                        videoViewHeight = width * videoHeight / videoWidth
+                    }
+                }
+            }
+
             LaunchedEffect(Unit) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val files = getMusicList()
@@ -65,9 +79,10 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 backgroundColor = MaterialTheme.colorScheme.background
             ) {
                 ExoVideo(
-                    modifier = Modifier.size(width, width.times(360).div(640)),
+                    modifier = Modifier.size(width, videoViewHeight),
                     source = videoSrc,
-                    shaderPath = shaderPath
+                    shaderPath = shaderPath,
+                    customPlayer = exoplayer
                 )
                 Text(
                     modifier = Modifier.backgroundColor(Color.Transparent)
@@ -148,8 +163,7 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     private fun ComposeShaderList(shader: String, path: String, callback: (path: String) -> Unit) {
         Button(
             modifier = Modifier
-                .margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp))
-                .backgroundColor(Color.Blue),
+                .margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp)),
             content = shader,
             textSize = 15.dp,
             color = Color.White,

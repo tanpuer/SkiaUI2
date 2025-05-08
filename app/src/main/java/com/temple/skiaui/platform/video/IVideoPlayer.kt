@@ -2,7 +2,7 @@ package com.temple.skiaui.platform.video
 
 import android.view.Surface
 
-interface IVideoPlayer {
+interface IVideoPlayer : IVideoListener {
 
     fun setSource(source: String)
 
@@ -29,11 +29,6 @@ interface IVideoPlayer {
 }
 
 interface IVideoListener {
-    fun onRenderedFirstFrame() {
-
-    }
-
-    fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
-
-    }
+    fun onRenderedFirstFrame()
+    fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int)
 }

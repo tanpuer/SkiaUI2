@@ -32,10 +32,12 @@ void BaseSurfaceTextureView::layout(int l, int t, int r, int b) {
         releaseMethod = jniEnv->GetMethodID(javaClass, "release", "()V");
         sendTouchEventMethodId = jniEnv->GetMethodID(javaClass, "sendTouchEvent", "(IFF)V");
         onSizeChangeMethodId = jniEnv->GetMethodID(javaClass, "onSizeChange", "(II)V");
-        auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
-        javaInstance = jniEnv->NewGlobalRef(
-                jniEnv->NewObject(javaClass, javaConstructor,
-                                  javaSkiaEngine, width, height, reinterpret_cast<long>(this)));
+        if (javaInstance == nullptr) {
+            auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
+            javaInstance = jniEnv->NewGlobalRef(
+                    jniEnv->NewObject(javaClass, javaConstructor,
+                                      javaSkiaEngine, width, height, reinterpret_cast<long>(this)));
+        }
         initJNI();
     }
 }

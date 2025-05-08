@@ -20,15 +20,21 @@ public:
 
     void setSource(const char *source);
 
-    const char* getSource();
+    const char *getSource();
 
-    const char * name() override;
+    const char *name() override;
 
     void setRenderFirstFrameCallback(std::function<void()> &&callback);
+
+    void onVideoSizeChanged(int width, int height);
+
+    void setCustomVideoPlayer(jobject player);
 
 private:
 
     jmethodID setSourceMethodId = nullptr;
+
+    jmethodID setCustomPlayerMethodId = nullptr;
 
     std::string source;
 

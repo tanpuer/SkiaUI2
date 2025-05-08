@@ -345,6 +345,12 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         nativeUpdateAndroidBitmap(uiApp, ref, bitmap, index, frameCount)
     }
 
+    fun videoSizeChanged(viewPtr: Long, width: Int, height: Int) {
+        postToSkiaUI {
+            nativeVideoSizeChanged(uiApp, viewPtr, width, height)
+        }
+    }
+
     private external fun nativeGLInit(): Long
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
@@ -382,6 +388,8 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private external fun nativeUpdateAndroidBitmap(
         uiApp: Long, ref: Long, bitmap: Bitmap, index: Int, frameCount: Int
     )
+
+    private external fun nativeVideoSizeChanged(uiApp: Long, viewPtr: Long, width: Int, height: Int)
 
     private external fun nativeWebViewProgressChange(webView: Long, progress: Int)
     private external fun nativeMarkDirty(viewPtr: Long)

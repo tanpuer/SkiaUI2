@@ -17,14 +17,15 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import com.temple.skiaui.HYSkiaUIApp
 
-class ExoPlayerImpl : IVideoPlayer {
+open class ExoPlayerImpl : IVideoPlayer {
 
     private var exoPlayer: ExoPlayer? = ExoPlayer.Builder(HYSkiaUIApp.getInstance()).build()
     private var listener: IVideoListener? = null
+    private var start = 0L
 
     @OptIn(UnstableApi::class)
     override fun setSource(source: String) {
-        val start = System.currentTimeMillis()
+        start = System.currentTimeMillis()
         if (source.startsWith("file://")) {
             val dataSourceFactory =
                 DataSource.Factory { FileDataSource() }
@@ -46,13 +47,11 @@ class ExoPlayerImpl : IVideoPlayer {
         }
         exoPlayer?.addListener(object : Player.Listener {
             override fun onRenderedFirstFrame() {
-                Log.d(TAG, "first-frame: ${System.currentTimeMillis() - start}")
-                listener?.onRenderedFirstFrame()
+                this@ExoPlayerImpl.onRenderedFirstFrame()
             }
 
             override fun onVideoSizeChanged(videoSize: VideoSize) {
-                Log.d(TAG, "video-width: ${videoSize.width}, video-height:${videoSize.height}")
-                listener?.onVideoSizeChanged(videoSize.width, videoSize.height)
+                this@ExoPlayerImpl.onVideoSizeChanged(videoSize.width, videoSize.height)
             }
         })
     }
@@ -96,6 +95,16 @@ class ExoPlayerImpl : IVideoPlayer {
 
     override fun setVideoListener(listener: IVideoListener?) {
         this.listener = listener
+    }
+
+    override fun onRenderedFirstFrame() {
+        Log.d(TAG, "first-frame: ${System.currentTimeMillis() - start}")
+        listener?.onRenderedFirstFrame()
+    }
+
+    override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
+        Log.d(TAG, "video-width: ${videoWidth}, video-height:${videoHeight}")
+        listener?.onVideoSizeChanged(videoWidth, videoHeight)
     }
 
     companion object {

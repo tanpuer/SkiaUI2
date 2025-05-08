@@ -43,6 +43,7 @@ import com.temple.skiaui.compose.ui.HYComposeWeb
 import com.temple.skiaui.compose.ui.TextAlign
 import com.temple.skiaui.compose.ui.TextGradient
 import com.temple.skiaui.compose.ui.util.decodeDrawableResource
+import com.temple.skiaui.platform.video.IVideoPlayer
 
 @Composable
 fun View(
@@ -138,7 +139,8 @@ fun ExoVideo(
     source: String,
     onClick: (() -> Unit)? = null,
     shaderPath: String? = null,
-    shaderCode: String? = null
+    shaderCode: String? = null,
+    customPlayer: IVideoPlayer? = null
 ) {
     ComposeNode<HYComposeExoVideo, HYComposeApplier>(
         factory = { HYComposeExoVideo(modifier) },
@@ -157,6 +159,9 @@ fun ExoVideo(
             }
             set(shaderCode) {
                 setShaderCode(shaderCode)
+            }
+            set(customPlayer) {
+                setCustomPlayer(customPlayer)
             }
         }
     )

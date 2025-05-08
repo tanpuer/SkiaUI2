@@ -11,13 +11,25 @@ const char *HYComposeExoVideo = "com/temple/skiaui/compose/ui/HYComposeExoVideo"
 extern "C" JNIEXPORT void JNICALL
 compose_exo_video_set_source(JNIEnv *env, jobject instance, jlong viewPtr, jstring source) {
     auto videoView = reinterpret_cast<ExoPlayerView *>(viewPtr);
-    auto sourceStr = env->GetStringUTFChars(source, nullptr);
-    videoView->setSource(sourceStr);
-    env->ReleaseStringUTFChars(source, sourceStr);
+    if (videoView != nullptr) {
+        auto sourceStr = env->GetStringUTFChars(source, nullptr);
+        videoView->setSource(sourceStr);
+        env->ReleaseStringUTFChars(source, sourceStr);
+    }
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_exo_video_set_custom_player(JNIEnv *env, jobject instance, jlong viewPtr, jobject player) {
+    auto videoView = reinterpret_cast<ExoPlayerView *>(viewPtr);
+    if (videoView != nullptr) {
+        videoView->setCustomVideoPlayer(player);
+    }
 }
 
 static JNINativeMethod g_ComposeExoVideoMethods[] = {
-        {"nativeSetSource", "(JLjava/lang/String;)V", (void *) compose_exo_video_set_source},
+        {"nativeSetSource",       "(JLjava/lang/String;)V", (void *) compose_exo_video_set_source},
+        {"nativeSetCustomPlayer", "(JLcom/temple/skiaui/platform/video/IVideoPlayer;)V",
+                                                            (void *) compose_exo_video_set_custom_player},
 };
 
 static int RegisterComposeExoVideoMethods(JNIEnv *env) {
