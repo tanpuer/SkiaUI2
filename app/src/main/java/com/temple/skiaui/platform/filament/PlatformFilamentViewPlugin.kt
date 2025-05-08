@@ -19,6 +19,7 @@ import com.google.android.filament.Renderer
 import com.google.android.filament.Scene
 import com.google.android.filament.Skybox
 import com.google.android.filament.SwapChain
+import com.google.android.filament.SwapChainFlags
 import com.google.android.filament.VertexBuffer
 import com.google.android.filament.View
 import com.google.android.filament.Viewport
@@ -32,8 +33,8 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
-class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, viewPtr: Long) :
-    SurfaceTextureBasePlugin(engine, width, height, viewPtr) {
+class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
+    SurfaceTextureBasePlugin(engine, viewPtr) {
 
     private lateinit var filamentEngine: Engine
 
@@ -53,49 +54,36 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
 
     private val animator = ValueAnimator.ofFloat(0.0f, 360.0f)
 
-    init {
-        pluginHandler.post {
-            createSurface()
-            if (swapChain != null) {
-                return@post
-            }
-            surfaceObj?.surface?.let {
-                initEngine()
-                swapChain = filamentEngine.createSwapChain(it)
-            }
-        }
-    }
-
     override fun onSurfaceCreated() {
-
+        surfaceObj?.surface?.let {
+            initEngine()
+            swapChain = filamentEngine.createSwapChain(it)
+        }
     }
 
-    /**
-     * TODO
-     */
+    override fun onSurfaceChanged(width: Int, height: Int) {
+        view.viewport = Viewport(0, 0, width, height)
+    }
+
     override fun onSurfaceDestroyed() {
-        surfaceObj?.release()
-        surfaceObj = null
-        pluginHandler.post {
-            if (swapChain == null) {
-                return@post
-            }
-            animator.cancel()
-            // Cleanup all resources
-            filamentEngine.destroyEntity(renderable)
-            filamentEngine.destroyRenderer(renderer)
-            filamentEngine.destroyVertexBuffer(vertexBuffer)
-            filamentEngine.destroyIndexBuffer(indexBuffer)
-            filamentEngine.destroyMaterial(material)
-            filamentEngine.destroyView(view)
-            filamentEngine.destroyScene(scene)
-            filamentEngine.destroyCameraComponent(camera.entity)
-            val entityManager = EntityManager.get()
-            entityManager.destroy(renderable)
-            entityManager.destroy(camera.entity)
-            filamentEngine.destroy()
-            swapChain = null
+        if (swapChain == null) {
+            return
         }
+        animator.cancel()
+        // Cleanup all resources
+        filamentEngine.destroyEntity(renderable)
+        filamentEngine.destroyRenderer(renderer)
+        filamentEngine.destroyVertexBuffer(vertexBuffer)
+        filamentEngine.destroyIndexBuffer(indexBuffer)
+        filamentEngine.destroyMaterial(material)
+        filamentEngine.destroyView(view)
+        filamentEngine.destroyScene(scene)
+        filamentEngine.destroyCameraComponent(camera.entity)
+        val entityManager = EntityManager.get()
+        entityManager.destroy(renderable)
+        entityManager.destroy(camera.entity)
+        filamentEngine.destroy()
+        swapChain = null
     }
 
     override fun type(): String = "FilamentView"
@@ -129,26 +117,10 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, 
 
     override fun onShow() {
         super.onShow()
-        pluginHandler.post {
-            createSurface()
-            if (swapChain != null) {
-                return@post
-            }
-            surfaceObj?.surface?.let {
-                initEngine()
-                swapChain = filamentEngine.createSwapChain(it)
-            }
-        }
     }
 
     override fun onHide() {
         super.onHide()
-    }
-
-    override fun onSurfaceChanged(width: Int, height: Int) {
-        pluginHandler.post {
-            view.viewport = Viewport(0, 0, width, height)
-        }
     }
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {

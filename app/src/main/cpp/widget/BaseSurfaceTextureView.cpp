@@ -20,25 +20,8 @@ void BaseSurfaceTextureView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
     dstRect.setLTRB(static_cast<float >(l), static_cast<float >(t), static_cast<float >(r),
                     static_cast<float >(b));
-    if (!inited) {
-        inited = true;
-        auto jniEnv = context->getJniEnv();
-        javaClass = jniEnv->FindClass(getJavaClassPath());
-        javaConstructor = jniEnv->GetMethodID(javaClass, "<init>",
-                                              "(Lcom/temple/skiaui/HYSkiaEngine;IIJ)V");
-        getSkImageMethodId = jniEnv->GetMethodID(javaClass, "getSkImage", "()J");
-        showMethod = jniEnv->GetMethodID(javaClass, "onShow", "()V");
-        hideMethod = jniEnv->GetMethodID(javaClass, "onHide", "()V");
-        releaseMethod = jniEnv->GetMethodID(javaClass, "release", "()V");
-        sendTouchEventMethodId = jniEnv->GetMethodID(javaClass, "sendTouchEvent", "(IFF)V");
-        onSizeChangeMethodId = jniEnv->GetMethodID(javaClass, "onSizeChange", "(II)V");
-        if (javaInstance == nullptr) {
-            auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
-            javaInstance = jniEnv->NewGlobalRef(
-                    jniEnv->NewObject(javaClass, javaConstructor,
-                                      javaSkiaEngine, width, height, reinterpret_cast<long>(this)));
-        }
-        initJNI();
+    if (!firstResize) {
+        onSizeChange(width, height);
     }
 }
 
@@ -100,7 +83,8 @@ bool BaseSurfaceTextureView::onTouchEvent(HYSkiaUI::TouchEvent *touchEvent) {
 }
 
 void BaseSurfaceTextureView::onSizeChange(int width, int height) {
-    if (javaInstance != nullptr) {
+    if (width > 0 && height > 0) {
+        firstResize = true;
         auto jniEnv = getContext()->getJniEnv();
         jniEnv->CallVoidMethod(javaInstance, onSizeChangeMethodId, width, height);
     }
@@ -123,7 +107,15 @@ void BaseSurfaceTextureView::drawShader(SkCanvas *canvas) {
     builder.uniform("iResolution") = uniforms;
     auto time = getContext()->getCurrentTimeMills();
     builder.uniform("iTime") = (float) time / 1000;
-    auto skShader = skImage->makeShader(SkSamplingOptions());
+
+    auto imageWidth = skImage->width();
+    auto imageHeight = skImage->height();
+    float scaleX = width * 1.0f / imageWidth;
+    float scaleY = height * 1.0f / imageHeight;
+    SkMatrix matrix;
+    matrix.setScale(scaleX, scaleY);
+    auto skShader = skImage->makeShader(SkTileMode::kClamp, SkTileMode::kClamp, SkSamplingOptions(),
+                                        &matrix);
     builder.child("iChannel0") = std::move(skShader);
     auto shader = builder.makeShader(nullptr);
     SkPaint skPaint;
@@ -145,6 +137,25 @@ void BaseSurfaceTextureView::setShaderCode(const char *code) {
     }
     runtimeEffect = effect;
     markDirty();
+}
+
+void BaseSurfaceTextureView::setContext(std::shared_ptr<SkiaUIContext> &context) {
+    View::setContext(context);
+    auto jniEnv = context->getJniEnv();
+    javaClass = jniEnv->FindClass(getJavaClassPath());
+    getSkImageMethodId = jniEnv->GetMethodID(javaClass, "getSkImage", "()J");
+    showMethod = jniEnv->GetMethodID(javaClass, "onShow", "()V");
+    hideMethod = jniEnv->GetMethodID(javaClass, "onHide", "()V");
+    releaseMethod = jniEnv->GetMethodID(javaClass, "release", "()V");
+    sendTouchEventMethodId = jniEnv->GetMethodID(javaClass, "sendTouchEvent", "(IFF)V");
+    onSizeChangeMethodId = jniEnv->GetMethodID(javaClass, "onSizeChange", "(II)V");
+    javaConstructor = jniEnv->GetMethodID(javaClass, "<init>",
+                                          "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
+    auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
+    javaInstance = jniEnv->NewGlobalRef(
+            jniEnv->NewObject(javaClass, javaConstructor, javaSkiaEngine,
+                              reinterpret_cast<long>(this)));
+    initJNI();
 }
 
 }

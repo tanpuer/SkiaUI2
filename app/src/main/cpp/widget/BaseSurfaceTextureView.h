@@ -41,13 +41,15 @@ public:
 
     virtual void setShaderCode(const char *code);
 
+    void setContext(std::shared_ptr<SkiaUIContext> &context) override;
+
 protected:
 
     SkRect dstRect;
 
     SkRRect rRect;
 
-    bool inited = false;
+    bool firstResize = false;
 
     jclass javaClass = nullptr;
 

@@ -4,7 +4,6 @@ import android.provider.MediaStore
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +30,8 @@ import com.temple.skiaui.compose.runtime.Row
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexWrap
+import com.temple.skiaui.compose.ui.util.dp2px
+import com.temple.skiaui.compose.ui.util.px2dp
 import com.temple.skiaui.platform.video.ExoPlayerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,13 +54,16 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 mutableStateOf("")
             }
             var videoViewHeight by remember {
-                mutableStateOf(200.dp)
+                mutableStateOf(width * 360 / 640)
             }
             val exoplayer = remember {
                 object : ExoPlayerImpl() {
                     override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
                         super.onVideoSizeChanged(videoWidth, videoHeight)
-                        videoViewHeight = width * videoHeight / videoWidth
+                        if (videoWidth == 0 || videoHeight == 0) {
+                            return
+                        }
+                        videoViewHeight = px2dp(dp2px(width) * videoHeight / videoWidth)
                     }
                 }
             }
@@ -80,9 +84,9 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             ) {
                 ExoVideo(
                     modifier = Modifier.size(width, videoViewHeight),
+                    customPlayer = exoplayer,
                     source = videoSrc,
-                    shaderPath = shaderPath,
-                    customPlayer = exoplayer
+                    shaderPath = shaderPath
                 )
                 Text(
                     modifier = Modifier.backgroundColor(Color.Transparent)

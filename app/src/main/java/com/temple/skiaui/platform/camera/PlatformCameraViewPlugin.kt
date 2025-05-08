@@ -24,8 +24,8 @@ import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.HYSkiaUIApp
 import com.temple.skiaui.platform.SurfaceTextureBasePlugin
 
-class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, viewPtr: Long) :
-    SurfaceTextureBasePlugin(engine, width, height, viewPtr) {
+class PlatformCameraViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
+    SurfaceTextureBasePlugin(engine, viewPtr) {
 
     private var cameraManager: CameraManager? = null
 
@@ -62,6 +62,10 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
 
     }
 
+    override fun onSurfaceChanged(width: Int, height: Int) {
+
+    }
+
     override fun onSurfaceDestroyed() {
         if (cameraManager != null) {
             closeCamera()
@@ -75,6 +79,14 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
 
     override fun drawOneFrame(frameTimeNanos: Long) {
 
+    }
+
+    override fun createSurface(width: Int, height: Int) {
+        super.createSurface(cameraWidth, cameraHeight)
+    }
+
+    override fun reAttachSurfaceTexture(width: Int, height: Int) {
+        super.reAttachSurfaceTexture(cameraWidth, cameraHeight)
     }
 
     fun start() {
@@ -107,10 +119,6 @@ class PlatformCameraViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vi
         if (cameraManager != null) {
             closeCamera()
         }
-    }
-
-    override fun onSurfaceChanged(width: Int, height: Int) {
-
     }
 
     private fun getRotation(): Int {

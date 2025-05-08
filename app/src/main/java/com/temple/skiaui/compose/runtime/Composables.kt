@@ -136,17 +136,20 @@ fun Scroll(
 @Composable
 fun ExoVideo(
     modifier: Modifier,
+    customPlayer: IVideoPlayer? = null,
     source: String,
     onClick: (() -> Unit)? = null,
     shaderPath: String? = null,
     shaderCode: String? = null,
-    customPlayer: IVideoPlayer? = null
 ) {
     ComposeNode<HYComposeExoVideo, HYComposeApplier>(
         factory = { HYComposeExoVideo(modifier) },
         update = {
             set(modifier) {
                 updateModifier(modifier)
+            }
+            set(customPlayer) {
+                setCustomPlayer(customPlayer)
             }
             set(source) {
                 setSource(source)
@@ -159,9 +162,6 @@ fun ExoVideo(
             }
             set(shaderCode) {
                 setShaderCode(shaderCode)
-            }
-            set(customPlayer) {
-                setCustomPlayer(customPlayer)
             }
         }
     )

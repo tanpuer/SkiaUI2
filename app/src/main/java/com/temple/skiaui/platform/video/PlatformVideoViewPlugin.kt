@@ -4,16 +4,18 @@ import android.view.MotionEvent
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.SurfaceTextureBasePlugin
 
-class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, viewPtr: Long) :
-    SurfaceTextureBasePlugin(engine, width, height, viewPtr, true), IVideoListener {
+class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
+    SurfaceTextureBasePlugin(engine, viewPtr, true), IVideoListener {
 
     private var exoPlayer: IVideoPlayer? = null
     private var customPlayer: IVideoPlayer? = null
     private var source: String = ""
-    private var currentPosition: Long = 0L
     private var renderFirstFrame = false
 
     override fun onSurfaceCreated() {
+        if (exoPlayer == null) {
+            this.initializeReader()
+        }
     }
 
     override fun onSurfaceChanged(width: Int, height: Int) {
@@ -37,12 +39,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
         renderFirstFrame = false
         pluginHandler.post {
             this.source = source
-            createSurface()
-            if (exoPlayer == null) {
-                this.initializeReader()
-            } else {
-                exoPlayer?.setSource(source)
-            }
+            exoPlayer?.setSource(source)
         }
     }
 
@@ -84,23 +81,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     override fun onShow() {
         super.onShow()
         pluginHandler.post {
-            val exoplayerIsNull = exoPlayer == null
-            if (exoplayerIsNull) {
-                initializeReader()
-            }
-            if (surfaceObj?.surface == null) {
-                createSurface()
-                exoPlayer?.setVideoSurface(surfaceObj?.surface)
-            }
             exoPlayer?.play()
-            if (exoplayerIsNull) {
-                if (currentPosition != 0L) {
-                    exoPlayer?.seekTo(currentPosition)
-                    currentPosition = 0L
-                }
-            } else {
-                exoPlayer?.seekTo(exoPlayer?.getCurrentPosition() ?: 0L)
-            }
         }
     }
 

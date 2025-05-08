@@ -26,8 +26,6 @@ public:
 
     void setRenderFirstFrameCallback(std::function<void()> &&callback);
 
-    void onVideoSizeChanged(int width, int height);
-
     void setCustomVideoPlayer(jobject player);
 
 private:

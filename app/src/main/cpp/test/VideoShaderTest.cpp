@@ -64,7 +64,7 @@ void VideoShaderTest::initChildren(ViewGroup *root, int width, int height) {
         button->setMargin({0, 20, 0, 0});
         scrollView->addView(button);
         button->setOnClickListener([videoView](View *view) {
-            videoView->setShaderPath("skia_video_lightning.glsl");
+            videoView->setShaderPath("skia_video_lightning_shader.glsl");
         });
     }
 

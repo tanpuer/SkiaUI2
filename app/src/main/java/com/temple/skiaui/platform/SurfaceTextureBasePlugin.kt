@@ -11,11 +11,12 @@ import com.temple.skiaui.HYSkiaEngine
 
 abstract class SurfaceTextureBasePlugin(
     val engine: HYSkiaEngine,
-    val width: Int,
-    val height: Int,
     val viewPtr: Long,
     private val inMainThread: Boolean = false
 ) : Choreographer.FrameCallback, SurfaceTexture.OnFrameAvailableListener, HYSurfaceViewCallback {
+
+    protected var width = 0
+    protected var height = 0
 
     protected var skImagePtr: Long = 0L
 
@@ -69,12 +70,13 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     private fun skiaSurfaceCreated() {
-        surfaceObj?.surfaceTexture?.let { surfaceTexture ->
-            engine.attachSurfaceTexture(width, height, surfaceTexture) {
-                skImagePtr = it
+        if (surfaceObj == null && width > 0 && height > 0) {
+            createSurface(width, height)
+            if (surfaceObj != null) {
+                onSurfaceCreated()
             }
         }
-        onSurfaceCreated()
+        reAttachSurfaceTexture()
     }
 
     private fun skiaSurfaceDestroyed() {
@@ -123,11 +125,16 @@ abstract class SurfaceTextureBasePlugin(
 
     private fun onSizeChange(width: Int, height: Int) {
         pluginHandler.post {
-            if (surfaceObj?.width != width || surfaceObj?.height != height) {
+            this.width = width
+            this.height = height
+            if (surfaceObj == null) {
+                createSurface(width, height)
+                onSurfaceCreated()
+            } else if (surfaceObj?.width != width || surfaceObj?.height != height) {
                 surfaceObj?.setDefaultBufferSize(width, height)
+                onSurfaceChanged(width, height)
             }
         }
-        onSurfaceChanged(width, height)
     }
 
     abstract fun type(): String
@@ -161,7 +168,7 @@ abstract class SurfaceTextureBasePlugin(
         }
     }
 
-    fun createSurface(width: Int = this.width, height: Int = this.height) {
+    open fun createSurface(width: Int = this.width, height: Int = this.height) {
         if (!show || !skiaShow) {
             return
         }
@@ -180,6 +187,19 @@ abstract class SurfaceTextureBasePlugin(
             surfaceTexture.setOnFrameAvailableListener(this)
         }
     }
+
+    open fun reAttachSurfaceTexture(width: Int = this.width, height: Int = this.height) {
+        surfaceObj?.surfaceTexture?.let { surfaceTexture ->
+            engine.attachSurfaceTexture(width, height, surfaceTexture) {
+                if (skImagePtr > 0) {
+                    deleteSkImage(skImagePtr)
+                }
+                skImagePtr = it
+            }
+            onFrameAvailable(surfaceTexture)
+        }
+    }
+
 
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
         if (this.released) {

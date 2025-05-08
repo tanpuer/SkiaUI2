@@ -23,6 +23,18 @@ open class ExoPlayerImpl : IVideoPlayer {
     private var listener: IVideoListener? = null
     private var start = 0L
 
+    init {
+        exoPlayer?.addListener(object : Player.Listener {
+            override fun onRenderedFirstFrame() {
+                this@ExoPlayerImpl.onRenderedFirstFrame()
+            }
+
+            override fun onVideoSizeChanged(videoSize: VideoSize) {
+                this@ExoPlayerImpl.onVideoSizeChanged(videoSize.width, videoSize.height)
+            }
+        })
+    }
+
     @OptIn(UnstableApi::class)
     override fun setSource(source: String) {
         start = System.currentTimeMillis()
@@ -45,15 +57,6 @@ open class ExoPlayerImpl : IVideoPlayer {
                 .createMediaSource(MediaItem.fromUri(uri))
             exoPlayer?.setMediaSource(mediaSource)
         }
-        exoPlayer?.addListener(object : Player.Listener {
-            override fun onRenderedFirstFrame() {
-                this@ExoPlayerImpl.onRenderedFirstFrame()
-            }
-
-            override fun onVideoSizeChanged(videoSize: VideoSize) {
-                this@ExoPlayerImpl.onVideoSizeChanged(videoSize.width, videoSize.height)
-            }
-        })
     }
 
     override fun setVideoSurface(surface: Surface?) {
