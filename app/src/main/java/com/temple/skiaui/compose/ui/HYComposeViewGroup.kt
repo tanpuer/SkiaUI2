@@ -23,6 +23,10 @@ open class HYComposeViewGroup(modifier: Modifier) : HYComposeView(modifier) {
                     nativeSetAlignItems(ref, (value as Align).value)
                 }
 
+                StyleKey.wrap -> {
+                    nativeSetFlexWrap(ref, (value as FlexWrap).value)
+                }
+
             }
         }
     }
@@ -31,16 +35,9 @@ open class HYComposeViewGroup(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetFlexDirection(ref, direction.value)
     }
 
-    fun setJustifyContent(justify: Justify) {
-        nativeSetJustifyContent(ref, justify.value)
-    }
-
-    fun nativeSetAlignItems(align: Align) {
-        nativeSetAlignItems(ref, align.value)
-    }
-
-    private external fun nativeSetFlexDirection(fbLayout: Long, value: String)
-    private external fun nativeSetJustifyContent(fbLayout: Long, value: String)
-    private external fun nativeSetAlignItems(fbLayout: Long, value: String)
+    private external fun nativeSetFlexDirection(ref: Long, value: String)
+    private external fun nativeSetJustifyContent(ref: Long, value: String)
+    private external fun nativeSetAlignItems(ref: Long, value: String)
+    private external fun nativeSetFlexWrap(ref: Long, value: String)
 
 }

@@ -8,7 +8,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
     SurfaceTextureBasePlugin(engine, width, height, viewPtr, true) {
 
     private var exoPlayer: ExoPlayerImpl? = null
-    private var assetsPath: String = ""
+    private var source: String = ""
     private var currentPosition: Long = 0L
     private var renderFirstFrame = false
 
@@ -32,21 +32,22 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
 
     override fun type(): String = "ExoPlayerView"
 
-    fun setSource(assetsPath: String) {
+    fun setSource(source: String) {
         renderFirstFrame = false
         pluginHandler.post {
-            this.assetsPath = assetsPath
+            this.source = source
             createSurface()
-            this.initializeReader()
+            if (exoPlayer == null) {
+                this.initializeReader()
+            } else {
+                exoPlayer?.setSource(source)
+            }
         }
     }
 
     private fun initializeReader() {
-        if (exoPlayer != null) {
-            return
-        }
         exoPlayer = ExoPlayerImpl()
-        exoPlayer?.setAssetsSource(assetsPath)
+        exoPlayer?.setSource(source)
         exoPlayer?.setVideoSurface(surfaceObj?.surface)
         exoPlayer?.setRepeat(true)
         exoPlayer?.prepare()
@@ -56,6 +57,10 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, vie
                 engine.postToSkiaUI {
                     renderFirstFrame = true
                 }
+            }
+
+            override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
+
             }
         })
     }

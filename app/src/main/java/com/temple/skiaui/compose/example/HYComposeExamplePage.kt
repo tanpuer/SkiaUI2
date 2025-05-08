@@ -144,6 +144,7 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 ComposeRecycler(width, height)
                 ComposeCanvas(width, height)
                 ComposeMusic(width, height)
+                ComposeVideoList(width, height)
                 Loading(
                     modifier = Modifier.size(200.dp, 50.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
@@ -337,6 +338,24 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 HYComposeMusicPage(engine).apply {
+                    start(width, height)
+                    HYComposeSDK.pushPage(this)
+                }
+            }
+        )
+    }
+
+    @Composable
+    private fun ComposeVideoList(width: Dp, height: Dp) {
+        Button(
+            modifier = Modifier
+                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+            content = stringResource(R.string.local_video_list),
+            textSize = 20.dp,
+            color = MaterialTheme.colorScheme.tertiary,
+            onClick = {
+                HYComposeVideoListPage(engine).apply {
                     start(width, height)
                     HYComposeSDK.pushPage(this)
                 }

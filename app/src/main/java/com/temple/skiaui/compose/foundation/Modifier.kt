@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.isUnspecified
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexDirection
+import com.temple.skiaui.compose.ui.FlexWrap
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 
@@ -35,6 +36,8 @@ class Modifier {
     var alignItems: Align = Align.Unspecified
 
     var alignSelf: Align = Align.Unspecified
+
+    var wrap: FlexWrap = FlexWrap.Unspecified
 
     fun diffStyles(previous: Modifier) {
         if (!width.isUnspecified && width != previous.width) {
@@ -87,6 +90,9 @@ class Modifier {
         }
         if (alignSelf != Align.Unspecified && alignSelf != previous.alignSelf) {
             styles[StyleKey.alignSelf] = alignSelf
+        }
+        if (wrap != FlexWrap.Unspecified && wrap != previous.wrap) {
+            styles[StyleKey.wrap] = wrap
         }
     }
 

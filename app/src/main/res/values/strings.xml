@@ -13,4 +13,7 @@
     <string name="video_black_white_shader">Black White Shader</string>
     <string name="video_lightning_shader">Lightning Shader</string>
     <string name="video_raining_shader">Raining Shader</string>
+    <string name="local_video_list">Local Video List</string>
+    <string name="empty_video_list">Empty Video List</string>
+    <string name="shader_effect">Shader Effect</string>
 </resources>

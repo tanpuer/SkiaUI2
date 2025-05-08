@@ -4,7 +4,7 @@ import android.view.Surface
 
 interface IVideoPlayer {
 
-    fun setAssetsSource(path: String)
+    fun setSource(source: String)
 
     fun setVideoSurface(surface: Surface?)
 
@@ -30,6 +30,10 @@ interface IVideoPlayer {
 
 interface IVideoListener {
     fun onRenderedFirstFrame() {
+
+    }
+
+    fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
 
     }
 }

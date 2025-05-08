@@ -34,10 +34,19 @@ compose_view_group_set_align_items(JNIEnv *env, jobject instance, jlong viewPtr,
     env->ReleaseStringUTFChars(value, valueStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_group_set_flex_wrap(JNIEnv *env, jobject instance, jlong viewPtr, jstring value) {
+    auto viewGroup = reinterpret_cast<ViewGroup *>(viewPtr);
+    auto valueStr = env->GetStringUTFChars(value, nullptr);
+    viewGroup->setFlexWrap(W3CToYGWrap(valueStr));
+    env->ReleaseStringUTFChars(value, valueStr);
+}
+
 static JNINativeMethod g_ComposeViewGroupMethods[] = {
         {"nativeSetFlexDirection",  "(JLjava/lang/String;)V", (void *) compose_view_group_set_direction},
         {"nativeSetJustifyContent", "(JLjava/lang/String;)V", (void *) compose_view_group_set_justify_content},
-        {"nativeSetAlignItems",     "(JLjava/lang/String;)V", (void *) compose_view_group_set_align_items}
+        {"nativeSetAlignItems",     "(JLjava/lang/String;)V", (void *) compose_view_group_set_align_items},
+        {"nativeSetFlexWrap",       "(JLjava/lang/String;)V", (void *) compose_view_group_set_flex_wrap},
 };
 
 static int RegisterComposeViewGroupMethods(JNIEnv *env) {

@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexDirection
+import com.temple.skiaui.compose.ui.FlexWrap
 import com.temple.skiaui.compose.ui.Justify
 import com.temple.skiaui.compose.ui.Position
 
@@ -71,5 +72,10 @@ fun Modifier.corner(radius: Dp): Modifier {
 
 fun Modifier.minSize(size: DpSize): Modifier {
     this.minSize = size
+    return this
+}
+
+fun Modifier.wrap(wrap: FlexWrap): Modifier {
+    this.wrap = wrap
     return this
 }

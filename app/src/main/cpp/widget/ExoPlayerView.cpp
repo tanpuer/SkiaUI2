@@ -25,6 +25,12 @@ void ExoPlayerView::initJNI() {
 
 void ExoPlayerView::setSource(const char *source) {
     this->source = source;
+    if (javaInstance != nullptr && setSourceMethodId != nullptr) {
+        auto jniEnv = getContext()->getJniEnv();
+        auto jstring = jniEnv->NewStringUTF(this->source.c_str());
+        jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jstring);
+        jniEnv->DeleteLocalRef(jstring);
+    }
 }
 
 void ExoPlayerView::setRenderFirstFrameCallback(std::function<void()> &&callback) {
@@ -34,7 +40,7 @@ void ExoPlayerView::setRenderFirstFrameCallback(std::function<void()> &&callback
 void ExoPlayerView::drawOneFrame() {
     if (firstFrame) {
         firstFrame = false;
-        context->setTimer([this](){
+        context->setTimer([this]() {
             if (renderFirstFrameCallback != nullptr) {
                 renderFirstFrameCallback();
             }

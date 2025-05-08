@@ -14,4 +14,5 @@ object StyleKey {
     const val alignSelf = "alignSelf"
     const val margins = "margins"
     const val paddings = "paddings"
+    const val wrap = "wrap"
 }
