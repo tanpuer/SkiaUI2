@@ -26,6 +26,10 @@ public:
 
     void setHint(const char *hint);
 
+    void setTextColor(int color);
+
+    void setHintColor(int color);
+
 protected:
 
     jmethodID clearFocusMethodId = nullptr;
@@ -33,6 +37,10 @@ protected:
     jmethodID requestFocusMethodId = nullptr;
 
     jmethodID setHintMethodId = nullptr;
+
+    jmethodID setTextColorMethodId = nullptr;
+
+    jmethodID setHintColorMethodId = nullptr;
 
     std::string hint = "";
 

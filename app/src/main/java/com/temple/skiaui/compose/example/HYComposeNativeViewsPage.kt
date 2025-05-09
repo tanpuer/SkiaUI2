@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -39,7 +40,8 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                     modifier = Modifier.size(width, 70.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                     hint = stringResource(R.string.edit_hint_string),
-                    focus = false
+                    textColor = Color.Red,
+                    hintColor = Color.Blue
                 )
                 Web(
                     Modifier.size(width, height - 90.dp),

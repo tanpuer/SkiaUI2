@@ -1,8 +1,10 @@
 package com.temple.skiaui.platform.edittext
 
+import android.graphics.Color
 import android.view.View
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.PlatformTextureLayerBasePlugin
+import androidx.core.graphics.toColorInt
 
 class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, editTextPtr: Long) :
     PlatformTextureLayerBasePlugin(engine, width, height, editTextPtr) {
@@ -35,6 +37,18 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, width: Int, height: Int, edit
     fun setHint(hint: String) {
         mainHandler.post {
             editText?.hint = hint
+        }
+    }
+
+    fun setTextColor(color: Int) {
+        mainHandler.post {
+            editText?.setTextColor(color)
+        }
+    }
+
+    fun setHintColor(color: Int) {
+        mainHandler.post {
+            editText?.setHintTextColor(color)
         }
     }
 

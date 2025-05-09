@@ -26,9 +26,23 @@ compose_edit_set_focus(JNIEnv *env, jobject instance, jlong viewPtr, jboolean fo
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_edit_set_text_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
+    auto editText = reinterpret_cast<EditText *>(viewPtr);
+    editText->setTextColor(color);
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_edit_set_hint_color(JNIEnv *env, jobject instance, jlong viewPtr, jint color) {
+    auto editText = reinterpret_cast<EditText *>(viewPtr);
+    editText->setHintColor(color);
+}
+
 static JNINativeMethod g_ComposeEditTextMethods[] = {
-        {"nativeSetHint",  "(JLjava/lang/String;)V", (void *) compose_edit_set_hint},
-        {"nativeSetFocus", "(JZ)V",                  (void *) compose_edit_set_focus},
+        {"nativeSetHint",      "(JLjava/lang/String;)V", (void *) compose_edit_set_hint},
+        {"nativeSetFocus",     "(JZ)V",                  (void *) compose_edit_set_focus},
+        {"nativeSetTextColor", "(JI)V",                  (void *) compose_edit_set_text_color},
+        {"nativeSetHintColor", "(JI)V",                  (void *) compose_edit_set_hint_color},
 };
 
 static int RegisterComposeEditTextMethods(JNIEnv *env) {

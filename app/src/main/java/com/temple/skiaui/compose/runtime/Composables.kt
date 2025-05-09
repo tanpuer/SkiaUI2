@@ -455,9 +455,15 @@ fun Web(modifier: Modifier, url: String) {
 }
 
 @Composable
-fun EditText(modifier: Modifier, hint: String, focus: Boolean = false) {
+fun EditText(
+    modifier: Modifier,
+    hint: String,
+    focus: Boolean = false,
+    textColor: Color = Color.Unspecified,
+    hintColor: Color = Color.Unspecified
+) {
     ComposeNode<HYComposeEditText, HYComposeApplier>(
-        factory = { HYComposeEditText(modifier, hint) },
+        factory = { HYComposeEditText(modifier) },
         update = {
             set(modifier) {
                 updateModifier(modifier)
@@ -467,6 +473,12 @@ fun EditText(modifier: Modifier, hint: String, focus: Boolean = false) {
             }
             set(focus) {
                 setFocus(focus)
+            }
+            set(textColor) {
+                setTextColor(textColor)
+            }
+            set(hintColor) {
+                setHintColor(hintColor)
             }
         }
     )
