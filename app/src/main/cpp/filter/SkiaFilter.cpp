@@ -112,8 +112,11 @@ long SkiaFilter::MakeHardwareBufferToSkImage(JNIEnv *env, jobject javaHardwareBu
 void SkiaFilter::deleteSkImage(JNIEnv *env, long skImagePtr) {
     auto skImage = reinterpret_cast<SkImage *>(skImagePtr);
     if (skImage != nullptr) {
-        ALOGD("textureId is deleteSkImage: refCount: %d", skImage->getRefCnt2())
-        SkSafeUnref(skImage);
+        auto count = skImage->getRefCnt2();
+        ALOGD("textureId is deleteSkImage: refCount: %d", count)
+        for (int i = 0; i < count; ++i) {
+            SkSafeUnref(skImage);
+        }
     }
     auto itr = surfaceTextureToTextureIdMap.find(skImagePtr);
     if (itr != surfaceTextureToTextureIdMap.end()) {
@@ -184,7 +187,10 @@ void SkiaFilter::updateTexImage(JNIEnv *env, jobject surfaceTexture, long skImag
 //    glActiveTexture(GL_TEXTURE0 + texID);
     glBindTexture(target, texID);
     auto nativeSurfaceTexture = ASurfaceTexture_fromSurfaceTexture(env, surfaceTexture);
-    ASurfaceTexture_updateTexImage(nativeSurfaceTexture);
+    auto result = ASurfaceTexture_updateTexImage(nativeSurfaceTexture);
+    if (result != 0) {
+        ALOGE("ASurfaceTexture_updateTexImage error %d", result)
+    }
 }
 
 }

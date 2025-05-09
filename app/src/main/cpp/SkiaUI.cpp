@@ -192,7 +192,7 @@ native_UIHide(JNIEnv *env, jobject instance, jlong javaUIApp) {
 
 extern "C" JNIEXPORT void JNICALL
 native_DeleteSkPicture(JNIEnv *env, jobject instance, jlong javaUIApp, jlong skPicture) {
-    ALOGD("native_DeleteSkPicture")
+//    ALOGD("native_DeleteSkPicture")
     auto uiApp = reinterpret_cast<SkiaUIApp *>(javaUIApp);
     if (uiApp != nullptr) {
         uiApp->deleteSkPicture(skPicture);

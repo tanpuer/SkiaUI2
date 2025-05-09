@@ -23,27 +23,27 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
 
     protected var targetView: View? = null
 
-    private var container: FrameLayout? = null
+    protected var container: FrameLayout? = null
 
-    private var skImagePtr: Long = 0L
+    protected var skImagePtr: Long = 0L
 
-    private var downTime: Long = 0L
+    protected var downTime: Long = 0L
 
-    private var surfaceObj: SurfaceObj? = null
-
-    @Volatile
-    private var show: Boolean = true
-
-    private val platformIndex = SurfaceObj.INDEX++
-
-    private var index = "platform:${platformIndex}"
+    protected var surfaceObj: SurfaceObj? = null
 
     @Volatile
-    private var released = false
+    protected var show: Boolean = true
+
+    protected val platformIndex = SurfaceObj.INDEX++
+
+    protected var index = "platform:${platformIndex}"
+
+    @Volatile
+    protected var released = false
 
     private val createListener = fun(it: Boolean) {
         show = it
-        if (!it) {
+        if (it) {
             reAttachSurfaceTexture(width, height)
         } else {
             engine.postToSkiaGL {
