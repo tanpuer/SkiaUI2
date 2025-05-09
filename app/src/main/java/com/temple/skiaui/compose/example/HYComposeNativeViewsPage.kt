@@ -1,6 +1,7 @@
 package com.temple.skiaui.compose.example
 
 import android.util.Log
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -13,6 +14,7 @@ import com.temple.skiaui.R
 import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
+import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.margins
 import com.temple.skiaui.compose.foundation.size
 import com.temple.skiaui.compose.runtime.EditText
@@ -38,10 +40,11 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
             ) {
                 EditText(
                     modifier = Modifier.size(width, 70.dp)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
+                        .margins(arrayOf(0.dp, 0.dp, 0.dp, 0.dp))
+                        .backgroundColor(if (isSystemInDarkTheme()) Color.Gray else Color.White),
                     hint = stringResource(R.string.edit_hint_string),
                     textColor = MaterialTheme.colorScheme.tertiary,
-                    hintColor = MaterialTheme.colorScheme.primary
+                    hintColor = MaterialTheme.colorScheme.outlineVariant,
                 )
                 Web(
                     Modifier.size(width, height - 90.dp),

@@ -190,4 +190,10 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
         engine.deleteSkImage(ptr)
     }
 
+    private fun setBackgroundColor(color: Int) {
+        mainHandler.post {
+            targetView?.setBackgroundColor(color)
+        }
+    }
+
 }

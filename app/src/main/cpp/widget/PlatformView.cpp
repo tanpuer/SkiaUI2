@@ -75,6 +75,7 @@ void PlatformView::setContext(std::shared_ptr<SkiaUIContext> &context) {
     deleteSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "deleteSkImage", "(J)V");
     releaseMethodId = jniEnv->GetMethodID(javaPluginClazz, "release", "()V");
     onSizeChangeMethodId = jniEnv->GetMethodID(javaPluginClazz, "onSizeChange", "(II)V");
+    setBackgroundColorMethodId = jniEnv->GetMethodID(javaPluginClazz, "setBackgroundColor", "(I)V");
     auto javaConstructor = jniEnv->GetMethodID(javaPluginClazz, "<init>",
                                                "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
     auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
@@ -82,6 +83,12 @@ void PlatformView::setContext(std::shared_ptr<SkiaUIContext> &context) {
             jniEnv->NewObject(javaPluginClazz, javaConstructor, javaSkiaEngine,
                               reinterpret_cast<long>(this)));
     onJavaViewCreated();
+}
+
+void PlatformView::setBackgroundColor(SkColor color) {
+    View::setBackgroundColor(color);
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(javaView, setBackgroundColorMethodId, color);
 }
 
 }

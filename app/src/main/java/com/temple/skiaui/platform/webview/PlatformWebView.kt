@@ -2,6 +2,7 @@ package com.temple.skiaui.platform.webview
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -12,6 +13,8 @@ import android.webkit.WebChromeClient
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.webkit.WebSettingsCompat
+import androidx.webkit.WebViewFeature
 import com.temple.skiaui.platform.ICanvasProvider
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -25,6 +28,9 @@ class PlatformWebView @JvmOverloads constructor(
         settings.javaScriptEnabled = true
         webViewClient = HYWebViewClient()
         webChromeClient = HYWebChromeClient()
+        if (WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+            WebSettingsCompat.setForceDark(settings, WebSettingsCompat.FORCE_DARK_AUTO)
+        }
     }
 
     private var render: ICanvasProvider? = null

@@ -31,13 +31,13 @@ class PlatformWebViewPlugin(engine: HYSkiaEngine, webViewPtr: Long) :
         webView = null
     }
 
-    fun loadUrl(url: String) {
+    private fun loadUrl(url: String) {
         mainHandler.post {
             webView?.loadUrl(url)
         }
     }
 
-    fun canGoBack(): Boolean {
+    private fun canGoBack(): Boolean {
         if (Looper.myLooper() == Looper.getMainLooper()) {
             return webView?.canGoBack() ?: false
         }

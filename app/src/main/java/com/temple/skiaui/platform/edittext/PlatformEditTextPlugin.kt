@@ -1,10 +1,8 @@
 package com.temple.skiaui.platform.edittext
 
-import android.graphics.Color
 import android.view.View
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.PlatformTextureLayerBasePlugin
-import androidx.core.graphics.toColorInt
 
 class PlatformEditTextPlugin(engine: HYSkiaEngine, editTextPtr: Long) :
     PlatformTextureLayerBasePlugin(engine, editTextPtr) {
@@ -22,31 +20,31 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, editTextPtr: Long) :
         editText?.clearFocus()
     }
 
-    fun clearFocus() {
+    private fun clearFocus() {
         mainHandler.post {
             editText?.clearFocus()
         }
     }
 
-    fun requestFocus() {
+    private fun requestFocus() {
         mainHandler.post {
             editText?.requestFocus()
         }
     }
 
-    fun setHint(hint: String) {
+    private fun setHint(hint: String) {
         mainHandler.post {
             editText?.hint = hint
         }
     }
 
-    fun setTextColor(color: Int) {
+    private fun setTextColor(color: Int) {
         mainHandler.post {
             editText?.setTextColor(color)
         }
     }
 
-    fun setHintColor(color: Int) {
+    private fun setHintColor(color: Int) {
         mainHandler.post {
             editText?.setHintTextColor(color)
         }

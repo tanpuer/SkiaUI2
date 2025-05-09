@@ -15,13 +15,9 @@ public:
         ACTION_CANCEL = 3
     };
 
-    TouchEvent(MotionEvent action, float x, float y) : action(action), x(x), y(y) {
+    TouchEvent(MotionEvent action, float x, float y) : action(action), x(x), y(y) {}
 
-    }
-
-    ~TouchEvent() {
-        ALOGD("TouchEvent %s", "~TouchEvent")
-    }
+    ~TouchEvent() {}
 
 public:
     MotionEvent action;

@@ -32,6 +32,8 @@ public:
 
     void onSizeChange(int width, int height) override;
 
+    void setBackgroundColor(SkColor color) override;
+
 protected:
 
     SkRect dstRect;
@@ -53,6 +55,8 @@ protected:
     jmethodID releaseMethodId = nullptr;
 
     jmethodID onSizeChangeMethodId = nullptr;
+
+    jmethodID setBackgroundColorMethodId = nullptr;
 
     bool firstResize = false;
 
