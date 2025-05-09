@@ -28,6 +28,10 @@ public:
 
     virtual void onJavaViewCreated() {}
 
+    void setContext(std::shared_ptr<SkiaUIContext> &context) override;
+
+    void onSizeChange(int width, int height) override;
+
 protected:
 
     SkRect dstRect;
@@ -49,6 +53,8 @@ protected:
     jmethodID releaseMethodId = nullptr;
 
     jmethodID onSizeChangeMethodId = nullptr;
+
+    bool firstResize = false;
 
 };
 

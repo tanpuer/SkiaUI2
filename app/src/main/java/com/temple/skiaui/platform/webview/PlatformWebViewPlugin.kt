@@ -5,9 +5,8 @@ import android.view.View
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.platform.PlatformTextureLayerBasePlugin
 
-class PlatformWebViewPlugin(engine: HYSkiaEngine, width: Int, height: Int, webViewPtr: Long) :
-    PlatformTextureLayerBasePlugin(engine, width, height, webViewPtr),
-    IWebViewCallback {
+class PlatformWebViewPlugin(engine: HYSkiaEngine, webViewPtr: Long) :
+    PlatformTextureLayerBasePlugin(engine, webViewPtr), IWebViewCallback {
 
     private var webView: PlatformWebView? = null
 

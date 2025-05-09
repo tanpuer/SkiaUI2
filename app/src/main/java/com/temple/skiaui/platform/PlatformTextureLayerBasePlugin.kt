@@ -2,6 +2,7 @@ package com.temple.skiaui.platform
 
 import android.graphics.Canvas
 import android.graphics.SurfaceTexture
+import android.graphics.SurfaceTexture.OnFrameAvailableListener
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
@@ -11,12 +12,12 @@ import android.widget.FrameLayout
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
 
-abstract class PlatformTextureLayerBasePlugin(
-    val engine: HYSkiaEngine,
-    val width: Int,
-    val height: Int,
-    val viewPtr: Long
-) : ICanvasProvider {
+abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val viewPtr: Long) :
+    ICanvasProvider, OnFrameAvailableListener {
+
+    protected var width = 0
+
+    protected var height = 0
 
     protected val mainHandler = engine.mainHandler
 
@@ -43,8 +44,14 @@ abstract class PlatformTextureLayerBasePlugin(
     private val createListener = fun(it: Boolean) {
         show = it
         if (!it) {
-            surfaceObj?.release()
-            surfaceObj = null
+            reAttachSurfaceTexture(width, height)
+        } else {
+            engine.postToSkiaGL {
+                surfaceObj?.surfaceTexture?.detachFromGLContext()
+            }
+            engine.postToSkiaUI {
+                skImagePtr = 0L
+            }
         }
     }
 
@@ -77,6 +84,38 @@ abstract class PlatformTextureLayerBasePlugin(
         deleteSkImage(skImagePtr)
     }
 
+    open fun reAttachSurfaceTexture(width: Int = this.width, height: Int = this.height) {
+        surfaceObj?.surfaceTexture?.let { surfaceTexture ->
+            engine.attachSurfaceTexture(width, height, surfaceTexture) {
+                if (skImagePtr > 0) {
+                    deleteSkImage(skImagePtr)
+                }
+                skImagePtr = it
+            }
+            onFrameAvailable(surfaceTexture)
+        }
+    }
+
+    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
+        if (this.released) {
+            return
+        }
+        engine.postToSkiaGL {
+            if (!this.show || this.released) {
+                return@postToSkiaGL
+            }
+            surfaceObj?.surfaceTexture?.let {
+                engine.updateTexImage(it, skImagePtr)
+            }
+        }
+        engine.postToSkiaUI {
+            if (!this.show || this.released) {
+                return@postToSkiaUI
+            }
+            engine.markDirty(viewPtr)
+        }
+    }
+
     private fun sendTouchEvent(type: Int, x: Float, y: Float) {
         mainHandler.post {
             if (type == MotionEvent.ACTION_DOWN) {
@@ -97,56 +136,45 @@ abstract class PlatformTextureLayerBasePlugin(
         }
     }
 
-    fun onSizeChange(width: Int, height: Int) {
-//        mainHandler.post {
-//            surfaceObj?.setDefaultBufferSize(width, height)
-//            (targetView?.layoutParams as? FrameLayout.LayoutParams)?.apply {
-//                this.width = width
-//                this.height = height
-//                targetView?.requestLayout()
-//            }
-//        }
+    private fun onSizeChange(width: Int, height: Int) {
+        mainHandler.post {
+            this.width = width
+            this.height = height
+            if (surfaceObj == null) {
+                createSurface(width, height)
+            } else if (surfaceObj?.width != width || surfaceObj?.height != height) {
+                surfaceObj?.setDefaultBufferSize(width, height)
+            }
+            (targetView?.layoutParams as? FrameLayout.LayoutParams)?.apply {
+                this.width = width
+                this.height = height
+                targetView?.requestLayout()
+            }
+        }
     }
 
-    override fun lockCanvas(originCanvas: Canvas): Canvas? {
+    private fun createSurface(width: Int, height: Int) {
         if (!show) {
-            return null
+            return
         }
         if (surfaceObj == null) {
             surfaceObj = SurfaceObj().apply {
                 this.surfaceTexture = SurfaceTexture(platformIndex).apply { detachFromGLContext() }
                 this.surface = Surface(this.surfaceTexture)
-                this.width = originCanvas.width
-                this.height = originCanvas.height
+                this.width = width
+                this.height = height
             }
-            surfaceObj?.setDefaultBufferSize(originCanvas.width, originCanvas.height)
-            val surfaceTexture = surfaceObj?.surfaceTexture ?: return null
-            engine.attachSurfaceTexture(originCanvas.width, originCanvas.height, surfaceTexture) {
+            surfaceObj?.setDefaultBufferSize(width, height)
+            val surfaceTexture = surfaceObj?.surfaceTexture ?: return
+            engine.attachSurfaceTexture(width, height, surfaceTexture) {
                 skImagePtr = it
             }
-            surfaceTexture.setOnFrameAvailableListener {
-                if (this.released) {
-                    return@setOnFrameAvailableListener
-                }
-                engine.postToSkiaGL {
-                    if (!this.show || this.released) {
-                        return@postToSkiaGL
-                    }
-                    surfaceObj?.surfaceTexture?.let {
-                        engine.updateTexImage(it, skImagePtr)
-                    }
-                }
-                engine.postToSkiaUI {
-                    if (!this.show || this.released) {
-                        return@postToSkiaUI
-                    }
-                    engine.markDirty(viewPtr)
-                }
-            }
+            surfaceTexture.setOnFrameAvailableListener(this)
         }
-        if (surfaceObj?.width != originCanvas.width || surfaceObj?.height != originCanvas.height) {
-            surfaceObj?.setDefaultBufferSize(originCanvas.width, originCanvas.height)
-        }
+    }
+
+
+    override fun lockCanvas(originCanvas: Canvas): Canvas? {
         return surfaceObj?.surface?.lockHardwareCanvas()
     }
 

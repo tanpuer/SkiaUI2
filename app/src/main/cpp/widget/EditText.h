@@ -42,10 +42,6 @@ protected:
 
     jmethodID setHintColorMethodId = nullptr;
 
-    std::string hint = "";
-
-    bool focus = false;
-
 };
 
 }

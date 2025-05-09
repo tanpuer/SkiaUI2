@@ -200,7 +200,6 @@ abstract class SurfaceTextureBasePlugin(
         }
     }
 
-
     override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
         if (this.released) {
             return

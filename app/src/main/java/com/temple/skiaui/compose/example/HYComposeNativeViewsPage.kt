@@ -40,8 +40,8 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                     modifier = Modifier.size(width, 70.dp)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp)),
                     hint = stringResource(R.string.edit_hint_string),
-                    textColor = Color.Red,
-                    hintColor = Color.Blue
+                    textColor = MaterialTheme.colorScheme.tertiary,
+                    hintColor = MaterialTheme.colorScheme.primary
                 )
                 Web(
                     Modifier.size(width, height - 90.dp),

@@ -25,42 +25,23 @@ void EditText::onJavaViewCreated() {
     setHintMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setHint", "(Ljava/lang/String;)V");
     setTextColorMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setTextColor", "(I)V");
     setHintColorMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setHintColor", "(I)V");
-    if (!hint.empty()) {
-        setHint(hint.c_str());
-    }
-    if (focus) {
-        requestFocus();
-    }
 }
 
 void EditText::clearFocus() {
-    this->focus = false;
-    if (clearFocusMethodId == nullptr) {
-        return;
-    }
     auto jniEnv = getContext()->getJniEnv();
     jniEnv->CallVoidMethod(javaView, clearFocusMethodId);
 }
 
 void EditText::requestFocus() {
-    this->focus = true;
-    if (requestFocusMethodId == nullptr) {
-        return;
-    }
     auto jniEnv = getContext()->getJniEnv();
     jniEnv->CallVoidMethod(javaView, requestFocusMethodId);
 }
 
 void EditText::onHide() {
-    View::onHide();
     clearFocus();
 }
 
 void EditText::setHint(const char *hint) {
-    this->hint = hint;
-    if (setHintMethodId == nullptr) {
-        return;
-    }
     auto jniEnv = getContext()->getJniEnv();
     auto jString = jniEnv->NewStringUTF(hint);
     jniEnv->CallVoidMethod(javaView, setHintMethodId, jString);
@@ -68,17 +49,11 @@ void EditText::setHint(const char *hint) {
 }
 
 void EditText::setTextColor(int color) {
-    if (setTextColorMethodId == nullptr) {
-        return;
-    }
     auto jniEnv = getContext()->getJniEnv();
     jniEnv->CallVoidMethod(javaView, setTextColorMethodId, color);
 }
 
 void EditText::setHintColor(int color) {
-    if (setHintColorMethodId == nullptr) {
-        return;
-    }
     auto jniEnv = getContext()->getJniEnv();
     jniEnv->CallVoidMethod(javaView, setHintColorMethodId, color);
 }
