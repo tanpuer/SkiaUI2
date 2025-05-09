@@ -1,7 +1,6 @@
 package com.temple.skiaui.platform.filament
 
 import android.animation.ValueAnimator
-import android.graphics.SurfaceTexture
 import android.opengl.Matrix
 import android.util.Log
 import android.view.MotionEvent
@@ -36,7 +35,7 @@ import kotlin.math.sin
 class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     SurfaceTextureBasePlugin(engine, viewPtr) {
 
-    private lateinit var filamentEngine: Engine
+    private var filamentEngine: Engine? = null
 
     private lateinit var renderer: Renderer
     private lateinit var scene: Scene
@@ -52,12 +51,12 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     @Entity
     private var renderable = 0
 
-    private val animator = ValueAnimator.ofFloat(0.0f, 360.0f)
+    private val animator = ValueAnimator.ofFloat(-71.0f, 289.0f)
 
     override fun onSurfaceCreated() {
         surfaceObj?.surface?.let {
             initEngine()
-            swapChain = filamentEngine.createSwapChain(it)
+            swapChain = filamentEngine?.createSwapChain(it)
         }
     }
 
@@ -66,24 +65,23 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     }
 
     override fun onSurfaceDestroyed() {
-        if (swapChain == null) {
-            return
+        filamentEngine?.isPaused = true
+    }
+
+    override fun onShow() {
+        super.onShow()
+        pluginHandler.post {
+            filamentEngine?.isPaused = false
+            animator.resume()
         }
-        animator.cancel()
-        // Cleanup all resources
-        filamentEngine.destroyEntity(renderable)
-        filamentEngine.destroyRenderer(renderer)
-        filamentEngine.destroyVertexBuffer(vertexBuffer)
-        filamentEngine.destroyIndexBuffer(indexBuffer)
-        filamentEngine.destroyMaterial(material)
-        filamentEngine.destroyView(view)
-        filamentEngine.destroyScene(scene)
-        filamentEngine.destroyCameraComponent(camera.entity)
-        val entityManager = EntityManager.get()
-        entityManager.destroy(renderable)
-        entityManager.destroy(camera.entity)
-        filamentEngine.destroy()
-        swapChain = null
+    }
+
+    override fun onHide() {
+        super.onHide()
+        pluginHandler.post {
+            filamentEngine?.isPaused = true
+            animator.pause()
+        }
     }
 
     override fun type(): String = "FilamentView"
@@ -111,20 +109,27 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     }
 
     override fun release() {
-        onSurfaceDestroyed()
+        pluginHandler.post {
+            if (swapChain == null) {
+                return@post
+            }
+            animator.cancel()
+            // Cleanup all resources
+            filamentEngine?.destroyEntity(renderable)
+            filamentEngine?.destroyRenderer(renderer)
+            filamentEngine?.destroyVertexBuffer(vertexBuffer)
+            filamentEngine?.destroyIndexBuffer(indexBuffer)
+            filamentEngine?.destroyMaterial(material)
+            filamentEngine?.destroyView(view)
+            filamentEngine?.destroyScene(scene)
+            filamentEngine?.destroyCameraComponent(camera.entity)
+            val entityManager = EntityManager.get()
+            entityManager.destroy(renderable)
+            entityManager.destroy(camera.entity)
+            filamentEngine?.destroy()
+            swapChain = null
+        }
         super.release()
-    }
-
-    override fun onShow() {
-        super.onShow()
-    }
-
-    override fun onHide() {
-        super.onHide()
-    }
-
-    override fun onFrameAvailable(surfaceTexture: SurfaceTexture?) {
-        super.onFrameAvailable(surfaceTexture)
     }
 
     private fun setupFilament() {
@@ -132,17 +137,19 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
         filamentEngine = Engine.Builder()
             .config(config)
             .featureLevel(Engine.FeatureLevel.FEATURE_LEVEL_0)
-            .build()
-        renderer = filamentEngine.createRenderer()
-        scene = filamentEngine.createScene()
-        view = filamentEngine.createView()
-        camera = filamentEngine.createCamera(filamentEngine.entityManager.create())
+            .build().apply {
+                renderer = createRenderer()
+                scene = createScene()
+                view = createView()
+                camera = createCamera(entityManager.create())
+            }
     }
 
     private fun setupView() {
-        scene.skybox = Skybox.Builder().color(0.035f, 0.035f, 0.035f, 1.0f).build(filamentEngine)
+        val fEngine = filamentEngine ?: return
+        scene.skybox = Skybox.Builder().color(0.035f, 0.035f, 0.035f, 1.0f).build(fEngine)
         // post-processing is not supported at feature level 0
-        if (filamentEngine.activeFeatureLevel == Engine.FeatureLevel.FEATURE_LEVEL_0) {
+        if (filamentEngine?.activeFeatureLevel == Engine.FeatureLevel.FEATURE_LEVEL_0) {
             view.isPostProcessingEnabled = false
         }
         // Tell the view which camera we want to use
@@ -152,6 +159,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     }
 
     private fun setupScene() {
+        val fEngine = filamentEngine ?: return
         loadMaterial()
         createMesh()
         // To create a renderable we first create a generic entity
@@ -165,7 +173,7 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
             .geometry(0, RenderableManager.PrimitiveType.TRIANGLES, vertexBuffer, indexBuffer, 0, 3)
             // Sets the material of the first primitive
             .material(0, material.defaultInstance)
-            .build(filamentEngine, renderable)
+            .build(fEngine, renderable)
 
         // Add the entity to the scene to render it
         scene.addEntity(renderable)
@@ -174,7 +182,8 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
 
     private fun loadMaterial() {
         readUncompressedAsset("materials/baked_color.filamat").let {
-            material = Material.Builder().payload(it, it.remaining()).build(filamentEngine)
+            val fEngine = filamentEngine ?: return
+            material = Material.Builder().payload(it, it.remaining()).build(fEngine)
             material.compile(
                 Material.CompilerPriorityQueue.HIGH,
                 Material.UserVariantFilterBit.ALL,
@@ -182,11 +191,12 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
             ) {
                 Log.i("hellotriangle", "Material " + material.name + " compiled.")
             }
-            filamentEngine.flush()
+            fEngine.flush()
         }
     }
 
     private fun createMesh() {
+        val fEngine = filamentEngine ?: return
         val intSize = 4
         val floatSize = 4
         val shortSize = 2
@@ -243,11 +253,11 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
             // We store colors as unsigned bytes but since we want values between 0 and 1
             // in the material (shaders), we must mark the attribute as normalized
             .normalized(VertexBuffer.VertexAttribute.COLOR)
-            .build(filamentEngine)
+            .build(fEngine)
 
         // Feed the vertex data to the mesh
         // We only set 1 buffer because the data is interleaved
-        vertexBuffer.setBufferAt(filamentEngine, 0, vertexData)
+        vertexBuffer.setBufferAt(fEngine, 0, vertexData)
 
         // Create the indices
         val indexData = ByteBuffer.allocate(vertexCount * shortSize)
@@ -260,8 +270,8 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
         indexBuffer = IndexBuffer.Builder()
             .indexCount(3)
             .bufferType(IndexBuffer.Builder.IndexType.USHORT)
-            .build(filamentEngine)
-        indexBuffer.setBuffer(filamentEngine, indexData)
+            .build(fEngine)
+        indexBuffer.setBuffer(fEngine, indexData)
     }
 
     private fun startAnimation() {
@@ -276,8 +286,9 @@ class PlatformFilamentViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
                 if (released) {
                     return
                 }
+                val fEngine = filamentEngine ?: return
                 Matrix.setRotateM(transformMatrix, 0, -(a.animatedValue as Float), 0.0f, 0.0f, 1.0f)
-                val tcm = filamentEngine.transformManager
+                val tcm = fEngine.transformManager
                 tcm.setTransform(tcm.getInstance(renderable), transformMatrix)
             }
         })
