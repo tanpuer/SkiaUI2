@@ -25,6 +25,7 @@ import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.foundation.corner
+import com.temple.skiaui.compose.foundation.fillMaxWidth
 import com.temple.skiaui.compose.foundation.justifyContent
 import com.temple.skiaui.compose.foundation.margins
 import com.temple.skiaui.compose.foundation.paddings
@@ -88,11 +89,11 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     }
                 )
                 Row(
-                    modifier = Modifier.width(width)
-                        .justifyContent(Justify.SpaceBetween)
+                    modifier = Modifier.justifyContent(Justify.SpaceBetween)
                         .alignItems(Align.Center)
                         .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
                         .backgroundColor(Color.Transparent)
+                        .fillMaxWidth(0.7f)
                 ) {
                     Badge(content = "")
                     Badge(content = "1")

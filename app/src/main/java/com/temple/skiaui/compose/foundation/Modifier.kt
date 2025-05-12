@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
+import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.isUnspecified
 import androidx.compose.ui.unit.Dp
@@ -38,6 +39,12 @@ class Modifier {
     var alignSelf: Align = Align.Unspecified
 
     var wrap: FlexWrap = FlexWrap.Unspecified
+
+    @FloatRange(0.0, 100.0)
+    var widthPercent: Float = 0.0f
+
+    @FloatRange(0.0, 100.0)
+    var heightPercent: Float = 0.0f
 
     fun diffStyles(previous: Modifier) {
         if (!width.isUnspecified && width != previous.width) {
@@ -94,6 +101,12 @@ class Modifier {
         if (wrap != FlexWrap.Unspecified && wrap != previous.wrap) {
             styles[StyleKey.wrap] = wrap
         }
+        if (widthPercent > 0 && widthPercent != previous.widthPercent) {
+            styles[StyleKey.widthPercent] = widthPercent
+        }
+        if (heightPercent > 0 && heightPercent != previous.heightPercent) {
+            styles[StyleKey.heightPercent] = heightPercent
+        }
     }
 
     val styles = mutableMapOf<String, Any>()
@@ -118,6 +131,14 @@ class Modifier {
 
         fun backgroundColor(color: Color): Modifier {
             return Modifier().backgroundColor(color)
+        }
+
+        fun justifyContent(value: Justify): Modifier {
+            return Modifier().justifyContent(value)
+        }
+
+        fun alignItems(value: Align): Modifier {
+            return Modifier().alignItems(value)
         }
 
     }

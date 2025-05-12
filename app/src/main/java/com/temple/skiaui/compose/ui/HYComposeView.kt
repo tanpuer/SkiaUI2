@@ -51,6 +51,14 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 StyleKey.alignSelf -> {
                     nativeSetAlignSelf(ref, (value as Align).value)
                 }
+
+                StyleKey.widthPercent -> {
+                    nativeSetWidthPercent(ref, value as Float)
+                }
+
+                StyleKey.heightPercent -> {
+                    nativeSetHeightPercent(ref, value as Float)
+                }
             }
         }
     }
@@ -104,4 +112,6 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetCornerRadius(view: Long, radius: Int)
     private external fun nativeSetMinSize(view: Long, minWidth: Int, minHeight: Int)
     private external fun nativeSetAlignSelf(view: Long, value: String)
+    private external fun nativeSetWidthPercent(view: Long, percent: Float)
+    private external fun nativeSetHeightPercent(view: Long, percent: Float)
 }

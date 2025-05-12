@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.foundation
 
+import androidx.annotation.FloatRange
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -77,5 +78,21 @@ fun Modifier.minSize(size: DpSize): Modifier {
 
 fun Modifier.wrap(wrap: FlexWrap): Modifier {
     this.wrap = wrap
+    return this
+}
+
+fun Modifier.fillMaxWidth(@FloatRange(from = 0.0, to = 1.0) fraction: Float = 1f): Modifier {
+    this.widthPercent = fraction * 100
+    return this
+}
+
+fun Modifier.fillMaxHeight(@FloatRange(from = 0.0, to = 1.0) fraction: Float = 1f): Modifier {
+    this.heightPercent = fraction * 100
+    return this
+}
+
+fun Modifier.fillMaxSize(@FloatRange(from = 0.0, to = 1.0) fraction: Float = 1f): Modifier {
+    this.widthPercent = fraction * 100
+    this.heightPercent = fraction * 100
     return this
 }

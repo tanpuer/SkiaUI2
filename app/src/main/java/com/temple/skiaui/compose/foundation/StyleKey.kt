@@ -15,4 +15,6 @@ object StyleKey {
     const val margins = "margins"
     const val paddings = "paddings"
     const val wrap = "wrap"
+    const val widthPercent = "widthPercent"
+    const val heightPercent = "heightPercent"
 }

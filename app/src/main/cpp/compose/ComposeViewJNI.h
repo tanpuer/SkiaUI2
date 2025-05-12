@@ -101,6 +101,18 @@ compose_view_set_align_self(JNIEnv *env, jobject instance, jlong viewPtr, jstrin
     env->ReleaseStringUTFChars(alignSelf, alignSelfStr);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_width_percent(JNIEnv *env, jobject instance, jlong viewPtr, jfloat percent) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->setWidthPercent(percent);
+}
+
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_height_percent(JNIEnv *env, jobject instance, jlong viewPtr, jfloat percent) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->setHeightPercent(percent);
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
@@ -113,6 +125,8 @@ static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetCornerRadius",    "(JI)V",                  (void *) compose_view_set_corner_radius},
         {"nativeSetMinSize",         "(JII)V",                 (void *) compose_view_set_min_size},
         {"nativeSetAlignSelf",       "(JLjava/lang/String;)V", (void *) compose_view_set_align_self},
+        {"nativeSetWidthPercent",    "(JF)V",                  (void *) compose_view_set_width_percent},
+        {"nativeSetHeightPercent",   "(JF)V",                  (void *) compose_view_set_height_percent},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {
