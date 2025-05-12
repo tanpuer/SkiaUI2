@@ -29,11 +29,19 @@ class HYComposeEditText(modifier: Modifier) :
         nativeSetHintColor(ref, composeColorToSkiaColor(color))
     }
 
+    fun setInputType(type: Int) {
+        if (type < 0) {
+            return
+        }
+        nativeSetInputType(ref, type)
+    }
+
     override fun getViewType(): String = "EditText"
 
     private external fun nativeSetHint(editText: Long, hint: String)
     private external fun nativeSetFocus(editText: Long, focus: Boolean)
     private external fun nativeSetTextColor(editText: Long, color: Int)
     private external fun nativeSetHintColor(editText: Long, color: Int)
+    private external fun nativeSetInputType(editText: Long, type: Int)
 
 }

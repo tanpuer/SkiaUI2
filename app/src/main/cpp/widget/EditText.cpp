@@ -25,6 +25,7 @@ void EditText::onJavaViewCreated() {
     setHintMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setHint", "(Ljava/lang/String;)V");
     setTextColorMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setTextColor", "(I)V");
     setHintColorMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setHintColor", "(I)V");
+    setInputTypeMethodId = jniEnv->GetMethodID(javaEditTextPlugin, "setInputType", "(I)V");
 }
 
 void EditText::clearFocus() {
@@ -56,6 +57,11 @@ void EditText::setTextColor(int color) {
 void EditText::setHintColor(int color) {
     auto jniEnv = getContext()->getJniEnv();
     jniEnv->CallVoidMethod(javaView, setHintColorMethodId, color);
+}
+
+void EditText::setInputType(int type) {
+    auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaView, setInputTypeMethodId, type);
 }
 
 }

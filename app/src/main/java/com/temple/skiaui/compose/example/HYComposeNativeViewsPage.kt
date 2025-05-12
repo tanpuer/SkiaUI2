@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.example
 
+import android.text.InputType
 import android.util.Log
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -45,6 +46,7 @@ class HYComposeNativeViewsPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                     hint = stringResource(R.string.edit_hint_string),
                     textColor = MaterialTheme.colorScheme.tertiary,
                     hintColor = MaterialTheme.colorScheme.outlineVariant,
+                    inputType = InputType.TYPE_CLASS_NUMBER
                 )
                 Web(
                     Modifier.size(width, height - 90.dp),

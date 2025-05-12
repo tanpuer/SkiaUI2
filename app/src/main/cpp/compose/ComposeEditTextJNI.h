@@ -38,11 +38,18 @@ compose_edit_set_hint_color(JNIEnv *env, jobject instance, jlong viewPtr, jint c
     editText->setHintColor(color);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_edit_set_input_type(JNIEnv *env, jobject instance, jlong viewPtr, jint type) {
+    auto editText = reinterpret_cast<EditText *>(viewPtr);
+    editText->setInputType(type);
+}
+
 static JNINativeMethod g_ComposeEditTextMethods[] = {
         {"nativeSetHint",      "(JLjava/lang/String;)V", (void *) compose_edit_set_hint},
         {"nativeSetFocus",     "(JZ)V",                  (void *) compose_edit_set_focus},
         {"nativeSetTextColor", "(JI)V",                  (void *) compose_edit_set_text_color},
         {"nativeSetHintColor", "(JI)V",                  (void *) compose_edit_set_hint_color},
+        {"nativeSetInputType", "(JI)V",                  (void *) compose_edit_set_input_type},
 };
 
 static int RegisterComposeEditTextMethods(JNIEnv *env) {

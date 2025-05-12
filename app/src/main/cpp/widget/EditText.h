@@ -30,6 +30,8 @@ public:
 
     void setHintColor(int color);
 
+    void setInputType(int type);
+
 protected:
 
     jmethodID clearFocusMethodId = nullptr;
@@ -41,6 +43,8 @@ protected:
     jmethodID setTextColorMethodId = nullptr;
 
     jmethodID setHintColorMethodId = nullptr;
+
+    jmethodID setInputTypeMethodId = nullptr;
 
 };
 

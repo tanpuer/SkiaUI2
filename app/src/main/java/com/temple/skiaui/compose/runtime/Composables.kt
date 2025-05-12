@@ -460,7 +460,8 @@ fun EditText(
     hint: String,
     focus: Boolean = false,
     textColor: Color = Color.Unspecified,
-    hintColor: Color = Color.Unspecified
+    hintColor: Color = Color.Unspecified,
+    inputType: Int = -1
 ) {
     ComposeNode<HYComposeEditText, HYComposeApplier>(
         factory = { HYComposeEditText(modifier) },
@@ -479,6 +480,9 @@ fun EditText(
             }
             set(hintColor) {
                 setHintColor(hintColor)
+            }
+            set(inputType) {
+                setInputType(inputType)
             }
         }
     )

@@ -50,4 +50,10 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, editTextPtr: Long) :
         }
     }
 
+    private fun setInputType(type: Int) {
+        mainHandler.post {
+            editText?.inputType = type
+        }
+    }
+
 }
