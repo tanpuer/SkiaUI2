@@ -72,6 +72,9 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     override fun release() {
         pluginHandler.post {
             exoPlayer?.stop()
+            if (customPlayer != null) {
+                return@post
+            }
             exoPlayer?.release()
             exoPlayer = null
         }

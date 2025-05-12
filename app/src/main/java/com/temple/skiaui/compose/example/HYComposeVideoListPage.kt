@@ -3,6 +3,7 @@ package com.temple.skiaui.compose.example
 import android.provider.MediaStore
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,7 +68,6 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     }
                 }
             }
-
             LaunchedEffect(Unit) {
                 CoroutineScope(Dispatchers.IO).launch {
                     val files = getMusicList()
@@ -75,6 +75,11 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     withContext(Dispatchers.Main) {
                         musicList = files
                     }
+                }
+            }
+            DisposableEffect(Unit) {
+                onDispose {
+                    exoplayer.release()
                 }
             }
             Scroll(
