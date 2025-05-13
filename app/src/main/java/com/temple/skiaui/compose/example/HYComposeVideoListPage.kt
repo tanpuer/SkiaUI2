@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.R
@@ -38,8 +40,6 @@ import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexWrap
 import com.temple.skiaui.compose.ui.Position
 import com.temple.skiaui.compose.ui.TextAlign
-import com.temple.skiaui.compose.ui.util.dp2px
-import com.temple.skiaui.compose.ui.util.px2dp
 import com.temple.skiaui.platform.video.ExoPlayerImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -61,8 +61,8 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var shaderPath by remember {
                 mutableStateOf("")
             }
-            var videoViewHeight by remember {
-                mutableStateOf(width * 360 / 640)
+            var videoWidthHeightRatio by remember {
+                mutableFloatStateOf(640.0f / 360.0f)
             }
             var currentPos by remember {
                 mutableStateOf("00:000")
@@ -80,7 +80,7 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         if (videoWidth == 0 || videoHeight == 0) {
                             return
                         }
-                        videoViewHeight = px2dp(dp2px(width) * videoHeight / videoWidth)
+                        videoWidthHeightRatio = videoWidth * 1.0f / videoHeight
                     }
                 }
             }
@@ -115,14 +115,15 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 modifier = Modifier.size(width, height)
                     .backgroundColor(Color.Transparent)
             ) {
+                val desiredSize = getDesiredExoSize(width, height, videoWidthHeightRatio)
                 ExoVideo(
-                    modifier = Modifier.size(width, videoViewHeight),
+                    modifier = Modifier.size(desiredSize.width, desiredSize.height),
                     customPlayer = exoplayer,
                     source = videoSrc,
                     shaderPath = shaderPath
                 )
                 Row(
-                    modifier = Modifier.size(width, videoViewHeight)
+                    modifier = Modifier.size(desiredSize.width, desiredSize.height)
                         .backgroundColor(Color.Transparent)
                         .alignItems(Align.FlexEnd)
                         .position(Position.Absolute)
@@ -278,4 +279,19 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         val minutes = seconds / 60
         return "%02d:%02d".format(minutes % 60, seconds % 60)
     }
+
+    @Composable
+    private fun getDesiredExoSize(width: Dp, height: Dp, videoWidthHeightRatio: Float): DpSize {
+        if (width < height) {
+            return DpSize(width, width / videoWidthHeightRatio)
+        } else {
+            val viewWidthHeightRatio = width.value / height.value
+            if (viewWidthHeightRatio < videoWidthHeightRatio) {
+                return DpSize(height * videoWidthHeightRatio, height)
+            } else {
+                return DpSize(width, width / videoWidthHeightRatio)
+            }
+        }
+    }
+
 }

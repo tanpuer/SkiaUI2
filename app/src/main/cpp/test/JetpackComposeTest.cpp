@@ -13,8 +13,7 @@ void JetpackComposeTest::setContext(std::shared_ptr<SkiaUIContext> &context) {
 }
 
 JetpackComposeTest::~JetpackComposeTest() {
-    getContext()->callComposeSDKPoped();
-
+    context->callComposeSDKPoped();
     jniEnv->CallVoidMethod(testRef, composeAppDestroyMethodId);
     ComposeContext::getInstance()->clearContext();
     jniEnv->DeleteGlobalRef(testRef);
