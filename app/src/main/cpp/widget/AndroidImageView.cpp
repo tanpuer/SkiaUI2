@@ -66,22 +66,18 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
                 static_cast<float>(skImage->width()) / static_cast<float >(skImage->height());
         auto viewRatio = skRect.width() / skRect.height();
         if (imageRatio > viewRatio) {
-            imageMatrix.preScale(1.0f, viewRatio / imageRatio, skRect.centerX(),
-                                 skRect.centerY());
+            imageMatrix.preScale(1.0f, viewRatio / imageRatio, skRect.centerX(), skRect.centerY());
         } else {
-            imageMatrix.preScale(imageRatio / viewRatio, 1.0f, skRect.centerX(),
-                                 skRect.centerY());
+            imageMatrix.preScale(imageRatio / viewRatio, 1.0f, skRect.centerX(), skRect.centerY());
         }
     } else if (scaleType == ImageView::ScaleType::CenterCrop) {
         auto imageRatio =
                 static_cast<float>(skImage->width()) / static_cast<float >(skImage->height());
         auto viewRatio = skRect.width() / skRect.height();
         if (imageRatio > viewRatio) {
-            imageMatrix.preScale(imageRatio / viewRatio, 1.0f, skRect.centerX(),
-                                 skRect.centerY());
+            imageMatrix.preScale(imageRatio / viewRatio, 1.0f, skRect.centerX(), skRect.centerY());
         } else {
-            imageMatrix.preScale(1.0f, viewRatio / imageRatio, skRect.centerX(),
-                                 skRect.centerY());
+            imageMatrix.preScale(1.0f, viewRatio / imageRatio, skRect.centerX(), skRect.centerY());
         }
     }
     if (rotateFunc != nullptr) {
