@@ -113,6 +113,12 @@ compose_view_set_height_percent(JNIEnv *env, jobject instance, jlong viewPtr, jf
     view->setHeightPercent(percent);
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_view_set_flex(JNIEnv *env, jobject instance, jlong viewPtr, jint flex) {
+    auto view = reinterpret_cast<View *>(viewPtr);
+    view->setFlex(static_cast<float >(flex));
+}
+
 static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetWidth",           "(JI)V",                  (void *) compose_view_set_width},
         {"nativeSetHeight",          "(JI)V",                  (void *) compose_view_set_height},
@@ -127,6 +133,7 @@ static JNINativeMethod g_ComposeViewMethods[] = {
         {"nativeSetAlignSelf",       "(JLjava/lang/String;)V", (void *) compose_view_set_align_self},
         {"nativeSetWidthPercent",    "(JF)V",                  (void *) compose_view_set_width_percent},
         {"nativeSetHeightPercent",   "(JF)V",                  (void *) compose_view_set_height_percent},
+        {"nativeSetFlex",            "(JI)V",                  (void *) compose_view_set_flex},
 };
 
 static int RegisterComposeViewMethods(JNIEnv *env) {

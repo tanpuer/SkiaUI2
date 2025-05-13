@@ -96,6 +96,10 @@ open class ExoPlayerImpl : IVideoPlayer {
         return exoPlayer?.currentPosition ?: 0L
     }
 
+    override fun getDuration(): Long {
+        return exoPlayer?.duration ?: 0L
+    }
+
     override fun setVideoListener(listener: IVideoListener?) {
         this.listener = listener
     }

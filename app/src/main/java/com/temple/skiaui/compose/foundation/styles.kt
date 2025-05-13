@@ -96,3 +96,8 @@ fun Modifier.fillMaxSize(@FloatRange(from = 0.0, to = 1.0) fraction: Float = 1f)
     this.heightPercent = fraction * 100
     return this
 }
+
+fun Modifier.flex(flex: Int): Modifier {
+    this.flex = flex
+    return this
+}

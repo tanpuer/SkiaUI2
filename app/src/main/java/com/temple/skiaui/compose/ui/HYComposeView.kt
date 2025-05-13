@@ -59,6 +59,10 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
                 StyleKey.heightPercent -> {
                     nativeSetHeightPercent(ref, value as Float)
                 }
+
+                StyleKey.flex -> {
+                    nativeSetFlex(ref, value as Int)
+                }
             }
         }
     }
@@ -114,4 +118,5 @@ open class HYComposeView(modifier: Modifier) : HYComposeNode(modifier) {
     private external fun nativeSetAlignSelf(view: Long, value: String)
     private external fun nativeSetWidthPercent(view: Long, percent: Float)
     private external fun nativeSetHeightPercent(view: Long, percent: Float)
+    private external fun nativeSetFlex(view: Long, flex: Int)
 }

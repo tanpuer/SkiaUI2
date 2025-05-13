@@ -46,6 +46,8 @@ class Modifier {
     @FloatRange(0.0, 100.0)
     var heightPercent: Float = 0.0f
 
+    var flex = -1
+
     fun diffStyles(previous: Modifier) {
         if (!width.isUnspecified && width != previous.width) {
             styles[StyleKey.width] = width
@@ -106,6 +108,9 @@ class Modifier {
         }
         if (heightPercent > 0 && heightPercent != previous.heightPercent) {
             styles[StyleKey.heightPercent] = heightPercent
+        }
+        if (flex > 0 && flex != previous.flex) {
+            styles[StyleKey.flex] = flex
         }
     }
 

@@ -24,6 +24,8 @@ interface IVideoPlayer : IVideoListener {
 
     fun getCurrentPosition(): Long
 
+    fun getDuration(): Long
+
     fun setVideoListener(listener: IVideoListener?)
 
 }

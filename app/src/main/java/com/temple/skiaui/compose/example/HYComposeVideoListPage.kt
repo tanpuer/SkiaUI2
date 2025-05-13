@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -21,16 +22,21 @@ import com.temple.skiaui.compose.runtime.Scroll
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
 import com.temple.skiaui.compose.foundation.backgroundColor
+import com.temple.skiaui.compose.foundation.fillMaxWidth
+import com.temple.skiaui.compose.foundation.flex
 import com.temple.skiaui.compose.foundation.margins
-import com.temple.skiaui.compose.foundation.size
+import com.temple.skiaui.compose.foundation.position
 import com.temple.skiaui.compose.foundation.wrap
 import com.temple.skiaui.compose.runtime.Button
+import com.temple.skiaui.compose.runtime.Column
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.Loading
+import com.temple.skiaui.compose.runtime.ProgressBar
 import com.temple.skiaui.compose.runtime.Row
 import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexWrap
+import com.temple.skiaui.compose.ui.Position
 import com.temple.skiaui.compose.ui.util.dp2px
 import com.temple.skiaui.compose.ui.util.px2dp
 import com.temple.skiaui.platform.video.ExoPlayerImpl
@@ -57,6 +63,15 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var videoViewHeight by remember {
                 mutableStateOf(width * 360 / 640)
             }
+            var currentPos by remember {
+                mutableStateOf("00:000")
+            }
+            var totalDuration by remember {
+                mutableStateOf("00:000")
+            }
+            var progress by remember {
+                mutableIntStateOf(0)
+            }
             val exoplayer = remember {
                 object : ExoPlayerImpl() {
                     override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
@@ -76,16 +91,25 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         musicList = files
                     }
                 }
+                while (true) {
+                    delay(500)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val current = exoplayer.getCurrentPosition()
+                        val total = exoplayer.getDuration()
+                        currentPos = formatMillisToTime(current)
+                        totalDuration = formatMillisToTime(total)
+                        progress = (current * 100 / total).toInt()
+                    }
+                }
             }
             DisposableEffect(Unit) {
                 onDispose {
                     exoplayer.release()
                 }
             }
-            Scroll(
-                modifier = Modifier().size(width, height)
-                    .alignItems(Align.FlexStart),
-                backgroundColor = MaterialTheme.colorScheme.background
+            Column(
+                modifier = Modifier.size(width, height)
+                    .backgroundColor(Color.Transparent)
             ) {
                 ExoVideo(
                     modifier = Modifier.size(width, videoViewHeight),
@@ -93,63 +117,98 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     source = videoSrc,
                     shaderPath = shaderPath
                 )
-                Text(
-                    modifier = Modifier.backgroundColor(Color.Transparent)
-                        .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp)),
-                    textSize = 20.dp,
-                    content = stringResource(R.string.local_video_list),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                if (musicList == null) {
-                    Loading(
-                        modifier = Modifier.size(200.dp, 50.dp)
-                            .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                Row(
+                    modifier = Modifier.size(width, videoViewHeight)
+                        .backgroundColor(Color.Transparent)
+                        .alignItems(Align.FlexEnd)
+                        .position(Position.Absolute)
+                ) {
+                    Text(
+                        modifier = Modifier.backgroundColor(Color.Transparent)
+                            .margins(arrayOf(0.dp, 0.dp, 0.dp, 0.dp)).flex(1),
+                        textSize = 10.dp,
+                        color = Color.White,
+                        content = currentPos
                     )
-                } else if (musicList?.isEmpty() == true) {
+                    ProgressBar(
+                        modifier = Modifier.height(12.dp).flex(8),
+                        barColor = Color.Green,
+                        backgroundColor = Color.Gray,
+                        progress = progress,
+                        onChange = {
+                            exoplayer.seekTo(it * exoplayer.getDuration() / 100)
+                        }
+                    )
+                    Text(
+                        modifier = Modifier.backgroundColor(Color.Transparent)
+                            .margins(arrayOf(0.dp, 0.dp, 0.dp, 0.dp)).flex(1),
+                        textSize = 10.dp,
+                        color = Color.White,
+                        content = totalDuration
+                    )
+                }
+                Scroll(
+                    modifier = Modifier()
+                        .fillMaxWidth(1.0f)
+                        .flex(1).alignItems(Align.FlexStart),
+                    backgroundColor = MaterialTheme.colorScheme.background
+                ) {
                     Text(
                         modifier = Modifier.backgroundColor(Color.Transparent)
                             .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp)),
-                        textSize = 30.dp,
-                        content = stringResource(R.string.empty_video_list),
-                        color = MaterialTheme.colorScheme.error,
+                        textSize = 20.dp,
+                        content = stringResource(R.string.local_video_list),
+                        color = MaterialTheme.colorScheme.primary,
                     )
-                } else {
-                    Row(
-                        modifier = Modifier.width(width)
-                            .backgroundColor(Color.Transparent)
-                            .wrap(FlexWrap.Wrap)
-                    ) {
-                        musicList?.map {
-                            ComposeVideoList(it.key, it.value) {
-                                videoSrc = it
+                    if (musicList == null) {
+                        Loading(
+                            modifier = Modifier.size(200.dp, 50.dp)
+                                .margins(arrayOf(0.dp, 20.dp, 0.dp, 0.dp))
+                        )
+                    } else if (musicList?.isEmpty() == true) {
+                        Text(
+                            modifier = Modifier.backgroundColor(Color.Transparent)
+                                .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp)),
+                            textSize = 30.dp,
+                            content = stringResource(R.string.empty_video_list),
+                            color = MaterialTheme.colorScheme.error,
+                        )
+                    } else {
+                        Row(
+                            modifier = Modifier.width(width).backgroundColor(Color.Transparent)
+                                .wrap(FlexWrap.Wrap)
+                        ) {
+                            musicList?.map {
+                                ComposeVideoList(it.key, it.value) {
+                                    videoSrc = it
+                                }
                             }
                         }
                     }
-                }
-                Text(
-                    modifier = Modifier.backgroundColor(Color.Transparent)
-                        .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp)),
-                    textSize = 20.dp,
-                    content = stringResource(R.string.shader_effect),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-                Row(
-                    modifier = Modifier.width(width)
-                        .backgroundColor(Color.Transparent)
-                        .wrap(FlexWrap.Wrap)
-                ) {
-                    mapOf(
-                        "black-white shader" to "skia_video_black_white.glsl",
-                        "lightning shader" to "skia_video_lightning_shader.glsl",
-                        "raining shader" to "skia_video_raining_shader.glsl",
-                        "bright shader" to "skia_video_bright_shader.glsl"
-                    ).map {
-                        ComposeShaderList(it.key, it.value) {
-                            shaderPath = it
+                    Text(
+                        modifier = Modifier.backgroundColor(Color.Transparent)
+                            .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp)),
+                        textSize = 20.dp,
+                        content = stringResource(R.string.shader_effect),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Row(
+                        modifier = Modifier.width(width).backgroundColor(Color.Transparent)
+                            .wrap(FlexWrap.Wrap)
+                    ) {
+                        mapOf(
+                            "black-white shader" to "skia_video_black_white.glsl",
+                            "lightning shader" to "skia_video_lightning_shader.glsl",
+                            "raining shader" to "skia_video_raining_shader.glsl",
+                            "bright shader" to "skia_video_bright_shader.glsl"
+                        ).map {
+                            ComposeShaderList(it.key, it.value) {
+                                shaderPath = it
+                            }
                         }
                     }
-                }
 
+                }
             }
         }
     }
@@ -157,30 +216,26 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
     @Composable
     private fun ComposeVideoList(name: String, path: String, callback: (path: String) -> Unit) {
         Button(
-            modifier = Modifier
-                .margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp))
+            modifier = Modifier.margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp))
                 .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
             content = name,
             textSize = 15.dp,
             color = MaterialTheme.colorScheme.tertiary,
             onClick = {
                 callback(path)
-            }
-        )
+            })
     }
 
     @Composable
     private fun ComposeShaderList(shader: String, path: String, callback: (path: String) -> Unit) {
         Button(
-            modifier = Modifier
-                .margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp)),
+            modifier = Modifier.margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp)),
             content = shader,
             textSize = 15.dp,
             color = Color.White,
             onClick = {
                 callback(path)
-            }
-        )
+            })
     }
 
     private fun getMusicList(): Map<String, String> {
@@ -210,5 +265,11 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             }
         }
         return fileMap
+    }
+
+    private fun formatMillisToTime(millis: Long): String {
+        val seconds = millis / 1000
+        val minutes = seconds / 60
+        return "%02d:%02d".format(minutes % 60, seconds % 60)
     }
 }

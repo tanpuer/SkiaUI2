@@ -17,4 +17,5 @@ object StyleKey {
     const val wrap = "wrap"
     const val widthPercent = "widthPercent"
     const val heightPercent = "heightPercent"
+    const val flex = "flex"
 }
