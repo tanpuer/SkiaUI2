@@ -1,7 +1,6 @@
 package com.temple.skiaui.compose.example
 
 import android.provider.MediaStore
-import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -82,7 +81,6 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             return
                         }
                         videoWidthHeightRatio = videoWidth * 1.0f / videoHeight
-                        Log.d("CWTest", "onVideoSizeChanged: $videoWidthHeightRatio")
                     }
                 }
             }
