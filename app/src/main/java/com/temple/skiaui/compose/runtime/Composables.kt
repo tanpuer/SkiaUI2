@@ -261,7 +261,7 @@ fun Text(
     content: String,
     textSize: Dp = 20.dp,
     color: Color = Color.Black,
-    align: TextAlign = TextAlign.Unspecified,
+    textAlign: TextAlign = TextAlign.Unspecified,
     maxLine: Int = 0,
     ellipsis: String = "…",
     fontFamily: String? = null,
@@ -283,8 +283,8 @@ fun Text(
             set(color) {
                 setColor(color)
             }
-            set(align) {
-                setTextAlign(align)
+            set(textAlign) {
+                setTextAlign(textAlign)
             }
             set(maxLine) {
                 setMaxLine(maxLine)

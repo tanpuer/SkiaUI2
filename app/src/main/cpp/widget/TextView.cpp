@@ -63,6 +63,17 @@ void TextView::measure() {
         setMeasuredDimension(0, 0);
         return;
     }
+    if (flex > 0 && originWidth == 0 && originHeight == 0) {
+        auto yogaWidth = YGNodeLayoutGetWidth(node);
+        auto yogaHeight = YGNodeLayoutGetHeight(node);
+        if (YGFloatsEqual(yogaWidth, 0.0f) && YGFloatsEqual(yogaHeight, 0.0f)) {
+            markMeasure();
+            return;
+        }
+        originWidth = yogaWidth;
+        originHeight = yogaHeight;
+        markMeasure();
+    }
     if (needToMeasure) {
         clearDirty();
         skia::textlayout::ParagraphStyle paraStyle;
@@ -132,6 +143,9 @@ void TextView::measure() {
             }
         } else {
             height = paragraph->getHeight();
+            if (originHeight > height) {
+                height = originHeight;
+            }
         }
         setMeasuredDimension(static_cast<int>(width) + paddingLeft + paddingRight,
                              static_cast<int>(height) + paddingTop + paddingBottom);

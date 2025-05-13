@@ -200,6 +200,8 @@ protected:
 
     YGConfigRef config = nullptr;
 
+    float flex = 0.0f;
+
     int width = 0;
     int height = 0;
 

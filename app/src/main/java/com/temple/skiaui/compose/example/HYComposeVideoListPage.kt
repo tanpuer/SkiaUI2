@@ -37,6 +37,7 @@ import com.temple.skiaui.compose.runtime.Text
 import com.temple.skiaui.compose.ui.Align
 import com.temple.skiaui.compose.ui.FlexWrap
 import com.temple.skiaui.compose.ui.Position
+import com.temple.skiaui.compose.ui.TextAlign
 import com.temple.skiaui.compose.ui.util.dp2px
 import com.temple.skiaui.compose.ui.util.px2dp
 import com.temple.skiaui.platform.video.ExoPlayerImpl
@@ -96,6 +97,9 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     CoroutineScope(Dispatchers.Main).launch {
                         val current = exoplayer.getCurrentPosition()
                         val total = exoplayer.getDuration()
+                        if (total == 0L) {
+                            return@launch
+                        }
                         currentPos = formatMillisToTime(current)
                         totalDuration = formatMillisToTime(total)
                         progress = (current * 100 / total).toInt()
@@ -128,12 +132,13 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             .margins(arrayOf(0.dp, 0.dp, 0.dp, 0.dp)).flex(1),
                         textSize = 10.dp,
                         color = Color.White,
-                        content = currentPos
+                        content = currentPos,
+                        textAlign = TextAlign.kCenter
                     )
                     ProgressBar(
                         modifier = Modifier.height(12.dp).flex(8),
-                        barColor = Color.Green,
-                        backgroundColor = Color.Gray,
+                        barColor = MaterialTheme.colorScheme.inverseSurface,
+                        backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                         progress = progress,
                         onChange = {
                             exoplayer.seekTo(it * exoplayer.getDuration() / 100)
@@ -144,7 +149,8 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             .margins(arrayOf(0.dp, 0.dp, 0.dp, 0.dp)).flex(1),
                         textSize = 10.dp,
                         color = Color.White,
-                        content = totalDuration
+                        content = totalDuration,
+                        textAlign = TextAlign.kCenter
                     )
                 }
                 Scroll(

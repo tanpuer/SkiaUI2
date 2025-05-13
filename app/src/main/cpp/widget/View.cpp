@@ -331,6 +331,7 @@ void View::setFlex(float flex) {
     if (node == nullptr) {
         return;
     }
+    this->flex = flex;
     YGNodeStyleSetFlex(node, flex);
     markDirty();
 }
