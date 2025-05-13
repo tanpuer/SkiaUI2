@@ -1,6 +1,7 @@
 package com.temple.skiaui.compose.example
 
 import android.provider.MediaStore
+import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -81,6 +82,7 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             return
                         }
                         videoWidthHeightRatio = videoWidth * 1.0f / videoHeight
+                        Log.d("CWTest", "onVideoSizeChanged: $videoWidthHeightRatio")
                     }
                 }
             }
@@ -113,7 +115,8 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             }
             Column(
                 modifier = Modifier.size(width, height)
-                    .backgroundColor(Color.Transparent)
+                    .alignItems(Align.Center)
+                    .backgroundColor(MaterialTheme.colorScheme.background)
             ) {
                 val desiredSize = getDesiredExoSize(width, height, videoWidthHeightRatio)
                 ExoVideo(
@@ -280,17 +283,11 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
         return "%02d:%02d".format(minutes % 60, seconds % 60)
     }
 
-    @Composable
     private fun getDesiredExoSize(width: Dp, height: Dp, videoWidthHeightRatio: Float): DpSize {
         if (width < height) {
             return DpSize(width, width / videoWidthHeightRatio)
         } else {
-            val viewWidthHeightRatio = width.value / height.value
-            if (viewWidthHeightRatio < videoWidthHeightRatio) {
-                return DpSize(height * videoWidthHeightRatio, height)
-            } else {
-                return DpSize(width, width / videoWidthHeightRatio)
-            }
+            return DpSize(height * videoWidthHeightRatio, height)
         }
     }
 
