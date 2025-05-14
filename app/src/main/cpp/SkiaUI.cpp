@@ -8,7 +8,7 @@
 #include "compose/ComposeJNI.h"
 #include "WebView.h"
 #include "inspect/WebSocketServer.h"
-#include "AndroidImageView.h"
+#include "AndroidBitmap.h"
 
 using namespace HYSkiaUI;
 
@@ -272,9 +272,9 @@ native_UpdateAndroidBitmap(JNIEnv *env, jobject instance, jlong javaUIApp, jlong
     if (uiApp == nullptr) {
         return;
     }
-    auto androidImageView = reinterpret_cast<AndroidImageView *>(ref);
-    if (androidImageView != nullptr) {
-        androidImageView->setJavaBitmap(env, bitmap, index, frameCount);
+    auto androidBitmap = reinterpret_cast<AndroidBitmap *>(ref);
+    if (androidBitmap != nullptr) {
+        androidBitmap->setJavaBitmap(env, bitmap, index, frameCount);
     }
 }
 

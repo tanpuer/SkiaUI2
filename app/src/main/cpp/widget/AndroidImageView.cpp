@@ -1,7 +1,6 @@
 #include "AndroidImageView.h"
 #include "effects/SkImageFilters.h"
 #include "Page.h"
-#include "bitmap_util.h"
 
 namespace HYSkiaUI {
 
@@ -14,21 +13,13 @@ AndroidImageView::AndroidImageView() {
 }
 
 AndroidImageView::~AndroidImageView() {
-    auto jniEnv = context->getJniEnv();
-    if (javaInstance != nullptr) {
-        jniEnv->CallVoidMethod(javaInstance, releaseMethodId);
-        jniEnv->DeleteGlobalRef(javaInstance);
-        javaInstance = nullptr;
-    }
 }
 
 void AndroidImageView::setSource(const char *source) {
     skImage = nullptr;
-    this->resId = -1;
-    this->source = source;
-    checkInstance();
+    androidBitmap->setSource(source);
     if (width > 0 || height > 0) {
-        setSourceJNI();
+        androidBitmap->decode(width, height);
         return;
     }
     imageUpdatedFlag = true;
@@ -36,11 +27,9 @@ void AndroidImageView::setSource(const char *source) {
 
 void AndroidImageView::setResId(int resId) {
     skImage = nullptr;
-    this->source = "";
-    this->resId = resId;
-    checkInstance();
+    androidBitmap->setResId(resId);
     if (width > 0 || height > 0) {
-        setSourceJNI();
+        androidBitmap->decode(width, height);
         return;
     }
     imageUpdatedFlag = true;
@@ -55,7 +44,7 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
     if (imageUpdatedFlag && width > 0 && height > 0) {
         imageUpdatedFlag = false;
-        setSourceJNI();
+        androidBitmap->decode(width, height);
     }
     if (skImage == nullptr) {
         return;
@@ -89,7 +78,7 @@ void AndroidImageView::layout(int l, int t, int r, int b) {
 
 void AndroidImageView::draw(SkCanvas *canvas) {
     View::draw(canvas);
-    if (skImage == nullptr || javaInstance == nullptr) {
+    if (skImage == nullptr) {
         return;
     }
     canvas->save();
@@ -101,50 +90,15 @@ void AndroidImageView::draw(SkCanvas *canvas) {
     canvas->restore();
 }
 
-void AndroidImageView::setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int frameCount) {
-    if (javaInstance == nullptr) {
-        return;
-    }
-    skImage = transferBitmapToSkImage(env, bitmap);
-    srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
-    markDirty();
-    if (completeFunc != nullptr && frameCount > 0 && index < lastIndex) {
-        completeFunc(this);
-    }
-    lastIndex = index;
-    auto page = getPage();
-    if (page != nullptr && !page->getVisibility()) {
-        innerStop();
-    }
-}
-
-void AndroidImageView::checkInstance() {
-    if (javaInstance == nullptr) {
-        auto jniEnv = context->getJniEnv();
-        auto javaClass = jniEnv->FindClass("com/temple/skiaui/bitmap/AndroidBitmapLoader");
-        auto javaConstructor = jniEnv->GetMethodID(javaClass, "<init>",
-                                                   "(Lcom/temple/skiaui/HYSkiaEngine;J)V");
-        auto javaSkiaEngine = getContext()->getJavaSkiaEngine();
-        javaInstance = jniEnv->NewGlobalRef(
-                jniEnv->NewObject(javaClass, javaConstructor, javaSkiaEngine,
-                                  reinterpret_cast<long>(this)));
-        setSourceMethodId = jniEnv->GetMethodID(javaClass, "setSource", "(Ljava/lang/String;II)V");
-        releaseMethodId = jniEnv->GetMethodID(javaClass, "release", "()V");
-        setResIdMethodId = jniEnv->GetMethodID(javaClass, "setResId", "(III)V");
-        startMethodId = jniEnv->GetMethodID(javaClass, "start", "()V");
-        stopMethodId = jniEnv->GetMethodID(javaClass, "stop", "()V");
-    }
-}
-
 void AndroidImageView::onShow() {
     if (userSetPaused) {
         return;
     }
-    innerStart();
+    androidBitmap->start();
 }
 
 void AndroidImageView::onHide() {
-    innerStop();
+    androidBitmap->stop();
 }
 
 void AndroidImageView::setBlur(float blur) {
@@ -170,28 +124,12 @@ void AndroidImageView::setOnCompleteFunc(std::function<void(AndroidImageView *)>
 
 void AndroidImageView::start() {
     userSetPaused = false;
-    innerStart();
+    androidBitmap->start();
 }
 
 void AndroidImageView::stop() {
     userSetPaused = true;
-    innerStop();
-}
-
-void AndroidImageView::innerStart() {
-    if (javaInstance == nullptr) {
-        return;
-    }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(javaInstance, startMethodId);
-}
-
-void AndroidImageView::innerStop() {
-    if (javaInstance == nullptr) {
-        return;
-    }
-    auto jniEnv = context->getJniEnv();
-    jniEnv->CallVoidMethod(javaInstance, stopMethodId);
+    androidBitmap->stop();
 }
 
 float AndroidImageView::getAlpha() {
@@ -203,16 +141,22 @@ void AndroidImageView::setAlpha(float alpha) {
     markDirty();
 }
 
-void AndroidImageView::setSourceJNI() {
-    if (resId > 0) {
-        auto jniEnv = context->getJniEnv();
-        jniEnv->CallVoidMethod(javaInstance, setResIdMethodId, resId, width, height);
-    } else if (!source.empty()) {
-        auto jniEnv = context->getJniEnv();
-        auto jSource = jniEnv->NewStringUTF(source.c_str());
-        jniEnv->CallVoidMethod(javaInstance, setSourceMethodId, jSource, width, height);
-        jniEnv->DeleteLocalRef(jSource);
-    }
+void AndroidImageView::setContext(std::shared_ptr<SkiaUIContext> &context) {
+    View::setContext(context);
+    androidBitmap = std::make_unique<AndroidBitmap>(context);
+    androidBitmap->setCallback([this](sk_sp<SkImage> image, int index, int frameCount) {
+        skImage = image;
+        srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
+        markDirty();
+        if (completeFunc != nullptr && frameCount > 0 && index < lastIndex) {
+            completeFunc(this);
+        }
+        lastIndex = index;
+        auto page = getPage();
+        if (page != nullptr && !page->getVisibility()) {
+            androidBitmap->stop();
+        }
+    });
 }
 
 }

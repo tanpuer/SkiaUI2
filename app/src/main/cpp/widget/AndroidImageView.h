@@ -2,6 +2,7 @@
 
 #include "View.h"
 #include "ImageView.h"
+#include "AndroidBitmap.h"
 
 namespace HYSkiaUI {
 
@@ -26,8 +27,6 @@ public:
 
     void draw(SkCanvas *canvas) override;
 
-    void setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int frameCount);
-
     void onShow() override;
 
     void onHide() override;
@@ -48,15 +47,9 @@ public:
 
     void setAlpha(float alpha) override;
 
+    void setContext(std::shared_ptr<SkiaUIContext> &context) override;
+
 private:
-
-    void checkInstance();
-
-    void innerStart();
-
-    void innerStop();
-
-    void setSourceJNI();
 
     SkMatrix imageMatrix;
 
@@ -64,25 +57,9 @@ private:
 
     SkRect srcRect;
 
-    std::string source;
-
-    int resId = -1;
-
     std::unique_ptr<SkBitmap> skBitmap = nullptr;
 
     sk_sp<SkImage> skImage = nullptr;
-
-    jobject javaInstance = nullptr;
-
-    jmethodID setSourceMethodId = nullptr;
-
-    jmethodID releaseMethodId = nullptr;
-
-    jmethodID setResIdMethodId = nullptr;
-
-    jmethodID startMethodId = nullptr;
-
-    jmethodID stopMethodId = nullptr;
 
     float radius = 0.0f;
 
@@ -99,6 +76,8 @@ private:
     std::unique_ptr<SkPaint> imagePaint;
 
     bool imageUpdatedFlag = false;
+
+    std::unique_ptr<AndroidBitmap> androidBitmap;
 
 };
 

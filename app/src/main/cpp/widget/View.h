@@ -2,7 +2,6 @@
 
 #include <cstdint>
 #include <yoga/Yoga.h>
-#include <memory>
 #include "array"
 #include "memory"
 #include "vector"
