@@ -22,6 +22,7 @@ open class ExoPlayerImpl : IVideoPlayer {
     private var exoPlayer: ExoPlayer? = ExoPlayer.Builder(HYSkiaUIApp.getInstance()).build()
     private var listener: IVideoListener? = null
     private var start = 0L
+    private var source = ""
 
     init {
         exoPlayer?.addListener(object : Player.Listener {
@@ -32,11 +33,18 @@ open class ExoPlayerImpl : IVideoPlayer {
             override fun onVideoSizeChanged(videoSize: VideoSize) {
                 this@ExoPlayerImpl.onVideoSizeChanged(videoSize.width, videoSize.height)
             }
+
+            override fun onPlaybackStateChanged(playbackState: Int) {
+                if (playbackState == Player.STATE_ENDED) {
+                    this@ExoPlayerImpl.onPlayEnd()
+                }
+            }
         })
     }
 
     @OptIn(UnstableApi::class)
     override fun setSource(source: String) {
+        this.source = source
         start = System.currentTimeMillis()
         if (source.startsWith("file://")) {
             val dataSourceFactory =
@@ -64,7 +72,7 @@ open class ExoPlayerImpl : IVideoPlayer {
     }
 
     override fun setRepeat(flag: Boolean) {
-        exoPlayer?.repeatMode = Player.REPEAT_MODE_ALL
+        exoPlayer?.repeatMode = if (flag) Player.REPEAT_MODE_ALL else Player.REPEAT_MODE_OFF
     }
 
     override fun prepare() {
@@ -112,6 +120,11 @@ open class ExoPlayerImpl : IVideoPlayer {
     override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
         Log.d(TAG, "video-width: ${videoWidth}, video-height:${videoHeight}")
         listener?.onVideoSizeChanged(videoWidth, videoHeight)
+    }
+
+    override fun onPlayEnd() {
+        Log.d(TAG, "onPlayEnd: $source")
+        listener?.onPlayEnd()
     }
 
     companion object {

@@ -20,4 +20,6 @@
     <string name="play_setting">Play Setting</string>
     <string name="open_background_playback">Open Background Playback</string>
     <string name="close_background_playback">Close Background Playback</string>
+    <string name="random_mode">Random Mode</string>
+    <string name="repeat_mode">Repeat Mode</string>
 </resources>

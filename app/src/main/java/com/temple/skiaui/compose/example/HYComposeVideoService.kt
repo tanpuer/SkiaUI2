@@ -9,7 +9,6 @@ import android.os.IBinder
 import com.temple.skiaui.HYSkiaUIApp
 import com.temple.skiaui.R
 
-
 class HYComposeVideoService : Service() {
 
     private val notificationManager =

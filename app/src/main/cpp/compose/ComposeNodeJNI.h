@@ -9,7 +9,6 @@
 #include "ScrollView.h"
 #include "Icon.h"
 #include "Switch.h"
-#include "YUVVideoView.h"
 #include "CameraView.h"
 #include "FilamentView.h"
 #include "ExoPlayerView.h"
@@ -42,7 +41,6 @@ compose_node_create_view_factory(JNIEnv *env, jobject instance, jstring type) {
     static std::unordered_map<std::string, std::function<View *()>> viewFactory = {
             {"Page",          []() -> View * { return new Page(); }},
             {"FlexboxLayout", []() -> View * { return new FlexboxLayout(); }},
-            {"Video",         []() -> View * { return new YUVVideoView(); }},
             {"View",          []() -> View * { return new View(); }},
             {"Loading",       []() -> View * { return new LoadingView(); }},
             {"Lottie",        []() -> View * { return new LottieView(); }},

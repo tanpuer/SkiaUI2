@@ -21,10 +21,17 @@ class HYComposeExoVideo(modifier: Modifier) : HYComposeBaseSurfaceTexture(modifi
         }
     }
 
+    fun setRepeatMode(repeatable: Boolean?) {
+        repeatable?.let {
+            nativeSetRepeatMode(ref, repeatable)
+        }
+    }
+
     override fun getViewType(): String = "ExoVideo"
 
     private external fun nativeSetSource(videoView: Long, source: String)
     private external fun nativeSetCustomPlayer(videoView: Long, player: IVideoPlayer)
     private external fun nativeSetBackgroundPlayback(videoView: Long, enable: Boolean)
+    private external fun nativeSetRepeatMode(videoView: Long, enable: Boolean)
 
 }

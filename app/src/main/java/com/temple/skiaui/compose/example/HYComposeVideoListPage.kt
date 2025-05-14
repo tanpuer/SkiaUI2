@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -63,6 +62,9 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var backgroundPlayback by remember {
                 mutableStateOf(false)
             }
+            var repeatMode by remember {
+                mutableStateOf(false)
+            }
             var shaderPath by remember {
                 mutableStateOf("")
             }
@@ -86,6 +88,15 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             return
                         }
                         videoWidthHeightRatio = videoWidth * 1.0f / videoHeight
+                    }
+
+                    override fun onPlayEnd() {
+                        super.onPlayEnd()
+                        if (!repeatMode && musicList?.isNotEmpty() == true) {
+                            musicList?.entries?.toList()?.random()?.apply {
+                                videoSrc = this.value
+                            }
+                        }
                     }
                 }
             }
@@ -128,7 +139,8 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     customPlayer = exoplayer,
                     source = videoSrc,
                     shaderPath = shaderPath,
-                    backgroundPlayback = backgroundPlayback
+                    backgroundPlayback = backgroundPlayback,
+                    repeat = repeatMode
                 )
                 Row(
                     modifier = Modifier.size(desiredSize.width, desiredSize.height)
@@ -244,6 +256,17 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             onClick = {
                                 backgroundPlayback = !backgroundPlayback
                                 handleVideoService(backgroundPlayback)
+                            })
+                        Button(
+                            modifier = Modifier.margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp))
+                                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+                            content = if (repeatMode) stringResource(R.string.random_mode) else stringResource(
+                                R.string.repeat_mode
+                            ),
+                            textSize = 15.dp,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            onClick = {
+                                repeatMode = !repeatMode
                             })
                     }
                 }

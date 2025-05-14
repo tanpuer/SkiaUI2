@@ -20,6 +20,7 @@ void ExoPlayerView::initJNI() {
     setCustomPlayerMethodId = jniEnv->GetMethodID(
             javaClass, "setCustomPlayer", "(Lcom/temple/skiaui/platform/video/IVideoPlayer;)V");
     setBackgroundPlaybackMethodId = jniEnv->GetMethodID(javaClass, "setBackgroundPlayback", "(Z)V");
+    setRepeatModeMethodId = jniEnv->GetMethodID(javaClass, "setRepeatMode", "(Z)V");
 }
 
 void ExoPlayerView::setSource(const char *source) {
@@ -61,6 +62,11 @@ const char *ExoPlayerView::name() {
 void ExoPlayerView::setBackgroundPlayback(bool flag) {
     auto jniEnv = context->getJniEnv();
     jniEnv->CallVoidMethod(javaInstance, setBackgroundPlaybackMethodId, flag);
+}
+
+void ExoPlayerView::setRepeatMode(bool repeatable) {
+    auto jniEnv = context->getJniEnv();
+    jniEnv->CallVoidMethod(javaInstance, setRepeatModeMethodId, repeatable);
 }
 
 }

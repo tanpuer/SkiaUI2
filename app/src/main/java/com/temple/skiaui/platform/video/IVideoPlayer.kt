@@ -33,4 +33,5 @@ interface IVideoPlayer : IVideoListener {
 interface IVideoListener {
     fun onRenderedFirstFrame()
     fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int)
+    fun onPlayEnd()
 }

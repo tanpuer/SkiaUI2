@@ -59,11 +59,16 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
         }
     }
 
+    private fun setRepeatMode(repeatable: Boolean) {
+        pluginHandler.post {
+            exoPlayer?.setRepeat(repeatable)
+        }
+    }
+
     private fun initializeReader() {
         exoPlayer = customPlayer ?: ExoPlayerImpl()
         exoPlayer?.setSource(source)
         exoPlayer?.setVideoSurface(surfaceObj?.surface)
-        exoPlayer?.setRepeat(true)
         exoPlayer?.prepare()
         exoPlayer?.play()
         exoPlayer?.setVideoListener(this)
@@ -76,6 +81,10 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     }
 
     override fun onVideoSizeChanged(videoWidth: Int, videoHeight: Int) {
+
+    }
+
+    override fun onPlayEnd() {
 
     }
 

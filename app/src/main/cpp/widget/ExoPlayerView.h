@@ -30,6 +30,8 @@ public:
 
     void setBackgroundPlayback(bool flag);
 
+    void setRepeatMode(bool repeatable);
+
 private:
 
     jmethodID setSourceMethodId = nullptr;
@@ -37,6 +39,8 @@ private:
     jmethodID setCustomPlayerMethodId = nullptr;
 
     jmethodID setBackgroundPlaybackMethodId = nullptr;
+
+    jmethodID setRepeatModeMethodId = nullptr;
 
     std::string source;
 

@@ -141,7 +141,8 @@ fun ExoVideo(
     onClick: (() -> Unit)? = null,
     shaderPath: String? = null,
     shaderCode: String? = null,
-    backgroundPlayback: Boolean? = null
+    backgroundPlayback: Boolean? = null,
+    repeat: Boolean? = null
 ) {
     ComposeNode<HYComposeExoVideo, HYComposeApplier>(
         factory = { HYComposeExoVideo(modifier) },
@@ -166,6 +167,9 @@ fun ExoVideo(
             }
             set(backgroundPlayback) {
                 setBackgroundPlayback(backgroundPlayback)
+            }
+            set(repeat) {
+                setRepeatMode(repeat)
             }
         }
     )
