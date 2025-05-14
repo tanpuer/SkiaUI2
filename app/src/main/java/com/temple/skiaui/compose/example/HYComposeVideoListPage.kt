@@ -157,7 +157,7 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         textAlign = TextAlign.kCenter
                     )
                     ProgressBar(
-                        modifier = Modifier.height(12.dp).flex(8),
+                        modifier = Modifier.height(12.dp).flex(7),
                         barColor = MaterialTheme.colorScheme.inverseSurface,
                         backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                         progress = progress,

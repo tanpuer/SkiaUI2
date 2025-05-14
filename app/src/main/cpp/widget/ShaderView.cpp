@@ -44,8 +44,8 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
             auto shader = skImage->makeShader(SkSamplingOptions());
             skShaders["iChannel" + std::to_string(i)] = std::move(shader);
             ResolutionUniforms resolutionUniforms;
-            resolutionUniforms.width = skImage->width();
-            resolutionUniforms.height = skImage->height();
+            resolutionUniforms.width = static_cast<float >(skImage->width());
+            resolutionUniforms.height = static_cast<float >(skImage->height());
             imageResolutions["iChannel" + std::to_string(i) + "Resolution"] = resolutionUniforms;
         });
         androidBitmaps.emplace_back(std::move(androidBitmap));
