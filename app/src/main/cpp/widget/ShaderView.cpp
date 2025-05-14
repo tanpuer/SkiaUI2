@@ -36,18 +36,19 @@ void ShaderView::setShaderSource(const char *data, std::vector<std::string> imag
     }
     for (int i = 0; i < images.size(); ++i) {
         auto image = images[i];
-        context->resourcesLoader->decodeImage(
-                image,
-                [this, i](sk_sp<SkAnimatedImage> animatedImage) {
-                    auto skImage = animatedImage->getCurrentFrame();
-                    auto shader = skImage->makeShader(SkSamplingOptions());
-                    skShaders["iChannel" + std::to_string(i)] = std::move(shader);
-                    ResolutionUniforms resolutionUniforms;
-                    resolutionUniforms.width = skImage->width();
-                    resolutionUniforms.height = skImage->height();
-                    imageResolutions["iChannel" + std::to_string(i) +
-                                     "Resolution"] = resolutionUniforms;
-                });
+        auto androidBitmap = std::make_unique<AndroidBitmap>(context);
+        androidBitmap->setSource(images[i].c_str());
+        androidBitmap->decode(-1, -1);
+        androidBitmap->setCallback([this, i](sk_sp<SkImage> image, int index, int frameCount) {
+            auto skImage = image;
+            auto shader = skImage->makeShader(SkSamplingOptions());
+            skShaders["iChannel" + std::to_string(i)] = std::move(shader);
+            ResolutionUniforms resolutionUniforms;
+            resolutionUniforms.width = skImage->width();
+            resolutionUniforms.height = skImage->height();
+            imageResolutions["iChannel" + std::to_string(i) + "Resolution"] = resolutionUniforms;
+        });
+        androidBitmaps.emplace_back(std::move(androidBitmap));
         size--;
         if (size == 0) {
             createEffect();

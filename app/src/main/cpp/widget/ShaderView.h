@@ -5,6 +5,7 @@
 #include "vector"
 #include "core/SkImage.h"
 #include "unordered_map"
+#include "AndroidBitmap.h"
 
 namespace HYSkiaUI {
 
@@ -45,6 +46,8 @@ private:
     float shaderTouchX = -1.0f;
     float lastScrollX = 0.0f;
     float lastScrollY = 0.0f;
+
+    std::vector<std::unique_ptr<AndroidBitmap>> androidBitmaps;
 
 };
 
