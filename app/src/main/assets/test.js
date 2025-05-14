@@ -80,8 +80,6 @@ function createFirstRoot() {
     button.text = "Button";
     button.backgroundColor = "#ff0000";
     button.textSize = 60;
-    button.width = 260;
-    button.height = 100;
     button.marginTop = 50;
     button.setOnClickListener((view) => {
         console.log("button is clicked!");

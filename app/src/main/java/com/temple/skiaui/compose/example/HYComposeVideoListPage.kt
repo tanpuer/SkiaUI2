@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.example
 
+import android.content.Intent
 import android.provider.MediaStore
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -58,6 +60,9 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             var videoSrc by remember {
                 mutableStateOf("yiluxiangbei.mp4")
             }
+            var backgroundPlayback by remember {
+                mutableStateOf(false)
+            }
             var shaderPath by remember {
                 mutableStateOf("")
             }
@@ -97,7 +102,7 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     CoroutineScope(Dispatchers.Main).launch {
                         val current = exoplayer.getCurrentPosition()
                         val total = exoplayer.getDuration()
-                        if (total == 0L) {
+                        if (total <= 0L) {
                             return@launch
                         }
                         currentPos = formatMillisToTime(current)
@@ -109,6 +114,7 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             DisposableEffect(Unit) {
                 onDispose {
                     exoplayer.release()
+                    handleVideoService(false)
                 }
             }
             Column(
@@ -121,7 +127,8 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     modifier = Modifier.size(desiredSize.width, desiredSize.height),
                     customPlayer = exoplayer,
                     source = videoSrc,
-                    shaderPath = shaderPath
+                    shaderPath = shaderPath,
+                    backgroundPlayback = backgroundPlayback
                 )
                 Row(
                     modifier = Modifier.size(desiredSize.width, desiredSize.height)
@@ -215,7 +222,30 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                             }
                         }
                     }
-
+                    Text(
+                        modifier = Modifier.backgroundColor(Color.Transparent)
+                            .margins(arrayOf(0.dp, 10.dp, 0.dp, 0.dp)),
+                        textSize = 20.dp,
+                        content = stringResource(R.string.play_setting),
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Row(
+                        modifier = Modifier.width(width).backgroundColor(Color.Transparent)
+                            .wrap(FlexWrap.Wrap)
+                    ) {
+                        Button(
+                            modifier = Modifier.margins(arrayOf(0.dp, 10.dp, 10.dp, 0.dp))
+                                .backgroundColor(MaterialTheme.colorScheme.tertiaryContainer),
+                            content = if (backgroundPlayback) stringResource(R.string.close_background_playback) else stringResource(
+                                R.string.open_background_playback
+                            ),
+                            textSize = 15.dp,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            onClick = {
+                                backgroundPlayback = !backgroundPlayback
+                                handleVideoService(backgroundPlayback)
+                            })
+                    }
                 }
             }
         }
@@ -286,6 +316,16 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             return DpSize(width, width / videoWidthHeightRatio)
         } else {
             return DpSize(height * videoWidthHeightRatio, height)
+        }
+    }
+
+    private fun handleVideoService(backgroundPlayback: Boolean) {
+        if (backgroundPlayback) {
+            val intent = Intent(engine.getContext(), HYComposeVideoService::class.java)
+            engine.getContext().startForegroundService(intent)
+        } else {
+            val intent = Intent(engine.getContext(), HYComposeVideoService::class.java)
+            engine.getContext().stopService(intent)
         }
     }
 

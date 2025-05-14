@@ -15,9 +15,16 @@ class HYComposeExoVideo(modifier: Modifier) : HYComposeBaseSurfaceTexture(modifi
         }
     }
 
+    fun setBackgroundPlayback(enable: Boolean?) {
+        enable?.let {
+            nativeSetBackgroundPlayback(ref, enable)
+        }
+    }
+
     override fun getViewType(): String = "ExoVideo"
 
     private external fun nativeSetSource(videoView: Long, source: String)
     private external fun nativeSetCustomPlayer(videoView: Long, player: IVideoPlayer)
+    private external fun nativeSetBackgroundPlayback(videoView: Long, enable: Boolean)
 
 }

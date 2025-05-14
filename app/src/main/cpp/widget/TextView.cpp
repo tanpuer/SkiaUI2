@@ -161,7 +161,7 @@ void TextView::draw(SkCanvas *canvas) {
     }
     canvas->save();
     canvas->setMatrix(viewMatrix);
-    paragraph->paint(canvas, skRect.left() + paddingLeft, skRect.top() + paddingBottom);
+    paragraph->paint(canvas, skRect.left() + paddingLeft, skRect.top() + paddingTop);
     canvas->restore();
 }
 

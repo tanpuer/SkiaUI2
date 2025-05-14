@@ -16,4 +16,8 @@
     <string name="local_video_list">Local Video List</string>
     <string name="empty_video_list">Empty Video List</string>
     <string name="shader_effect">Shader Effect</string>
+    <string name="music_playing">Music Playing</string>
+    <string name="play_setting">Play Setting</string>
+    <string name="open_background_playback">Open Background Playback</string>
+    <string name="close_background_playback">Close Background Playback</string>
 </resources>

@@ -41,6 +41,7 @@ class HYSkiaExampleActivity : AppCompatActivity() {
                 android.Manifest.permission.RECORD_AUDIO,
                 android.Manifest.permission.CAMERA,
                 android.Manifest.permission.READ_MEDIA_VIDEO,
+                android.Manifest.permission.POST_NOTIFICATIONS,
             ), 101
         )
     }

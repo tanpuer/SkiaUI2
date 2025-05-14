@@ -41,6 +41,8 @@ void HYSkiaUI::TextTestPage::initChildren(HYSkiaUI::ViewGroup *root, int width, 
         textView->setTextAlign(TextAlign::kLeft);
         textView->setBackgroundColor(SK_ColorRED);
         textView->setStyle(SkPaint::kStroke_Style);
+        textView->setStrokeWidth(10);
+        textView->setPadding({100, 20, 0, 0});
         textView->setMargin({50, 50, 50, 50});
         scrollView->addView(textView);
     }

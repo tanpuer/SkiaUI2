@@ -11,6 +11,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     private var customPlayer: IVideoPlayer? = null
     private var source: String = ""
     private var renderFirstFrame = false
+    private var backgroundPlayback = false
 
     override fun onSurfaceCreated() {
         if (exoPlayer == null) {
@@ -22,6 +23,9 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     }
 
     override fun onSurfaceDestroyed() {
+        if (backgroundPlayback) {
+            return
+        }
         exoPlayer?.pause()
     }
 
@@ -46,6 +50,12 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     private fun setCustomPlayer(player: IVideoPlayer) {
         pluginHandler.post {
             customPlayer = player
+        }
+    }
+
+    private fun setBackgroundPlayback(enable: Boolean) {
+        pluginHandler.post {
+            backgroundPlayback = enable
         }
     }
 
@@ -91,6 +101,9 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     override fun onHide() {
         super.onHide()
         pluginHandler.post {
+            if (backgroundPlayback) {
+                return@post
+            }
             exoPlayer?.pause()
         }
     }

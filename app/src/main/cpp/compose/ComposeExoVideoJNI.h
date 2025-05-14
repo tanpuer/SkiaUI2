@@ -26,10 +26,19 @@ compose_exo_video_set_custom_player(JNIEnv *env, jobject instance, jlong viewPtr
     }
 }
 
+extern "C" JNIEXPORT void JNICALL
+compose_exo_video_set_background_playback(JNIEnv *env, jobject instance, jlong viewPtr,
+                                          jboolean enable) {
+    auto videoView = reinterpret_cast<ExoPlayerView *>(viewPtr);
+    if (videoView != nullptr) {
+        videoView->setBackgroundPlayback(enable);
+    }
+}
+
 static JNINativeMethod g_ComposeExoVideoMethods[] = {
-        {"nativeSetSource",       "(JLjava/lang/String;)V", (void *) compose_exo_video_set_source},
-        {"nativeSetCustomPlayer", "(JLcom/temple/skiaui/platform/video/IVideoPlayer;)V",
-                                                            (void *) compose_exo_video_set_custom_player},
+        {"nativeSetSource",             "(JLjava/lang/String;)V",                              (void *) compose_exo_video_set_source},
+        {"nativeSetCustomPlayer",       "(JLcom/temple/skiaui/platform/video/IVideoPlayer;)V", (void *) compose_exo_video_set_custom_player},
+        {"nativeSetBackgroundPlayback", "(JZ)V",                                               (void *) compose_exo_video_set_background_playback},
 };
 
 static int RegisterComposeExoVideoMethods(JNIEnv *env) {

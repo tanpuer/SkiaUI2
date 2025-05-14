@@ -28,11 +28,15 @@ public:
 
     void setCustomVideoPlayer(jobject player);
 
+    void setBackgroundPlayback(bool flag);
+
 private:
 
     jmethodID setSourceMethodId = nullptr;
 
     jmethodID setCustomPlayerMethodId = nullptr;
+
+    jmethodID setBackgroundPlaybackMethodId = nullptr;
 
     std::string source;
 
