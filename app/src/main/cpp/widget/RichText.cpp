@@ -13,7 +13,7 @@ RichText::~RichText() {
 
 }
 
-void RichText::setText(const SkString& jsonValue) {
+void RichText::setText(const SkString &jsonValue) {
     std::string err;
     auto json = json11::Json::parse(jsonValue.c_str(), err);
     if (err.length() > 0) {
@@ -56,7 +56,7 @@ void RichText::measure() {
         imageNode1.type = NodeType::Img;
         imageNode1.width = 128;
         imageNode1.height = 100;
-        imageNode1.src = "transition2.png";
+        imageNode1.src = "bird.gif";
         nodes.push_back(imageNode1);
 
         auto textNode2 = Node();
@@ -81,13 +81,15 @@ void RichText::measure() {
                 PlaceholderStyle placeholderStyle(item.width, item.height,
                                                   PlaceholderAlignment::kAboveBaseline,
                                                   TextBaseline::kAlphabetic, 0);
-                auto resourcesLoader = getContext()->resourcesLoader;
-                resourcesLoader->decodeImage(item.src,
-                                             [i, this](sk_sp<SkAnimatedImage> animatedImage) {
-                                                 auto image = animatedImage->getCurrentFrame();
-                                                 this->nodes[i].skImage = image;
-                                                 markDirty();
-                                             });
+                auto androidBitmap = std::make_unique<AndroidBitmap>(context);
+                androidBitmap->setSource(item.src);
+                androidBitmap->decode(item.width, item.height);
+                androidBitmap->setCallback(
+                        [this, i](sk_sp<SkImage> image, int index, int frameCount) {
+                            this->nodes[i].skImage = image;
+                            markDirty();
+                        });
+                androidBitmaps.emplace_back(std::move(androidBitmap));
                 TextStyle textStyle;
                 paragraphBuilder->pushStyle(textStyle);
                 paragraphBuilder->addPlaceholder(placeholderStyle);
@@ -146,6 +148,18 @@ void RichText::draw(SkCanvas *canvas) {
 
 const char *RichText::name() {
     return "RichText";
+}
+
+void RichText::onShow() {
+    for (auto &item: androidBitmaps) {
+        item->start();
+    }
+}
+
+void RichText::onHide() {
+    for (auto &item: androidBitmaps) {
+        item->stop();
+    }
 }
 
 }

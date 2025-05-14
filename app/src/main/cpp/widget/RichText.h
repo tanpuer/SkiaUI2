@@ -2,6 +2,7 @@
 
 #include "View.h"
 #include "core/SkFont.h"
+#include "AndroidBitmap.h"
 
 namespace HYSkiaUI {
 
@@ -35,13 +36,17 @@ public:
 
     ~RichText();
 
-    void setText(const SkString& jsonValue);
+    void setText(const SkString &jsonValue);
 
     const char *name() override;
 
     void measure() override;
 
     void draw(SkCanvas *canvas) override;
+
+    void onShow() override;
+
+    void onHide() override;
 
 private:
 
@@ -56,6 +61,8 @@ private:
     std::vector<Node> nodes;
 
     int paragraphWidth = 0;
+
+    std::vector<std::unique_ptr<AndroidBitmap>> androidBitmaps;
 
 };
 
