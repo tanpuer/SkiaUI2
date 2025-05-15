@@ -9,7 +9,6 @@ import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.example.theme.JetpackComposeTheme
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.alignItems
-import com.temple.skiaui.compose.foundation.backgroundColor
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.RecyclerView
 import com.temple.skiaui.compose.ui.Align

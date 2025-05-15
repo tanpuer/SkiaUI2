@@ -12,6 +12,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
     private var source: String = ""
     private var renderFirstFrame = false
     private var backgroundPlayback = false
+    private var repeatable = false
 
     override fun onSurfaceCreated() {
         if (exoPlayer == null) {
@@ -61,6 +62,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
 
     private fun setRepeatMode(repeatable: Boolean) {
         pluginHandler.post {
+            this.repeatable = repeatable
             exoPlayer?.setRepeat(repeatable)
         }
     }
@@ -69,6 +71,7 @@ class PlatformVideoViewPlugin(engine: HYSkiaEngine, viewPtr: Long) :
         exoPlayer = customPlayer ?: ExoPlayerImpl()
         exoPlayer?.setSource(source)
         exoPlayer?.setVideoSurface(surfaceObj?.surface)
+        exoPlayer?.setRepeat(repeatable)
         exoPlayer?.prepare()
         exoPlayer?.play()
         exoPlayer?.setVideoListener(this)
