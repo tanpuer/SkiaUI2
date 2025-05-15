@@ -34,9 +34,11 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
         }
         case TouchEvent::ACTION_UP: {
             scrollView->startFling();
+            resetLastScroll();
             break;
         }
         case TouchEvent::ACTION_CANCEL: {
+            resetLastScroll();
             break;
         }
         default: {
@@ -103,6 +105,11 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
         lastScrollY = touchEvent->y;
     }
     return TouchEventDispatcher::onInterceptTouchEvent(touchEvent);
+}
+
+void ScrollDispatcher::resetLastScroll() {
+    lastScrollX = 0.0f;
+    lastScrollY = 0.0f;
 }
 
 }

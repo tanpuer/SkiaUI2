@@ -30,6 +30,8 @@ protected:
 
     ScrollView *scrollView;
 
+    void resetLastScroll();
+
 };
 
 }
