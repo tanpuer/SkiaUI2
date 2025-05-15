@@ -41,6 +41,9 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
     @Volatile
     protected var released = false
 
+    @Volatile
+    protected var firstFrameFlag = false
+
     private val createListener = fun(it: Boolean) {
         show = it
         if (it) {
@@ -69,7 +72,7 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
     abstract fun destroyPlatformView()
 
     fun getSkImage(): Long {
-        return skImagePtr
+        return if (firstFrameFlag) skImagePtr else 0
     }
 
     fun release() {
@@ -106,6 +109,9 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
             }
             surfaceObj?.surfaceTexture?.let {
                 engine.updateTexImage(it, skImagePtr)
+                if (!firstFrameFlag) {
+                    firstFrameFlag = true
+                }
             }
         }
         engine.postToSkiaUI {
