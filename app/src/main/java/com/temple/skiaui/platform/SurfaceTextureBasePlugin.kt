@@ -46,6 +46,9 @@ abstract class SurfaceTextureBasePlugin(
     @Volatile
     protected var released = false
 
+    @Volatile
+    protected var firstFrameFlag = false
+
     private val createListener = fun(it: Boolean) {
         skiaShow = it
         val runnable = {
@@ -90,7 +93,7 @@ abstract class SurfaceTextureBasePlugin(
     }
 
     open fun getSkImage(): Long {
-        return skImagePtr
+        return if (firstFrameFlag) skImagePtr else 0
     }
 
     open fun release() {
@@ -210,6 +213,9 @@ abstract class SurfaceTextureBasePlugin(
             }
             surfaceObj?.surfaceTexture?.let {
                 engine.updateTexImage(it, skImagePtr)
+                if (!firstFrameFlag) {
+                    firstFrameFlag = true
+                }
             }
         }
         engine.postToSkiaUI {
