@@ -61,6 +61,10 @@ public:
 
     virtual void setStrokeWidth(SkScalar _width) override;
 
+    void checkJavaViewRef(jobject instance) override;
+
+    jmethodID getOnChangeMethodId();
+
 protected:
 
     SkRect progressRect;
@@ -86,6 +90,8 @@ private:
     std::unique_ptr<SkPaint> backgroundPaint;
 
     std::string barColor;
+
+    jmethodID onChangeFromNativeMethodId = nullptr;
 
 public:
     v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> progressFunction;

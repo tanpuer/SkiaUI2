@@ -6,7 +6,7 @@ import com.temple.skiaui.compose.ui.util.composeColorToSkiaColor
 
 class HYComposeProgressBar(modifier: Modifier) : HYComposeView(modifier) {
 
-    private var onChange: ((progress: Int) -> Unit)? = null
+    private var onChange: ((progress: Int, finished: Boolean) -> Unit)? = null
 
     override fun getViewType() = "ProgressBar"
 
@@ -14,7 +14,7 @@ class HYComposeProgressBar(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetBarColor(ref, composeColorToSkiaColor(color))
     }
 
-    fun setOnChangeListener(listener: ((progress: Int) -> Unit)? = null) {
+    fun setOnChangeListener(listener: ((progress: Int, finished: Boolean) -> Unit)? = null) {
         onChange = listener
         listener?.let {
             nativeSetOnChangeCallback(ref)
@@ -25,8 +25,8 @@ class HYComposeProgressBar(modifier: Modifier) : HYComposeView(modifier) {
         nativeSetProgress(ref, progress)
     }
 
-    private fun onChangeFromNative(progress: Int) {
-        onChange?.invoke(progress)
+    private fun onChangeFromNative(progress: Int, finished: Boolean) {
+        onChange?.invoke(progress, finished)
     }
 
     private external fun nativeSetBarColor(ref: Long, color: Int)

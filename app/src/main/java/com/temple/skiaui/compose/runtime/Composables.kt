@@ -502,7 +502,7 @@ fun ProgressBar(
     barColor: Color = Color.Red,
     backgroundColor: Color = Color.Green,
     progress: Int = 0,
-    onChange: ((progress: Int) -> Unit)? = null
+    onChange: ((progress: Int, finished: Boolean) -> Unit)? = null
 ) {
     ComposeNode<HYComposeProgressBar, HYComposeApplier>(
         factory = { HYComposeProgressBar(modifier) },

@@ -137,7 +137,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 )
                 ExoVideo(
                     modifier = Modifier.size(width, width.times(360).div(640)).corner(20.dp),
-                    source = "yiluxiangbei.mp4"
+                    source = "yiluxiangbei.mp4",
+                    repeat = true
                 )
                 ComposeNative(width, height)
                 ComposeCamera(width, height)
@@ -206,8 +207,8 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     barColor = MaterialTheme.colorScheme.tertiary,
                     backgroundColor = MaterialTheme.colorScheme.tertiaryContainer,
                     progress = 50,
-                    onChange = {
-                        birdBlur = it / 5.0f
+                    onChange = { progress, finished ->
+                        birdBlur = progress / 5.0f
                     }
                 )
                 AndroidImage(

@@ -108,8 +108,10 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     barColor = Color.Green,
                     backgroundColor = Color.White,
                     progress = (if (audioPlayer.getDuration() == 0L) 0 else progress.value * 100 / audioPlayer.getDuration()).toInt(),
-                    onChange = {
-                        audioPlayer.seek(audioPlayer.getDuration() * it / 100)
+                    onChange = { progress, finished ->
+                        if (finished) {
+                            audioPlayer.seek(audioPlayer.getDuration() * progress / 100)
+                        }
                     }
                 )
                 SVG(

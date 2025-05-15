@@ -103,9 +103,6 @@ void ProgressBar::setProgress(float progress) {
         return;
     }
     this->progress = progress;
-    if (progressCallback != nullptr) {
-        progressCallback(progress, false);
-    }
     markDirty();
 }
 
@@ -198,6 +195,19 @@ const char *ProgressBar::getBarColor() {
 
 const char *ProgressBar::name() {
     return "ProgressBar";
+}
+
+void ProgressBar::checkJavaViewRef(jobject instance) {
+    View::checkJavaViewRef(instance);
+    if (onChangeFromNativeMethodId == nullptr) {
+        auto jniEnv = context->getJniEnv();
+        onChangeFromNativeMethodId = jniEnv->GetMethodID(jniEnv->GetObjectClass(globalJavaViewRef),
+                                                         "onChangeFromNative", "(IZ)V");
+    }
+}
+
+jmethodID ProgressBar::getOnChangeMethodId() {
+    return onChangeFromNativeMethodId;
 }
 
 }

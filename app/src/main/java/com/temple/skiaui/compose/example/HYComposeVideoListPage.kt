@@ -161,8 +161,10 @@ class HYComposeVideoListPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                         barColor = MaterialTheme.colorScheme.inverseSurface,
                         backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
                         progress = progress,
-                        onChange = {
-                            exoplayer.seekTo(it * exoplayer.getDuration() / 100)
+                        onChange = { progress, finished ->
+                            if (finished) {
+                                exoplayer.seekTo(progress * exoplayer.getDuration() / 100)
+                            }
                         }
                     )
                     Text(
