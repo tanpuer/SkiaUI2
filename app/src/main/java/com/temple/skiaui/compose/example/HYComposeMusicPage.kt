@@ -78,8 +78,8 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
             }
             Column(
                 modifier = Modifier.size(width, height)
-                    .alignItems(Align.FlexStart),
-                backgroundColor = MaterialTheme.colorScheme.background
+                    .alignItems(Align.FlexStart)
+                    .backgroundColor(MaterialTheme.colorScheme.background)
             ) {
                 AndroidImage(
                     modifier = Modifier.size(width, height)

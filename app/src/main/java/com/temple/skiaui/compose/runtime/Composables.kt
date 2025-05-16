@@ -74,7 +74,6 @@ fun View(
 @Composable
 fun Column(
     modifier: Modifier,
-    backgroundColor: Color = Color.Transparent,
     content: @Composable () -> Unit
 ) {
     ComposeNode<HYComposeFlexboxLayout, HYComposeApplier>(
@@ -82,9 +81,6 @@ fun Column(
         update = {
             set(modifier) {
                 updateModifier(modifier)
-            }
-            set(backgroundColor) {
-                setBackgroundColor(backgroundColor)
             }
         },
         content = content
