@@ -10,7 +10,7 @@ public:
 
     PickerView();
 
-    ~PickerView();
+    ~PickerView() override;
 
     void setContext(std::shared_ptr<SkiaUIContext>& context) override;
 

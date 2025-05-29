@@ -15,7 +15,7 @@ public:
 
     AndroidImageView();
 
-    ~AndroidImageView();
+    ~AndroidImageView() override;
 
     void setSource(const char *source);
 

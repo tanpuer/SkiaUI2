@@ -15,7 +15,7 @@ public:
 
     ShaderView();
 
-    virtual ~ShaderView();
+    ~ShaderView() override;
 
     const char *name() override;
 

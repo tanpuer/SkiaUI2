@@ -232,7 +232,7 @@ private:
 
     jobject javaSkiaEngine = nullptr;
 
-    SkCanvas *canvas;
+    SkCanvas *canvas = nullptr;
 
     std::shared_ptr<V8Runtime> v8Runtime = nullptr;
 

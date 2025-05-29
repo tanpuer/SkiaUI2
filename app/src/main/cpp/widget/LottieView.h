@@ -13,7 +13,7 @@ public:
 
     LottieView();
 
-    ~LottieView();
+    ~LottieView() override;
 
     void setSource(const char *path);
 

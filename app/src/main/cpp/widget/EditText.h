@@ -10,7 +10,7 @@ public:
 
     EditText();
 
-    ~EditText();
+    ~EditText() override;
 
     const char *getJavaPlatformViewName() override;
 

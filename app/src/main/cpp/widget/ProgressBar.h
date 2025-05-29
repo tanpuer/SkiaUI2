@@ -17,7 +17,7 @@ public:
 
     ProgressBar();
 
-    virtual ~ProgressBar();
+    ~ProgressBar() override;
 
     bool onInterceptTouchEvent(TouchEvent *touchEvent) override;
 

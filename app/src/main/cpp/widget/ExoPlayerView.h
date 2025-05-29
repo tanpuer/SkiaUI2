@@ -10,7 +10,7 @@ public:
 
     ExoPlayerView();
 
-    ~ExoPlayerView();
+    ~ExoPlayerView() override;
 
     const char *getJavaClassPath() override;
 

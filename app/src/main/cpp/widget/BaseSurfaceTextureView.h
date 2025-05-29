@@ -15,7 +15,7 @@ public:
 
     BaseSurfaceTextureView();
 
-    ~BaseSurfaceTextureView();
+    ~BaseSurfaceTextureView() override;
 
     void layout(int l, int t, int r, int b) override;
 

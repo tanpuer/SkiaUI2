@@ -11,7 +11,7 @@ public:
 
     SVGView();
 
-    virtual ~SVGView();
+    ~SVGView() override;
 
     virtual void setSource(const char *path);
 

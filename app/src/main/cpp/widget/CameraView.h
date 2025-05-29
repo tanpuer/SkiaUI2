@@ -10,7 +10,7 @@ public:
 
     CameraView();
 
-    ~CameraView();
+    ~CameraView() override;
 
     const char *getJavaClassPath() override;
 

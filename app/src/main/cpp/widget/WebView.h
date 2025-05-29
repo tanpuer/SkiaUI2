@@ -10,7 +10,7 @@ public:
 
     WebView();
 
-    ~WebView();
+    ~WebView() override;
 
     void loadUrl(const char *url);
 

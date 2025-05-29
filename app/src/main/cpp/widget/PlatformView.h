@@ -14,7 +14,7 @@ public:
 
     PlatformView();
 
-    ~PlatformView();
+    ~PlatformView() override;
 
     void layout(int l, int t, int r, int b) override;
 

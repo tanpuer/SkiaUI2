@@ -10,7 +10,7 @@ public:
 
     SwiperView();
 
-    ~SwiperView();
+    ~SwiperView() override;
 
     virtual void setAutoMode(bool flag);
 

@@ -34,7 +34,7 @@ public:
 
     RichText();
 
-    ~RichText();
+    ~RichText() override;
 
     void setText(const SkString &jsonValue);
 

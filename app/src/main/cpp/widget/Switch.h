@@ -10,7 +10,7 @@ public:
 
     Switch();
 
-    ~Switch();
+    ~Switch() override;
 
     void setColor(SkColor color);
 

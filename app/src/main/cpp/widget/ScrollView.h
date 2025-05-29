@@ -19,7 +19,7 @@ public:
 
     ScrollView();
 
-    virtual ~ScrollView();
+    ~ScrollView() override;
 
     virtual void measure() override;
 

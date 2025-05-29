@@ -14,7 +14,7 @@ public:
 
     YUVVideoView();
 
-    virtual ~YUVVideoView();
+    ~YUVVideoView() override;
 
     void setSource(const char *path);
 

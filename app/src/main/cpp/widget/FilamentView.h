@@ -10,7 +10,7 @@ public:
 
     FilamentView();
 
-    ~FilamentView();
+    ~FilamentView() override;
 
     const char * getJavaClassPath() override;
 

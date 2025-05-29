@@ -13,7 +13,7 @@ public:
 
     VideoView();
 
-    virtual ~VideoView();
+    ~VideoView() override;
 
     void setSource(const char *path);
 

@@ -44,7 +44,7 @@ public:
 
     TextView();
 
-    virtual ~TextView();
+    ~TextView() override;
 
     void measure() override;
 

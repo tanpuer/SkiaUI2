@@ -10,7 +10,7 @@ public:
 
     MovingArea();
 
-    ~MovingArea();
+    ~MovingArea() override;
 
     bool onInterceptTouchEvent(TouchEvent *touchEvent) override;
 

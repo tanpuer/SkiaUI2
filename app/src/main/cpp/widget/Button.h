@@ -10,7 +10,7 @@ public:
 
     Button();
 
-    ~Button();
+    ~Button() override;
 
     const char *name() override;
 

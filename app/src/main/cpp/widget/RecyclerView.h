@@ -14,7 +14,7 @@ public:
 
     RecyclerView();
 
-    virtual ~RecyclerView();
+    ~RecyclerView() override;
 
     virtual View *onCreateView(uint32_t index) = 0;
 

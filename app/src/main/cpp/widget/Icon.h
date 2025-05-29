@@ -10,7 +10,7 @@ public:
 
     Icon();
 
-    ~Icon();
+    ~Icon() override;
 
     void measure() override;
 

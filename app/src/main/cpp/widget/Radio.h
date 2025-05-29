@@ -10,7 +10,7 @@ public:
 
     Radio();
 
-    ~Radio();
+    ~Radio() override;
 
     void setOnChangeListener(std::function<void(bool)> &&changeFunc);
 

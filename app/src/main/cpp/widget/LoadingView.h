@@ -10,7 +10,7 @@ public:
 
     LoadingView();
 
-    ~LoadingView();
+    ~LoadingView() override;
 
     void draw(SkCanvas *canvas) override;
 

@@ -10,7 +10,7 @@ public:
 
     FlexboxLayout();
 
-    ~FlexboxLayout();
+    ~FlexboxLayout() override;
 
     const char *name() override;
 

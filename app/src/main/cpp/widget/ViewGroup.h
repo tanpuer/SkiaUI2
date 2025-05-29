@@ -12,7 +12,7 @@ public:
 
     ViewGroup();
 
-    virtual ~ViewGroup();
+    ~ViewGroup() override;
 
     const char *name() override;
 

@@ -20,7 +20,7 @@ public:
 
     ImageView();
 
-    virtual ~ImageView();
+    ~ImageView() override;
 
     void layout(int l, int t, int r, int b) override;
 
