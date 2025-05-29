@@ -10,7 +10,7 @@ public:
 
     JetpackComposeTest(JNIEnv *jniEnv);
 
-    ~JetpackComposeTest();
+    ~JetpackComposeTest() override;
 
     void doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) override;
 

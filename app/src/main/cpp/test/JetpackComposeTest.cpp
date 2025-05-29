@@ -17,6 +17,8 @@ JetpackComposeTest::~JetpackComposeTest() {
     jniEnv->CallVoidMethod(testRef, composeAppDestroyMethodId);
     ComposeContext::getInstance()->clearContext();
     jniEnv->DeleteGlobalRef(testRef);
+    auto page = context->getPageStackManager()->pop();
+    delete page;
 }
 
 void JetpackComposeTest::doDrawTest(int drawCount, SkCanvas *canvas, int width, int height) {
