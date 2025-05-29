@@ -5731,7 +5731,7 @@ function _sfc_render$1(_ctx, _cache, $props, $setup, $data, $options) {
         default: withCtx(() => [
           createBaseVNode("button", {
             onClick: _cache[0] || (_cache[0] = (...args) => $options.handleClick && $options.handleClick(...args)),
-            style: { "width": "260px", "height": "100px", "background-color": "#00ff00", "font-size": "50px" },
+            style: { "background-color": "#00ff00", "font-size": "50px" },
             text: "back"
           })
         ]),
@@ -5792,7 +5792,7 @@ function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
           }, null, -1)),
           createBaseVNode("button", {
             onClick: _cache[1] || (_cache[1] = (...args) => $options.handlePush && $options.handlePush(...args)),
-            style: { "width": "400px", "height": "100px", "background-color": "#00ff00", "margin-top": "50px", "font-size": "50px" },
+            style: {"background-color": "#00ff00", "margin-top": "50px", "font-size": "50px" },
             text: "click to music"
           })
         ]),
