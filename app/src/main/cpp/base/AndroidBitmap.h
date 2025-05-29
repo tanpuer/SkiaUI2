@@ -12,7 +12,7 @@ class AndroidBitmap {
 
 public:
 
-    AndroidBitmap(std::shared_ptr<SkiaUIContext> &context);
+    explicit AndroidBitmap(std::shared_ptr<SkiaUIContext> &context);
 
     ~AndroidBitmap();
 

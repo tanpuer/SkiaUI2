@@ -10,9 +10,9 @@ class IFilter {
 
 public:
 
-    IFilter() {};
+    IFilter() = default;
 
-    virtual ~IFilter() {};
+    virtual ~IFilter() = default;
 
     virtual void setWindowSize(int width, int height) = 0;
 
@@ -31,7 +31,7 @@ protected:
     int width = 0;
     int height = 0;
 
-    long time;
+    long time = 0L;
 
 };
 

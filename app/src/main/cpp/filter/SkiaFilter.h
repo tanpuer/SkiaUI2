@@ -31,7 +31,7 @@ class SkiaFilter : public IFilter {
 
 public:
 
-    SkiaFilter(JNIEnv *env);
+    explicit SkiaFilter(JNIEnv *env);
 
     ~SkiaFilter();
 

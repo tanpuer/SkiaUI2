@@ -9,7 +9,7 @@ class PersistentCache : public GrContextOptions::PersistentCache {
 
 public:
 
-    PersistentCache(JNIEnv *env);
+    explicit PersistentCache(JNIEnv *env);
 
     ~PersistentCache();
 

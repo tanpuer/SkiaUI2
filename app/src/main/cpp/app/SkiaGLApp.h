@@ -13,7 +13,7 @@ class SkiaGLApp {
 
 public:
 
-    SkiaGLApp(JNIEnv *env);
+    explicit SkiaGLApp(JNIEnv *env);
 
     ~SkiaGLApp();
 
