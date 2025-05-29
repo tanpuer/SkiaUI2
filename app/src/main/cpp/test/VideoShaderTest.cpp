@@ -37,6 +37,7 @@ void VideoShaderTest::initChildren(ViewGroup *root, int width, int height) {
     videoView->setWidth(1080);
     videoView->setHeight(360 * 1080 / 640);
     videoView->setSource("yiluxiangbei.mp4");
+    videoView->setRepeatMode(true);
     videoView->setStyle(SkPaint::kStroke_Style);
     scrollView->addView(videoView);
 

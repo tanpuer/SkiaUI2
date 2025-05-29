@@ -149,6 +149,7 @@ void MatrixTestPage::initChildren(ViewGroup *root, int width, int height) {
         videoView->setHeight(360 * 1080 / 640);
         videoView->setMarginTop(200);
         videoView->setSource("yiluxiangbei.mp4");
+        videoView->setRepeatMode(true);
         videoView->setStyle(SkPaint::kStroke_Style);
         scrollView->addView(videoView);
     }

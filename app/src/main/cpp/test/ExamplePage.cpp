@@ -103,6 +103,7 @@ void ExamplePage::initChildren(ViewGroup *root, int width, int height) {
         videoView->setWidthPercent(100);
         videoView->setHeightPercent(100);
         videoView->setSource("yiluxiangbei.mp4");
+        videoView->setRepeatMode(true);
         videoView->setStyle(SkPaint::kStroke_Style);
         videoView->setPositionType(YGPositionType::YGPositionTypeAbsolute);
         flexboxLayout->addView(videoView);
