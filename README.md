@@ -15,7 +15,7 @@ steps：
 8. **Supported Widgets**:   
    View, ImageView, TextView, Icon, ProgressBar, SVGView, ShaderView, Lottie, VideoView,
    ExoPlayerView, ScrollView, MovingArea, RecyclerView, Swiper, Loading, Switch, Radio, Picker,
-   LyricView, InputView, FlexboxLayout, Page...
+   EditText, WebView, FlexboxLayout, Page...
 9. **PlatformView**:  
    render Android-Views such as WebView/EditText by SurfaceTexture/SkImage, just like Flutter.  
    render 3D View by Filament(other engines can also supported)/SurfaceTexture/SkImage.  
