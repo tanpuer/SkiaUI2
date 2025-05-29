@@ -7,7 +7,7 @@ steps：
 1. Compile skia https://skia.org/docs/user/build/ ，or **unzip arm64-v8a.zip and x86-64.zip files in jniLibs.**
 2. Using Skia GL context.
 3. Two threads: ui-thread & render-thread.
-4. Only support FlexboxLayout. Measure/Layout/Draw are triggered by Vsync.
+4. Only support Flexbox. Measure/Layout/Draw are triggered by Vsync.
 5. TouchEvents: dispatchTouchEvent/interceptTouchEvent/onTouchEvent.
 6. Animations support scale/rotate/translate，and will be performed before measure.  
    support easing functions: https://easings.net/en
