@@ -2,6 +2,7 @@
 #include "core/SkPictureRecorder.h"
 #include "core/SkPicture.h"
 #include "core/SkColorSpace.h"
+#include "core/SkImage.h"
 
 namespace HYSkiaUI {
 

@@ -1,4 +1,5 @@
 #include "PlatformView.h"
+#include "core/SkImage.h"
 
 namespace HYSkiaUI {
 

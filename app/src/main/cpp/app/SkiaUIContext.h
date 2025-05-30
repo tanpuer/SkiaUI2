@@ -7,7 +7,7 @@
 #include "PluginManager.h"
 #include "YGConfig.h"
 #include "core/SkCanvas.h"
-#include "ResourcesLoader.h"
+#include "ResourceLoader.h"
 #include "V8Runtime.h"
 #include "ports/SkFontMgr_android.h"
 #include "skparagraph/include/TypefaceFontProvider.h"
@@ -87,7 +87,7 @@ public:
 
     void setJavaSkiaEngine(jobject instance) {
         javaSkiaEngine = jniEnv->NewGlobalRef(instance);
-        resourcesLoader = std::make_shared<ResourcesLoader>(jniEnv, javaSkiaEngine);
+        resourcesLoader = std::make_shared<ResourceLoader>(jniEnv, javaSkiaEngine);
         auto jClazz = jniEnv->FindClass("com/temple/skiaui/HYSkiaEngine");
         setTimeoutMethodId = jniEnv->GetMethodID(jClazz, "setTimeout", "(JJ)V");
     }
@@ -214,7 +214,7 @@ public:
     }
 
 public:
-    std::shared_ptr<ResourcesLoader> resourcesLoader;
+    std::shared_ptr<ResourceLoader> resourcesLoader;
 
 private:
 

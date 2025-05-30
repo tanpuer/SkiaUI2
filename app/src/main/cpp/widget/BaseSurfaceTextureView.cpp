@@ -1,6 +1,7 @@
 #include "BaseSurfaceTextureView.h"
 #include "core/SkPictureRecorder.h"
 #include "core/SkPicture.h"
+#include "core/SkImage.h"
 
 namespace HYSkiaUI {
 
