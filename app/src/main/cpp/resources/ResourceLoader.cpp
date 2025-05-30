@@ -37,7 +37,7 @@ void ResourceLoader::executeTask(JNIEnv *env, int taskId, jobject javaAssets) {
             }
         };
     }
-    env->CallVoidMethod(skiaEngine, postTaskMethod, taskId);
+    finishTaskInUIThread(env, taskId);
 }
 
 void ResourceLoader::postTask(JNIEnv *env, int taskId) {
@@ -57,7 +57,7 @@ void ResourceLoader::postTask(JNIEnv *env, int taskId) {
 
 void ResourceLoader::decodeLottie(const std::string &path, std::function<void(
         sk_sp<skottie::Animation>)> &&callback) {
-    auto taskId = taskID++;
+    auto taskId = generateTaskId();
     {
         std::unique_lock<std::shared_mutex> lock(rw_mtx);
         registerCallback(taskId, std::move(callback));
@@ -70,12 +70,12 @@ void ResourceLoader::decodeLottie(const std::string &path, std::function<void(
             return lottieAnimation;
         };
     }
-    env->CallVoidMethod(skiaEngine, executeTaskMethod, taskId);
+    executeTaskInBackground(taskId);
 }
 
 void ResourceLoader::decodeSVG(const std::string &path,
-                                   std::function<void(sk_sp<SkSVGDOM>)> &&callback) {
-    auto taskId = taskID++;
+                               std::function<void(sk_sp<SkSVGDOM>)> &&callback) {
+    auto taskId = generateTaskId();
     {
         std::unique_lock<std::shared_mutex> lock(rw_mtx);
         registerCallback(taskId, std::move(callback));
@@ -89,12 +89,12 @@ void ResourceLoader::decodeSVG(const std::string &path,
             return skSVGDom;
         };
     }
-    env->CallVoidMethod(skiaEngine, executeTaskMethod, taskId);
+    executeTaskInBackground(taskId);
 }
 
 void ResourceLoader::readFile(const std::string &path,
-                                  std::function<void(const char *)> &&callback) {
-    auto taskId = taskID++;
+                              std::function<void(const char *)> &&callback) {
+    auto taskId = generateTaskId();
     {
         std::unique_lock<std::shared_mutex> lock(rw_mtx);
         registerCallback(taskId, std::move(callback));
@@ -103,12 +103,12 @@ void ResourceLoader::readFile(const std::string &path,
             return assetManager.readFile(path.c_str());
         };
     }
-    env->CallVoidMethod(skiaEngine, executeTaskMethod, taskId);
+    executeTaskInBackground(taskId);
 }
 
 void ResourceLoader::decodeImage(const std::string &path,
-                                     std::function<void(sk_sp<SkAnimatedImage>)> &&callback) {
-    auto taskId = taskID++;
+                                 std::function<void(sk_sp<SkAnimatedImage>)> &&callback) {
+    auto taskId = generateTaskId();
     {
         std::unique_lock<std::shared_mutex> lock(rw_mtx);
         registerCallback(taskId, std::move(callback));
@@ -130,7 +130,19 @@ void ResourceLoader::decodeImage(const std::string &path,
             return skAnimatedImage;
         };
     }
+    executeTaskInBackground(taskId);
+}
+
+int ResourceLoader::generateTaskId() {
+    return taskID++;
+}
+
+void ResourceLoader::executeTaskInBackground(int taskId) {
     env->CallVoidMethod(skiaEngine, executeTaskMethod, taskId);
+}
+
+void ResourceLoader::finishTaskInUIThread(JNIEnv *env, int taskId) {
+    env->CallVoidMethod(skiaEngine, postTaskMethod, taskId);
 }
 
 }

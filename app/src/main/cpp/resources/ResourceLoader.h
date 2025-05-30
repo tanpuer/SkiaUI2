@@ -49,6 +49,12 @@ public:
 
 private:
 
+    int generateTaskId();
+
+    void executeTaskInBackground(int taskId);
+
+    void finishTaskInUIThread(JNIEnv* env, int taskId);
+
     std::unordered_map<int, std::function<void(std::any)>> _callbacks;
 
     std::unordered_map<int, std::function<std::any(JNIEnv *env, jobject javaAssets)>> _tasks;
