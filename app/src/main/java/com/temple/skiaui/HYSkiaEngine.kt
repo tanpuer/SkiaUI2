@@ -114,11 +114,10 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         createListeners.forEach {
             it.value.invoke(false)
         }
-        nativeGLDestroyedInMainThread(glApp)
         skiaUIHandler.post {
             nativeUIHide(uiApp)
         }
-        skiaGLHandler.post {
+        skiaGLHandler.postAtFrontOfQueue {
             nativeGLDestroyed(glApp)
         }
     }

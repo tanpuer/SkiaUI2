@@ -50,15 +50,6 @@ native_GLDestroyed(JNIEnv *env, jobject instance, jlong javaGLApp) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_GLDestroyedInMainThread(JNIEnv *env, jobject instance, jlong javaGLApp) {
-    ALOGD("native_SurfaceDestroyed")
-    auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
-    if (glApp != nullptr) {
-        glApp->destroyInMainThread();
-    }
-}
-
-extern "C" JNIEXPORT void JNICALL
 native_GLDoFrame(JNIEnv *env, jobject instance, jlong javaGLApp, jlong pic, jlong time) {
     auto glApp = reinterpret_cast<SkiaGLApp *>(javaGLApp);
     if (glApp != nullptr) {
@@ -292,7 +283,6 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeGLCreated",                     "(JLandroid/view/Surface;)V",                   (void *) native_GLCreated},
         {"nativeGLChanged",                     "(JIIJ)V",                                      (void *) native_GLChanged},
         {"nativeGLDestroyed",                   "(J)V",                                         (void *) native_GLDestroyed},
-        {"nativeGLDestroyedInMainThread",       "(J)V",                                         (void *) native_GLDestroyedInMainThread},
         {"nativeGLDoFrame",                     "(JJJ)V",                                       (void *) native_GLDoFrame},
         {"nativeGLMakeHardwareBufferToSkImage", "(JLandroid/hardware/HardwareBuffer;)J",        (void *) native_GLMakeHardwareBufferToSkImage},
         {"nativeDeleteSkImage",                 "(JJ)V",                                        (void *) native_DeleteSkImage},

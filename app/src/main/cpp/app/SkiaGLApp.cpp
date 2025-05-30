@@ -19,7 +19,6 @@ void SkiaGLApp::create(ANativeWindow *window) {
     glClearColor(1.0, 1.0, 1.0, 1.0);
     glEnable(GL_BLEND);
     mFilter = std::make_unique<SkiaFilter>(env);
-    isSurfaceValid.store(true);
 }
 
 void SkiaGLApp::change(int width, int height, long time) {
@@ -37,10 +36,6 @@ void SkiaGLApp::destroy() {
     mEGLCore.reset(nullptr);
 }
 
-void SkiaGLApp::destroyInMainThread() {
-    isSurfaceValid.store(false);
-}
-
 void SkiaGLApp::doFrame(long pic, long time) {
     if (mEGLCore == nullptr || mFilter == nullptr) {
         return;
@@ -50,9 +45,7 @@ void SkiaGLApp::doFrame(long pic, long time) {
     auto skPicture = reinterpret_cast<SkPicture *>(pic);
     assert(skPicture != nullptr);
     mFilter->render(skPicture);
-    if (isSurfaceValid) {
-        mEGLCore->swapBuffer();
-    }
+    mEGLCore->swapBuffer();
 }
 
 long SkiaGLApp::MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer) {

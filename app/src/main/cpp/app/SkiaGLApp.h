@@ -23,8 +23,6 @@ public:
 
     void destroy();
 
-    void destroyInMainThread();
-
     void doFrame(long pic, long time);
 
     long MakeHardwareBufferToSkImage(JNIEnv *env, jobject hardwareBuffer);
@@ -41,7 +39,6 @@ private:
     std::unique_ptr<IFilter> mFilter;
     int mWidth = 0, mHeight = 0;
     JNIEnv *env = nullptr;
-    std::atomic<bool> isSurfaceValid {false};
 };
 
 }
