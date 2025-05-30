@@ -114,6 +114,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         createListeners.forEach {
             it.value.invoke(false)
         }
+        nativeGLDestroyed(glApp)
         skiaUIHandler.post {
             nativeUIHide(uiApp)
         }
@@ -359,6 +360,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private external fun nativeGLCreated(glApp: Long, surface: Surface)
     private external fun nativeGLChanged(glApp: Long, width: Int, height: Int, time: Long)
     private external fun nativeGLDestroyed(glApp: Long)
+    private external fun nativeGLDestroyedInMainThread(glApp: Long)
     private external fun nativeGLDoFrame(glApp: Long, pic: Long, time: Long)
     private external fun nativeGLMakeHardwareBufferToSkImage(
         glApp: Long, hardwareBuffer: HardwareBuffer
