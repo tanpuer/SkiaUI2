@@ -38,11 +38,6 @@ void WebView::onJavaViewCreated() {
     auto javaWebViewPlugin = jniEnv->FindClass(getJavaPlatformViewName());
     loadUrlMethodId = jniEnv->GetMethodID(javaWebViewPlugin, "loadUrl",
                                           "(Ljava/lang/String;)V");
-    if (!this->url.empty()) {
-        auto jStr = jniEnv->NewStringUTF(this->url.c_str());
-        jniEnv->CallVoidMethod(javaView, loadUrlMethodId, jStr);
-        jniEnv->DeleteLocalRef(jStr);
-    }
 }
 
 const char *WebView::name() {

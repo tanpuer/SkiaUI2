@@ -10,6 +10,8 @@ class PlatformWebViewPlugin(engine: HYSkiaEngine, webViewPtr: Long) :
 
     private var webView: PlatformWebView? = null
 
+    private var url: String? = null
+
     override fun onProgressChanged(progress: Int) {
         engine.postToSkiaUI {
             if (viewPtr != 0L) {
@@ -22,6 +24,9 @@ class PlatformWebViewPlugin(engine: HYSkiaEngine, webViewPtr: Long) :
         val webView = PlatformWebView(engine.view.context)
         webView.setCanvasProvider(this)
         webView.callback = this
+        url?.let {
+            webView.loadUrl(it)
+        }
         this.webView = webView
         return webView
     }
@@ -33,6 +38,7 @@ class PlatformWebViewPlugin(engine: HYSkiaEngine, webViewPtr: Long) :
 
     private fun loadUrl(url: String) {
         mainHandler.post {
+            this.url = url
             webView?.loadUrl(url)
         }
     }

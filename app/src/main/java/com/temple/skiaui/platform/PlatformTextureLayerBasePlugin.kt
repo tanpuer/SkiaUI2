@@ -60,9 +60,6 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
 
     init {
         mainHandler.post {
-            container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
-            targetView = initPlatformView()
-            container?.addView(targetView, ViewGroup.LayoutParams(width, height))
             engine.addSkiaSurfaceListener(index, createListener)
         }
     }
@@ -176,6 +173,7 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
                 skImagePtr = it
             }
             surfaceTexture.setOnFrameAvailableListener(this)
+            initView(width, height)
         }
     }
 
@@ -200,6 +198,13 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
         mainHandler.post {
             targetView?.setBackgroundColor(color)
         }
+    }
+
+    //Android views should be added to parent after SurfaceTexture has been crated and reattached to OESTexture
+    private fun initView(width: Int, height: Int) {
+        container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
+        targetView = initPlatformView()
+        container?.addView(targetView, ViewGroup.LayoutParams(width, height))
     }
 
 }
