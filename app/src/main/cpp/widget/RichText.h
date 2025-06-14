@@ -2,7 +2,7 @@
 
 #include "View.h"
 #include "core/SkFont.h"
-#include "AndroidBitmap.h"
+#include "bitmap/AndroidBitmap.h"
 
 namespace HYSkiaUI {
 

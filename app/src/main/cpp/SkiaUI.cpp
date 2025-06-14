@@ -8,7 +8,7 @@
 #include "compose/ComposeJNI.h"
 #include "WebView.h"
 #include "inspect/WebSocketServer.h"
-#include "AndroidBitmap.h"
+#include "bitmap/AndroidBitmap.h"
 
 using namespace HYSkiaUI;
 

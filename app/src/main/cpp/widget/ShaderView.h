@@ -5,7 +5,7 @@
 #include "vector"
 #include "core/SkImage.h"
 #include "unordered_map"
-#include "AndroidBitmap.h"
+#include "bitmap/AndroidBitmap.h"
 
 namespace HYSkiaUI {
 
