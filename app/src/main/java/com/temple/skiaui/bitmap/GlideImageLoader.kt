@@ -2,14 +2,17 @@ package com.temple.skiaui.bitmap
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.drawable.Drawable
-import androidx.core.graphics.drawable.toBitmap
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.gif.GifDrawable
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.temple.skiaui.HYSkiaEngine
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
 
@@ -69,20 +72,38 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
     }
 
     override fun invalidateDrawable(drawable: Drawable) {
-        drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
-            .apply {
-                engine.postToSkiaUI {
-                    if (released) {
-                        return@postToSkiaUI
+        CoroutineScope(Dispatchers.IO).launch {
+            drawable.toBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight)
+                .apply {
+                    engine.postToSkiaUI {
+                        if (released) {
+                            return@postToSkiaUI
+                        }
+                        engine.updateAndroidBitmap(
+                            ref,
+                            this,
+                            gifDrawable?.frameIndex ?: 0,
+                            gifDrawable?.frameCount ?: 0
+                        )
                     }
-                    engine.updateAndroidBitmap(
-                        ref,
-                        this,
-                        gifDrawable?.frameIndex ?: 0,
-                        gifDrawable?.frameCount ?: 0
-                    )
                 }
-            }
+        }
+    }
+
+    /**
+     * Can not get bitmap from Glide.
+     * Transfer drawable to Bitmap costing much time.
+     * Must not block UI Thread.
+     */
+    private fun Drawable.toBitmap(width: Int, height: Int): Bitmap {
+        val bitmapPool = Glide.get(engine.getContext()).bitmapPool
+        val bitmap = bitmapPool.get(width, height, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        val bounds = this.bounds
+        this.setBounds(0, 0, width, height)
+        this.draw(canvas)
+        this.bounds = bounds
+        return bitmap
     }
 
     private fun processGif(viewWidth: Int, viewHeight: Int) {

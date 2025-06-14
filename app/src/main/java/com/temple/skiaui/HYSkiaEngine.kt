@@ -18,7 +18,9 @@ import androidx.core.math.MathUtils.clamp
 import com.temple.skiaui.cache.PersistentCache
 import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.plugin.PluginManager
-import java.util.concurrent.Executors
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
@@ -62,7 +64,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private val skImageList = mutableListOf<Long>()
     private val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val sizeChangeListeners = mutableMapOf<String, (width: Int, height: Int) -> Unit>()
-    private val executors = Executors.newFixedThreadPool(3)
 
     data class Velocity(val x: Float, val y: Float)
 
@@ -77,7 +78,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
             uiApp = nativeUIInit(HYSkiaUIApp.getInstance().assets, developmentType)
             nativeSetPlugins(uiApp, pluginManager)
         }
-        PersistentCache.preload(executors)
+        PersistentCache.preload()
     }
 
     @MainThread
@@ -233,7 +234,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
             nativeRelease(uiApp, glApp)
             uiApp = 0L
             glApp = 0L
-            executors.shutdown()
             skiaUIHandlerThread.quitSafely()
             skiaGLHandler.post {
                 skiaGLHandlerThread.quitSafely()
@@ -269,7 +269,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     }
 
     fun executeTask(taskId: Int) {
-        executors.submit {
+        CoroutineScope(Dispatchers.IO).launch {
             nativeExecuteTask(uiApp, taskId, HYSkiaUIApp.getInstance().assets)
         }
     }

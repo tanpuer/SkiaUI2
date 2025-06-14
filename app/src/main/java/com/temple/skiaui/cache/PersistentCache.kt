@@ -2,12 +2,13 @@ package com.temple.skiaui.cache
 
 import android.util.Log
 import com.temple.skiaui.HYSkiaUIApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 /**
  * shader program binaries are stored and loaded in GL thread
@@ -21,15 +22,13 @@ object PersistentCache {
         File(ctx.filesDir, CACHE_DIR_NAME).apply { mkdirs() }
     }
     private val cacheMap = ConcurrentHashMap<String, ByteBuffer>()
-    private var executors: ExecutorService? = null
     private var preloaded = false
 
-    fun preload(executors: ExecutorService) {
-        PersistentCache.executors = executors
+    fun preload() {
         if (preloaded) {
             return
         }
-        executors.submit {
+        CoroutineScope(Dispatchers.IO).launch {
             cacheDir.list()?.forEach {
                 val file = File(cacheDir, it)
                 val byteBuffer =
@@ -50,7 +49,7 @@ object PersistentCache {
                 value.duplicate().get(this)
             }
         }
-        executors?.submit {
+        CoroutineScope(Dispatchers.IO).launch {
             File(cacheDir, keyHash).writeBytes(byteArray)
         }
     }
