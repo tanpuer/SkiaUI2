@@ -26,11 +26,17 @@ public:
 
     void stop();
 
-    void setCallback(std::function<void(sk_sp<SkImage>, int, int)> &&callback);
+    int setCallback(std::function<void(sk_sp<SkImage>, int, int)> &&callback);
+
+    void clearCallback(int callbackId);
 
     void setJavaBitmap(JNIEnv *env, jobject bitmap, int index, int frameCount);
 
     void checkInstance();
+
+    void ref();
+
+    void unRef();
 
 private:
 
@@ -46,13 +52,17 @@ private:
 
     jmethodID stopMethodId = nullptr;
 
-    std::function<void(sk_sp<SkImage>, int, int)> callback = nullptr;
+    std::unordered_map<int, std::function<void(sk_sp<SkImage>, int, int)>> callbackMap;
 
     std::shared_ptr<SkiaUIContext> context = nullptr;
 
     std::string source;
 
     int resId = -1;
+
+    int ID = 0;
+
+    int refCount = 0;
 
 };
 

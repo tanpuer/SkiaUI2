@@ -1,6 +1,7 @@
 #include "AndroidImageView.h"
 #include "effects/SkImageFilters.h"
 #include "Page.h"
+#include "bitmap/AndroidBitmapLoader.h"
 
 namespace HYSkiaUI {
 
@@ -13,26 +14,32 @@ AndroidImageView::AndroidImageView() {
 }
 
 AndroidImageView::~AndroidImageView() {
+    if (androidBitmap) {
+        androidBitmap->unRef();
+        androidBitmap = nullptr;
+    }
 }
 
 void AndroidImageView::setSource(const char *source) {
-    skImage = nullptr;
-    androidBitmap->setSource(source);
-    if (width > 0 || height > 0) {
-        androidBitmap->decode(width, height);
-        return;
+    if (androidBitmap) {
+        androidBitmap->unRef();
+        androidBitmap = nullptr;
     }
-    imageUpdatedFlag = true;
+    skImage = nullptr;
+    androidBitmap = AndroidBitmapLoader::getInstance()->loadImage(context, source);
+    androidBitmap->ref();
+    setCallback();
 }
 
 void AndroidImageView::setResId(int resId) {
-    skImage = nullptr;
-    androidBitmap->setResId(resId);
-    if (width > 0 || height > 0) {
-        androidBitmap->decode(width, height);
-        return;
+    if (androidBitmap) {
+        androidBitmap->unRef();
+        androidBitmap = nullptr;
     }
-    imageUpdatedFlag = true;
+    skImage = nullptr;
+    androidBitmap = AndroidBitmapLoader::getInstance()->loadImage(context, resId);
+    androidBitmap->ref();
+    setCallback();
 }
 
 void AndroidImageView::setScaleType(ImageView::ScaleType scaleType) {
@@ -42,10 +49,6 @@ void AndroidImageView::setScaleType(ImageView::ScaleType scaleType) {
 
 void AndroidImageView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
-    if (imageUpdatedFlag && width > 0 && height > 0) {
-        imageUpdatedFlag = false;
-        androidBitmap->decode(width, height);
-    }
     if (skImage == nullptr) {
         return;
     }
@@ -94,11 +97,11 @@ void AndroidImageView::onShow() {
     if (userSetPaused) {
         return;
     }
-    androidBitmap->start();
+    setCallback();
 }
 
 void AndroidImageView::onHide() {
-    androidBitmap->stop();
+    clearCallback();
 }
 
 void AndroidImageView::setBlur(float blur) {
@@ -124,12 +127,12 @@ void AndroidImageView::setOnCompleteFunc(std::function<void(AndroidImageView *)>
 
 void AndroidImageView::start() {
     userSetPaused = false;
-    androidBitmap->start();
+    setCallback();
 }
 
 void AndroidImageView::stop() {
     userSetPaused = true;
-    androidBitmap->stop();
+    clearCallback();
 }
 
 float AndroidImageView::getAlpha() {
@@ -141,22 +144,28 @@ void AndroidImageView::setAlpha(float alpha) {
     markDirty();
 }
 
-void AndroidImageView::setContext(std::shared_ptr<SkiaUIContext> &context) {
-    View::setContext(context);
-    androidBitmap = std::make_unique<AndroidBitmap>(context);
-    androidBitmap->setCallback([this](sk_sp<SkImage> image, int index, int frameCount) {
-        skImage = image;
-        srcRect.setWH(static_cast<float>(skImage->width()), static_cast<float >(skImage->height()));
-        markDirty();
-        if (completeFunc != nullptr && frameCount > 0 && index < lastIndex) {
-            completeFunc(this);
-        }
-        lastIndex = index;
-        auto page = getPage();
-        if (page != nullptr && !page->getVisibility()) {
-            androidBitmap->stop();
-        }
-    });
+void AndroidImageView::setCallback() {
+    if (callbackId >= 0) {
+        return;
+    }
+    callbackId = androidBitmap->setCallback(
+            [this](sk_sp<SkImage> image, int index, int frameCount) {
+                skImage = image;
+                srcRect.setWH(static_cast<float>(skImage->width()),
+                              static_cast<float >(skImage->height()));
+                markDirty();
+                if (completeFunc != nullptr && frameCount > 0 && index < lastIndex) {
+                    completeFunc(this);
+                }
+                lastIndex = index;
+            });
+}
+
+void AndroidImageView::clearCallback() {
+    if (callbackId >= 0) {
+        androidBitmap->clearCallback(callbackId);
+        callbackId = -1;
+    }
 }
 
 }

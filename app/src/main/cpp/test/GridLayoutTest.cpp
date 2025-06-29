@@ -26,7 +26,7 @@ void GridLayoutTest::initChildren(ViewGroup *root, int width, int height) {
     gridLayout->setFlex(1);
     this->addView(gridLayout);
 
-    for (int i = 0; i < 20; ++i) {
+    for (int i = 0; i < 40; ++i) {
         auto imageView = new AndroidImageView();
         imageView->setContext(this->context);
         if (i % 2== 0) {

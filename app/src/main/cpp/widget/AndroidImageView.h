@@ -47,7 +47,9 @@ public:
 
     void setAlpha(float alpha) override;
 
-    void setContext(std::shared_ptr<SkiaUIContext> &context) override;
+    void setCallback();
+
+    void clearCallback();
 
 private:
 
@@ -75,9 +77,9 @@ private:
 
     std::unique_ptr<SkPaint> imagePaint;
 
-    bool imageUpdatedFlag = false;
+    std::shared_ptr<AndroidBitmap> androidBitmap;
 
-    std::unique_ptr<AndroidBitmap> androidBitmap;
+    int callbackId = -1;
 
 };
 

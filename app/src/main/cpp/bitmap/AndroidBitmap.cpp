@@ -1,5 +1,6 @@
 #include "AndroidBitmap.h"
 #include "bitmap_util.h"
+#include "AndroidBitmapLoader.h"
 
 namespace HYSkiaUI {
 
@@ -57,8 +58,20 @@ void AndroidBitmap::stop() {
     jniEnv->CallVoidMethod(javaInstance, stopMethodId);
 }
 
-void AndroidBitmap::setCallback(std::function<void(sk_sp<SkImage>, int, int)> &&callback) {
-    this->callback = std::move(callback);
+int AndroidBitmap::setCallback(std::function<void(sk_sp<SkImage>, int, int)> &&callback) {
+    if (callbackMap.empty()) {
+        start();
+    }
+    auto callbackId = ID++;
+    callbackMap[callbackId] = std::move(callback);
+    return callbackId;
+}
+
+void AndroidBitmap::clearCallback(int callbackId) {
+    callbackMap.erase(callbackId);
+    if (callbackMap.empty()) {
+        stop();
+    }
 }
 
 void
@@ -67,8 +80,8 @@ HYSkiaUI::AndroidBitmap::setJavaBitmap(JNIEnv *env, jobject bitmap, int index, i
         return;
     }
     auto skImage = transferBitmapToSkImage(env, bitmap);
-    if (callback != nullptr) {
-        callback(skImage, index, frameCount);
+    for (auto& callback: callbackMap) {
+        callback.second(skImage, index, frameCount);
     }
 }
 
@@ -87,6 +100,21 @@ void AndroidBitmap::checkInstance() {
         setResIdMethodId = jniEnv->GetMethodID(javaClass, "setResId", "(III)V");
         startMethodId = jniEnv->GetMethodID(javaClass, "start", "()V");
         stopMethodId = jniEnv->GetMethodID(javaClass, "stop", "()V");
+    }
+}
+
+void AndroidBitmap::ref() {
+    refCount++;
+}
+
+void AndroidBitmap::unRef() {
+    refCount--;
+    if (refCount == 0) {
+        auto url = source;
+        if (url.empty()) {
+            url = std::to_string(resId);
+        }
+        AndroidBitmapLoader::getInstance()->clear(url);
     }
 }
 
