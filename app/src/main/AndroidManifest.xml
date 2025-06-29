@@ -24,7 +24,7 @@
         android:label="SkiaUI"
         android:roundIcon="@drawable/round_logo"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.SkiaUI">
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboard|keyboardHidden|uiMode"
