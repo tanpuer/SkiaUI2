@@ -15,6 +15,7 @@ AndroidImageView::AndroidImageView() {
 
 AndroidImageView::~AndroidImageView() {
     if (androidBitmap) {
+        clearCallback();
         androidBitmap->unRef();
         androidBitmap = nullptr;
     }
@@ -22,6 +23,7 @@ AndroidImageView::~AndroidImageView() {
 
 void AndroidImageView::setSource(const char *source) {
     if (androidBitmap) {
+        clearCallback();
         androidBitmap->unRef();
         androidBitmap = nullptr;
     }
@@ -33,6 +35,7 @@ void AndroidImageView::setSource(const char *source) {
 
 void AndroidImageView::setResId(int resId) {
     if (androidBitmap) {
+        clearCallback();
         androidBitmap->unRef();
         androidBitmap = nullptr;
     }
