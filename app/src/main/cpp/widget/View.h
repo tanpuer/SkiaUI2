@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <cassert>
 #include <yoga/Yoga.h>
 #include "array"
 #include "memory"
@@ -192,6 +193,11 @@ public:
     virtual void setTranslateY(float translateY);
 
     virtual void setMinSize(int minWidth, int minHeight);
+
+    bool static YGFloatsEqual(float a, float b) {
+        constexpr float kEpsilon = 1e-5f;
+        return std::fabs(a - b) < kEpsilon;
+    }
 
 protected:
 

@@ -16,7 +16,14 @@ include_directories(
         src/main/cpp/bitmap
         src/main/cpp/filter
         src/main/cpp/yoga
+        src/main/cpp/yoga/algorithm
+        src/main/cpp/yoga/config
+        src/main/cpp/yoga/debug
+        src/main/cpp/yoga/enums
         src/main/cpp/yoga/event
+        src/main/cpp/yoga/node
+        src/main/cpp/yoga/numeric
+        src/main/cpp/yoga/style
         src/main/cpp/widget
         src/main/cpp/test
         src/main/cpp/touch
@@ -94,7 +101,14 @@ aux_source_directory(src/main/cpp/base srcs)
 aux_source_directory(src/main/cpp/bitmap srcs)
 aux_source_directory(src/main/cpp/filter srcs)
 aux_source_directory(src/main/cpp/yoga srcs)
+aux_source_directory(src/main/cpp/yoga/algorithm srcs)
+aux_source_directory(src/main/cpp/yoga/config srcs)
+aux_source_directory(src/main/cpp/yoga/debug srcs)
+aux_source_directory(src/main/cpp/yoga/enums srcs)
 aux_source_directory(src/main/cpp/yoga/event srcs)
+aux_source_directory(src/main/cpp/yoga/node srcs)
+aux_source_directory(src/main/cpp/yoga/numeric srcs)
+aux_source_directory(src/main/cpp/yoga/style srcs)
 aux_source_directory(src/main/cpp/widget srcs)
 aux_source_directory(src/main/cpp/test srcs)
 aux_source_directory(src/main/cpp/touch srcs)

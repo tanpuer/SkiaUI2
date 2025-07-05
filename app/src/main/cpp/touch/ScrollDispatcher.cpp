@@ -1,4 +1,5 @@
 #include "ScrollDispatcher.h"
+#include "View.h"
 
 namespace HYSkiaUI {
 
@@ -76,7 +77,7 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
             return true;
         }
     } else if (touchEvent->action == TouchEvent::ACTION_MOVE) {
-        if (YGFloatsEqual(0.0f, lastScrollX) && YGFloatsEqual(0.0f, lastScrollY)) {
+        if (View::YGFloatsEqual(0.0f, lastScrollX) && View::YGFloatsEqual(0.0f, lastScrollY)) {
             lastScrollX = touchEvent->x;
             lastScrollY = touchEvent->y;
             return false;

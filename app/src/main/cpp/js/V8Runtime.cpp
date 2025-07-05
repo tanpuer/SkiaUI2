@@ -1,4 +1,5 @@
 #include "V8Runtime.h"
+#include <cassert>
 #include "native_log.h"
 #include <ostream>
 #include <sstream>

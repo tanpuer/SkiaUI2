@@ -1,5 +1,4 @@
 #include <base/native_log.h>
-#include <yoga/Utils.h>
 #include "View.h"
 #include "effects/SkCornerPathEffect.h"
 #include "effects/SkImageFilters.h"

@@ -1,4 +1,3 @@
-#include <yoga/Utils.h>
 #include <base/native_log.h>
 #include "ViewGroup.h"
 
@@ -149,23 +148,19 @@ bool ViewGroup::dispatchVelocity(Velocity *velocity) {
 }
 
 void ViewGroup::layout(int l, int t, int r, int b) {
-    assert(false);
 }
 
 const char *ViewGroup::getFLexWrap() {
-    assert(node);
     auto flexWrap = YGNodeStyleGetFlexWrap(node);
     return YGWrapToString(flexWrap);
 }
 
 const char *ViewGroup::getJustifyContent() {
-    assert(node);
     auto justifyContent = YGNodeStyleGetJustifyContent(node);
     return YGJustifyToString(justifyContent);
 }
 
 const char *ViewGroup::getAlignItems() {
-    assert(node);
     auto alignItems = YGNodeStyleGetAlignItems(node);
     return YGAlignToString(alignItems);
 }
