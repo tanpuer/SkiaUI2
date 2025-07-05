@@ -7,6 +7,7 @@
 #include "effects/SkGradientShader.h"
 #include "skparagraph/include/TypefaceFontProvider.h"
 #include "color_util.h"
+#include "w3c_util.h"
 
 namespace HYSkiaUI {
 

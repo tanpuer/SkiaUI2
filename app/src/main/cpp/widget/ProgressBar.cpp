@@ -2,6 +2,7 @@
 #include "ProgressBar.h"
 #include "effects/SkGradientShader.h"
 #include "color_util.h"
+#include "w3c_util.h"
 
 namespace HYSkiaUI {
 

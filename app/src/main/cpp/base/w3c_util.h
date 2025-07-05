@@ -134,3 +134,8 @@ static TextAlign W3CToTextAlign(const std::string &align) {
         return TextAlign::kLeft;
     }
 }
+
+bool static YGFloatsEqual(float a, float b) {
+    constexpr float kEpsilon = 1e-5f;
+    return std::fabs(a - b) < kEpsilon;
+}

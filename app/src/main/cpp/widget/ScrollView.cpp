@@ -2,6 +2,7 @@
 #include "ScrollView.h"
 #include "algorithm"
 #include "LinearAnimator.h"
+#include "w3c_util.h"
 
 namespace HYSkiaUI {
 

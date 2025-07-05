@@ -8,6 +8,7 @@
 #include "effects/SkImageFilters.h"
 #include "codec/SkAndroidCodec.h"
 #include "LinearAnimator.h"
+#include "w3c_util.h"
 
 namespace HYSkiaUI {
 

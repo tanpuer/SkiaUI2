@@ -9,6 +9,7 @@
 #include "core/SkBlurTypes.h"
 #include "color_util.h"
 #include "ViewGroup.h"
+#include "w3c_util.h"
 
 namespace HYSkiaUI {
 

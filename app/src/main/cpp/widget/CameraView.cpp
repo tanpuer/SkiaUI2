@@ -3,6 +3,7 @@
 #include "core/SkPicture.h"
 #include "core/SkColorSpace.h"
 #include "core/SkImage.h"
+#include "w3c_util.h"
 
 namespace HYSkiaUI {
 

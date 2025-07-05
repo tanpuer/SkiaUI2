@@ -194,11 +194,6 @@ public:
 
     virtual void setMinSize(int minWidth, int minHeight);
 
-    bool static YGFloatsEqual(float a, float b) {
-        constexpr float kEpsilon = 1e-5f;
-        return std::fabs(a - b) < kEpsilon;
-    }
-
 protected:
 
     YGNodeRef node = nullptr;
