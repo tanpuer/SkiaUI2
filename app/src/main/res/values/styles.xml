@@ -3,5 +3,7 @@
     <style name="Theme.SkiaUI" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowLayoutInDisplayCutoutMode">shortEdges</item>
         <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:enforceStatusBarContrast">true</item>
     </style>
 </resources>

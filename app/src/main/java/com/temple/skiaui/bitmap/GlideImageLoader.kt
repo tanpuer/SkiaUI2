@@ -187,7 +187,8 @@ class GlideImageLoader(val engine: HYSkiaEngine, val ref: Long) : ImageLoader {
 
     private fun innerRecycle() {
         val isFinishing = (engine.getContext() as Activity).isFinishing
-        if (!isFinishing) {
+        val isDestroyed = (engine.getContext() as Activity).isDestroyed
+        if (!isFinishing || !isDestroyed) {
             Glide.with(engine.getContext()).clear(gifTarget)
             Glide.with(engine.getContext()).clear(bitmapTarget)
         }

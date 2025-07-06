@@ -27,12 +27,12 @@
         android:theme="@style/Theme.SkiaUI">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden|uiMode"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|uiMode"
             android:exported="true" />
 
         <activity
             android:name=".HYSkiaExampleActivity"
-            android:configChanges="orientation|keyboard|keyboardHidden|uiMode"
+            android:configChanges="orientation|screenSize|smallestScreenSize|keyboard|keyboardHidden|uiMode"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
