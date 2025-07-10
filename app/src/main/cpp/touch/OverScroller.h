@@ -2,7 +2,7 @@
 
 #include <memory>
 
-namespace flick {
+namespace HYSkiaUI {
 
 class OverScroller;
 class OverScrollerSpline {
@@ -174,4 +174,4 @@ private:
     bool mUseFlingMomentum = false;
 };
 
-}  // namespace flick
+}

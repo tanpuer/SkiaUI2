@@ -1,12 +1,10 @@
-#include "view/scroll/OverScroller.h"
+#include "touch/OverScroller.h"
 
 #include <algorithm>
 #include <chrono>
 #include <cmath>
 
-#include "utils/Log.h"
-
-namespace flick {
+namespace HYSkiaUI {
 
 static const float DECELERATION_RATE = std::log(0.78f) / std::log(0.9f);
 static const float INFLEXION = 0.35f;  // Tension lines cross at (INFLEXION, 1)
@@ -507,4 +505,4 @@ float OverScroller::getInterpolation(float progress) {
     return progress;
 }
 
-}  // namespace flick
+}
