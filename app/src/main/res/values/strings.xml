@@ -22,4 +22,5 @@
     <string name="close_background_playback">Close Background Playback</string>
     <string name="random_mode">Random Mode</string>
     <string name="repeat_mode">Repeat Mode</string>
+    <string name="skia_texture_view">Skia Texture View</string>
 </resources>

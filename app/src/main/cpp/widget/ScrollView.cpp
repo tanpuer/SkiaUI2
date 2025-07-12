@@ -6,15 +6,12 @@
 
 namespace HYSkiaUI {
 
-float ScrollView::DECELERATION_RATE = (float) (log(0.78) / log(0.9));
-
-ScrollView::ScrollView() : isFling(false), startTime(0L) {
+ScrollView::ScrollView() {
     touchEventDispatcher = std::make_unique<ScrollDispatcher>(this);
-    scrollCallbacks = std::vector<std::function<void(float dx, float dy)>>();
+    mScroller = std::make_unique<OverScroller>();
 }
 
 ScrollView::~ScrollView() {
-    scrollCallbacks.clear();
 }
 
 void ScrollView::measure() {
@@ -25,53 +22,56 @@ void ScrollView::measure() {
 
 void ScrollView::layout(int l, int t, int r, int b) {
     View::layout(l, t, r, b);
-    if (isFling) {
-        calculateFlingTranslate();
+    if (mScroller->computeScrollOffset()) {
+        if (_direction == YGFlexDirectionRow) {
+            setTranslateX(mScroller->getCurrentX());
+        } else {
+            setTranslateY(mScroller->getCurrentY());
+        }
     }
     if (_direction == YGFlexDirectionRow) {
-        updateTranslateX(0.0);
         layoutChildren(l + translateX, t, r + translateX, b);
+        childrenWidthSum = getChildWidthSum();
     } else {
-        updateTranslateY(0.0);
-        layoutChildren(l, t + translateY, r, b + translateY);
+        layoutChildren(l, t + clampY, r, b + clampY);
+        childrenHeightSum = getChildHeightSum();
     }
 }
 
 void ScrollView::updateTranslateY(float diffY) {
     translateY += diffY;
-    //可滑动的上限和下限
-    auto maxTranslate = height - getChildHeightSum();
-    if (translateY <= maxTranslate) {
-        translateY = maxTranslate;
-    }
-    if (translateY >= 0) {
-        translateY = 0;
-    }
+    setTranslateY(translateY);
 }
 
 void ScrollView::setTranslateY(float y) {
-    translateY = y;
-    //可滑动的上限和下限
-    auto maxTranslate = height - getChildHeightSum();
-    if (translateY <= maxTranslate) {
-        translateY = maxTranslate;
-    }
-    if (translateY >= 0) {
-        translateY = 0;
-    }
     markDirty();
+    translateY = y;
+    auto minY = std::min(0, height - childrenHeightSum);
+    if (translateY > 0.0f) {
+        clampY = applyDamping(translateY, height / 3);
+    } else if (translateY < minY) {
+        clampY = minY + applyDamping(translateY - minY, height / 3);
+    } else {
+        clampY = translateY;
+    }
+}
+
+void ScrollView::updateTranslateX(float diffX) {
+    translateX += diffX;
+    setTranslateX(translateX);
 }
 
 void ScrollView::setTranslateX(float x) {
-    translateX = x;
-    auto maxTranslate = width - getChildWidthSum();
-    if (translateX <= maxTranslate) {
-        translateX = maxTranslate;
-    }
-    if (translateX > 0) {
-        translateX = 0;
-    }
     markDirty();
+    translateX = x;
+    auto minX = std::min(0, width - childrenWidthSum);
+    if (translateX > 0.0f) {
+        clampX = applyDamping(translateX, width / 3);
+    } else if (translateX < minX) {
+        clampX = minX + applyDamping(translateX - minX, width / 3);
+    } else {
+        clampX = translateX;
+    }
 }
 
 void ScrollView::setFlexWrap(YGWrap wrap) {
@@ -83,108 +83,38 @@ void ScrollView::setFlexDirection(YGFlexDirection direction) {
     FlexboxLayout::setFlexDirection(direction);
 }
 
-void ScrollView::updateTranslateX(float diffX) {
-    translateX += diffX;
-    if (YGFloatsEqual(translateX, 1080)) {
-        ALOGD("Error!")
-    }
-    auto maxTranslate = width - getChildWidthSum();
-    if (translateX <= maxTranslate) {
-        translateX = maxTranslate;
-    }
-    if (translateX > 0) {
-        translateX = 0;
-    }
-}
-
-bool ScrollView::addView(View *view) {
-    markDirty();
-    auto index = YGNodeGetChildCount(node);
-//    ALOGD("RecyclerView addView at %d %ld", index, children.size())
-    return FlexboxLayout::addViewAt(view, index);
-}
-
-bool ScrollView::addViewAt(View *view, uint32_t index) {
-    markDirty();
-    return ViewGroup::addViewAt(view, index);
-}
-
-bool ScrollView::removeView(View *view) {
-    markDirty();
-    return FlexboxLayout::removeView(view);
-}
-
-bool ScrollView::removeViewAt(uint32_t index) {
-    markDirty();
-    return ViewGroup::removeViewAt(index);
-}
-
-bool ScrollView::canScroll() {
-    if (_direction == YGFlexDirectionRow) {
-        return abs(translateX) <= getChildWidthSum() - width;
-    } else {
-        return abs(translateY) <= getChildHeightSum() - height;
-    }
-}
-
-void ScrollView::startFling() {
+void ScrollView::fling() {
     if (_direction == YGFlexDirectionColumn) {
-        if (abs(yVelocity) <= MIN_VELOCITY) {
-            yVelocity = .0f;
-            onFlingStopped();
-            return;
-        } else if (abs(yVelocity) >= MAX_VELOCITY) {
-            yVelocity = yVelocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
+        adjustVelocity(yVelocity);
+        float minY = std::min(0, height - childrenHeightSum);
+        if (translateY > 0.0f) {
+            mScroller->springBack(0.0f, translateY, 0.0f, 0.0f, 0.0f, 0.0f);
+        } else if (translateY < minY) {
+            mScroller->springBack(0.0f, translateY, 0.0f, 0.0f, minY, minY);
+        } else {
+            mScroller->fling(0.0f, translateY, 0.0f, yVelocity, 0.0f, minY, 0.0f, 0.0f, 0.0f,
+                             height / 3);
         }
-        startTime = IAnimator::currTime;
-        isFling = true;
     } else {
-        if (abs(xVelocity) <= MIN_VELOCITY) {
-            xVelocity = .0f;
-            onFlingStopped();
-            return;
-        } else if (abs(xVelocity) >= MAX_VELOCITY) {
-            xVelocity = xVelocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
+        adjustVelocity(xVelocity);
+        float maxX = std::min(0, width - childrenWidthSum);
+        if (translateX > 0.0f) {
+            mScroller->springBack(translateX, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+        } else if (translateX < maxX) {
+            mScroller->springBack(translateX, 0.0f, 0.0f, maxX, 0.0f, 0.0f);
+        } else {
+            mScroller->fling(translateX, 0.0f, xVelocity, 0.0f, 0.0f, 0.0f, maxX, 0.0f, width / 3,
+                             0.0f);
         }
-        startTime = IAnimator::currTime;
-        isFling = true;
     }
 }
 
 void ScrollView::stopFling() {
-    if (isFling) {
-        isFling = false;
-        onFlingStopped();
+    if (!mScroller->isFinished()) {
+        translateX = mScroller->getCurrentX();
+        translateY = mScroller->getCurrentY();
+        mScroller->abortAnimation();
     }
-}
-
-float ScrollView::calculateFlingTranslate() {
-    auto _velocity = _direction == YGFlexDirectionColumn ? yVelocity : -xVelocity;
-    float velocity = _velocity - (_velocity > 0 ? 1.0f : -1.0f) * GRAVITY *
-                                 (IAnimator::currTime - startTime); //v' = v + gt;
-    if (_velocity / velocity <= 0 || abs(velocity) <= MIN_VELOCITY) {
-        _velocity = .0f;
-        isFling = false;
-        onFlingStopped();
-    }
-//    float ppi = context.getResources().getDisplayMetrics().density * 160.0f;
-//  see OverScroller.java
-    float ppi = 2.625 * 160.0f;
-    auto mPhysicalCoeff = GRAVITY * 39.37f * ppi * 0.84f;
-    auto l = log(INFLEXION * abs(velocity) / (FLING_FRICTION * mPhysicalCoeff));
-    double decelMinusOne = DECELERATION_RATE - 1.0;
-    auto diff = FLING_FRICTION * mPhysicalCoeff * exp(DECELERATION_RATE / decelMinusOne * l);
-    if (_direction == YGFlexDirectionColumn) {
-        updateTranslateY(diff * (_velocity > 0 ? 1.0 : -1.0) / 10.0);
-    } else {
-        updateTranslateX(diff * (_velocity > 0 ? -1.0 : 1.0) / 10.0);
-    }
-    markDirty();
-    return 0.0f;
-}
-
-void ScrollView::addScrollCallback(std::function<void(float, float)> callback) {
-    scrollCallbacks.emplace_back(callback);
 }
 
 void ScrollView::draw(SkCanvas *canvas) {
@@ -280,7 +210,7 @@ void ScrollView::scrollBy(float value) {
 
 int ScrollView::getDistanceByIndex(int index) {
     if (index >= children.size()) {
-        ALOGE("ScrollView::getChildHeightSum invalid param index:%d", index)
+        ALOGE("ScrollView::getDistanceByIndex invalid param index:%d", index)
         return 0;
     }
     auto sum = 0;
@@ -298,12 +228,42 @@ int ScrollView::getDistanceByIndex(int index) {
     return sum;
 }
 
-void ScrollView::onFlingStopped() {
-
-}
-
 void ScrollView::setScrollEnd(bool flag) {
     this->lastScrollEnd = flag;
+}
+
+void ScrollView::adjustVelocity(float &velocity) {
+    if (abs(velocity) <= MIN_VELOCITY) {
+        velocity = .0f;
+    } else if (abs(velocity) >= MAX_VELOCITY) {
+        velocity = velocity > 0 ? MAX_VELOCITY : -MAX_VELOCITY;
+    }
+}
+
+float ScrollView::applyDamping(float offset, float maxDistance) {
+    float absOffset = std::abs(offset);
+    float dampedOffset = maxDistance * (1.0f - 1.0f / (1.0f + absOffset / maxDistance));
+    return (offset > 0) ? dampedOffset : -dampedOffset;
+}
+
+int ScrollView::getChildWidthSum() {
+    if (children.empty()) {
+        return 0;
+    }
+    auto firstChild = children[0];
+    auto lastChild = children[children.size() - 1];
+    return lastChild->getRight() - firstChild->getLeft() + lastChild->getMarginRight() +
+           firstChild->getMarginLeft();
+}
+
+int ScrollView::getChildHeightSum() {
+    if (children.empty()) {
+        return 0;
+    }
+    auto firstChild = children[0];
+    auto lastChild = children[children.size() - 1];
+    return lastChild->getBottom() - firstChild->getTop() + lastChild->getMarginBottom() +
+           firstChild->getMarginTop();
 }
 
 }

@@ -31,7 +31,7 @@ abstract class HYComposeNode(var modifier: Modifier) {
         nativeMove(ref, from, to, count)
     }
 
-    fun clear() {
+    open fun clear() {
 
     }
 

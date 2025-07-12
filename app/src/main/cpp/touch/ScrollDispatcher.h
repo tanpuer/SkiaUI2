@@ -23,11 +23,6 @@ public:
 
 protected:
 
-    /**
-     * 当手离开屏幕，scrollView还能滑动时，需要使用动画模拟fling的效果
-     */
-    virtual void fling();
-
     ScrollView *scrollView;
 
     void resetLastScroll();

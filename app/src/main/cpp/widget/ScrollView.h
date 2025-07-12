@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FlexboxLayout.h"
+#include "OverScroller.h"
 
 namespace HYSkiaUI {
 
@@ -9,10 +10,6 @@ class ScrollView : public FlexboxLayout {
 public:
     constexpr static int MIN_VELOCITY = 50;
     constexpr static int MAX_VELOCITY = 8000;
-    constexpr static float FLING_FRICTION = 0.015f;
-    static float DECELERATION_RATE;
-    constexpr static float INFLEXION = 0.35f;
-    constexpr static float GRAVITY = 9.8f;
     constexpr static int SCROLL_SLOP = 1;
 
 public:
@@ -37,27 +34,13 @@ public:
 
     virtual void setFlexDirection(YGFlexDirection direction) override;
 
-    virtual bool addView(View *view) override;
-
-    virtual bool addViewAt(View *view, uint32_t index) override;
-
-    virtual bool removeView(View *view) override;
-
-    virtual bool removeViewAt(uint32_t index) override;
-
-    virtual bool canScroll();
-
     virtual void draw(SkCanvas *canvas) override;
 
     virtual bool ignoreChildDraw(View *child);
 
-    virtual void startFling();
+    virtual void fling();
 
     void stopFling();
-
-    virtual void onFlingStopped();
-
-    void addScrollCallback(std::function<void(float dx, float dy)> callback);
 
     virtual const char *name() override;
 
@@ -75,15 +58,25 @@ public:
 
     int getDistanceByIndex(int index);
 
+    int getChildWidthSum() override;
+
+    int getChildHeightSum() override;
+
 protected:
 
-    float calculateFlingTranslate();
+    std::unique_ptr<OverScroller> mScroller;
 
-    bool isFling;
+    void adjustVelocity(float& velocity);
 
-    long startTime;
+    float applyDamping(float offset, float maxDistance);
 
-    std::vector<std::function<void(float dx, float dy)>> scrollCallbacks;
+    int childrenHeightSum = 0;
+
+    int childrenWidthSum = 0;
+
+    float clampX = 0.0f;
+
+    float clampY = 0.0f;
 
 #pragma mark for RV
 

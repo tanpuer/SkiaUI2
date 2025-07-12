@@ -16,7 +16,7 @@ public:
 
     void setOnChangeListener(std::function<void(int)> &&callback);
 
-    void onFlingStopped() override;
+    void onFlingStopped();
 
     void measure() override;
 

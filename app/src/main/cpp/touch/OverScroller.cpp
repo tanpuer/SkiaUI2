@@ -64,7 +64,7 @@ static void initSpline() {
     SPLINE_POSITION[NB_SAMPLES] = SPLINE_TIME[NB_SAMPLES] = 1.0f;
 }
 
-static float GRAVITY = 4000.0f;
+static float GRAVITY = 8000.0f;
 static float getDeceleration(int velocity) { return velocity > 0 ? -GRAVITY : GRAVITY; }
 
 OverScrollerSpline::OverScrollerSpline() {

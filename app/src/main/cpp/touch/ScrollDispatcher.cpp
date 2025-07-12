@@ -22,7 +22,7 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
             break;
         }
         case TouchEvent::ACTION_MOVE: {
-            ALOGD("ScrollDispatcher::ACTION_MOVE")
+//            ALOGD("ScrollDispatcher::ACTION_MOVE")
             if (scrollView->_direction == YGFlexDirectionColumn) {
                 scrollView->setScrollEnd(touchEvent->y < startY);
                 scrollView->updateTranslateY(touchEvent->y - startY);
@@ -35,7 +35,7 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
             break;
         }
         case TouchEvent::ACTION_UP: {
-            scrollView->startFling();
+            scrollView->fling();
             resetLastScroll();
             break;
         }
@@ -49,10 +49,6 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
     }
     scrollView->markDirty();
     return true;
-}
-
-void ScrollDispatcher::fling() {
-
 }
 
 View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent *touchEvent) {
@@ -72,6 +68,7 @@ View *ScrollDispatcher::findTargetViewTraversal(ViewGroup *viewGroup, TouchEvent
 
 bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
     if (touchEvent->action == TouchEvent::ACTION_DOWN) {
+        scrollView->stopFling();
         lastScrollX = touchEvent->x;
         lastScrollY = touchEvent->y;
         if (weakTargetView == scrollView) {

@@ -63,7 +63,6 @@ void SwiperView::setContext(std::shared_ptr<SkiaUIContext>& context) {
 }
 
 void SwiperView::startFling() {
-    isFling = false;
     auto targetIndex = findTargetIndex();
     scrollToIndex(targetIndex, true);
     if (currentIndex != targetIndex) {

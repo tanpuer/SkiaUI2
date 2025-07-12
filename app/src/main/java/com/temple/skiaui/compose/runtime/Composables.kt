@@ -1,6 +1,7 @@
 package com.temple.skiaui.compose.runtime
 
 import android.graphics.Bitmap
+import android.view.Surface
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ComposeNode
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.temple.skiaui.HYSkiaEngine
 import com.temple.skiaui.compose.foundation.Modifier
 import com.temple.skiaui.compose.foundation.ShaderSource
 import com.temple.skiaui.compose.ui.AutoReleasable
@@ -38,6 +40,7 @@ import com.temple.skiaui.compose.ui.HYComposeScrollView
 import com.temple.skiaui.compose.ui.HYComposeShader
 import com.temple.skiaui.compose.ui.HYComposeSwitch
 import com.temple.skiaui.compose.ui.HYComposeText
+import com.temple.skiaui.compose.ui.HYComposeTextureView
 import com.temple.skiaui.compose.ui.HYComposeView
 import com.temple.skiaui.compose.ui.HYComposeWeb
 import com.temple.skiaui.compose.ui.TextAlign
@@ -599,6 +602,33 @@ fun Canvas(modifier: Modifier, onDraw: (canvas: Canvas) -> Unit) {
             }
             set(onDraw) {
                 setDrawCallback(onDraw)
+            }
+        }
+    )
+}
+
+@Composable
+fun TextureView(
+    modifier: Modifier,
+    engine: HYSkiaEngine,
+    surfaceCreate: ((surface: Surface) -> Unit),
+    surfaceChange: ((surface: Surface, width: Int, height: Int) -> Unit),
+    surfaceDestroy: ((surface: Surface) -> Unit)
+) {
+    ComposeNode<HYComposeTextureView, HYComposeApplier>(
+        factory = { HYComposeTextureView(modifier, engine) },
+        update = {
+            set(modifier) {
+                updateModifier(modifier)
+            }
+            set(surfaceCreate) {
+                onSurfaceTextureCreated(surfaceCreate)
+            }
+            set(surfaceChange) {
+                onSurfaceTextureChanged(surfaceChange)
+            }
+            set(surfaceDestroy) {
+                onSurfaceTextureDestroyed(surfaceDestroy)
             }
         }
     )
