@@ -9,7 +9,7 @@ class ScrollView : public FlexboxLayout {
 
 public:
     constexpr static int MIN_VELOCITY = 50;
-    constexpr static int MAX_VELOCITY = 8000;
+    constexpr static int MAX_VELOCITY = 18000;
     constexpr static int SCROLL_SLOP = 1;
 
 public:
