@@ -78,6 +78,17 @@ class HYComposeTextureViewPage(engine: HYSkiaEngine) : HYComposeBasePage(engine)
                         run {
                             Log.d(TAG, "surfaceDestroy")
                             exoplayer.setVideoSurface(null)
+                            exoplayer.stop()
+                            exoplayer.release()
+                        }
+                    },
+                    show = {
+                        run {
+                            exoplayer.play()
+                        }
+                    },
+                    hide = {
+                        run {
                             exoplayer.pause()
                         }
                     }

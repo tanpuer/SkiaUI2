@@ -613,7 +613,9 @@ fun TextureView(
     engine: HYSkiaEngine,
     surfaceCreate: ((surface: Surface) -> Unit),
     surfaceChange: ((surface: Surface, width: Int, height: Int) -> Unit),
-    surfaceDestroy: ((surface: Surface) -> Unit)
+    surfaceDestroy: ((surface: Surface) -> Unit),
+    show: () -> Unit,
+    hide: () -> Unit
 ) {
     ComposeNode<HYComposeTextureView, HYComposeApplier>(
         factory = { HYComposeTextureView(modifier, engine) },
@@ -629,6 +631,12 @@ fun TextureView(
             }
             set(surfaceDestroy) {
                 onSurfaceTextureDestroyed(surfaceDestroy)
+            }
+            set(show) {
+                onShow(show)
+            }
+            set(hide) {
+                onHide(hide)
             }
         }
     )

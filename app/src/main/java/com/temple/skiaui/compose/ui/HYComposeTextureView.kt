@@ -13,6 +13,8 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
     private var changedCallback: ((surface: Surface, width: Int, height: Int) -> Unit)? =
         null
     private var destroyedCallback: ((surface: Surface) -> Unit)? = null
+    private var showCallback: (() -> Unit)? = null
+    private var hideCallback: (() -> Unit)? = null
 
     private var surfaceObj: SurfaceObj? = null
 
@@ -20,8 +22,10 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
     private var height = 0
     private var skImagePtr = 0L
 
+    private val skiaSurfaceKey = "TextureView-${INDEX++}"
+
     init {
-        engine.addSkiaSurfaceListener("TextureView-${INDEX++}") {
+        engine.addSkiaSurfaceListener(skiaSurfaceKey) {
             if (it) {
                 skiaSurfaceCreated()
             } else {
@@ -42,6 +46,14 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
         destroyedCallback = callback
     }
 
+    fun onShow(callback: () -> Unit) {
+        showCallback = callback
+    }
+
+    fun onHide(callback: () -> Unit) {
+        hideCallback = callback
+    }
+
     override fun clear() {
         val surface = surfaceObj?.surface ?: return
         destroyedCallback?.invoke(surface)
@@ -56,15 +68,15 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
     }
 
     private fun onShow() {
-
+        showCallback?.invoke()
     }
 
     private fun onHide() {
-
+        hideCallback?.invoke()
     }
 
     private fun release() {
-
+        engine.removeSurfaceListener(skiaSurfaceKey)
     }
 
     private fun sendTouchEvent(action: Int, x: Float, y: Float) {
@@ -143,8 +155,6 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
         engine.postToSkiaUI {
             skImagePtr = 0L
         }
-        val surface = surfaceObj?.surface ?: return
-        destroyedCallback?.invoke(surface)
     }
 
     companion object {

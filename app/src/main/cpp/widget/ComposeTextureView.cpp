@@ -7,7 +7,8 @@ ComposeTextureView::ComposeTextureView() {
 }
 
 ComposeTextureView::~ComposeTextureView() {
-
+    javaInstance = nullptr;
+    //javaInstance = globalJavaViewRef; globalJavaViewRef will be released in View.cpp
 }
 
 void ComposeTextureView::setContext(std::shared_ptr<SkiaUIContext> &context) {
