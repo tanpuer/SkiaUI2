@@ -7,6 +7,8 @@ ComposeTextureView::ComposeTextureView() {
 }
 
 ComposeTextureView::~ComposeTextureView() {
+    auto jniEnv = getContext()->getJniEnv();
+    jniEnv->CallVoidMethod(javaInstance, releaseMethod);
     javaInstance = nullptr;
     //javaInstance = globalJavaViewRef; globalJavaViewRef will be released in View.cpp
 }

@@ -36,7 +36,7 @@ void Icon::draw(SkCanvas *canvas) {
         return;
     }
     auto position = SkPoint::Make(static_cast<float >(left), static_cast<float >(top));
-    canvas->drawGlyphs(1, &glyphId, &position, SkPoint::Make(-x, -y), *font, *iconPaint);
+    canvas->drawGlyphs(SkSpan(&glyphId, 1), SkSpan(&position, 1), SkPoint::Make(-x, -y), *font, *iconPaint);
 }
 
 void Icon::setIcon(int32_t text) {

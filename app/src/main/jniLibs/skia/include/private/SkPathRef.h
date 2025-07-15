@@ -9,6 +9,7 @@
 #define SkPathRef_DEFINED
 
 #include "include/core/SkArc.h"
+#include "include/core/SkPathTypes.h" // IWYU pragma: keep
 #include "include/core/SkPoint.h"
 #include "include/core/SkRect.h"
 #include "include/core/SkRefCnt.h"
@@ -27,15 +28,6 @@
 
 class SkMatrix;
 class SkRRect;
-
-// These are computed from a stream of verbs
-struct SkPathVerbAnalysis {
-    bool     valid;
-    int      points, weights;
-    unsigned segmentMask;
-};
-SkPathVerbAnalysis sk_path_analyze_verbs(const uint8_t verbs[], int count);
-
 
 /**
  * Holds the path verbs and points. It is versioned by a generation ID. None of its public methods
@@ -319,6 +311,9 @@ public:
      */
     const uint8_t* verbsEnd() const { return fVerbs.end(); }
 
+    SkSpan<const SkPathVerb> verbs() const {
+        return {reinterpret_cast<const SkPathVerb*>(fVerbs.begin()), fVerbs.size()};
+    }
     /**
      * Returns a const pointer to the first point.
      */
@@ -346,7 +341,7 @@ public:
      * Gets an ID that uniquely identifies the contents of the path ref. If two path refs have the
      * same ID then they have the same verbs and points. However, two path refs may have the same
      * contents but different genIDs.
-     * skbug.com/1762 for background on why fillType is necessary (for now).
+     * skbug.com/40032862 for background on why fillType is necessary (for now).
      */
     uint32_t genID(uint8_t fillType) const;
 
@@ -404,7 +399,7 @@ private:
 
     // Return true if the computed bounds are finite.
     static bool ComputePtBounds(SkRect* bounds, const SkPathRef& ref) {
-        return bounds->setBoundsCheck(ref.points(), ref.countPoints());
+        return bounds->setBoundsCheck({ref.points(), ref.countPoints()});
     }
 
     // called, if dirty, by getBounds()
@@ -541,7 +536,12 @@ private:
 
     void callGenIDChangeListeners();
 
+    PointsArray fPoints;
+    VerbsArray fVerbs;
+    ConicWeightsArray fConicWeights;
+
     mutable SkRect   fBounds;
+    SkRect           fArcOval;
 
     enum {
         kEmptyGenID = 1, // GenID reserved for path ref with zero points and zero verbs.
@@ -549,27 +549,25 @@ private:
     mutable uint32_t    fGenerationID;
     SkIDChangeListener::List fGenIDChangeListeners;
 
-    PointsArray fPoints;
-    VerbsArray fVerbs;
-    ConicWeightsArray fConicWeights;
-
     SkDEBUGCODE(std::atomic<int> fEditorsAttached;) // assert only one editor in use at any time.
 
-    mutable uint8_t  fBoundsIsDirty;
-    mutable bool     fIsFinite;    // only meaningful if bounds are valid
+    SkScalar    fArcStartAngle;
+    SkScalar    fArcSweepAngle;
 
     PathType fType;
-    // Both the circle and rrect special cases have a notion of direction and starting point
-    // The next two variables store that information for either.
-    bool     fRRectOrOvalIsCCW;
+
+    mutable uint8_t  fBoundsIsDirty;
+
     uint8_t  fRRectOrOvalStartIdx;
     uint8_t  fSegmentMask;
     // If the path is an arc, these four variables store that information.
     // We should just store an SkArc, but alignment would cost us 8 more bytes.
     SkArc::Type fArcType;
-    SkRect      fArcOval;
-    SkScalar    fArcStartAngle;
-    SkScalar    fArcSweepAngle;
+
+    mutable bool     fIsFinite;    // only meaningful if bounds are valid
+    // Both the circle and rrect special cases have a notion of direction and starting point
+    // The next two variables store that information for either.
+    bool     fRRectOrOvalIsCCW;
 
     friend class PathRefTest_Private;
     friend class ForceIsRRect_Private; // unit test isRRect

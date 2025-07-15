@@ -109,7 +109,7 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
                 engine.updateTexImage(it, skImagePtr)
             }
         }
-        surfaceObj?.let {
+        if (ref != 0L)  {
             engine.markDirty(ref)
         }
     }

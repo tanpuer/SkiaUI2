@@ -68,6 +68,12 @@ set_property(TARGET skottie PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROI
 add_library(sksg STATIC IMPORTED)
 set_property(TARGET sksg PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libsksg.a")
 
+add_library(jsonreader STATIC IMPORTED)
+set_property(TARGET jsonreader PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libjsonreader.a")
+
+add_library(pathops STATIC IMPORTED)
+set_property(TARGET pathops PROPERTY IMPORTED_LOCATION "${JNI_LIBS_DIR}/${ANDROID_ABI}/libpathops.a")
+
 ##v8-start
 add_library(v8_libbase SHARED IMPORTED)
 set_target_properties(v8_libbase
@@ -138,6 +144,8 @@ target_link_libraries(skiaui
         skunicode_icu
         skottie
         sksg
+        jsonreader
+        pathops
 
         v8_libbase v8_libplatform icui18n icuuc chrome_zlib v8
 

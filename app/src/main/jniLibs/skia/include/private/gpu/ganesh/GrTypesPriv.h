@@ -473,7 +473,7 @@ constexpr static int kGrInternalTextureFlagsMask = static_cast<int>(
 // if the proxy has it set then the surface must also have it set. All other flags listed here must
 // match on the proxy and surface.
 // TODO: Add back kFramebufferOnly flag here once we update GrSurfaceCharacterization to take it
-// as a flag. skbug.com/10672
+// as a flag. skbug.com/40042017
 constexpr static int kGrInternalRenderTargetFlagsMask = static_cast<int>(
         GrInternalSurfaceFlags::kGLRTFBOIDIs0 |
         GrInternalSurfaceFlags::kRequiresManualMSAAResolve/* |
@@ -539,7 +539,7 @@ SK_MAKE_BITFIELD_CLASS_OPS(GpuPathRenderers)
 enum class GrColorType {
     kUnknown,
     kAlpha_8,
-    kBGR_565,
+    kBGR_565,    // This corresponds to kRGB_565_SkColorType, which is misnamed.
     kRGB_565,
     kABGR_4444,  // This name differs from SkColorType. kARGB_4444_SkColorType is misnamed.
     kRGBA_8888,
