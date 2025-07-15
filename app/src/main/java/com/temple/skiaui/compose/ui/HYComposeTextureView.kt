@@ -76,6 +76,9 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
     }
 
     private fun release() {
+        ref = 0L
+        surfaceObj?.release()
+        surfaceObj = null
         engine.removeSurfaceListener(skiaSurfaceKey)
     }
 
@@ -106,7 +109,7 @@ class HYComposeTextureView(modifier: Modifier, val engine: HYSkiaEngine) : HYCom
                 engine.updateTexImage(it, skImagePtr)
             }
         }
-        engine.postToSkiaUI {
+        surfaceObj?.let {
             engine.markDirty(ref)
         }
     }
