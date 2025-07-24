@@ -18,12 +18,26 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
         ALOGE("dispatchTouchEvent weakRefView is null, pls check")
         return false;
     }
+    if (touchEvent->action == TouchEvent::ACTION_DOWN) {
+        findTargetView(touchEvent);
+    }
+    if (weakTargetView == nullptr) {
+        return false;
+    }
+    if (!weakTargetView->onInterceptTouchEvent(touchEvent)) {
+        auto parent = weakTargetView->getParent();
+        while (parent != nullptr) {
+            if (parent->onInterceptTouchEvent(touchEvent)) {
+                clearTargetView(touchEvent);
+                weakTargetView = parent;
+                break;
+            } else {
+                parent = parent->getParent();
+            }
+        }
+    }
     switch (touchEvent->action) {
         case TouchEvent::ACTION_DOWN: {
-            findTargetView(touchEvent);
-            if (weakTargetView != nullptr) {
-                weakTargetView->onInterceptTouchEvent(touchEvent);
-            }
             dispatchToTargetView(touchEvent);
             break;
         }
@@ -31,26 +45,7 @@ bool TouchEventDispatcher::dispatchTouchEvent(TouchEvent *touchEvent) {
             if (!checkTouchInTargetView(touchEvent)) {
                 clearTargetView(touchEvent);
             }
-            if (weakTargetView != nullptr) {
-                if (weakTargetView->onInterceptTouchEvent(touchEvent)) {
-                    dispatchToTargetView(touchEvent);
-                } else {
-                    auto parent = weakTargetView->getParent();
-                    while (parent != nullptr) {
-                        if (parent->onInterceptTouchEvent(touchEvent)) {
-                            clearTargetView(touchEvent);
-                            weakTargetView = parent;
-                            touchEvent->action = TouchEvent::ACTION_DOWN;
-                            dispatchToTargetView(touchEvent);
-                            touchEvent->action = TouchEvent::ACTION_MOVE;
-                            dispatchToTargetView(touchEvent);
-                            break;
-                        } else {
-                            parent = parent->getParent();
-                        }
-                    }
-                }
-            }
+            dispatchToTargetView(touchEvent);
             break;
         }
         case TouchEvent::ACTION_UP: {
