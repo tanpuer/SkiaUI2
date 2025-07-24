@@ -37,10 +37,12 @@ bool ScrollDispatcher::onTouchEvent(TouchEvent *touchEvent) {
         case TouchEvent::ACTION_UP: {
             scrollView->fling();
             resetLastScroll();
+            weakTargetView = nullptr;
             break;
         }
         case TouchEvent::ACTION_CANCEL: {
             resetLastScroll();
+            weakTargetView = nullptr;
             break;
         }
         default: {
