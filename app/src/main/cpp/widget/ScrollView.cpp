@@ -28,6 +28,9 @@ void ScrollView::layout(int l, int t, int r, int b) {
         } else {
             setTranslateY(mScroller->getCurrentY());
         }
+    }  else {
+        xVelocity =  0.0f;
+        yVelocity = 0.0f;
     }
     if (_direction == YGFlexDirectionRow) {
         layoutChildren(l + translateX, t, r + translateX, b);
