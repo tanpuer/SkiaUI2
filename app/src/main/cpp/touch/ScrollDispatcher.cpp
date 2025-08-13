@@ -104,6 +104,8 @@ bool ScrollDispatcher::onInterceptTouchEvent(TouchEvent *touchEvent) {
         }
         lastScrollX = touchEvent->x;
         lastScrollY = touchEvent->y;
+    } else if (touchEvent->action == TouchEvent::ACTION_CANCEL || touchEvent->action == TouchEvent::ACTION_UP) {
+        scrollView->fling();
     }
     return TouchEventDispatcher::onInterceptTouchEvent(touchEvent);
 }
