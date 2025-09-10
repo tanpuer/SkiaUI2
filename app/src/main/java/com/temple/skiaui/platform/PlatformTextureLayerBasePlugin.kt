@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.SurfaceTexture
 import android.graphics.SurfaceTexture.OnFrameAvailableListener
 import android.util.Log
+import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
@@ -133,13 +134,14 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
                 y,
                 0
             )
+            motionEvent.source = InputDevice.SOURCE_TOUCHSCREEN
             Log.d("PlatformBasePlugin", "touch-event: $type $x $y")
             targetView?.onTouchEvent(motionEvent)
             motionEvent.recycle()
         }
     }
 
-    private fun onSizeChange(width: Int, height: Int) {
+    open fun onSizeChange(left: Int, top: Int, width: Int, height: Int) {
         mainHandler.post {
             this.width = width
             this.height = height
@@ -151,6 +153,8 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
             (targetView?.layoutParams as? FrameLayout.LayoutParams)?.apply {
                 this.width = width
                 this.height = height
+                this.leftMargin = left
+                this.topMargin = top
                 targetView?.requestLayout()
             }
         }

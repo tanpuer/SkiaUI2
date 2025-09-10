@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.Rect
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
 import com.temple.skiaui.platform.ICanvasProvider
@@ -12,8 +13,12 @@ class PlatformEditText @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
 
+    private var showAndroidUI = false
+
     init {
         hint = "this is Android EditText"
+        background = null
+        setSingleLine()
     }
 
     private var render: ICanvasProvider? = null
@@ -22,6 +27,12 @@ class PlatformEditText @JvmOverloads constructor(
 
     fun setCanvasProvider(render: ICanvasProvider) {
         this.render = render
+    }
+
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
+        showAndroidUI = focused
+        invalidate()
     }
 
     override fun draw(canvas: Canvas) {
@@ -37,6 +48,9 @@ class PlatformEditText @JvmOverloads constructor(
         super.draw(glCanvas)
         glCanvas.restore()
         render?.unLockCanvas(glCanvas)
+        if (showAndroidUI) {
+            super.draw(canvas)
+        }
     }
 
     override fun isDirty(): Boolean {

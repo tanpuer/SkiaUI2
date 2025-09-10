@@ -17,19 +17,13 @@ PlatformView::~PlatformView() {
 }
 
 void PlatformView::layout(int l, int t, int r, int b) {
+    auto changed = l != left || t != top || r != right || b != bottom;
     View::layout(l, t, r, b);
     dstRect.setLTRB(static_cast<float >(l), static_cast<float >(t), static_cast<float >(r),
                     static_cast<float >(b));
-    if (!firstResize) {
-        onSizeChange(width, height);
-    }
-}
-
-void PlatformView::onSizeChange(int width, int height) {
-    if (width > 0 && height > 0) {
-        firstResize = true;
+    if (changed) {
         auto jniEnv = getContext()->getJniEnv();
-        jniEnv->CallVoidMethod(javaView, onSizeChangeMethodId, width, height);
+        jniEnv->CallVoidMethod(javaView, onSizeChangeMethodId, left, top, width, height);
     }
 }
 
@@ -75,7 +69,7 @@ void PlatformView::setContext(std::shared_ptr<SkiaUIContext> &context) {
     sendTouchEventMethodId = jniEnv->GetMethodID(javaPluginClazz, "sendTouchEvent", "(IFF)V");
     deleteSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "deleteSkImage", "(J)V");
     releaseMethodId = jniEnv->GetMethodID(javaPluginClazz, "release", "()V");
-    onSizeChangeMethodId = jniEnv->GetMethodID(javaPluginClazz, "onSizeChange", "(II)V");
+    onSizeChangeMethodId = jniEnv->GetMethodID(javaPluginClazz, "onSizeChange", "(IIII)V");
     setBackgroundColorMethodId = jniEnv->GetMethodID(javaPluginClazz, "setBackgroundColor", "(I)V");
     auto javaConstructor = jniEnv->GetMethodID(javaPluginClazz, "<init>",
                                                "(Lcom/temple/skiaui/HYSkiaEngine;J)V");

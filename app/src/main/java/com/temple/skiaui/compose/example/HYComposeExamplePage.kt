@@ -1,5 +1,6 @@
 package com.temple.skiaui.compose.example
 
+import android.text.InputType
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -32,6 +33,7 @@ import com.temple.skiaui.compose.foundation.paddings
 import com.temple.skiaui.compose.material.Badge
 import com.temple.skiaui.compose.runtime.AndroidImage
 import com.temple.skiaui.compose.runtime.Button
+import com.temple.skiaui.compose.runtime.EditText
 import com.temple.skiaui.compose.runtime.ExoVideo
 import com.temple.skiaui.compose.runtime.HYComposeBasePage
 import com.temple.skiaui.compose.runtime.HYComposeSDK
@@ -102,6 +104,15 @@ class HYComposeExamplePage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                     Badge(content = "100")
                     Badge(content = "1000+")
                 }
+                EditText(
+                    modifier = Modifier.size(width, 70.dp)
+                        .margins(arrayOf(0.dp, 0.dp, 0.dp, 0.dp))
+                        .backgroundColor(if (isSystemInDarkTheme()) Color.Gray else Color.White),
+                    hint = stringResource(R.string.edit_hint_string),
+                    textColor = MaterialTheme.colorScheme.tertiary,
+                    hintColor = MaterialTheme.colorScheme.outlineVariant,
+                    inputType = InputType.TYPE_CLASS_NUMBER
+                )
                 Row(
                     modifier = Modifier.width(width)
                         .alignItems(Align.Center)

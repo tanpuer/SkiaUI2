@@ -56,4 +56,11 @@ class PlatformEditTextPlugin(engine: HYSkiaEngine, editTextPtr: Long) :
         }
     }
 
+    override fun onSizeChange(left: Int, top: Int, width: Int, height: Int) {
+        super.onSizeChange(left, top, width, height)
+        mainHandler.post {
+            editText?.clearFocus()
+        }
+    }
+
 }

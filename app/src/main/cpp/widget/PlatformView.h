@@ -30,8 +30,6 @@ public:
 
     void setContext(std::shared_ptr<SkiaUIContext> &context) override;
 
-    void onSizeChange(int width, int height) override;
-
     void setBackgroundColor(SkColor color) override;
 
 protected:
