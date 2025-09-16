@@ -124,7 +124,7 @@ void OverScrollerSpline::startSpringBack(float start, float end, float velocity)
     // TODO take velocity into account
     mVelocity = -delta;  // only sign is used
     mAllowedOverscroll = std::abs(delta);
-    mDuration = static_cast<float>(1000.0 * std::sqrt(-2.0 * delta / mDeceleration));
+    mDuration = static_cast<float>(700.0 * std::sqrt(-2.0 * delta / mDeceleration));
 }
 
 void OverScrollerSpline::adjustDuration(float start, float oldFinal, float newFinal) {
