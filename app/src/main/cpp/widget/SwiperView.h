@@ -20,7 +20,7 @@ public:
 
     virtual void drawIndicators(SkCanvas *canvas);
 
-    void startFling();
+    void startFling() override;
 
     void setOnChangeListener(std::function<void(int)>&& callback);
 

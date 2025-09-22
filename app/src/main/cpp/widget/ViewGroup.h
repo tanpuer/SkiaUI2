@@ -28,9 +28,9 @@ public:
 
     bool isViewGroup() override;
 
-    virtual int getChildHeightSum();
+    int getChildHeightSum();
 
-    virtual int getChildWidthSum();
+    int getChildWidthSum();
 
     virtual void onShow() override;
 

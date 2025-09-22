@@ -11,10 +11,10 @@ import android.os.Looper
 import android.util.Log
 import android.view.MotionEvent
 import android.view.Surface
-import android.view.VelocityTracker
 import android.view.View
 import android.view.ViewConfiguration
 import androidx.annotation.MainThread
+import androidx.core.math.MathUtils.clamp
 import com.temple.skiaui.cache.PersistentCache
 import com.temple.skiaui.compose.runtime.HYComposeSDK
 import com.temple.skiaui.plugin.PluginManager
@@ -64,7 +64,11 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
     private val skImageList = mutableListOf<Long>()
     private val createListeners = mutableMapOf<String, (enable: Boolean) -> Unit>()
     private val sizeChangeListeners = mutableMapOf<String, (width: Int, height: Int) -> Unit>()
-    private var velocityTracker: VelocityTracker? = null
+
+    data class Velocity(val x: Float, val y: Float)
+
+    private val touchPoints = mutableListOf<Velocity>()
+    private val touchTimes = mutableListOf<Long>()
 
     init {
         skiaGLHandler.post {
@@ -79,7 +83,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
 
     @MainThread
     fun createSurface(surface: Surface) {
-        velocityTracker = VelocityTracker.obtain()
         pic.set(0L)
         drawCount.set(0)
         skiaUIHandler.post {
@@ -109,8 +112,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
 
     @MainThread
     fun destroySurface() {
-        velocityTracker?.recycle()
-        velocityTracker = null
         createListeners.forEach {
             it.value.invoke(false)
         }
@@ -194,13 +195,33 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         val x = event.x
         val y = event.y
         val action = event.action
-        velocityTracker?.addMovement(event)
+        if (action == MotionEvent.ACTION_DOWN) {
+            touchPoints.clear()
+            touchTimes.clear()
+        }
+        if (touchPoints.size >= 5) {
+            touchPoints.removeAt(0)
+            touchTimes.removeAt(0)
+        }
+        touchPoints.add(Velocity(x, y))
+        touchTimes.add(System.currentTimeMillis())
         if (action == MotionEvent.ACTION_UP) {
-            velocityTracker?.computeCurrentVelocity(1000)
-            nativeSetVelocity(
-                uiApp, velocityTracker?.xVelocity ?: 0f, velocityTracker?.yVelocity ?: 0f
-            )
-            velocityTracker?.clear()
+            if (touchPoints.size >= 2) {
+                val firstTouch = touchPoints.first()
+                val lastTouch = touchPoints.last()
+                val firstTime = touchTimes.first()
+                val lastTime = touchTimes.last()
+                val dt = lastTime - firstTime
+                if (dt > 0) {
+                    val velocityX = (lastTouch.x - firstTouch.x) * 1000 / dt
+                    val velocityY = (lastTouch.y - firstTouch.y) * 1000 / dt
+                    val clampedVelocityX = clamp(velocityX, -MAX_FLING_VELOCITY, MAX_FLING_VELOCITY)
+                    val clampedVelocityY = clamp(velocityY, -MAX_FLING_VELOCITY, MAX_FLING_VELOCITY)
+                    nativeSetVelocity(
+                        uiApp, clampedVelocityX, clampedVelocityY
+                    )
+                }
+            }
         }
         skiaUIHandler.post {
             nativeTouchEvent(uiApp, action, x, y)
