@@ -62,6 +62,7 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
     init {
         mainHandler.post {
             engine.addSkiaSurfaceListener(index, createListener)
+            createSurface(1, 1)
         }
     }
 

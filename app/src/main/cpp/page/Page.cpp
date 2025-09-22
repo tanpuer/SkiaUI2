@@ -39,7 +39,11 @@ Page::~Page() {
 void Page::enterFromRight(const EnterExitInfo &info) {
     ALOGD("enterFromRight %d %d %d", info.from, info.to, info.duration)
     auto animator = new TranslateAnimator(this, info.from, info.to, 0, 0);
-    animator->setDuration(info.duration);
+    if (context->getPageStackManager()->getPages().size() == 1) {
+        animator->setDuration(0);
+    } else {
+        animator->setDuration(info.duration);
+    }
     animator->addListener([this]() {
         context->getPageStackManager()->hideLastPage();
     });
