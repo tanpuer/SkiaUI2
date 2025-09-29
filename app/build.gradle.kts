@@ -59,13 +59,12 @@ android {
 dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.constraintlayout:constraintlayout:2.2.1")
-    implementation("org.java-websocket:Java-WebSocket:1.5.6")
     implementation("androidx.media3:media3-exoplayer:1.6.1")
     implementation("androidx.compose.runtime:runtime:1.8.1")
     implementation("androidx.compose.compiler:compiler:1.5.15")
     implementation("androidx.compose.foundation:foundation-android:1.8.1")
     implementation("androidx.compose.material3:material3:1.3.2")
-    implementation("com.google.android.filament:filament-android:1.56.0")
+    implementation("com.google.android.filament:filament-android:1.65.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.webkit:webkit:1.13.0")
 }

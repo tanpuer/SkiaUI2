@@ -7,7 +7,6 @@
 #include "PluginManager.h"
 #include "compose/ComposeJNI.h"
 #include "WebView.h"
-#include "inspect/WebSocketServer.h"
 #include "bitmap/AndroidBitmap.h"
 
 using namespace HYSkiaUI;
@@ -254,17 +253,6 @@ native_MarkDirty(JNIEnv *env, jobject instance, jobject viewPtr) {
 }
 
 extern "C" JNIEXPORT void JNICALL
-native_SendInspectMsg(JNIEnv *env, jobject instance, jstring message, jobject ptr) {
-    ALOGD("native_SendInspectMsg")
-    auto server = reinterpret_cast<WebSocketServer *>(ptr);
-    if (server != nullptr) {
-        auto res = env->GetStringUTFChars(message, nullptr);
-        server->receiveMessage(res);
-        env->ReleaseStringUTFChars(message, res);
-    }
-}
-
-extern "C" JNIEXPORT void JNICALL
 native_UpdateAndroidBitmap(JNIEnv *env, jobject instance, jlong javaUIApp, jlong ref,
                            jobject bitmap, jint index, jint frameCount) {
 //    ALOGD("native_UpdateAndroidBitmap")
@@ -305,7 +293,6 @@ static JNINativeMethod g_RenderMethods[] = {
         {"nativeAttachSurfaceTexture",          "(JIILandroid/graphics/SurfaceTexture;)J",      (void *) native_AttachSurfaceTexture},
         {"nativeUpdateTexImage",                "(JLandroid/graphics/SurfaceTexture;J)V",       (void *) native_UpdateTexImage},
         {"nativeMarkDirty",                     "(J)V",                                         (void *) native_MarkDirty},
-        {"nativeSendInspectMsg",                "(Ljava/lang/String;J)V",                       (void *) native_SendInspectMsg},
         {"nativeUpdateAndroidBitmap",           "(JJLandroid/graphics/Bitmap;II)V",             (void *) native_UpdateAndroidBitmap},
 };
 

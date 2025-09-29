@@ -26,9 +26,6 @@ public:
 
     void setOnChangeListener(std::function<void(bool)> &&listener);
 
-public:
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> changeFunction;
-
 private:
 
     bool enable = true;

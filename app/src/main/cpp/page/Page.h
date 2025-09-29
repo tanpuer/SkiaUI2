@@ -2,8 +2,6 @@
 
 #include "ViewGroup.h"
 #include "memory"
-#include "v8.h"
-#include "V8Runtime.h"
 
 namespace HYSkiaUI {
 
@@ -94,14 +92,6 @@ public:
     void onShow() override;
 
     void onHide() override;
-
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> createCallback;
-
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> destroyCallback;
-
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> showCallback;
-
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> hideCallback;
 
 public:
 

@@ -17,22 +17,10 @@ Page::Page() {
 
 void Page::setContext(std::shared_ptr<SkiaUIContext> &context) {
     View::setContext(context);
-    auto runtime = context->getRuntime();
-    if (runtime != nullptr && !createCallback.IsEmpty()) {
-        runtime->performFunction(createCallback, 0, {});
-    }
     setBackgroundColor(SK_ColorTRANSPARENT);
 }
 
 Page::~Page() {
-    auto runtime = context->getRuntime();
-    if (runtime != nullptr && !destroyCallback.IsEmpty()) {
-        runtime->performFunction(destroyCallback, 0, {});
-    }
-    createCallback.Reset();
-    destroyCallback.Reset();
-    showCallback.Reset();
-    hideCallback.Reset();
     ALOGD("page destroy %d", pageId)
 }
 
@@ -172,10 +160,6 @@ void Page::setBlackWhiteMode() {
 }
 
 void Page::onShow() {
-    auto runtime = context->getRuntime();
-    if (runtime != nullptr && !showCallback.IsEmpty()) {
-        runtime->performFunction(showCallback, 0, {});
-    }
     if (globalJavaViewRef != nullptr) {
         auto jniEnv = context->getJniEnv();
         if (pageOnShowMethodId == nullptr) {
@@ -188,10 +172,6 @@ void Page::onShow() {
 }
 
 void Page::onHide() {
-    auto runtime = context->getRuntime();
-    if (runtime != nullptr && !hideCallback.IsEmpty()) {
-        runtime->performFunction(hideCallback, 0, {});
-    }
     if (globalJavaViewRef != nullptr) {
         auto jniEnv = context->getJniEnv();
         if (pageOnHideMethodId == nullptr) {

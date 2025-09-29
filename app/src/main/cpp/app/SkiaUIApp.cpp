@@ -7,10 +7,7 @@
 #include "SkiaUIContext.h"
 #include "CppTest.h"
 #include "PageStackManager.h"
-#include "SimpleJavascriptTest.h"
 #include "JetpackComposeTest.h"
-#include "ReactjsTest.h"
-#include "VuejsTest.h"
 
 namespace HYSkiaUI {
 
@@ -22,14 +19,8 @@ SkiaUIApp::SkiaUIApp(JNIEnv *env, jobject javaAssetManager, jobject javaSkiaEngi
     context->setFrontEngineType(this->engineType);
     context->setJavaAssetManager(env, javaAssetManager);
     context->setJavaSkiaEngine(javaSkiaEngine);
-    if (engineType == JS) {
-        testDraw = std::make_unique<SimpleJavascriptTest>();
-    } else if (engineType == Compose) {
+    if (engineType == Compose) {
         testDraw = std::make_unique<JetpackComposeTest>(env);
-    } else if (engineType == React) {
-        testDraw = std::make_unique<ReactjsTest>();
-    } else if (engineType == Vue) {
-        testDraw = std::make_unique<VuejsTest>();
     } else {
         testDraw = std::make_unique<CppTest>();
     }

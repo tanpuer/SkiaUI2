@@ -25,9 +25,6 @@ void LinearAnimator::update(SkRect &rect) {
         } else {
             end = true;
             updateInner();
-            if (!jsUpdateCallback.IsEmpty()) {
-                jsUpdateCallback.Reset();
-            }
             return;
         }
     }

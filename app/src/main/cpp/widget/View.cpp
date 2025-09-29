@@ -28,7 +28,6 @@ View::~View() {
     }
     animators.clear();
     viewClickListener = nullptr;
-    clickFunction.Reset();
     if (globalJavaViewRef) {
         getContext()->getJniEnv()->DeleteGlobalRef(globalJavaViewRef);
     }

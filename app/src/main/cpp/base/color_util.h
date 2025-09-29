@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <iomanip>
 
 static void hexToRGBA(const std::string& hex, int& r, int& g, int& b, int& a) {
     // 检查颜色格式是否正确（#rgb 或 #rgba）

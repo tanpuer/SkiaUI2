@@ -18,11 +18,19 @@ class MainActivity : AppCompatActivity(), RenderCallback {
         HYSkiaUIApp.getInstance().setFrameRate(this)
         setContentView(R.layout.activity_main)
         skiaView = findViewById(R.id.surfaceView)
-        val type = intent.getIntExtra("type", 0)
+        val type = intent.getIntExtra("type", 2)
         skiaView.initEngine(type)
         skiaView.setRenderCallback(this)
         fpsView = findViewById(R.id.tvFps)
         window.setSoftInputMode(SOFT_INPUT_ADJUST_NOTHING)
+        requestPermissions(
+            arrayOf(
+                android.Manifest.permission.RECORD_AUDIO,
+                android.Manifest.permission.CAMERA,
+                android.Manifest.permission.READ_MEDIA_VIDEO,
+                android.Manifest.permission.POST_NOTIFICATIONS,
+            ), 101
+        )
     }
 
     override fun onBackPressed() {

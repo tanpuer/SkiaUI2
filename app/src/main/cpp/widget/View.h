@@ -14,7 +14,6 @@
 #include "core/SkBlurTypes.h"
 #include "SkiaUIContext.h"
 #include "MeasureTime.h"
-#include "v8.h"
 
 static int64_t VIEW_ID = 0;
 
@@ -317,11 +316,6 @@ protected:
     SkPoint rightTop = {0.0f, 0.0f};
     SkPoint leftBottom = {0.0f, 0.0f};
     SkPoint rightBottom = {0.0f, 0.0f};
-
-#pragma mark v8
-public:
-
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> clickFunction;
 
 #pragma mark Compose
 public:

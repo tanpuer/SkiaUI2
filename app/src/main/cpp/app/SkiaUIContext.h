@@ -8,7 +8,6 @@
 #include "YGConfig.h"
 #include "core/SkCanvas.h"
 #include "ResourceLoader.h"
-#include "V8Runtime.h"
 #include "ports/SkFontMgr_android.h"
 #include "skparagraph/include/TypefaceFontProvider.h"
 #include "skparagraph/include/ParagraphBuilder.h"
@@ -102,15 +101,6 @@ public:
 
     SkCanvas *getCanvas() const {
         return canvas;
-    }
-
-    const std::shared_ptr<V8Runtime> &initV8Runtime() {
-        v8Runtime = std::make_shared<V8Runtime>();
-        return v8Runtime;
-    }
-
-    const std::shared_ptr<V8Runtime> &getRuntime() {
-        return v8Runtime;
     }
 
     void intFont() {
@@ -233,8 +223,6 @@ private:
     jobject javaSkiaEngine = nullptr;
 
     SkCanvas *canvas = nullptr;
-
-    std::shared_ptr<V8Runtime> v8Runtime = nullptr;
 
     sk_sp<SkFontMgr> fontMgr = nullptr;
 

@@ -93,9 +93,6 @@ private:
 
     jmethodID onChangeFromNativeMethodId = nullptr;
 
-public:
-    v8::Persistent<v8::Function, v8::CopyablePersistentTraits<v8::Function>> progressFunction;
-
 };
 
 }
