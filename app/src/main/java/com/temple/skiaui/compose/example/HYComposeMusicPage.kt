@@ -234,9 +234,9 @@ class HYComposeMusicPage(engine: HYSkiaEngine) : HYComposeBasePage(engine) {
                 }
                 Text(
                     modifier = Modifier.backgroundColor(Color.Transparent)
-                        .margins(arrayOf(0.dp, 20.dp, 0.dp, 20.dp)),
+                        .margins(arrayOf(0.dp, 10.dp, 0.dp, 10.dp)),
                     content = lyric.content,
-                    textSize = 25.dp,
+                    textSize = 22.dp,
                     color = Color.White,
                     textGradient = TextGradient(
                         if (gradientStops.size == 4) colors else arrayOf(),
