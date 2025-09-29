@@ -64,7 +64,7 @@ dependencies {
     implementation("androidx.compose.compiler:compiler:1.5.15")
     implementation("androidx.compose.foundation:foundation-android:1.8.1")
     implementation("androidx.compose.material3:material3:1.3.2")
-    implementation("com.google.android.filament:filament-android:1.65.2")
+    implementation("com.google.android.filament:filament-android:1.56.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation("androidx.webkit:webkit:1.13.0")
 }
