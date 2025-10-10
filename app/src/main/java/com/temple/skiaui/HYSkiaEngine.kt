@@ -83,7 +83,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
 
     @MainThread
     fun createSurface(surface: Surface) {
-        pic.set(0L)
         drawCount.set(0)
         skiaUIHandler.post {
             nativeUIShow(uiApp)
@@ -94,6 +93,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         createListeners.forEach {
             it.value.invoke(true)
         }
+        performGLDraw(System.currentTimeMillis() / 1000)
     }
 
     @MainThread
@@ -103,7 +103,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         }
         skiaUIHandler.post {
             nativeUIChanged(uiApp, width, height, System.currentTimeMillis() / 1000)
-            pic.set(nativeUIDoFrame(uiApp, System.currentTimeMillis() - start))
         }
         sizeChangeListeners.forEach { (_, callback) ->
             callback.invoke(width, height)
