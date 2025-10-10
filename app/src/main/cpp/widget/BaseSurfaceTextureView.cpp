@@ -29,18 +29,8 @@ void BaseSurfaceTextureView::layout(int l, int t, int r, int b) {
 void BaseSurfaceTextureView::draw(SkCanvas *canvas) {
     auto jniEnv = getContext()->getJniEnv();
     auto skImagePtr = jniEnv->CallLongMethod(javaInstance, getSkImageMethodId);
-    if (skImagePtr != lastSkImagePtr) {
-        if (skImagePtr != 0L) {
-            auto image = reinterpret_cast<SkImage *>(skImagePtr);
-            SkSafeUnref(skImage);
-            skImage = SkSafeRef(image);
-        } else {
-            SkSafeUnref(skImage);
-            skImage = nullptr;
-        }
-        lastSkImagePtr = skImagePtr;
-        drawOneFrame();
-    }
+    skImage = reinterpret_cast<SkImage *>(skImagePtr);
+    drawOneFrame();
     if (runtimeEffect != nullptr && skImage != nullptr) {
         drawShader(canvas);
         return;

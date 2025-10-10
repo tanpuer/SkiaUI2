@@ -30,17 +30,7 @@ void PlatformView::layout(int l, int t, int r, int b) {
 void PlatformView::draw(SkCanvas *canvas) {
     auto jniEnv = getContext()->getJniEnv();
     auto skImagePtr = jniEnv->CallLongMethod(javaView, getSkImageMethodId);
-    if (skImagePtr != lastSkImagePtr) {
-        if (skImagePtr != 0L) {
-            auto image = reinterpret_cast<SkImage *>(skImagePtr);
-            SkSafeUnref(skImage);
-            skImage = SkSafeRef(image);
-        } else {
-            SkSafeUnref(skImage);
-            skImage = nullptr;
-        }
-        lastSkImagePtr = skImagePtr;
-    }
+    skImage = reinterpret_cast<SkImage *>(skImagePtr);
     canvas->save();
     canvas->setMatrix(viewMatrix);
     canvas->drawImageRect(skImage, dstRect, SkSamplingOptions(), platformPaint.get());
