@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.graphics.Rect
 import android.util.AttributeSet
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.AppCompatEditText
 import com.temple.skiaui.platform.ICanvasProvider
 
@@ -33,6 +34,12 @@ class PlatformEditText @JvmOverloads constructor(
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
         showAndroidUI = focused
         invalidate()
+        if (!showAndroidUI) {
+            (context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager)?.hideSoftInputFromWindow(
+                windowToken,
+                0
+            )
+        }
     }
 
     override fun draw(canvas: Canvas) {
