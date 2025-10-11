@@ -36,8 +36,6 @@ protected:
 
     SkRect dstRect;
 
-    long lastSkImagePtr = 0L;
-
     SkImage *skImage = nullptr;
 
     std::unique_ptr<SkPaint> platformPaint;
@@ -47,8 +45,6 @@ protected:
     jmethodID getSkImageMethodId = nullptr;
 
     jmethodID sendTouchEventMethodId = nullptr;
-
-    jmethodID deleteSkImageMethodId = nullptr;
 
     jmethodID releaseMethodId = nullptr;
 

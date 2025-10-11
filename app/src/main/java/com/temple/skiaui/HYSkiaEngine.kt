@@ -107,6 +107,7 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         sizeChangeListeners.forEach { (_, callback) ->
             callback.invoke(width, height)
         }
+        doFrame(System.currentTimeMillis())
     }
 
     @MainThread
