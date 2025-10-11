@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING
 import android.widget.TextView
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 class MainActivity : AppCompatActivity(), RenderCallback {
 
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity(), RenderCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
         currentNightMode = resources.configuration.uiMode
         HYSkiaUIApp.getInstance().setFrameRate(this)
         setContentView(R.layout.activity_main)

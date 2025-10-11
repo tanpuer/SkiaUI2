@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation-android:1.8.1")
     implementation("androidx.compose.material3:material3:1.3.2")
     implementation("com.google.android.filament:filament-android:1.56.0")
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:5.0.5")
     implementation("androidx.webkit:webkit:1.13.0")
+    implementation("androidx.core:core-splashscreen:1.0.0")
 }
