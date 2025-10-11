@@ -93,7 +93,6 @@ class HYSkiaEngine(private val developmentType: Int, val view: View) {
         createListeners.forEach {
             it.value.invoke(true)
         }
-        performGLDraw(System.currentTimeMillis() / 1000)
     }
 
     @MainThread
