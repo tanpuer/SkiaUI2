@@ -57,7 +57,6 @@ void PlatformView::setContext(std::shared_ptr<SkiaUIContext> &context) {
     auto javaPluginClazz = jniEnv->FindClass(getJavaPlatformViewName());
     getSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "getSkImage", "()J");
     sendTouchEventMethodId = jniEnv->GetMethodID(javaPluginClazz, "sendTouchEvent", "(IFF)V");
-    deleteSkImageMethodId = jniEnv->GetMethodID(javaPluginClazz, "deleteSkImage", "(J)V");
     releaseMethodId = jniEnv->GetMethodID(javaPluginClazz, "release", "()V");
     onSizeChangeMethodId = jniEnv->GetMethodID(javaPluginClazz, "onSizeChange", "(IIII)V");
     setBackgroundColorMethodId = jniEnv->GetMethodID(javaPluginClazz, "setBackgroundColor", "(I)V");
