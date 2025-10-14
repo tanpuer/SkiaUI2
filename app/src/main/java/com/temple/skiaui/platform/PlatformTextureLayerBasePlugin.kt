@@ -63,6 +63,9 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
         mainHandler.post {
             engine.addSkiaSurfaceListener(index, createListener)
             createSurface(1, 1)
+            width = 1
+            height = 1
+            initView(width, height)
         }
     }
 
@@ -151,13 +154,13 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
             } else if (surfaceObj?.width != width || surfaceObj?.height != height) {
                 surfaceObj?.setDefaultBufferSize(width, height)
             }
-            (targetView?.layoutParams as? FrameLayout.LayoutParams)?.apply {
+            targetView?.layoutParams = (targetView?.layoutParams as? FrameLayout.LayoutParams)?.apply {
                 this.width = width
                 this.height = height
                 this.leftMargin = left
                 this.topMargin = top
-                targetView?.requestLayout()
             }
+            targetView?.visibility = View.VISIBLE
         }
     }
 
@@ -178,7 +181,6 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
                 skImagePtr = it
             }
             surfaceTexture.setOnFrameAvailableListener(this)
-            initView(width, height)
         }
     }
 
@@ -210,6 +212,7 @@ abstract class PlatformTextureLayerBasePlugin(val engine: HYSkiaEngine, val view
         container = (engine.view.parent as ViewGroup).findViewById(R.id.platformContainer)
         targetView = initPlatformView()
         container?.addView(targetView, ViewGroup.LayoutParams(width, height))
+        targetView?.visibility = View.INVISIBLE
     }
 
 }
